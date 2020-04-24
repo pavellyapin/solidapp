@@ -1,0 +1,59 @@
+@import 'src/css/_variables.scss';
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+.doo-stroked-price {
+  text-decoration: line-through;
+  opacity: 50%;
+  padding-right: 10px;
+  color: $accent;
+}
+
+.doo-color-box {
+  min-width:23px;
+  min-height:23px;
+}
+
+.doo-cart-summary-box {
+  border-style: solid;
+  border-width: 1px;
+  border-color: $light-grey;
+  height: 300px;
+}
+
+.qty-input {
+  text-align: center;
+  padding-left: 30px;
+}
+
+mat-radio-button {
+  margin-right: 20px;
+}
+
+::ng-deep .mat-radio-container{
+  display: none !important;
+}
+
+::ng-deep .mat-radio-checked {
+  border-color: $primary !important;
+  font-weight: bold;
+}
+
+::ng-deep .mat-radio-label-content {
+  padding-left: 0px !important;
+  width: 100%;
+  text-align: center;
+}
+
+::ng-deep .mat-radio-button {
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+}
+
+::ng-deep .mat-radio-button:hover {
+  border-color: $primary !important;
+}

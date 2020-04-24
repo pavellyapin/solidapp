@@ -1,0 +1,43 @@
+<div class="nav-container">
+<app-nav-toolbar (logout)="logout()"
+                 (expandMainMenu)="expandMainMenu()"
+                 (toggleSideNav)="toggleSideNav()"
+                 [mainMenuOpen] = "mainMenuOpen"
+                 [siteSettings] = "siteSettings"
+                 [cartItemCount] = "cartItemCount"
+                 [rootCategories] = "rootCategories"
+                 [categories] = "categories"
+                 [activePage]="getActivePage()"
+                 [previousUrl]="getPreviousUrl()">
+</app-nav-toolbar>
+<mat-sidenav-container >
+  <mat-sidenav [opened]="isOpen" 
+               (closedStart)="isOpen = false"
+                mode="over" 
+                position = "end">
+        <div fxLayout = "row" fxLayoutAlign="center center" class = "nav-cart-title">
+          <span class = "mat-subheading-1">
+              {{'cart.shoppingList' | translate}} ({{cartItemCount}})
+          </span>
+        </div>
+        <div fxLayout = "row" fxLayoutAlign="center center">
+            <button color="accent" mat-flat-button fxFlex = "80" (click) = "goToCart()">
+                {{'cart.checkout' | translate}}
+              </button>
+          </div>
+        <mat-grid-list [cols]="cols | async">
+            <mat-grid-tile *ngFor="let card of cartItemsCards"
+                           [colspan]="card.input.cols.value | async"
+                           [rowspan]="card.input.rows.value | async">
+              <doo-nav-cart-items-spawner [card]="card"></doo-nav-cart-items-spawner>
+            </mat-grid-tile>
+          </mat-grid-list> 
+  </mat-sidenav>
+  <mat-sidenav-content>
+      <div *ngIf = "mainMenuOpen" (click) = "hideMainMenu()" class = "doo-overlay">
+
+      </div>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+</div>

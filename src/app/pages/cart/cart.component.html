@@ -1,0 +1,27 @@
+
+<div fxLayout="row" fxLayoutAlign="start start" class = "full-width" style="padding: 50px;"> 
+    <div fxLayout="column" fxFlex = "70" class = "mat-title">
+        <h1 class = "mat-h1">
+            {{'cart.shoppingList' | translate}} ({{cartItemCount}})
+        </h1>
+        <div fxLayout="row" 
+             class = "mat-subheading-1  doo-bottom-border">
+            <mat-icon  (click) = "navigateToPrevious()" 
+                       class = "doo-pointer"
+                       color = "accent">navigate_before</mat-icon>
+                    <span class = "doo-pointer" (click) = "navigateToPrevious()">{{'cart.continueShopping' | translate}}</span>
+        </div>
+        <mat-grid-list [cols]="cols | async">
+            <mat-grid-tile *ngFor="let card of cartItemsCards"
+                           [colspan]="card.input.cols.value | async"
+                           [rowspan]="card.input.rows.value | async">
+              <doo-cart-items-spawner [card]="card"></doo-cart-items-spawner>
+            </mat-grid-tile>
+          </mat-grid-list>   
+    </div>
+    <div fxLayout="column" fxFlex = "30" class = "doo-cart-summary-box">
+        <button (click) = "payPalPay()">PayPal</button>
+        {{'cart.orderSummary' | translate}}
+        {{cartTotal | pricePipe}}
+    </div>
+</div>

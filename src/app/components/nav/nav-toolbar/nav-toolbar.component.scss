@@ -1,0 +1,39 @@
+@import '~@angular/material/theming';
+
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.doo-primary-toolbar {
+  @include mat-elevation(1);
+  background-color: #ffffff;
+  padding: 0px;
+  height: 100px;
+}
+
+.doo-nav-toggle-button {
+  width: 120px;
+  padding: 5px 20px;
+  margin: 0;
+  border: 0;
+}
+
+.doo-expand-menu {
+  min-height: 400px; 
+  background: white;
+  z-index: 10;
+  position: absolute;
+  top:105px;
+  width:100%;
+  padding: 20px 20px;
+}
+
+.doo-root-category {
+  padding : 10px 10px;
+}
+
+.sub-category-column {
+  padding : 0 30px;
+}

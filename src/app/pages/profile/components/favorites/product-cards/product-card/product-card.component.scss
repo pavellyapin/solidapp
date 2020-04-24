@@ -1,0 +1,23 @@
+@import 'src/css/_variables.scss';
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+.doo-stroked-price {
+  text-decoration: line-through;
+  opacity: 50%;
+  padding-right: 10px;
+  color: $accent;
+}
+
+.selected-image-full {
+  position: relative;
+  mat-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 10;
+  }
+}

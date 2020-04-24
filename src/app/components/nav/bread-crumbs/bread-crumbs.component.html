@@ -1,0 +1,11 @@
+<div fxLayout="row">
+  <span class = "doo-pointer" [routerLink] = "'/'">
+    {{'nav.home' | translate}}
+  </span>
+  <span *ngFor = "let crumb of breadCrumbs" class = "doo-pointer" [routerLink] = "crumb.link">
+   <span style = "padding:0 10px">/</span> {{crumb.title}} 
+  </span>
+  <span *ngIf="productTitle">
+    <span style = "padding:0 10px">/</span> {{productTitle}} 
+  </span>
+</div>

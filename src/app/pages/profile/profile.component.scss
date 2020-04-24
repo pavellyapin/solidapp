@@ -1,0 +1,23 @@
+
+@import '~@angular/material/theming';
+@import 'src/css/_variables.scss';
+
+mat-sidenav-container {
+    min-height: 500px;
+    background-color: white;
+}
+
+mat-sidenav {
+    width: 20%;
+    padding-left: 10%;
+}
+mat-sidenav-content {
+    background-color: white;
+    border: none;
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+.mat-drawer-side{
+    border: none;
+}

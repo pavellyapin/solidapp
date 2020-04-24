@@ -1,0 +1,11 @@
+<div style = "padding: 50px 50px;"> 
+<doo-bread-crumbs></doo-bread-crumbs>
+ <mat-grid-list [cols]="cols | async">
+  <mat-grid-tile *ngFor="let card of productCards"
+                 [colspan]="card.input.cols.value | async"
+                 [rowspan]="card.input.rows.value | async">
+    <doo-products-spawner [card]="card"></doo-products-spawner>
+  </mat-grid-tile>
+</mat-grid-list>   
+</div>
+

@@ -1,0 +1,63 @@
+{
+  "profile": {
+        "buttons" : {
+          "add" : "Add" ,
+          "edit" : "Edit" , 
+          "close" : "Close",
+          "save" : "Save",
+          "cancel" : "Cancel"
+        } ,
+        "account" : {
+          "personalInfo" : "Personal Information" ,
+          "addName" : "Add name",
+          "firstName" : "First name",
+          "lastName" : "Last Name",
+          "contact" : "Contact",
+          "addMobile" : "Add mobile",
+          "mobile" : "Mobile",
+          "email" : "Email",
+          "password" : "Password",
+          "currentPassword" : "Current Password",
+          "newPassword" : "New Password"
+        } ,
+        "address" : {
+          "addressSearch" : "Address, postalcode or city",
+          "addressLine1" : "Street address",
+          "addressLine2" : "Detailed address (optional)",
+          "addAddressLine2" : "Add another address line",
+          "city" : "City",
+          "province" : "Province" ,
+          "postal" : "Postal code",
+          "primary" : "Primary",
+          "enterAddressManually" : "Enter address Manualy",
+          "noAddressSaved" : "You don't have any address saved, add an address and use it during checkout."
+        },
+        "favorites" : {
+          "empty" : "You don't have any favorites"
+        }
+    },
+    "product" : {
+      "new" : "NEW",
+      "size" : "Size",
+      "color" : "Color",
+      "qty" : "Quantity",
+      "validations" : {
+        "size_required" : "Please select a size",
+        "qty_required" : "Select quantity"
+      }
+    },
+    "nav" : {
+      "home" : "Home"
+    } ,
+    "cart" : {
+      "shoppingList" : "Shopping List",
+      "continueShopping" : "Continue Shopping",
+      "orderSummary" : "Order Summary",
+      "addToCart" : "Add to cart",
+      "checkout" : "CHECKOUT",
+      "successTitle" : "YOUR ORDER IS CONFIRMED!",
+      "successContent" : "Thanks for shopping! Your order has been confirmed and an email was sent to your submiited address. If you have any question don't hesitate to contact us."
+    } 
+
+
+}

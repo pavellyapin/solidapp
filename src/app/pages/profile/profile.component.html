@@ -1,0 +1,44 @@
+
+      <div fxLayout="row" fxLayoutAlign="center">
+          <h1 class="mat-display-1">Your Account</h1>
+      </div>
+      <mat-sidenav-container >
+          <mat-sidenav [opened]="true" 
+                        mode="side" 
+                        position = "start">
+                        <div fxLayout= "row">
+                            <div fxLayout= "column" fxFlex = "100" >
+                              <div fxLayout= "column" fxLayoutAlign = "start start" class = "doo-bottom-border">
+                                  <button mat-button [routerLink] = "'profile'">
+                                      <span class = "mat-subheading-2">
+                                          Profile
+                                      </span>
+                                      </button>
+                                      <button mat-button [routerLink] = "'addressinfo'">
+                                          <span class = "mat-subheading-2">
+                                              Addresses
+                                          </span>
+                                        </button>
+                                        <button mat-button [routerLink] = "'favorites'">
+                                            <span class = "mat-subheading-2">
+                                                Favorites
+                                            </span>
+                                        </button>
+                              </div>
+
+                                <button mat-button (click)="logout()">
+                                    <span class = "mat-caption">
+                                        Logout
+                                    </span>
+                                  </button>
+                          </div>
+                        </div>
+          </mat-sidenav>
+          <mat-sidenav-content>
+          <div fxLayout= "column" fxFlex = "100">
+
+              <router-outlet></router-outlet>
+          </div>
+          </mat-sidenav-content>
+        </mat-sidenav-container>
+

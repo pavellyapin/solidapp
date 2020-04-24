@@ -1,0 +1,52 @@
+<mat-card [formGroup]="cartItemForm" 
+          style="margin: 15px;"
+          class="mat-elevation-z0"
+          fxFlex fxLayout="row">
+  <mat-card-content fxLayout="row"  fxLayoutAlign="space-between" >
+    <div fxLayout="column" fxFlex = "20" >
+        <img  class = "full-width doo-pointer" 
+        [src]="object?.fields.media[0].fields.file.url">
+    </div>
+    <div fxLayout="column" fxFlex = "35" >
+      <span>
+        {{name}}
+      </span>
+      <span (click) = "removeFromCart()">
+        {{'product.color' | translate}}: {{object.fields.variants.color}}
+      </span>
+      <span (click) = "removeFromCart()">
+        {{'product.size' | translate}}: {{object.fields.variants.size}}
+      </span>
+        <div fxLayout="row" class = "full-width">
+          <span>
+              {{'product.qty' | translate}}
+          </span>
+          <mat-form-field class = "qty-input">
+              <input  formControlName="qty" 
+                      autocomplete="qty"
+                      [value] = "object.fields.qty" 
+                      matInput 
+                      name="qty"
+                      type="text"/>
+          </mat-form-field>
+          <span class = "doo-cart-action doo-pointer">
+            <mat-icon (click) = "removeFromCart()"> close</mat-icon>
+          </span>
+          <span class = "doo-cart-action doo-pointer">
+              <mat-icon *ngIf = "!isFavorite" (click)="addToFavorites()">favorite_border</mat-icon>
+              <mat-icon *ngIf = "isFavorite"  (click)="removeFromFavorites()">favorite</mat-icon>
+          </span>
+      </div>   
+    </div>
+    <div fxLayout="column" fxFlex = "30" >
+      <div fxLayout="row" fxLayoutAlign="start" >
+        <span [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''">
+            {{object.fields.price | pricePipe}}
+        </span>
+        <span *ngIf = "object.fields.discount">
+            {{object.fields.discount | pricePipe}}
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

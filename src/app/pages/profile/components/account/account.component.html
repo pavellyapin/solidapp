@@ -1,0 +1,143 @@
+<div fxLayoutGap="50px" fxLayout="column">
+        <div></div>
+        <div fxLayout="column">
+                <div fxLayout = "row">
+                        <h2 fxFlex = "50" class="mat-h2" >{{ 'profile.account.personalInfo' | translate }}</h2>
+                        <div fxFlex = "50" 
+                            fxLayoutAlign="end"
+                            (click) = "editMode = !editMode" 
+                            class="mat-caption doo-pointer">
+                            {{ editMode ? ('profile.buttons.close' | translate ) : ('profile.buttons.edit' | translate ) }}
+                        </div>
+                </div>
+              <div fxLayout = "row">
+                <div *ngIf = "!editMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
+                    <mat-icon>perm_identity</mat-icon>
+                    <div class="add-field-placeholder" >
+                        {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
+                    </div>
+                </div>
+                <form *ngIf = "editMode" [formGroup]="personalInfo" 
+                    fxFlex = "50" 
+                    (keyup.enter)="savePersonalInfo()">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input  formControlName="firstName" 
+                                autocomplete="firstName" 
+                                matInput 
+                                name="firstName" 
+                                placeholder="{{ 'profile.account.firstName' | translate }}"
+                                type="text"/>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input  formControlName="lastName" 
+                                autocomplete="lastName" 
+                                matInput 
+                                name="lastName" 
+                                placeholder="{{ 'profile.account.lastName' | translate }}"
+                                type="text"/>
+                    </mat-form-field>
+                    <button (click)="savePersonalInfo()" class="full-width"
+                            color="primary" mat-raised-button type="submit">
+                            {{ 'profile.buttons.save' | translate }}
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div fxLayout="column">
+                <div fxLayout = "row">
+                        <h2 fxFlex = "50" class="mat-h2" >{{ 'profile.account.contact' | translate }}</h2>
+                        <div fxFlex = "50" 
+                            fxLayoutAlign="end"
+                            (click) = "contactEditMode = !contactEditMode" 
+                            class="mat-caption doo-pointer">
+                            {{ contactEditMode ? ('profile.buttons.close' | translate ) : ('profile.buttons.edit' | translate ) }}
+                        </div>
+                </div>
+              <div fxLayout = "column" fxLayoutGap="20px">
+                <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
+                    <mat-icon>call</mat-icon>
+                    <div class="add-field-placeholder" >
+                        {{userInfo.phone.length > 0 ? userInfo.phone   : 'profile.account.addMobile' | translate }}
+                    </div>
+                </div>
+                <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
+                    <mat-icon>email</mat-icon>
+                    <div class="add-field-placeholder" >
+                        {{userInfo.email}}
+                    </div>
+                </div>
+                <div fxLayout = "row" >
+                    <form *ngIf = "contactEditMode" [formGroup]="contactInfo" 
+                        fxFlex = "50" 
+                        (keyup.enter)="updateContactInfo()">
+                        <mat-form-field appearance="outline" class="full-width phone-field">
+                             <span matPrefix>CA (+1) &nbsp;</span>
+                            <input  formControlName="phone" 
+                                    autocomplete="phone" 
+                                    matInput 
+                                    name="phone" 
+                                    placeholder="{{ 'profile.account.mobile' | translate }}"
+                                    type="tel"/>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <input  formControlName="email" 
+                                    autocomplete="email" 
+                                    matInput 
+                                    name="email" 
+                                    placeholder="{{ 'profile.account.email' | translate }}"
+                                    type="text"/>
+                        </mat-form-field>
+                        <button (click)="updateContactInfo()" class="full-width"
+                                color="primary" mat-raised-button type="submit">
+                                {{ 'profile.buttons.save' | translate }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column">
+                <div fxLayout = "row">
+                        <h2 fxFlex = "50" class="mat-h2" >{{ 'profile.account.password' | translate }}</h2>
+                        <div fxFlex = "50" 
+                            fxLayoutAlign="end"
+                            (click) = "passwordEditMode = !passwordEditMode" 
+                            class="mat-caption doo-pointer">
+                            {{ passwordEditMode ? ('profile.buttons.close' | translate ) : ('profile.buttons.edit' | translate ) }}
+                        </div>
+                </div>
+              <div fxLayout = "row">
+                <div *ngIf = "!passwordEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
+                    <mat-icon>lock</mat-icon>
+                    <div class="add-field-placeholder" >
+                        <span>
+                                ••••••••••
+                        </span>
+                    </div>
+                </div>
+                <form *ngIf = "passwordEditMode" [formGroup]="passwordInfo" 
+                    fxFlex = "50" 
+                    (keyup.enter)="updatePassword()">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input  formControlName="oldPassword" 
+                                autocomplete="oldPassword" 
+                                matInput 
+                                name="oldPassword" 
+                                placeholder="{{ 'profile.account.currentPassword' | translate }}"
+                                type="password"/>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input  formControlName="newPassword" 
+                                autocomplete="newPassword" 
+                                matInput 
+                                name="newPassword" 
+                                placeholder="{{ 'profile.account.newPassword' | translate }}"
+                                type="password"/>
+                    </mat-form-field>
+                    <button (click)="updatePassword()" class="full-width"
+                            color="primary" mat-raised-button type="submit">
+                            {{ 'profile.buttons.save' | translate }}
+                    </button>
+                </form>
+            </div>
+        </div>
+</div>

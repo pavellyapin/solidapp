@@ -1,0 +1,80 @@
+@import '~@angular/material/theming';
+@import "./variables";
+
+// TODO move all fonts to CDN
+// https://dev.to/kelli/how-to-self-host-google-fonts-on-your-own-server-d4i
+
+/* noto-sans-regular - latin */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Noto Sans'), local('NotoSans'),
+  url('../assets/fonts/noto-sans-v9-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('../assets/fonts/noto-sans-v9-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* noto-sans-italic - latin */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Noto Sans Italic'), local('NotoSans-Italic'),
+  url('../assets/fonts/noto-sans-v9-latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('../assets/fonts/noto-sans-v9-latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+//  https://material.angular.io/guide/typography
+//  $font-size,
+//  $line-height,
+//  $font-weight,
+//  $font-family,
+//  $letter-spacing
+
+$doo-typography: mat-typography-config(
+  $font-family: 'Noto Sans',
+  $display-4: mat-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+  $display-3: mat-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+  $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+  $display-1: mat-typography-level(34px, 40px, 400),
+  $headline: mat-typography-level(24px, 32px, 400),
+  $title: mat-typography-level(20px, 32px, 500),
+  $subheading-2: mat-typography-level(16px, 28px, 400),
+  $subheading-1: mat-typography-level(15px, 24px, 400),
+  $body-2: mat-typography-level(14px, 24px, 500),
+  $body-1: mat-typography-level(14px, 20px, 400),
+  $caption: mat-typography-level(14px, 20px, 400),
+  $button: mat-typography-level(14px, 14px, 500),
+    // Line-height must be unit-less fraction of the font-size.
+  $input: mat-typography-level(inherit, 1.125, 400)
+);
+
+
+@include mat-core($doo-typography);
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.doo-pointer {
+  cursor: pointer;
+}
+
+.doo-underline {
+  text-decoration: underline;
+}
+
+.doo-bottom-border {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: $light-grey;
+  padding-bottom: 20px;
+}

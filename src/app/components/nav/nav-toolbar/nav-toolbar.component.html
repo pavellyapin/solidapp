@@ -1,0 +1,48 @@
+<div fxLayout="row" fxLayoutAlign="center" fxFlex>
+    <mat-toolbar class="doo-primary-toolbar">
+      <button (click)="navigateHome()" mat-button
+              class="doo-nav-toggle-button">
+              <img  [src]="siteSettings?.fields.logo.fields.file.url">
+      </button>
+      <div fxLayout="row">
+        <div *ngFor = "let category of rootCategories"
+             class = "doo-root-category doo-pointer" 
+             (click) = "expandMenu(category.fields.name)">
+             {{category.fields.title}}
+        </div>
+      </div>
+    <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
+      <span class="fill-remaining-space"></span>
+      <button mat-button (click)="goToFavorites()">
+        <mat-icon>favorite_border</mat-icon>
+      </button>
+      <button mat-button (click)="goToProfile()">
+        <mat-icon>perm_identity</mat-icon>
+      </button>
+      <button (click)= "goToCart()" mat-button>
+        <mat-icon [matBadge]="cartItemCount" 
+                  [matBadgeHidden]="!cartItemCount || cartItemCount == 0" >
+                  shopping_basket
+        </mat-icon>
+      </button>
+
+    </mat-toolbar>
+  <div *ngIf = "mainMenuOpen" fxFlex = "80" class = "doo-expand-menu mat-elevation-z1">
+          <div fxLayout="row" fxFlex = "75">
+            <div fxLayout= "column" 
+                 fxLayoutGap="10px"
+                 class = "sub-category-column" 
+                 *ngFor = "let category of subCategories">
+                <span class = "mat-subheading-2">{{category.fields.title}}</span>
+                <div *ngFor = "let link of category.fields.links"
+                    (click) = "navigateCategory(link.fields.name)"
+                    class = "doo-pointer">
+                    {{link.fields.title}}
+                </div>
+            </div>
+          </div>
+          <div fxFlex = "25">
+              <img  class = "full-width" [src]="activeCategory?.fields.media.fields.file.url">
+          </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+::ng-deep  .address-autocomplete-field {
+    .mat-form-field-prefix {
+      padding-right: 20px;
+    }
+}
+
+::ng-deep .pac-logo:after {
+    background-image:none !important;
+   }
+
+::ng-deep .hdpi.pac-logo:after {
+    background-image:none !important;
+   }
+
+::ng-deep .pac-container {
+    top: 460px !important;
+    .pac-icon {
+        display:none;
+    }
+    .pac-item {
+        padding:5px 5px;
+    }
+}

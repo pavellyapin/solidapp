@@ -1,0 +1,7 @@
+@import "./styles";
+
+@include angular-material-theme(mat-light-theme(
+    mat-palette($mat-grey, 900, 900, 900),
+    mat-palette($mat-deep-orange),
+    mat-palette($mat-pink, 600)
+));
