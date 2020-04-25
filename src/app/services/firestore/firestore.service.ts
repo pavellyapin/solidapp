@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { CartData } from 'src/app/pages/cart/cart.component';
 import { AuthService } from '../auth/auth.service';
@@ -104,11 +103,8 @@ export class FirestoreService {
         }
     }
 
-    getCart (cartId) : Observable<any>{
-        console.log(this.authservice.uid);
-            
-        if (this.authservice.uid) {
-            console.log('hey');
+    getCart (cartId) : Observable<Action<DocumentSnapshot<unknown>>>{
+         if (this.authservice.uid) {
             return from (this.firestore
                 .collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cartId).snapshotChanges());

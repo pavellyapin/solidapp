@@ -179,6 +179,7 @@ export class CartComponent implements OnInit {
     this.cartItemsService.cards.value.forEach(function(item){
           reqCart.push(
             {product_id : item.input.object.value.sys.id,
+             thumbnail : item.input.object.value.fields.media[0].fields.file.url,
              name : item.input.name.value +  
              (item.input.object.value.fields.variants ? 
               this.variantPipe.transform(item.input.object.value.fields.variants) : ''),
@@ -189,7 +190,7 @@ export class CartComponent implements OnInit {
           )
         }.bind(this));
 
-        this.store.dispatch(CartActions.BeginInitializeOrderAction({payload :reqCart}));
+        this.store.dispatch(CartActions.BeginInitializeOrderAction({payload :{cart : reqCart , total : this.cartTotal.toFixed(2)}}));
         
         const dialogRef = this.dialog.open(PayPalModalComponent, {
           width: '750px',

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import CartState from 'src/app/services/store/cart/cart.state';
 import * as CartActions from '../../../services/store/cart/cart.action';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,11 @@ export class CheckoutSuccessGuard implements CanActivate  {
 
   cartId$: Observable<string>;
   cartId: string;
+  authReady: boolean = false;
   
   constructor(private router: Router , 
-              private store: Store<{cart: CartState}>) {
+              private store: Store<{cart: CartState}>,
+              public afAuth: AngularFireAuth) {
       this.cartId$ = store.select('cart','cartId');
       this.cartId$.pipe(
         map(x => {
@@ -25,11 +28,12 @@ export class CheckoutSuccessGuard implements CanActivate  {
   }
 
 
-  canActivate(route: ActivatedRouteSnapshot) : boolean {
+  canActivate(route: ActivatedRouteSnapshot) : Observable<boolean> | boolean {
     if (this.cartId == route.params["order"]) {
-        //this.store.dispatch(CartActions.BeginResetCartAction());
-        this.store.dispatch(CartActions.BeginGetCartAction({ payload : this.cartId}));
-        return true;
+      return this.afAuth.authState.pipe(map((auth)=> {
+        this.store.dispatch(CartActions.BeginResetCartAction());
+        return true
+      }));
     } else {
         this.router.navigate(['cart']);
     }

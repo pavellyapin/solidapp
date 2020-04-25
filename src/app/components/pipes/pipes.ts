@@ -35,8 +35,8 @@ import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
     name: 'pricePipe'
   })
     export class PricePipe {
-        transform(price:number):any {
-          return 'CAD$ ' + price.toFixed(2);
+        transform(price:any):any {
+          return 'CAD$ ' + parseFloat(price).toFixed(2);
     }
   }
 

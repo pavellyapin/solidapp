@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div *ngIf = "!addMode && userAddressInfo" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon>location_on</mat-icon>
+                    <mat-icon color = "accent">location_on</mat-icon>
                     <div class="add-field-placeholder" >
                             {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : userAddressInfo.addressLine2  }} {{userAddressInfo.addressLine1}}
                         <br>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div *ngIf = "addMode && userAddressInfo" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                <mat-icon>location_on</mat-icon>
+                <mat-icon color = "accent">location_on</mat-icon>
                 <div class="add-field-placeholder" >
                         {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : userAddressInfo.addressLine2  }} {{userAddressInfo.addressLine1}}
                     <br>
@@ -43,7 +43,7 @@
             *ngIf = "!addManually && addMode"
             (click) = "addManually = !addManually" 
             class = "manual-add-btn doo-pointer">
-                <mat-icon>add_circle_outline</mat-icon>
+                <mat-icon color = "accent">add_circle_outline</mat-icon>
                 <div class="mat-caption">
                     <span>
                             {{ 'profile.address.enterAddressManually' | translate }}

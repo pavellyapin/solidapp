@@ -1,0 +1,21 @@
+@import 'src/css/_variables.scss';
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+.doo-stroked-price {
+  text-decoration: line-through;
+  opacity: 50%;
+  padding-right: 10px;
+  color: $accent;
+}
+
+.doo-cart-action {
+  padding-left: 20px;
+}
+
+.doo-product-id {
+  color: $primary;
+}

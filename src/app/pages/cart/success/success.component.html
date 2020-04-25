@@ -1,11 +1,35 @@
-<div fxLayout = "column" style = "min-height: 500px;padding-left: 20%;" fxLayoutGap="50px">
-    <div>
+<div fxLayout = "row" fxLayoutAlign = "center">
+    <div *ngIf = "cart" fxLayout = "column" fxLayoutAlign = "center" fxLayoutGap="50px">
+        <div>
 
-    </div>
-        <h1 class = "mat-h2">
-             {{'cart.successTitle' | translate}}
-        </h1>
-    <div style = "max-width: 800px;">
-            {{'cart.successContent' | translate}}
+        </div>
+            <h1 class = "mat-h2">
+                {{'cart.successTitle' | translate}}
+            </h1>
+        <div fxLayout = "column" class = "doo-order-summary" fxLayoutGap="20px">
+            <div>
+                {{'cart.successContent' | translate}}
+            </div>
+            <div >
+                Order: <span class = "doo-order-number">{{route.snapshot.params["order"]}}</span>
+            </div> 
+            <div fxLayout = "row" fxLayoutAlign = "space-between">
+                <button color="accent" mat-flat-button type="submit" >
+                <span class = "mat-title" style = "padding:30px;">Track Your Order</span>
+                </button>
+                <div class = "mat-subheading-2">
+                    Total {{cart.cart.total | pricePipe}}
+                </div>
+            </div>
+        </div>
+        <div fxLayout = "column">
+                <mat-grid-list [cols]="cols | async">
+                        <mat-grid-tile *ngFor="let card of cartItemsCards"
+                                    [colspan]="card.input.cols.value | async"
+                                    [rowspan]="card.input.rows.value | async">
+                        <doo-cart-items-spawner [card]="card"></doo-cart-items-spawner>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+        </div>
     </div>
 </div>

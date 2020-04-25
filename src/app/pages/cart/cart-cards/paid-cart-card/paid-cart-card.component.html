@@ -1,0 +1,26 @@
+<mat-card class="mat-elevation-z0"
+          fxFlex fxLayout="row">
+  <mat-card-content fxLayout="row"  fxLayoutAlign="space-between"  class = "doo-bottom-border">
+    <div fxLayout="row" fxFlex = "7" >
+        <div fxFlex>
+            <img  class = "full-width doo-pointer" 
+        [src]="object?.thumbnail">
+          </div>
+    </div>
+    <div fxLayout="column" fxFlex = "55" >
+      <span>
+        {{name}}
+      </span> 
+      <span class = "mat-caption" class = "doo-product-id">
+          Product ID : {{object.product_id}}
+        </span>
+    </div>
+    <div fxLayout="column" fxFlex = "30" >
+      <div fxLayout="row" fxLayoutAlign="end" >
+        <span>
+            {{object.qty}} X {{object.price | pricePipe}}
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

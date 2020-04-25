@@ -12,7 +12,7 @@
                 </div>
               <div fxLayout = "row">
                 <div *ngIf = "!editMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon>perm_identity</mat-icon>
+                    <mat-icon color = "accent">perm_identity</mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
                     </div>
@@ -55,13 +55,13 @@
                 </div>
               <div fxLayout = "column" fxLayoutGap="20px">
                 <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon>call</mat-icon>
+                    <mat-icon color = "accent">call</mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.phone.length > 0 ? userInfo.phone   : 'profile.account.addMobile' | translate }}
                     </div>
                 </div>
                 <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon>email</mat-icon>
+                    <mat-icon color = "accent">email</mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.email}}
                     </div>
@@ -107,7 +107,7 @@
                 </div>
               <div fxLayout = "row">
                 <div *ngIf = "!passwordEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon>lock</mat-icon>
+                    <mat-icon color = "accent">lock</mat-icon>
                     <div class="add-field-placeholder" >
                         <span>
                                 ••••••••••

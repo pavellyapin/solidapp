@@ -18,12 +18,14 @@ import { FavoritesCardsSpawnerComponent } from './components/favorites/product-c
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { FavoritesCardsService } from './components/favorites/product-cards/favorites-cards.service';
+import { OrdersComponent } from './components/orders/orders.component';
 
 @NgModule({
   declarations: [ProfileComponent,
                  AccountComponent,
                  AddressComponent,
                  FavoritesComponent,
+                 OrdersComponent,
                  FavoritesCardComponent,
                  FavoritesCardsSpawnerComponent],
   imports: [

@@ -18,11 +18,13 @@ import { CartCardsSpawnerComponent } from './cart-cards/cart-cards-spawner/cart-
 import { CartCardsService } from './cart-cards/product-cards.service';
 import { CheckoutSuccessComponent } from './success/success.component';
 import { VariantsPipe } from 'src/app/components/pipes/pipes';
+import { PaidCartCardComponent } from './cart-cards/paid-cart-card/paid-cart-card.component';
 
 
 @NgModule({
   declarations: [CartComponent,
                  CartCardComponent,
+                 PaidCartCardComponent,
                  CartCardsSpawnerComponent,
                  PayPalModalComponent,
                  CheckoutSuccessComponent],
@@ -43,7 +45,7 @@ import { VariantsPipe } from 'src/app/components/pipes/pipes';
     FlexLayoutModule
   ],
   providers: [CartCardsService,VariantsPipe],
-  entryComponents: [CartCardComponent,PayPalModalComponent]
+  entryComponents: [CartCardComponent,PaidCartCardComponent,PayPalModalComponent]
 })
 export class CartModule {
 }

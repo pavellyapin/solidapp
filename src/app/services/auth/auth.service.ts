@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { from } from 'rxjs';
@@ -12,11 +12,12 @@ export class AuthService {
 
   uid:any;
   idToken:any;
-  authReady:boolean;
+  authReady$ = new BehaviorSubject<boolean>(false);
 
   constructor(public afAuth: AngularFireAuth) {
     this.afAuth.authState.subscribe(
       (auth) => {
+          this.authReady$.next(true);
           if (auth != null) {
               this.uid = auth.uid;
               this.idToken = auth.getIdToken();
