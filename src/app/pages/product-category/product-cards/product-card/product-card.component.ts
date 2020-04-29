@@ -18,10 +18,9 @@ import { map } from 'rxjs/operators';
 export class ProductCardComponent extends AbstractCardComponent implements OnInit {
 
   imageIndex:number = 0;
-  user$:Observable<UserState>;
+  favorites$:Observable<FavoriteItem[]>;
   UserSubscription: Subscription;
   isFavorite:FavoriteItem;
-  
 
   constructor(private injector: Injector, 
               private navigationService: NavigationService,
@@ -36,15 +35,15 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       injector.get(Card.metadata.ROWS),
       injector.get(Card.metadata.COLOR));
 
-      this.user$ = store.pipe(select('user'));
+      this.favorites$ = store.pipe(select('user','favorites'));
   }
 
   ngOnInit() {
-    this.UserSubscription = this.user$
+    this.UserSubscription = this.favorites$
     .pipe(
-      map(x => {
+      map(favorites => {
         this.isFavorite = undefined;
-        x.favorites.forEach(element => {
+        favorites.forEach(element => {
           if (this.object.sys.id == element.product.productId) {
             this.isFavorite = element;
             return

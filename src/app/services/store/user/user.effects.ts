@@ -193,7 +193,8 @@ UpdatePersonalInfo$: Observable<Action> = createEffect(() =>
       )
     );
 
-    //Favorites
+    //Favorites----------------------------------------------------
+
     AddProductToFavorites: Observable<Action> = createEffect(() =>
     this.action$.pipe(
         ofType(UserActions.BeginAddToFavoritesAction),
@@ -239,6 +240,30 @@ UpdatePersonalInfo$: Observable<Action> = createEffect(() =>
               favorites.push({ product: element.payload.doc.data() , docId : element.payload.doc.id});
             });
             return UserActions.SuccessGetFavoritesAction({ payload: favorites});
+          }),
+          catchError((error: Error) => {
+            return of(UserActions.ErrorUserAction(error));
+          })
+        )
+      )
+    )
+  );
+
+
+  //Orders----------------------------------------------------
+    GetOrders$: Observable<Action> = createEffect(() =>
+    this.action$.pipe(
+      ofType(UserActions.BeginGetOrdersAction),
+      switchMap(action =>
+        this.firestoreService.getOrders().pipe(
+          map((data: firebase.firestore.QuerySnapshot) => {
+            let orders = Array<any>();
+            data.forEach(element => {
+              let x = element.data();
+              x.id = element.id;
+              orders.push(x);
+            });
+            return UserActions.SuccessGetOrdersAction({ payload: orders});
           }),
           catchError((error: Error) => {
             return of(UserActions.ErrorUserAction(error));

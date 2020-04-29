@@ -13,14 +13,14 @@ import * as ProductsActions from 'src/app/services/store/product/product.action'
 export class ProductCategoryGuard implements CanActivate  {
 
   
-  settings$: Observable<SettingsState>;
+  categories$: Observable<Entry<any>[]>;
   categories: Entry<any>[];
 
   constructor(private router: Router, private store: Store<{ settings: SettingsState }>) {
-      this.settings$ = store.select('settings');
-      this.settings$.pipe(
+      this.categories$ = store.select('settings','categories');
+      this.categories$.pipe(
         map(x => {
-          this.categories = x.categories;
+          this.categories = x;
         }
       )).subscribe();
   }

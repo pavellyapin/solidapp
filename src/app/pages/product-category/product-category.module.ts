@@ -10,6 +10,7 @@ import { ProductCardsService } from './product-cards/product-cards.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { NavModule } from 'src/app/components/nav/nav.module';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { NavModule } from 'src/app/components/nav/nav.module';
     MatCardModule,
     MatListModule,
     MatIconModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    LazyLoadImageModule
   ],
   providers: [ProductCardsService],
   entryComponents: [ProductCardComponent]

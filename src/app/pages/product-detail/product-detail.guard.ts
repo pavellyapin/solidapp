@@ -13,16 +13,16 @@ import SettingsState from 'src/app/services/store/settings/settings.state';
 })
 export class ProductDetailGuard implements CanActivate  {
 
-  settings$: Observable<SettingsState>;
+  categories$: Observable<Entry<any>[]>;
   categories: Entry<any>[];
   
   constructor(private router: Router , 
               private contentful: ContentfulService , 
               private store: Store<{settings: SettingsState}>) {
-      this.settings$ = store.select('settings');
-      this.settings$.pipe(
+      this.categories$ = store.select('settings','categories');
+      this.categories$.pipe(
         map(x => {
-          this.categories = x.categories;
+          this.categories = x;
         }
       )).subscribe();
   }

@@ -23,7 +23,7 @@ import { PaidCartCardComponent } from '../cart-cards/paid-cart-card/paid-cart-ca
     rowsBig: Observable<number>;
 
     constructor(private firestore : FirestoreService , 
-                private route:ActivatedRoute,
+                public route:ActivatedRoute,
                 private mediaObserver: MediaObserver,
                 private cartItemsService: CartCardsService) {
           this.cartItemsService.cards.subscribe(cards => {
@@ -34,7 +34,11 @@ import { PaidCartCardComponent } from '../cart-cards/paid-cart-card/paid-cart-ca
     ngOnInit () {
        this.cartSubscription = this.firestore.getCart(this.route.snapshot.params["order"]).pipe(
             map((data) => {
-                this.cart = data.payload.data();
+                if (data.code == 400) {
+                    this.cart = data.doc
+                } else {
+                    this.cart = data.payload.data();
+                }
                 this.cartItemsService.resetCards();
                 this.createCards();
             }) 

@@ -10,6 +10,13 @@ const reducer = createReducer(
   on(CartActions.BeginResetCartAction, (state: CartState, {}) => {
     return { ...state, 
             items: [],
+            shipping : null,
+            cartId: null, 
+            SettingsError: null };
+  }),
+
+  on(CartActions.BeginResetCartIdAction, (state: CartState, {}) => {
+    return { ...state, 
             cartId: null, 
             SettingsError: null };
   }),

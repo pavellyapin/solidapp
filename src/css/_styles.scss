@@ -60,6 +60,18 @@ body {
   padding: 0;
 }
 
+button {
+  border-radius: 0px !important;
+}
+
+.mat-form-field-outline-start, .mat-form-field-outline-end {
+  border-radius: 0 !important;
+}
+
+input {
+  height: 100%;
+}
+
 .full-width {
   width: 100%;
 }
@@ -77,4 +89,8 @@ body {
   border-bottom-width: 1px;
   border-color: $light-grey;
   padding-bottom: 20px;
+}
+
+.doo-letter-space {
+  letter-spacing: 2px;
 }

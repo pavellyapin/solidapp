@@ -1,0 +1,40 @@
+  .mat-caption {
+    text-decoration: underline;
+  }
+
+  .add-field-placeholder {
+    opacity: 50%;
+    padding-inline-start: 20px;
+  }
+
+  .manual-add-btn {
+    padding: 10px 0px;
+    .mat-caption {
+        text-decoration: none;
+        padding-left: 10px;
+        font-weight: 900;
+      }
+  }
+
+  button {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  ::ng-deep .mat-form-field-wrapper {
+    margin : 5px 0 !important;
+  }
+
+  ::ng-deep .mat-form-field-label-wrapper {
+    //top: -0.14375em;
+    padding-top: 0.14375em;
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+    transform: translateY(-1.0em) scale(0.75);
+  }
+
+  ::ng-deep .mat-form-field-outline-gap {
+    border-top-color: inherit !important;
+  }
+  

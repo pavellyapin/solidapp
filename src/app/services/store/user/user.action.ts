@@ -130,4 +130,15 @@ export const SuccessGetFavoritesAction = createAction(
   props<{ payload: any}>()
 );
 
+//Orders
+
+export const BeginGetOrdersAction = createAction(
+  '[User] - Begin Get Orders'
+);
+
+export const SuccessGetOrdersAction = createAction(
+  '[User] - Success Get Orders',
+  props<{ payload: any}>()
+);
+
 export const ErrorUserAction = createAction('[User] - Error', props<Error>());

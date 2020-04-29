@@ -70,6 +70,8 @@ export class FirestoreService {
                 postal:postal}));
     }
 
+    //Favorites-------------------------------------------------------------------------
+
     addToFavorites(productId) {
         return from (this.firestore
             .collection(this.authservice.uid)
@@ -87,23 +89,49 @@ export class FirestoreService {
                         .doc("favorites").collection("favorites").snapshotChanges());
     }
 
+    //Orders-------------------------------------------------------------------------
 
+    getOrders() : Observable<firebase.firestore.QuerySnapshot> {
+        return from (this.firestore.collection(this.authservice.uid)
+                        .doc("orders").collection("orders").ref.where("status" , "==" , "paid").get());
+    }
 
 
     //Payments------------------------------------------------------------------------
 
-    initOrder (cart : [any]) : Observable<any>{
+    initOrder (cart : any) : Observable<any>{
         if (this.authservice.uid) {
-            return from (this.firestore
-                .collection(this.authservice.uid)
-                .doc("orders").collection("orders").add({cart : cart , status : "created"}));
+            if (cart.cartId) {
+                return from (this.firestore
+                    .collection(this.authservice.uid)
+                    .doc("orders").collection("orders").doc(cart.cartId).update({cart : cart.cart}).then(()=> {
+                            return {id : cart.cartId};
+                         }
+                    ));
+            } else {
+                return from (this.firestore
+                    .collection(this.authservice.uid)
+                    .doc("orders").collection("orders").add({cart : cart.cart , status : "created"}));
+            }
+
         } else {
             var initOrder = this.firebaseFunctions.httpsCallable('initOrder');
             return initOrder({"cart" : cart, status : "created"});
         }
     }
 
-    getCart (cartId) : Observable<Action<DocumentSnapshot<unknown>>>{
+    setOrderShippingAddress (address,cartId) : Observable<any>{
+        if (this.authservice.uid) {
+            return from (this.firestore
+                .collection(this.authservice.uid)
+                .doc("orders").collection("orders").doc(cartId).update({shipping : address}));
+        } else {
+            var initOrder = this.firebaseFunctions.httpsCallable('setShipping');
+            return initOrder({address : address, cartId : cartId});
+        }
+    }
+
+    getCart (cartId) : Observable<any>{
          if (this.authservice.uid) {
             return from (this.firestore
                 .collection(this.authservice.uid)

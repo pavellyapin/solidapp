@@ -19,6 +19,10 @@ import { CartCardsService } from './cart-cards/product-cards.service';
 import { CheckoutSuccessComponent } from './success/success.component';
 import { VariantsPipe } from 'src/app/components/pipes/pipes';
 import { PaidCartCardComponent } from './cart-cards/paid-cart-card/paid-cart-card.component';
+import { AddressComponentsModule } from 'src/app/components/address/address-components.module';
+import { CheckoutShippingComponent } from './shipping/shipping.component';
+import { CartCheckoutComponent } from './checkout/checkout.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 
 @NgModule({
@@ -27,7 +31,9 @@ import { PaidCartCardComponent } from './cart-cards/paid-cart-card/paid-cart-car
                  PaidCartCardComponent,
                  CartCardsSpawnerComponent,
                  PayPalModalComponent,
-                 CheckoutSuccessComponent],
+                 CheckoutSuccessComponent,
+                 CheckoutShippingComponent,
+                 CartCheckoutComponent],
   imports: [
     CommonModule,
     CartRoutingModule,
@@ -42,7 +48,9 @@ import { PaidCartCardComponent } from './cart-cards/paid-cart-card/paid-cart-car
     MatIconModule,
     MatRadioModule,
     MatInputModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    AddressComponentsModule,
+    LazyLoadImageModule
   ],
   providers: [CartCardsService,VariantsPipe],
   entryComponents: [CartCardComponent,PaidCartCardComponent,PayPalModalComponent]

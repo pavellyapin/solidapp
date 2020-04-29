@@ -30,14 +30,18 @@
           "postal" : "Postal code",
           "primary" : "Primary",
           "enterAddressManually" : "Enter address Manualy",
-          "noAddressSaved" : "You don't have any address saved, add an address and use it during checkout."
+          "noAddressSaved" : "You don't have any address saved, add an address and use it during checkout.",
+          "enterShippingAddress" : "Enter Shipping Address"
         },
         "favorites" : {
           "empty" : "You don't have any favorites"
+        },
+        "orders" : {
+          "paid" : "Paid"
         }
     },
     "product" : {
-      "new" : "NEW",
+      "new" : "New",
       "size" : "Size",
       "color" : "Color",
       "qty" : "Quantity",
@@ -51,13 +55,21 @@
     } ,
     "cart" : {
       "shoppingList" : "Shopping List",
+      "shippingTitle" : "Shipping",
       "continueShopping" : "Continue Shopping",
+      "continueCheckout" : "Continue to checkout",
+      "continuePayment" : "Continue to payment",
+      "backToCart" : "Back to Shopping Cart",
       "orderSummary" : "Order Summary",
       "addToCart" : "Add to cart",
-      "checkout" : "CHECKOUT",
-      "successTitle" : "YOUR ORDER IS CONFIRMED!",
+      "checkout" : "Checkout",
+      "subtotal" : "Subtotal",
+      "total" : "Total",
+      "successTitle" : "Your order is confirmed!",
       "successContent" : "Thanks for shopping! Your order has been confirmed and an email was sent to your submiited address. If you have any question don't hesitate to contact us."
-    } 
+    } ,
 
-
+    "errors" : {
+      "required" : "This field is required."
+    }
 }

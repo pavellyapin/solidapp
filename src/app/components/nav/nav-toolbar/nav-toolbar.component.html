@@ -42,7 +42,9 @@
             </div>
           </div>
           <div fxFlex = "25">
-              <img  class = "full-width" [src]="activeCategory?.fields.media.fields.file.url">
+              <img  class = "full-width" 
+                    [lazyLoad]="activeCategory?.fields.media.fields.file.url" 
+                    [defaultImage]="'assets/placeholder-1.svg'">
           </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import UserState, { initializeState } from './user.state';
 import * as UserActions from './user.action';
+import { UserAddressInfo, UserPerosnalInfo } from './user.model';
 
 const initialState = initializeState();
 
@@ -33,6 +34,27 @@ const reducer = createReducer(
             UserError: null
           }
         }),
+
+        on(UserActions.SuccessGetOrdersAction, 
+          (state: UserState, { payload}) => {
+            return {
+              ...state,
+              orders: payload,
+              UserError: null
+            }
+          }),
+          on(UserActions.SuccessUserLogoutAction, 
+            (state: UserState, {}) => {
+              return {
+                ...state,
+                uid : '',
+                personalInfo : new UserPerosnalInfo,
+                addressInfo : new UserAddressInfo,
+                orders: [],
+                favorites : [],
+                UserError: null
+              }
+            }),
 
   on(UserActions.ErrorUserAction, (state: UserState, error: Error) => {
     return { ...state, UserError: error };

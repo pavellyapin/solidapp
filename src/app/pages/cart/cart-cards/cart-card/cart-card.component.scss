@@ -5,11 +5,21 @@
   width: 100%;
 }
 
+.plus-icon {
+  padding-left: 10px;
+}
+
+.minus-icon {
+  padding-right: 10px;
+  opacity: 50%;
+}
+
 .doo-stroked-price {
   text-decoration: line-through;
   opacity: 50%;
   padding-right: 10px;
   color: $accent;
+  font-size: 12px;
 }
 
 .doo-cart-action {
@@ -18,10 +28,24 @@
 
 .qty-input {
   text-align: center;
-  padding-left: 30px;
   width:50px;
+  font-weight: bold;
   ::ng-deep .mat-form-field-infix{
-    background-color: $light-grey;
-    border-top: 0px;
+    background-color: $lighter-grey;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $light-grey;
   }
+}
+
+.cart-card-content {
+  padding-left: 10px;
+}
+
+.cart-item-variant{
+  padding-bottom: 15px;
+  letter-spacing: 2px;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-top: 1.25em;
 }

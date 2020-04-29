@@ -1,0 +1,9 @@
+
+        <mat-grid-list [cols]="cols | async">
+            <mat-grid-tile *ngFor="let card of cartItemsCards"
+                           [colspan]="card.input.cols.value | async"
+                           [rowspan]="card.input.rows.value | async">
+              <doo-cart-items-spawner [card]="card"></doo-cart-items-spawner>
+            </mat-grid-tile>
+          </mat-grid-list>   
+   

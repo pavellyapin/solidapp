@@ -1,0 +1,70 @@
+
+<div fxLayout = "column" class = "doo-order-summary" fxLayoutGap="20px">
+    <div fxLayout = "row">
+            <mat-icon class = "approved-icon" fxFlex = "5" svgIcon="doo-approved" inline="true"></mat-icon>
+            <div fxLayout = "column" fxLayoutAlign = "center center" class = "paid-label">
+                {{'profile.orders.paid' | translate}}
+            </div>
+            
+    </div>
+    <div fxLayout = "row" fxLayoutAlign = "space-between">
+        <div fxLayout = "column" fxFlex = "50">
+            {{'cart.successContent' | translate}}
+        </div>
+        <div fxLayout = "column" fxFlex = "30" class = "mat-body-2">
+            <div class = "mat-subheading-2">
+                    Shipping Address
+            </div>
+             <span>
+                    {{orderdetail.shipping_address.addressLine1}}
+             </span>
+             <span>
+                    {{orderdetail.shipping_address.city}}
+             </span>
+             <span>
+                    {{orderdetail.shipping_address.province}}
+             </span>
+             <span>
+                    {{orderdetail.shipping_address.postal}}
+             </span>
+                
+        </div>
+    </div>
+    <div >
+        Order: <span class = "doo-order-number">{{route.snapshot.params["orderId"]}}</span>
+    </div> 
+    <div fxLayout = "row" fxLayoutAlign = "end">
+        <div class = "mat-subheading-2">
+            Total {{orderdetail.cart.total | pricePipe}}
+        </div>
+    </div>
+</div>
+
+<div fxLayout="column">
+    <mat-card *ngFor = "let item of orderdetail.cart.cart" class="mat-elevation-z0"
+            fxFlex fxLayout="row">
+    <mat-card-content fxLayout="row"  fxLayoutAlign="space-between"  class = "doo-bottom-border">
+        <div fxLayout="row" fxFlex = "7" >
+            <div fxFlex>
+                <img  class = "full-width doo-pointer" 
+            [src]="item?.thumbnail">
+            </div>
+        </div>
+        <div fxLayout="column" fxFlex = "55" >
+        <span>
+            {{item.name}}
+        </span> 
+        <span class = "mat-caption" class = "doo-product-id">
+            Product ID : {{item.product_id}}
+            </span>
+        </div>
+        <div fxLayout="column" fxFlex = "30" >
+        <div fxLayout="row" fxLayoutAlign="end" >
+            <span>
+                {{item.qty}} X {{item.price | pricePipe}}
+            </span>
+        </div>
+        </div>
+    </mat-card-content>
+    </mat-card>
+</div>

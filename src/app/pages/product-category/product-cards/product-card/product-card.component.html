@@ -1,20 +1,20 @@
-<mat-card style="margin: 15px;"
+<div style="margin: 15px;"
           class="mat-elevation-z0"
           fxFlex fxLayoutAlign="space-between" fxLayout="column">
-  <mat-card-header>
-    
-  </mat-card-header>
-  <mat-card-content fxLayout="column"  fxLayoutAlign="space-between" fxFlex>
-    <div fxLayout="column" fxFlex = "30" class = "selected-image-full">
+  <div fxLayout="column"  fxLayoutAlign="space-between" fxFlex>
+    <div fxLayout="column" fxFlex class = "selected-image-full">
       <mat-icon *ngIf = "!isFavorite" class = "doo-pointer" (click)="addToFavorites()">favorite_border</mat-icon>
       <mat-icon *ngIf = "isFavorite" class = "doo-pointer" (click)="removeFromFavorites()">favorite</mat-icon>
-      <img  class = "full-width doo-pointer" 
-            (mouseenter) ="mouseEnter()"  
-            (mouseleave) ="mouseLeave()"
-            [src]="object?.fields.media[imageIndex].fields.file.url"
-            (click)= "goToProduct()">
+      <div fxFlex>
+        <img  class = "full-width doo-pointer"
+              [lazyLoad]="object?.fields.media[imageIndex].fields.file.url"
+              [defaultImage]="'assets/placeholder-1.svg'"
+              (mouseenter) ="mouseEnter()"  
+              (mouseleave) ="mouseLeave()"
+              (click)= "goToProduct()">
+      </div>
     </div>
-    <mat-card-actions fxLayout="column">
+    <div fxLayout="column">
       <div *ngIf = "object.fields.new" fxLayout="row" fxLayoutAlign="center">
        {{'product.new' | translate}}
       </div>
@@ -29,6 +29,6 @@
             {{object.fields.discount | pricePipe}}
         </span>
       </div>
-    </mat-card-actions>
-  </mat-card-content>
-</mat-card>
+    </div>
+  </div>
+</div>

@@ -21,6 +21,7 @@ export class CartCardComponent extends AbstractCardComponent implements OnInit {
   user$:Observable<UserState>;
   UserSubscription: Subscription;
   isFavorite:FavoriteItem;
+  loading:boolean = true;
 
   constructor(private injector: Injector , private store: Store<{user :UserState}>) {
     super(injector.get(Card.metadata.NAME),

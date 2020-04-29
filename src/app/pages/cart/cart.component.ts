@@ -1,12 +1,9 @@
 import {Component , OnInit, Inject} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { map, startWith } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import CartState from 'src/app/services/store/cart/cart.state';
-import { CartCardsService } from './cart-cards/product-cards.service';
-import { MediaObserver } from '@angular/flex-layout';
 import { Card } from 'src/app/components/cards/card';
-import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
 import { CartItem } from 'src/app/services/store/cart/cart.model';
 import { ContentfulService } from 'src/app/services/contentful/contentful.service';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
@@ -16,6 +13,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {VariantsPipe} from '../../components/pipes/pipes'
 import * as CartActions from '../../services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
+import { CartCardsService } from './cart-cards/product-cards.service';
 
 @Component({
   selector: 'doo-cart',
@@ -24,33 +22,36 @@ import { Actions, ofType } from '@ngrx/effects';
 })
 export class CartComponent implements OnInit {
 
-  cart$: Observable<CartItem[]>;
+  checkoutStage : string = 'checkout';
+  cart$: Observable<CartState>;
   CartSubscription: Subscription;
+  actionSubscription: Subscription;
+  cartId : string;
   cartItems: Array<CartItem>;
   cartItemsCards: Card[] = [];
   cartItemCount: number;
   cartTotal: number;
-  cols: Observable<number>;
-  colsBig: Observable<number>;
-  rowsBig: Observable<number>;
   previousUrl : string = '';
 
       constructor(private store: Store<{ cart: CartState }>,
-                  private mediaObserver: MediaObserver,
+                  private _actions$: Actions,
                   private cartItemsService: CartCardsService,
-                  private contentfulService: ContentfulService,
                   private navService: NavigationService,
+                  private contentfulService: ContentfulService,
                   private router: Router,
                   private dialog: MatDialog,
                   private variantPipe : VariantsPipe)
         {
-          this.cartItemsService.cards.subscribe(cards => {
-            this.cartItemsCards = cards;
-          });
-          this.cart$ = store.pipe(select('cart','items'));
+
+          this.cart$ = store.pipe(select('cart'));
         }
 
   ngOnInit() {
+
+    if (this.router.routerState.snapshot.url == '/cart/checkout/shipping') {
+      this.checkoutStage = 'shipping';
+    }
+
     this.navService.getPreviousUrl().forEach((segment) => {
       this.previousUrl = this.previousUrl + '/' + segment 
     });
@@ -58,81 +59,24 @@ export class CartComponent implements OnInit {
     this.CartSubscription = this.cart$
     .pipe(
       map(x => {
-        this.cartItems = x;
+        this.cartId = x.cartId;
+        this.cartItems = x.items;
         this.cartItemCount = 0;
         this.cartItems.forEach((item)=>{
           this.cartItemCount = this.cartItemCount + item.qty;
         })
-        this.cartItemsService.resetCards();
-        this.createCards();
+        this.calculateTotal();
       })
     )
     .subscribe();
 
-          /* Grid column map */
-          const colsMap = new Map([
-            ['xs', 1],
-            ['sm', 4],
-            ['md', 8],
-            ['lg', 8],
-            ['xl', 8],
-          ]);
-          /* Big card column span map */
-          const colsMapBig = new Map([
-            ['xs', 1],
-            ['sm', 4],
-            ['md', 8],
-            ['lg', 8],
-            ['xl', 8],
-          ]);
-          /* Small card column span map */
-          const rowsMapBig = new Map([
-            ['xs', 2],
-            ['sm', 2],
-            ['md', 2],
-            ['lg', 2],
-            ['xl', 2],
-          ]);
-          let startCols: number;
-          let startColsBig: number;
-          let startRowsBig: number;
-          colsMap.forEach((cols, mqAlias) => {
-            if (this.mediaObserver.isActive(mqAlias)) {
-              startCols = cols;
-            }
-          });
-          colsMapBig.forEach((cols, mqAlias) => {
-            if (this.mediaObserver.isActive(mqAlias)) {
-              startColsBig = cols;
-            }
-          });
-          rowsMapBig.forEach((rows, mqAliast) => {
-            if (this.mediaObserver.isActive(mqAliast)) {
-              startRowsBig = rows;
-            }
-          });
-          const media$ = this.mediaObserver.asObservable();
-          this.cols = media$.pipe(
-            map(change => {
-              return colsMap.get(change[0].mqAlias);
-            }),
-            startWith(startCols),
-          );
-          this.colsBig = media$.pipe(
-            map(change => {
-              return colsMapBig.get(change[0].mqAlias);
-            }),
-            startWith(startColsBig),
-          );
-          this.rowsBig = media$.pipe(
-            map(change => {
-              return rowsMapBig.get(change[0].mqAlias);
-            }),
-            startWith(startRowsBig),
-          );
+    this.actionSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe(() => {
+        this.checkoutStage = 'shipping';
+        this.router.navigateByUrl('cart/checkout/shipping');    
+      });
   }
 
-  createCards(): void {
+  calculateTotal(): void {
     this.cartTotal = 0;
     this.cartItems.forEach((v,index) => {
         this.contentfulService.getProductDetails(v.productId).forEach(
@@ -140,37 +84,32 @@ export class CartComponent implements OnInit {
             this.cartTotal = this.cartTotal + (v.qty*(x.fields.discount ? x.fields.discount : x.fields.price));
             x.fields.variants = v.variants;
             x.fields.qty = v.qty;
-            this.cartItemsService.addCard(
-              new Card(
-                {
-                  name: {
-                    key: Card.metadata.NAME,
-                    value:  x.fields.title,
-                  },
-                  index: {
-                    key: Card.metadata.INDEX,
-                    value:  index,
-                  },
-                  object: {
-                    key: Card.metadata.OBJECT,
-                    value:  x,
-                  },
-                  cols: {
-                    key: Card.metadata.COLS,
-                    value: this['colsBig'],
-                  },
-                  rows: {
-                    key: Card.metadata.ROWS,
-                    value: this['rowsBig'],
-                  }
-                }, CartCardComponent, /* Reference to the component we'd like to spawn */
-              ),
-            );
           }
         )
 
       }
     );
+  }
+
+  continueToCheckout() {
+    let reqCart = [];
+        
+    this.cartItemsService.cards.value.forEach(function(item){
+          reqCart.push(
+            {product_id : item.input.object.value.sys.id,
+             thumbnail : item.input.object.value.fields.media[0].fields.file.url,
+             name : item.input.name.value +  
+             (item.input.object.value.fields.variants ? 
+              this.variantPipe.transform(item.input.object.value.fields.variants) : ''),
+             qty : item.input.object.value.fields.qty,
+             price : item.input.object.value.fields.discount ? 
+                     item.input.object.value.fields.discount : 
+                     item.input.object.value.fields.price }
+          )
+        }.bind(this));
+
+    this.store.dispatch(CartActions.BeginInitializeOrderAction({payload :{cartId : this.cartId, cart : {cart : reqCart , total : this.cartTotal.toFixed(2)}}}));
+
   }
 
   payPalPay() {
@@ -200,13 +139,20 @@ export class CartComponent implements OnInit {
   }
 
   navigateToPrevious() {
-    this.navService.resetStack([]);
-    this.router.navigateByUrl(this.previousUrl);
+    if (this.checkoutStage == 'shipping') {
+      this.checkoutStage = 'checkout';
+      this.router.navigateByUrl('/cart');
+    } else {
+      this.navService.resetStack([]);
+      this.router.navigateByUrl(this.previousUrl);
+    }
   }
 
   ngOnDestroy(){
+    this.actionSubscription.unsubscribe();
     this.CartSubscription.unsubscribe();
     this.cartItemsService.resetCards();
+    
   }
 
 }

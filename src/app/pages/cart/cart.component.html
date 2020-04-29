@@ -1,27 +1,82 @@
 
-<div fxLayout="row" fxLayoutAlign="start start" class = "full-width" style="padding: 50px;"> 
-    <div fxLayout="column" fxFlex = "70" class = "mat-title">
-        <h1 class = "mat-h1">
+<div fxLayout="row" fxLayoutAlign="space-between" class = "full-width" style="padding: 2% 5%;"> 
+    <div fxLayout="column" fxFlex = "65">
+        <h1 *ngIf = "checkoutStage == 'checkout'" class = "mat-h1">
             {{'cart.shoppingList' | translate}} ({{cartItemCount}})
+        </h1>
+        <h1 *ngIf = "checkoutStage == 'shipping'" class = "mat-h1">
+            {{'cart.shippingTitle' | translate}}
         </h1>
         <div fxLayout="row" 
              class = "mat-subheading-1  doo-bottom-border">
             <mat-icon  (click) = "navigateToPrevious()" 
                        class = "doo-pointer"
                        color = "accent">navigate_before</mat-icon>
-                    <span class = "doo-pointer" (click) = "navigateToPrevious()">{{'cart.continueShopping' | translate}}</span>
+                    <span class = "doo-pointer" (click) = "navigateToPrevious()">
+                        {{(checkoutStage == 'checkout' ? 'cart.continueShopping' : 'cart.backToCart') | translate}}
+                    </span>
         </div>
-        <mat-grid-list [cols]="cols | async">
-            <mat-grid-tile *ngFor="let card of cartItemsCards"
-                           [colspan]="card.input.cols.value | async"
-                           [rowspan]="card.input.rows.value | async">
-              <doo-cart-items-spawner [card]="card"></doo-cart-items-spawner>
-            </mat-grid-tile>
-          </mat-grid-list>   
+        <router-outlet></router-outlet>
     </div>
-    <div fxLayout="column" fxFlex = "30" class = "doo-cart-summary-box">
-        <button (click) = "payPalPay()">PayPal</button>
-        {{'cart.orderSummary' | translate}}
-        {{cartTotal | pricePipe}}
+    <div fxLayout="column" fxFlex = "30">
+
+    <div fxLayout="column"  class = "doo-cart-summary-box">
+        <div fxLayout="column" class = "doo-bottom-border">
+                <span class = "mat-subheading-2 doo-bottom-border doo-letter-space">
+                        {{'cart.orderSummary' | translate}}
+                </span>
+                <div fxLayout="row" class = "mat-subheading-1" fxLayoutAlign="space-between">
+                    <span class = "doo-letter-space">{{'cart.subtotal' | translate}}</span>
+                    <span [innerHTML] = "cartTotal | pricePipe"> 
+                    </span>
+                </div>
+                <div fxLayout="row" class = "mat-subheading-1" style = "margin: 0 0;" fxLayoutAlign="space-between">
+                    <span class = "doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
+                    <span> 
+                        FREE
+                    </span>
+                </div>
+                <span class = "mat-caption" style = "opacity: 50%;">
+                    You qualify for free delivery
+                </span>
+        </div>
+                <div fxLayout="row" class = "mat-subheading-2" fxLayoutAlign="space-between" style = "padding: 15px 0px;">
+                    <span class = "doo-letter-space">TOTAL</span>
+                    <span [innerHTML] = "cartTotal | pricePipe"> 
+                    </span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between" class = "promo-form">
+                                <mat-form-field fxFlex = "48" color = "primary" appearance="outline" class="full-width">
+                                        <mat-label>PROMO CODE</mat-label>
+                                        <input      autocomplete="promo" 
+                                                    matInput 
+                                                    name="promo" 
+                                                    placeholder=""
+                                                    type="text"/>
+                                    </mat-form-field> 
+                                    <div fxLayout="column" fxFlex = "48">
+                                        <button fxFlex class = "full-width" color = "accent" 
+                                            mat-stroked-button>APPLY</button>
+                                    </div>
+                                                
+                </div>
+                <span class = "mat-caption" style = "opacity: 50%;">
+                        Apply a promo code to get a discount, it will show on final price
+                </span>
+         
+                <div fxLayout="column"  fxLayoutAlign="end" style = "padding-top: 50px;" fxFlex>
+                        <button color = "primary" 
+                                mat-flat-button 
+                                class = "doo-checkout-btn"
+                                (click) = "continueToCheckout()">
+                                {{(checkoutStage == 'checkout' ? 'cart.continueCheckout' : 'cart.continuePayment') | translate}}
+                        </button>
+                </div>
+       </div> 
+       <div fxLayout="row" fxLayoutAlign="center" fxFlex class = "need-help-cont">
+           <span class = "mat-caption">
+                Need help ? Call 1-888-1234-4567
+           </span>
+        </div>
     </div>
 </div>

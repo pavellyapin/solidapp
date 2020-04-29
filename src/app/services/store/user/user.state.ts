@@ -1,10 +1,11 @@
-import { UserPerosnalInfo, UserAddressInfo, FavoriteItem } from './user.model';
+import { UserPerosnalInfo, UserAddressInfo, FavoriteItem, OrderItem } from './user.model';
 
 export default class UserState {
   uid: any;
   personalInfo? : UserPerosnalInfo;
   addressInfo? : UserAddressInfo;
   favorites? : Array<FavoriteItem>;
+  orders? : Array<OrderItem>;
   UserError: Error;
 }
 

@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Store } from '@ngrx/store';
 import UserState from 'src/app/services/store/user/user.state';
 import * as UserActions from 'src/app/services/store/user/user.action';
+import * as CartActions from 'src/app/services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subscription } from 'rxjs';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit , OnDestroy{
     }
 
     this.subscription = this._actions$.pipe(ofType(UserActions.SuccessGetUserInfoAction)).subscribe(() => {
+      this.store.dispatch(CartActions.BeginResetCartIdAction());
       this.router.navigate(['']);
     });
   }

@@ -8,10 +8,9 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProfileComponent } from './profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
-import { MatTabsModule, MatIconModule, MatSelectModule, MatSidenavModule, MatGridListModule } from '@angular/material';
+import { MatTabsModule, MatIconModule, MatSelectModule, MatSidenavModule, MatGridListModule, MatTableModule, MatPaginatorModule } from '@angular/material';
 import { AccountComponent } from './components/account/account.component';
-import { AddressComponent } from './components/address/address.component';
-import { GoogleMapsModule } from '../../components/google-maps/google-maps.module';
+import { AddressComponentsModule } from '../../components/address/address-components.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FavoritesCardComponent } from './components/favorites/product-cards/product-card/product-card.component';
 import { FavoritesCardsSpawnerComponent } from './components/favorites/product-cards/product-cards-spawner/product-cards-spawner.component';
@@ -19,13 +18,14 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { FavoritesCardsService } from './components/favorites/product-cards/favorites-cards.service';
 import { OrdersComponent } from './components/orders/orders.component';
+import { OrderDeatilComponent } from './components/orders/order-details/order-detail.component';
 
 @NgModule({
   declarations: [ProfileComponent,
                  AccountComponent,
-                 AddressComponent,
                  FavoritesComponent,
                  OrdersComponent,
+                 OrderDeatilComponent,
                  FavoritesCardComponent,
                  FavoritesCardsSpawnerComponent],
   imports: [
@@ -38,12 +38,13 @@ import { OrdersComponent } from './components/orders/orders.component';
     MatSidenavModule,
     MatButtonModule,
     MatIconModule,
-    MatTabsModule,
+    MatTableModule,
+    MatPaginatorModule,
     FlexLayoutModule,
     MatGridListModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleMapsModule,
+    AddressComponentsModule,
     TranslateModule
   ],
   providers : [FavoritesCardsService],

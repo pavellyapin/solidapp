@@ -6,7 +6,7 @@ export class Card {
   static metadata: any = {
     NAME: new InjectionToken<string>('name'),
     INDEX: new InjectionToken<number>('index'),
-    OBJECT : new InjectionToken<Entry<any>>('object'),
+    OBJECT : new InjectionToken<any>('object'),
     ROUTERLINK: new InjectionToken<string>('routerLink'),
     ICONCLASS: new InjectionToken<string>('iconClass'),
     COLS: new InjectionToken<Observable<number>>('cols'),
@@ -24,8 +24,8 @@ export class Card {
       value: number
     },
     object: {
-      key: InjectionToken<Entry<any>>,
-      value: Entry<any>
+      key: InjectionToken<any>,
+      value: any
     },
     routerLink?: {
       key: InjectionToken<string>,

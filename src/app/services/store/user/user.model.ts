@@ -3,6 +3,7 @@ export default class User {
   personalInfo:UserPerosnalInfo;
   addressInfo?:UserAddressInfo;
   favorites? : Array<FavoriteItem>;
+  orders? : Array<OrderItem>;
 }
 
 export class UserPerosnalInfo { 
@@ -25,4 +26,12 @@ export class FavoriteItem {
     productId : string
   };
   docId : string;
+}
+
+export class OrderItem {
+  id? : string;
+  cart? : any;
+  date ? : number;
+  status? : string;
+  payment? : any;
 }

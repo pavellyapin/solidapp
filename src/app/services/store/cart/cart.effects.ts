@@ -31,6 +31,23 @@ export class CartEffects {
     )
   );
 
+  SetOrderShipping$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(CartActions.BeginSetOrderShippingAction),
+    switchMap(action =>
+      this.firestoreService.
+        setOrderShippingAddress(action.payload.address , action.payload.cartId).pipe(
+        map((result) => {
+          return CartActions.SuccessSetOrderShippingAction({ payload: result.id });
+        }),
+        catchError((error: Error) => {
+          return of(CartActions.ErrorCartAction(error));
+        })
+      )
+    )
+  )
+);
+
   GetOrder$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
       ofType(CartActions.BeginGetCartAction),

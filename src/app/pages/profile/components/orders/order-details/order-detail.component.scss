@@ -1,0 +1,21 @@
+@import 'src/css/_variables.scss';
+
+.mat-subheading-2{
+    color:$accent;
+}
+
+.paid-label { 
+    font-size: 18px;
+    font-weight: 700;
+    color: $success;
+}
+
+.doo-order-number {
+    color : $accent;
+}
+
+.doo-order-summary {
+    max-width: 800px;
+    background-color: $light-grey;
+    padding: 20px;
+}

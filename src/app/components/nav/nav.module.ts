@@ -18,6 +18,7 @@ import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
 import { CartCardsSpawnerComponent } from './cart-cards/cart-cards-spawner/cart-cards-spawner.component';
 import { CartCardsService } from './cart-cards/product-cards.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   declarations: [NavComponent, 
@@ -43,7 +44,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatExpansionModule,
     MatMenuModule,
     MatBadgeModule,
-    PipesModule
+    PipesModule,
+    LazyLoadImageModule
   ],
   providers : [CartCardsService],
   exports:[BreadCrumbsComponent],

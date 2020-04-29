@@ -20,7 +20,7 @@ import { FavoriteItem } from 'src/app/services/store/user/user.model';
 export class ProductDeatilComponent implements OnInit {
 
   product$: Observable<Entry<any>>;
-  user$:Observable<UserState>;
+  favorites$:Observable<FavoriteItem[]>;
   ProductSubscription: Subscription;
   UserSubscription: Subscription;
   productDetails:Entry<any>;
@@ -34,7 +34,7 @@ export class ProductDeatilComponent implements OnInit {
       constructor(private store: Store<{ products: ProductsState , user:UserState }>)
         {
           this.product$ = store.pipe(select('products' , 'productDetails'));
-          this.user$ = store.pipe(select('user'));
+          this.favorites$ = store.pipe(select('user','favorites'));
         }
 
   ngOnInit() {
@@ -56,11 +56,11 @@ export class ProductDeatilComponent implements OnInit {
     )
     .subscribe();
 
-    this.UserSubscription = this.user$
+    this.UserSubscription = this.favorites$
     .pipe(
-      map(x => {
+      map(favorites => {
         this.isFavorite = undefined;
-        x.favorites.forEach(element => {
+        favorites.forEach(element => {
           if (this.productDetails.sys.id == element.product.productId) {
             this.isFavorite = element;
             return

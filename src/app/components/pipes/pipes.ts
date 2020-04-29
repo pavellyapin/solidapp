@@ -36,7 +36,18 @@ import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
   })
     export class PricePipe {
         transform(price:any):any {
-          return 'CAD$ ' + parseFloat(price).toFixed(2);
+          return '<span class = "currency-label"> CAD$ </span>' + parseFloat(price).toFixed(2);
+    }
+  }
+
+  @Pipe({
+    name: 'datePipe'
+  })
+    export class DatePipe {
+        transform(timestamp:any):any {
+          var newDate = new Date();
+          newDate.setTime(timestamp);
+          return newDate.toLocaleDateString();
     }
   }
 
