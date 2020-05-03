@@ -3,5 +3,6 @@
 @include angular-material-theme(mat-light-theme(
     mat-palette($mat-brown, 600),
     mat-palette($mat-deep-orange ,800),
-    mat-palette($mat-pink, 600)
+    mat-palette($mat-deep-orange ,800)
 ));
+

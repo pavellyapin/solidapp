@@ -34,7 +34,7 @@
                  class = "sub-category-column" 
                  *ngFor = "let category of subCategories">
                 <span class = "mat-subheading-2">{{category.fields.title}}</span>
-                <div *ngFor = "let link of category.fields.links"
+                <div *ngFor = "let link of category.links"
                     (click) = "navigateCategory(link.fields.name)"
                     class = "doo-pointer">
                     {{link.fields.title}}

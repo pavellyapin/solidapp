@@ -79,7 +79,11 @@ export class NavToolbarComponent implements OnInit {
         }
       });
       links.sort(sortBanners);
-      subCategory.fields.links = links;
+      //Object.isExtensible(subCategory);
+      //subCategory = subCategory.map((item) => 
+      //Object.assign({}, item, {links:links})
+      //)
+      subCategory.links = links;
     }.bind(this));
   }
 

@@ -1,0 +1,13 @@
+
+::ng-deep  .phone-field {
+    .mat-form-field-prefix {
+      top : -0.2em !important;
+      opacity: 0.5;
+    }
+  }
+
+  
+::ng-deep #doo-checkout-form .mat-form-field-wrapper {
+    padding-bottom: 1em !important;
+  }
+  

@@ -20,9 +20,11 @@ export class CartEffects {
       switchMap(action =>
         this.firestoreService.
           initOrder(action.payload).pipe(
-          map((result) => {
-            return CartActions.SuccessInitializeOrderAction({ payload: result.id });
-          }),
+            switchMap((result) => [
+              CartActions.SuccessSetOrderTotalAction({ payload: action.payload.cart.total }),
+              CartActions.SuccessInitializeOrderAction({ payload: result.id })
+          ])
+          ,
           catchError((error: Error) => {
             return of(CartActions.ErrorCartAction(error));
           })
@@ -36,9 +38,9 @@ export class CartEffects {
     ofType(CartActions.BeginSetOrderShippingAction),
     switchMap(action =>
       this.firestoreService.
-        setOrderShippingAddress(action.payload.address , action.payload.cartId).pipe(
+      setOrderShippingInfo(action.payload.address , action.payload.personalInfo,  action.payload.cartId).pipe(
         map((result) => {
-          return CartActions.SuccessSetOrderShippingAction({ payload: result.id });
+          return CartActions.SuccessSetOrderShippingAction({ payload: action.payload.address });
         }),
         catchError((error: Error) => {
           return of(CartActions.ErrorCartAction(error));

@@ -1,18 +1,11 @@
 import {NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatButtonModule, 
-         MatIconModule, 
-         MatRadioModule,
-         MatInputModule,
-         MatCardModule,
-         MatGridListModule,
-         MatDialogModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CartRoutingModule } from './cart-routing.module';
-import { CartComponent, PayPalModalComponent } from './cart.component';
+import { CartComponent } from './cart.component';
 import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
 import { CartCardsSpawnerComponent } from './cart-cards/cart-cards-spawner/cart-cards-spawner.component';
 import { CartCardsService } from './cart-cards/product-cards.service';
@@ -23,6 +16,16 @@ import { AddressComponentsModule } from 'src/app/components/address/address-comp
 import { CheckoutShippingComponent } from './shipping/shipping.component';
 import { CartCheckoutComponent } from './checkout/checkout.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { MatGridListModule } from '@angular/material/grid-list';
+import {MatDialogModule} from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatInputModule } from '@angular/material/input';
+import {CartService} from './cart.service';
+import { CheckoutPaymentComponent, PayPalModalComponent } from './payment/payment.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -33,7 +36,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
                  PayPalModalComponent,
                  CheckoutSuccessComponent,
                  CheckoutShippingComponent,
-                 CartCheckoutComponent],
+                 CartCheckoutComponent,
+                 CheckoutPaymentComponent],
   imports: [
     CommonModule,
     CartRoutingModule,
@@ -44,6 +48,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     TranslateModule,
     MatDialogModule,
     MatCardModule,
+    MatExpansionModule,
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
@@ -52,7 +57,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     AddressComponentsModule,
     LazyLoadImageModule
   ],
-  providers: [CartCardsService,VariantsPipe],
+  providers: [CartCardsService,VariantsPipe,CartService],
   entryComponents: [CartCardComponent,PaidCartCardComponent,PayPalModalComponent]
 })
 export class CartModule {

@@ -1,5 +1,6 @@
 @import 'src/css/_variables.scss';
 
+
 :host {
   height: 100%;
   width: 100%;
@@ -7,7 +8,7 @@
 
 .doo-stroked-price {
   text-decoration: line-through;
-  opacity: 50%;
+  opacity: 0.5;
   padding-right: 10px;
   color: $accent;
 }
@@ -21,7 +22,7 @@
 
 ::ng-deep .currency-label {
   font-size: 12px;
-  opacity: 70%;
+  opacity: 0.5;
 }
 
 .doo-color-box {
@@ -39,7 +40,7 @@
   padding-left: 30px;
 }
 
-.need-help-cont{
+.caption-cont{
   padding-top: 20px;
   letter-spacing: 2px;
 }
@@ -82,5 +83,23 @@ mat-radio-button {
   ::ng-deep .mat-form-field-wrapper {
     margin: 0 0 !important;
     padding-bottom: 0em;
+  }
+}
+
+.cart-placeholder {
+  margin:15px;
+  animation-duration: 1.5s;
+  animation-name: fade;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 0.2;
   }
 }

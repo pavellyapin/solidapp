@@ -60,12 +60,14 @@
       "continueCheckout" : "Continue to checkout",
       "continuePayment" : "Continue to payment",
       "backToCart" : "Back to Shopping Cart",
+      "backToShipping" : "Back to Shipping",
       "orderSummary" : "Order Summary",
       "addToCart" : "Add to cart",
       "checkout" : "Checkout",
       "subtotal" : "Subtotal",
       "total" : "Total",
       "successTitle" : "Your order is confirmed!",
+      "paymentTitle": "Payment",
       "successContent" : "Thanks for shopping! Your order has been confirmed and an email was sent to your submiited address. If you have any question don't hesitate to contact us."
     } ,
 

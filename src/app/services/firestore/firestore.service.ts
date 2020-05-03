@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { AngularFireFunctions } from '@angular/fire/functions';
-import { CartData } from 'src/app/pages/cart/cart.component';
 import { AuthService } from '../auth/auth.service';
+import { CartData } from 'src/app/pages/cart/payment/payment.component';
 
 @Injectable({
   providedIn: 'root',
@@ -120,14 +120,14 @@ export class FirestoreService {
         }
     }
 
-    setOrderShippingAddress (address,cartId) : Observable<any>{
+    setOrderShippingInfo (address,personalInfo,cartId) : Observable<any>{
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection(this.authservice.uid)
-                .doc("orders").collection("orders").doc(cartId).update({shipping : address}));
+                .doc("orders").collection("orders").doc(cartId).update({shipping : address , personalInfo : personalInfo}));
         } else {
-            var initOrder = this.firebaseFunctions.httpsCallable('setShipping');
-            return initOrder({address : address, cartId : cartId});
+            var setShipping = this.firebaseFunctions.httpsCallable('setShipping');
+            return setShipping({address : address, personalInfo : personalInfo, cartId : cartId});
         }
     }
 
@@ -137,8 +137,8 @@ export class FirestoreService {
                 .collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cartId).snapshotChanges());
         } else {
-            var initOrder = this.firebaseFunctions.httpsCallable('getCart');
-            return initOrder({"cartId" : cartId});
+            var getCart = this.firebaseFunctions.httpsCallable('getCart');
+            return getCart({"cartId" : cartId});
         }
     }
 

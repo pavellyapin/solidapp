@@ -5,12 +5,16 @@ import { ProductCategoryRoutingModule } from './product-category-routing.module'
 import { ProductCardComponent } from './product-cards/product-card/product-card.component';
 import { ProductCardsSpawnerComponent } from './product-cards/product-cards-spawner/product-cards-spawner.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatGridListModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule } from '@angular/material';
 import { ProductCardsService } from './product-cards/product-cards.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { NavModule } from 'src/app/components/nav/nav.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({

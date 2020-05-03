@@ -10,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavMenuItemComponent } from './nav-menu-item/nav-menu-item.component';
 import { NavToolbarComponent } from './nav-toolbar/nav-toolbar.component';
-import { MatBadgeModule, MatExpansionModule, MatMenuModule, MatGridListModule, MatCardModule } from '@angular/material';
 import { PipesModule } from '../pipes/pipes.module';
 import { BreadCrumbsComponent } from './bread-crumbs/bread-crumbs.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,7 +17,12 @@ import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
 import { CartCardsSpawnerComponent } from './cart-cards/cart-cards-spawner/cart-cards-spawner.component';
 import { CartCardsService } from './cart-cards/product-cards.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [NavComponent, 

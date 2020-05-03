@@ -2,8 +2,8 @@ import { Pipe } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Entry } from "contentful";
-import { ErrorStateMatcher } from "@angular/material";
 import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Pipe({
     name: 'imagePipe'

@@ -8,6 +8,7 @@ import UserState from 'src/app/services/store/user/user.state';
 import { Observable, Subscription, from } from 'rxjs';
 import { UserAddressInfo } from 'src/app/services/store/user/user.model';
 import { map } from 'rxjs/operators';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
     selector: 'doo-address-form',
@@ -30,6 +31,7 @@ import { map } from 'rxjs/operators';
     UserSubscription: Subscription;
     actionSubscription: Subscription;
     userAddressInfo: UserAddressInfo;
+    googleMapsURL : any = "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAlKy-UhEx80WkZjrzDkhmd0nftq42X3Gg";
 
     @ViewChild('search',{static: false}) search: ElementRef;
     @ViewChild('addressLine1',{static: false}) addressLine1: ElementRef;
@@ -40,7 +42,8 @@ import { map } from 'rxjs/operators';
 
     constructor (private store: Store<{ user: UserState }>,
                  private _actions$: Actions,
-                 private changeDetectorRef: ChangeDetectorRef) {
+                 private changeDetectorRef: ChangeDetectorRef,
+                 private utilService: UtilitiesService) {
 
         this.address$ = store.pipe(select('user' , 'addressInfo'));
 
@@ -55,19 +58,13 @@ import { map } from 'rxjs/operators';
 
     ngOnInit(): void {
 
-        var scripts = document.getElementsByTagName('script');
-        for (var i = scripts.length; i--;) {
-            if (scripts[i].src == "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAlKy-UhEx80WkZjrzDkhmd0nftq42X3Gg") 
-                {
+        this.utilService.isScriptLoaded(this.googleMapsURL).then((loaded) =>{
+            if (!loaded) {
+                this.utilService.loadScript(this.googleMapsURL).then(()=>{
                     this.scriptLoaded = true;
-                }
-        }
-
-        if (!this.scriptLoaded) {
-            this.loadScript().then(()=>{
-                this.scriptLoaded = true;
-            });
-        }
+                });
+            }
+        });
 
         if (this.mode == "alwaysOpen") {
             this.addMode = true;
@@ -98,26 +95,7 @@ import { map } from 'rxjs/operators';
         this.changeDetectorRef.detectChanges();
     } 
     
-    loadScript(): Promise<any> {
-        var scripts = document.getElementsByTagName('script');
-            for (var i = scripts.length; i--;) {
-                if (scripts[i].src == "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAlKy-UhEx80WkZjrzDkhmd0nftq42X3Gg") 
-                    {
-                        return  new Promise((resolve, reject) => {
-                            resolve;
-                          });  
-                    }
-            }
-        let node = document.createElement('script');
-        node.src = "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAlKy-UhEx80WkZjrzDkhmd0nftq42X3Gg";
-        node.type = 'text/javascript';
-        node.async = true;
-        node.charset = 'utf-8';
-        document.getElementsByTagName('head')[0].appendChild(node);
-        return  new Promise((resolve, reject) => {
-            node.onload = resolve;
-          });  
-    }
+
 
 
     getAddress(place: any) {    

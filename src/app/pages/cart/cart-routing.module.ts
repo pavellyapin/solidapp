@@ -8,6 +8,8 @@ import { CheckoutSuccessGuard } from './success/success.guard';
 import { CheckoutShippingGuard } from './shipping/shipping.guard';
 import { CheckoutShippingComponent } from './shipping/shipping.component';
 import { CartCheckoutComponent } from './checkout/checkout.component';
+import { CheckoutPaymentGuard } from './payment/payment.guard';
+import { CheckoutPaymentComponent } from './payment/payment.component';
 
 export const catRoutes: NavRoute[] = [
   {data: {title: 'Cart' , isChild: true},
@@ -19,7 +21,11 @@ export const catRoutes: NavRoute[] = [
       {data: {title: 'Checkout Shipping' , isChild: true},
       path: 'checkout/shipping', 
       canActivate: [CheckoutShippingGuard],
-      component: CheckoutShippingComponent}
+      component: CheckoutShippingComponent},
+      {data: {title: 'Checkout Payment' , isChild: true},
+      path: 'checkout/payment', 
+      canActivate: [CheckoutPaymentGuard],
+      component: CheckoutPaymentComponent}
     ],
    component: CartComponent},
    {data: {title: 'Checkout Success' , isChild: true},

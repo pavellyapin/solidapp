@@ -12,19 +12,20 @@ const reducer = createReducer(
             items: [],
             shipping : null,
             cartId: null, 
-            SettingsError: null };
+            total: null,
+            CartError: null };
   }),
 
   on(CartActions.BeginResetCartIdAction, (state: CartState, {}) => {
     return { ...state, 
             cartId: null, 
-            SettingsError: null };
+            CartError: null };
   }),
   
   on(CartActions.BeginAddProductToCartAction, (state: CartState, { payload }) => {
     return { ...state, 
             items: [payload, ...state.items], 
-            SettingsError: null };
+            CartError: null };
   }),
 
   on(CartActions.BeginRemoveProductFromCartAction, (state: CartState, { payload }) => {
@@ -33,13 +34,25 @@ const reducer = createReducer(
                 ...state.items.slice(0, payload),
                 ...state.items.slice(payload + 1)
             ], 
-            SettingsError: null };
+            CartError: null };
   }),
 
   on(CartActions.SuccessInitializeOrderAction, (state: CartState, { payload }) => {
     return { ...state, 
             cartId: payload, 
-            SettingsError: null };
+            CartError: null };
+  }),
+
+  on(CartActions.SuccessSetOrderTotalAction, (state: CartState, { payload }) => {
+    return { ...state, 
+            total: payload, 
+            CartError: null };
+  }),
+
+  on(CartActions.SuccessSetOrderShippingAction, (state: CartState, { payload }) => {
+    return { ...state, 
+            shipping: payload, 
+            CartError: null };
   }),
 
 

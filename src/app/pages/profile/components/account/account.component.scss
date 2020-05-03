@@ -3,13 +3,13 @@
 @import 'src/css/_variables.scss';
   
   .add-field-placeholder {
-    opacity: 50%;
+    opacity: 0.5;
     padding-inline-start: 20px;
   }
   ::ng-deep  .phone-field {
       .mat-form-field-prefix {
         top : 0em !important;
-        opacity: 50%;
+        opacity: 0.5;
       }
     }
   

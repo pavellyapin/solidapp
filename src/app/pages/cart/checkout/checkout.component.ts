@@ -64,7 +64,7 @@ export class CartCheckoutComponent implements OnInit {
           const colsMapBig = new Map([
             ['xs', 1],
             ['sm', 4],
-            ['md', 8],
+            ['md', 12],
             ['lg', 12],
             ['xl', 12],
           ]);

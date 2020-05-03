@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit , OnDestroy{
     }
 
     this.subscription = this._actions$.pipe(ofType(UserActions.SuccessGetUserInfoAction)).subscribe(() => {
+      this.store.dispatch(UserActions.BeginGetUserAddressInfoAction());
       this.store.dispatch(CartActions.BeginResetCartIdAction());
       this.router.navigate(['']);
     });

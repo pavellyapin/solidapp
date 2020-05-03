@@ -24,6 +24,10 @@
         "function": "initOrder"
       },
       {
+        "source": "/my-doo-7c70c/us-central1/setShipping",
+        "function": "setShipping"
+      },
+      {
         "source": "/my-doo-7c70c/us-central1/getCart",
         "function": "getCart"
       },

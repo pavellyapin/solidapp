@@ -1,3 +1,56 @@
-
-                    <doo-address-form [mode] = "'alwaysOpen'" (addressFormEmitter)="addressUpdate($event)"></doo-address-form>
+    <div fxLayout = "column" fxLayoutGap="10px" id = "doo-checkout-form"> 
+        <div></div> 
+        <div fxLayout = "column" [formGroup]="personalInfo">
+            <div fxLayout = "row" fxLayoutAlign = "space-between">
+                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
+                            <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
+                            <input  formControlName="firstName"
+                                    autocomplete="firstName"
+                                    [errorStateMatcher]="matcher" 
+                                    matInput 
+                                    name="firstName" 
+                                    placeholder=""
+                                    type="text"/>
+                                    <mat-error *ngIf="personalInfo.controls['firstName'].invalid">{{'errors.required' | translate}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
+                            <mat-label>{{ 'profile.account.lastName' | translate }}</mat-label>
+                            <input  formControlName="lastName"
+                                    autocomplete="lastName"
+                                    [errorStateMatcher]="matcher" 
+                                    matInput 
+                                    name="lastName" 
+                                    placeholder=""
+                                    type="text"/>
+                                    <mat-error *ngIf="personalInfo.controls['lastName'].invalid">{{'errors.required' | translate}}</mat-error>
+                        </mat-form-field>
+            </div>
+            <div fxLayout = "row" fxLayoutAlign = "space-between" class = "doo-bottom-border">
+                    <mat-form-field fxFlex = "48" appearance="outline" class="full-width phone-field">
+                            <span matPrefix>CA (+1) &nbsp;</span>
+                        <input  formControlName="phone"
+                                autocomplete="phone" 
+                                matInput 
+                                name="phone" 
+                                placeholder="{{ 'profile.account.mobile' | translate }}"
+                                type="tel"/>
+                    </mat-form-field>
+                    <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
+                        <mat-label>{{ 'profile.account.email' | translate }}</mat-label>
+                        <input  formControlName="email"
+                                autocomplete="email"
+                                [errorStateMatcher]="matcher" 
+                                matInput 
+                                name="email" 
+                                placeholder="{{ 'profile.account.email' | translate }}"
+                                type="text"/>
+                                <mat-error *ngIf="personalInfo.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
+                    </mat-form-field>
+            </div>
+        </div>
+        <span class = "mat-subheading-2">
+                {{'profile.address.enterShippingAddress' | translate}}
+        </span>
+        <doo-address-form [mode] = "'alwaysOpen'" (addressFormEmitter)="addressUpdate($event)"></doo-address-form>
     
+</div>  

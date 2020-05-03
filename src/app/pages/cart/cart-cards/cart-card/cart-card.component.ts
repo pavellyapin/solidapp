@@ -18,7 +18,7 @@ import { map } from 'rxjs/operators';
 export class CartCardComponent extends AbstractCardComponent implements OnInit {
 
   cartItemForm:FormGroup;
-  user$:Observable<UserState>;
+  favorites$:Observable<FavoriteItem[]>;
   UserSubscription: Subscription;
   isFavorite:FavoriteItem;
   loading:boolean = true;
@@ -30,16 +30,16 @@ export class CartCardComponent extends AbstractCardComponent implements OnInit {
       injector.get(Card.metadata.COLS),
       injector.get(Card.metadata.ROWS));
 
-      this.user$ = store.pipe(select('user'));
+      this.favorites$ = store.pipe(select('user','favorites'));
   }
 
   ngOnInit() {
     //console.log(this);
-    this.UserSubscription = this.user$
+    this.UserSubscription = this.favorites$
     .pipe(
       map(x => {
         this.isFavorite = undefined;
-        x.favorites.forEach(element => {
+        x.forEach(element => {
           if (this.object.sys.id == element.product.productId) {
             this.isFavorite = element;
             return
@@ -50,7 +50,7 @@ export class CartCardComponent extends AbstractCardComponent implements OnInit {
     .subscribe();
     
     this.cartItemForm = new FormGroup({        
-      qty: new FormControl('')
+      qty: new FormControl(this.object.fields.qty)
     })
   }
   

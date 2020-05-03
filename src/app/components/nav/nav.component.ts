@@ -29,7 +29,7 @@ export class NavComponent implements OnInit {
   mainMenuOpen = false;
   settings$: Observable<SettingsState>;
   SettingsSubscription: Subscription;
-  cart$: Observable<CartState>;
+  cart$: Observable<CartItem[]>;
   CartSubscription: Subscription;
   siteSettings: Entry<any>;
   categories: Entry<any>[];
@@ -54,7 +54,7 @@ export class NavComponent implements OnInit {
         this.cartItemsCards = cards;
       });
     this.settings$ = store.pipe(select('settings'));
-    this.cart$ = store.pipe(select('cart'));
+    this.cart$ = store.pipe(select('cart','items'));
   }
 
   ngOnInit() {
@@ -62,7 +62,12 @@ export class NavComponent implements OnInit {
     .pipe(
       map(x => {
         this.siteSettings = x.siteConfig;
-        this.categories = x.categories;
+        if (x.categories) {
+          this.categories = x.categories.map((item)=>({
+            ...item,
+            links: []
+          }));
+        }
         this.rootCategories = this.categories ? this.categories.
         filter(item => item.fields.root == true).sort(sortBanners) : this.categories;
       })
@@ -72,8 +77,8 @@ export class NavComponent implements OnInit {
     this.CartSubscription = this.cart$
     .pipe(
       map(x => {
-        if (x.items) {
-          this.cartItems = x.items
+        if (x) {
+          this.cartItems = x
           this.cartItemCount = 0;
           this.cartItems.forEach((item)=>{
             this.cartItemCount = this.cartItemCount + item.qty; 

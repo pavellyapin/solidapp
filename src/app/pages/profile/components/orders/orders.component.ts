@@ -3,8 +3,9 @@ import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import UserState from 'src/app/services/store/user/user.state';
 import { map } from 'rxjs/operators';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { OrderItem } from 'src/app/services/store/user/user.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'doo-user-orers',

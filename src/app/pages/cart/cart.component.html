@@ -1,22 +1,52 @@
 
 <div fxLayout="row" fxLayoutAlign="space-between" class = "full-width" style="padding: 2% 5%;"> 
     <div fxLayout="column" fxFlex = "65">
-        <h1 *ngIf = "checkoutStage == 'checkout'" class = "mat-h1">
-            {{'cart.shoppingList' | translate}} ({{cartItemCount}})
-        </h1>
-        <h1 *ngIf = "checkoutStage == 'shipping'" class = "mat-h1">
-            {{'cart.shippingTitle' | translate}}
-        </h1>
-        <div fxLayout="row" 
-             class = "mat-subheading-1  doo-bottom-border">
-            <mat-icon  (click) = "navigateToPrevious()" 
-                       class = "doo-pointer"
-                       color = "accent">navigate_before</mat-icon>
-                    <span class = "doo-pointer" (click) = "navigateToPrevious()">
-                        {{(checkoutStage == 'checkout' ? 'cart.continueShopping' : 'cart.backToCart') | translate}}
-                    </span>
+        <div fxLayout = "row" fxLayoutAlign = "space-between" class = "doo-bottom-border">
+            <div fxLayout="column">
+                        <div fxLayout="row" 
+                             class = "mat-subheading-1">
+                            <mat-icon  (click) = "navigateToPrevious()" 
+                                       class = "doo-pointer"
+                                       color = "accent">navigate_before</mat-icon>
+                                    <span class = "doo-pointer" (click) = "navigateToPrevious()">
+                                        {{(checkoutStage == 'checkout' ? 'cart.continueShopping' : 
+                                            checkoutStage == 'shipping' ? 'cart.backToCart' : 'cart.backToShipping') | translate}}
+                                    </span>
+                        </div>
+                        <h1 *ngIf = "checkoutStage == 'checkout'" class = "mat-h1">
+                            {{'cart.shoppingList' | translate}} ({{cartItemCount}})
+                        </h1>
+                        <h1 *ngIf = "checkoutStage == 'shipping'" class = "mat-h1">
+                            {{'cart.shippingTitle' | translate}}
+                        </h1>  
+                        <h1 *ngIf = "checkoutStage == 'payment'" class = "mat-h1">
+                            {{'cart.paymentTitle' | translate}}
+                        </h1>  
+            </div>
+            <div fxLayout = "column">
+                 <button color = "primary" 
+                                mat-flat-button 
+                                class = "doo-checkout-btn"
+                                (click) = "continueToCheckout()">
+                                SIGN IN
+                 </button>
+                 <span class = "mat-caption caption-cont">
+                        Got an account? Sign in for faster checkout
+                   </span>
+            </div>
+          
         </div>
-        <router-outlet></router-outlet>
+        <div *ngIf = "loading" fxLayout = "column">
+                <div *ngFor = "let item of cartItems" fxLayout = "row" class = "cart-placeholder doo-bottom-border">
+                        <div fxLayout = "column" fxFlex = "50">
+                                <img class = "full-width" 
+                                [src]="'assets/card-placeholder-1.svg'">
+                        </div>
+                    </div>
+        </div>
+        <div *ngIf = "!loading" fxLayout="column">
+                <router-outlet></router-outlet>
+        </div>
     </div>
     <div fxLayout="column" fxFlex = "30">
 
@@ -36,7 +66,7 @@
                         FREE
                     </span>
                 </div>
-                <span class = "mat-caption" style = "opacity: 50%;">
+                <span class = "mat-caption" style = "opacity: 0.5;">
                     You qualify for free delivery
                 </span>
         </div>
@@ -60,7 +90,7 @@
                                     </div>
                                                 
                 </div>
-                <span class = "mat-caption" style = "opacity: 50%;">
+                <span class = "mat-caption" style = "opacity: 0.5;">
                         Apply a promo code to get a discount, it will show on final price
                 </span>
          
@@ -73,8 +103,8 @@
                         </button>
                 </div>
        </div> 
-       <div fxLayout="row" fxLayoutAlign="center" fxFlex class = "need-help-cont">
-           <span class = "mat-caption">
+       <div fxLayout="row" fxLayoutAlign="center" fxFlex class = "mat-caption caption-cont">
+           <span>
                 Need help ? Call 1-888-1234-4567
            </span>
         </div>

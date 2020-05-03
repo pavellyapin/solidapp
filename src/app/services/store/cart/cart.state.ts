@@ -3,8 +3,9 @@ import { UserAddressInfo } from '../user/user.model';
 
 
 export default class CartState {
-  items: Array<CartItem>;
   cartId?: string;
+  items: Array<CartItem>;
+  total? : any;
   shipping? : UserAddressInfo;
   CartError: Error;
 }

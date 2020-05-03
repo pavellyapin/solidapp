@@ -9,11 +9,14 @@ import { ContentfulService } from 'src/app/services/contentful/contentful.servic
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Router } from '@angular/router';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {VariantsPipe} from '../../components/pipes/pipes'
 import * as CartActions from '../../services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
 import { CartCardsService } from './cart-cards/product-cards.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CartService } from './cart.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'doo-cart',
@@ -25,13 +28,15 @@ export class CartComponent implements OnInit {
   checkoutStage : string = 'checkout';
   cart$: Observable<CartState>;
   CartSubscription: Subscription;
-  actionSubscription: Subscription;
+  initOrderSubscription: Subscription;
+  setShippingSubscription: Subscription;
   cartId : string;
   cartItems: Array<CartItem>;
   cartItemsCards: Card[] = [];
   cartItemCount: number;
   cartTotal: number;
   previousUrl : string = '';
+  loading:boolean = false;
 
       constructor(private store: Store<{ cart: CartState }>,
                   private _actions$: Actions,
@@ -39,18 +44,34 @@ export class CartComponent implements OnInit {
                   private navService: NavigationService,
                   private contentfulService: ContentfulService,
                   private router: Router,
-                  private dialog: MatDialog,
-                  private variantPipe : VariantsPipe)
+                  private variantPipe : VariantsPipe,
+                  private cartService : CartService,
+                  private matIconRegistry: MatIconRegistry,
+                  private domSanitizer: DomSanitizer)
         {
+          this.matIconRegistry.addSvgIcon(
+            'doo-approved',
+            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/approved-green.svg")
+          );
+          this.matIconRegistry.addSvgIcon(
+            'paypal',
+            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/paypal.svg")
+          );
 
           this.cart$ = store.pipe(select('cart'));
         }
 
   ngOnInit() {
 
-    if (this.router.routerState.snapshot.url == '/cart/checkout/shipping') {
-      this.checkoutStage = 'shipping';
+    switch(this.router.routerState.snapshot.url) {
+      case '/cart/checkout/shipping':
+          this.checkoutStage = 'shipping';
+          break;
+      case '/cart/checkout/payment':
+          this.checkoutStage = 'payment';
+          break;
     }
+      
 
     this.navService.getPreviousUrl().forEach((segment) => {
       this.previousUrl = this.previousUrl + '/' + segment 
@@ -70,11 +91,19 @@ export class CartComponent implements OnInit {
     )
     .subscribe();
 
-    this.actionSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe(() => {
+    this.initOrderSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe(() => {
         this.checkoutStage = 'shipping';
-        this.router.navigateByUrl('cart/checkout/shipping');    
+        this.router.navigateByUrl('cart/checkout/shipping');  
+        this.loading = false;  
+      });
+
+      this.setShippingSubscription = this._actions$.pipe(ofType(CartActions.SuccessSetOrderShippingAction)).subscribe(() => {
+        this.checkoutStage = 'payment';
+        this.router.navigateByUrl('cart/checkout/payment');  
+        this.loading = false;  
       });
   }
+  
 
   calculateTotal(): void {
     this.cartTotal = 0;
@@ -92,56 +121,39 @@ export class CartComponent implements OnInit {
   }
 
   continueToCheckout() {
-    let reqCart = [];
-        
-    this.cartItemsService.cards.value.forEach(function(item){
-          reqCart.push(
-            {product_id : item.input.object.value.sys.id,
-             thumbnail : item.input.object.value.fields.media[0].fields.file.url,
-             name : item.input.name.value +  
-             (item.input.object.value.fields.variants ? 
-              this.variantPipe.transform(item.input.object.value.fields.variants) : ''),
-             qty : item.input.object.value.fields.qty,
-             price : item.input.object.value.fields.discount ? 
-                     item.input.object.value.fields.discount : 
-                     item.input.object.value.fields.price }
-          )
-        }.bind(this));
+    if  (this.checkoutStage == 'checkout') {
+      this.loading = true;
+    
+      let reqCart = [];
+      this.cartItemsService.cards.value.forEach(function(item){
+            reqCart.push(
+              {product_id : item.input.object.value.sys.id,
+              thumbnail : item.input.object.value.fields.media[0].fields.file.url,
+              name : item.input.name.value +  
+              (item.input.object.value.fields.variants ? 
+                this.variantPipe.transform(item.input.object.value.fields.variants) : ''),
+              qty : item.input.object.value.fields.qty,
+              price : item.input.object.value.fields.discount ? 
+                      item.input.object.value.fields.discount : 
+                      item.input.object.value.fields.price }
+            )
+          }.bind(this));
 
-    this.store.dispatch(CartActions.BeginInitializeOrderAction({payload :{cartId : this.cartId, cart : {cart : reqCart , total : this.cartTotal.toFixed(2)}}}));
+      this.store.dispatch(CartActions.BeginInitializeOrderAction({payload :{cartId : this.cartId, cart : {cart : reqCart , total : this.cartTotal.toFixed(2)}}}));
+    } else if (this.checkoutStage == 'shipping') {
+      this.cartService.emitChange('change');
+    }
 
   }
 
-  payPalPay() {
-    let reqCart = [];
-        
-    this.cartItemsService.cards.value.forEach(function(item){
-          reqCart.push(
-            {product_id : item.input.object.value.sys.id,
-             thumbnail : item.input.object.value.fields.media[0].fields.file.url,
-             name : item.input.name.value +  
-             (item.input.object.value.fields.variants ? 
-              this.variantPipe.transform(item.input.object.value.fields.variants) : ''),
-             qty : item.input.object.value.fields.qty,
-             price : item.input.object.value.fields.discount ? 
-                     item.input.object.value.fields.discount : 
-                     item.input.object.value.fields.price }
-          )
-        }.bind(this));
-
-        this.store.dispatch(CartActions.BeginInitializeOrderAction({payload :{cart : reqCart , total : this.cartTotal.toFixed(2)}}));
-        
-        const dialogRef = this.dialog.open(PayPalModalComponent, {
-          width: '750px',
-          data: {cart: reqCart, total: this.cartTotal.toFixed(2)}
-        });
-      
-  }
 
   navigateToPrevious() {
     if (this.checkoutStage == 'shipping') {
       this.checkoutStage = 'checkout';
       this.router.navigateByUrl('/cart');
+    } else if (this.checkoutStage == 'payment') {
+      this.checkoutStage = 'shipping';
+      this.router.navigateByUrl('/cart/checkout/shipping');
     } else {
       this.navService.resetStack([]);
       this.router.navigateByUrl(this.previousUrl);
@@ -149,7 +161,8 @@ export class CartComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.actionSubscription.unsubscribe();
+    this.initOrderSubscription.unsubscribe();
+    this.setShippingSubscription.unsubscribe();
     this.CartSubscription.unsubscribe();
     this.cartItemsService.resetCards();
     
@@ -158,65 +171,3 @@ export class CartComponent implements OnInit {
 }
 
 
-@Component({
-  selector: 'doo-paypal-modal',
-  templateUrl: './paypal/paypal-modal.component.html',
-  styleUrls: ['./paypal/paypal-modal.component.scss']
-})
-export class PayPalModalComponent {
-
-  actionSubscription: Subscription;
-  CartSubscription: Subscription;
-  cartId$: Observable<string>;
-  cardId: string;
-
-  constructor(
-    private store: Store<{ cart: CartState }>,
-    public dialogRef: MatDialogRef<PayPalModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CartData,
-    private firebaseFunctions : FirestoreService,
-    private _actions$: Actions) {
-      this.cartId$ = store.pipe(select('cart','cartId'));
-    }
-
-  ngOnInit() {
-
-    this.CartSubscription = this.cartId$
-    .pipe(
-      map(x => {
-        this.cardId = x;
-      })
-    )
-    .subscribe();
-
-    this.actionSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe((x) => {
-      this.actionSubscription = this.firebaseFunctions.payPalPay(this.data,this.cardId).pipe(
-            map((data)=> {
-              if (data.code == 200) {
-                window.open(data.redirect, 'theFrame', 'location=yes,scrollbars=yes,status=yes');
-              }
-            }
-          )
-        ).subscribe();
-      });
-
-
-  }
-
-  ngOnDestroy() {
-    this.CartSubscription.unsubscribe();
-    this.actionSubscription.unsubscribe();
-  }
-
-  onNoClick(): void {
-    this.CartSubscription.unsubscribe();
-    this.actionSubscription.unsubscribe();
-    this.dialogRef.close();
-  }
-
-}
-
-export interface CartData {
-  cart: any;
-  total: number;
-}

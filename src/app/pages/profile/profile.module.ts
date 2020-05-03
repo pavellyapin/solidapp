@@ -8,7 +8,6 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProfileComponent } from './profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
-import { MatTabsModule, MatIconModule, MatSelectModule, MatSidenavModule, MatGridListModule, MatTableModule, MatPaginatorModule } from '@angular/material';
 import { AccountComponent } from './components/account/account.component';
 import { AddressComponentsModule } from '../../components/address/address-components.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,6 +18,12 @@ import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { FavoritesCardsService } from './components/favorites/product-cards/favorites-cards.service';
 import { OrdersComponent } from './components/orders/orders.component';
 import { OrderDeatilComponent } from './components/orders/order-details/order-detail.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [ProfileComponent,

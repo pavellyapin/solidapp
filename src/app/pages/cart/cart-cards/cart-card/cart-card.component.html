@@ -11,19 +11,37 @@
         </div>
     </div>
     <div fxLayout="column" fxFlex = "50" class = "cart-card-content">
-      <span class = "mat-subheading-2">
-        {{name}}
-      </span>
-      <span class = "mat-caption cart-item-variant" [innerHTML] = "object.fields.description | richTextPipe">
+        <span class = "mat-subheading-2">
+          {{name}}
+        </span>
+        <span class = "mat-caption cart-item-variant" [innerHTML] = "object.fields.description | richTextPipe">
 
-      </span>
-      <span class = "mat-caption cart-item-variant">
-        <span>{{'product.color' | translate}}:</span> {{object.fields.variants.color}}
-      </span>
-      <span class = "mat-caption cart-item-variant">
-        <span>{{'product.size' | translate}}: </span> {{object.fields.variants.size}}
-      </span>
-      <div fxLayout="row" fxLayoutAlign="start" class = "mat-subheading-2">
+        </span>
+        <span class = "mat-caption cart-item-variant">
+          <span>{{'product.color' | translate}}:</span> {{object.fields.variants.color}}
+        </span>
+        <span class = "mat-caption cart-item-variant">
+          <span>{{'product.size' | translate}}: </span> {{object.fields.variants.size}}
+        </span>
+        <div fxLayout="row" class = "mat-caption">
+            <div fxLayout="column" fxLayoutAlign="center center" class = "minus-icon">
+                <mat-icon> remove</mat-icon>
+            </div>
+                  
+              <mat-form-field class = "qty-input">
+                  <input  formControlName="qty" 
+                          autocomplete="qty"
+                          [value] = "object.fields.qty" 
+                          matInput 
+                          name="qty"
+                          type="text"/>
+                         
+              </mat-form-field>
+            <div fxLayout="column" fxLayoutAlign="center center" class = "plus-icon">
+                <mat-icon>add</mat-icon>
+            </div>
+          </div> 
+      <div fxLayout="row" fxLayoutAlign="start" class = "mat-title">
           <div fxLayout="column" fxLayoutAlign="end center" [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''" >
             <span [innerHTML] = "object.fields.price | pricePipe"> </span>
         </div>
@@ -31,24 +49,7 @@
                 [innerHTML] = "object.fields.discount | pricePipe">
           </span>
       </div>
-      <div fxLayout="row" class = "mat-caption">
-        <div fxLayout="column" fxLayoutAlign="center center" class = "minus-icon">
-            <mat-icon> remove</mat-icon>
-        </div>
-              
-          <mat-form-field class = "qty-input">
-              <input  formControlName="qty" 
-                      autocomplete="qty"
-                      [value] = "object.fields.qty" 
-                      matInput 
-                      name="qty"
-                      type="text"/>
-                     
-          </mat-form-field>
-        <div fxLayout="column" fxLayoutAlign="center center" class = "plus-icon">
-            <mat-icon>add</mat-icon>
-        </div>
-      </div>  
+ 
     </div>
     <div fxLayout="column" fxFlex = "10" fxLayoutAlign="space-between">
         <span class = "doo-cart-action doo-pointer">

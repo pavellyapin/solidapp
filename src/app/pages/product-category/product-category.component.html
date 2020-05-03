@@ -1,11 +1,18 @@
-<div style = "padding: 50px 50px;"> 
-<doo-bread-crumbs></doo-bread-crumbs>
- <mat-grid-list [cols]="cols | async">
-  <mat-grid-tile *ngFor="let card of productCards"
-                 [colspan]="card.input.cols.value | async"
-                 [rowspan]="card.input.rows.value | async">
-    <doo-products-spawner [card]="card"></doo-products-spawner>
-  </mat-grid-tile>
-</mat-grid-list>   
+<div fxLayout = "column" style = "padding: 50px 50px;"> 
+  <doo-bread-crumbs></doo-bread-crumbs>
+  <div fxLayout = "row">
+      <div fxLayout = "column" fxFlex = "30">
+
+      </div>
+      <div fxLayout = "column" fxFlex = "70">
+          <mat-grid-list [cols]="cols | async">
+              <mat-grid-tile *ngFor="let card of productCards"
+                            [colspan]="card.input.cols.value | async"
+                            [rowspan]="card.input.rows.value | async">
+                <doo-products-spawner [card]="card"></doo-products-spawner>
+              </mat-grid-tile>
+            </mat-grid-list> 
+      </div>
+  </div>
 </div>
 

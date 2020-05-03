@@ -39,6 +39,11 @@ export const BeginRemoveProductFromCartAction = createAction(
     
   ); 
 
+  export const SuccessSetOrderTotalAction = createAction(
+    '[Cart] - Begin Set Order Total',
+    props<{ payload: any }>()
+  ); 
+
   export const BeginSetOrderShippingAction = createAction(
     '[Cart] - Begin Set Order shipping',
     props<{ payload: any }>()
