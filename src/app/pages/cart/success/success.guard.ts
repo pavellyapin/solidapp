@@ -15,28 +15,14 @@ export class CheckoutSuccessGuard implements CanActivate  {
   cartId$: Observable<string>;
   cartId: string;
   
-  constructor(private router: Router , 
-              private store: Store<{cart: CartState}>,
-              public afAuth: AngularFireAuth) {
-      this.cartId$ = store.select('cart','cartId');
-      this.cartId$.pipe(
-        map(x => {
-          this.cartId = x;
-        }
-      )).subscribe();
+  constructor(public afAuth: AngularFireAuth) {
+      
   }
 
 
   canActivate(route: ActivatedRouteSnapshot) : Observable<boolean> | boolean {
-    console.log(this.cartId);
-    console.log(route.params["order"]);
-    if (this.cartId == route.params["order"]) {
       return this.afAuth.authState.pipe(map((auth)=> {
-        this.store.dispatch(CartActions.BeginResetCartAction());
         return true
       }));
-    } else {
-        this.router.navigate(['cart']);
-    }
   }
 }

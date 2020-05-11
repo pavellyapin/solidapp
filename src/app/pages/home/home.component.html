@@ -1,4 +1,7 @@
 
-<div style = "height: 700px;">
-
+<div fxLayout="column" fxLayoutGap="50px">
+            <doo-post-layouts *ngFor = "let post of posts" [post] = "post">
+            </doo-post-layouts>
 </div>
+
+

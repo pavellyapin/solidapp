@@ -3,13 +3,13 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import { NavRoute } from 'src/app/services/navigation/nav-routing';
 import { CartComponent } from './cart.component';
-import { CheckoutSuccessComponent } from './success/success.component';
-import { CheckoutSuccessGuard } from './success/success.guard';
 import { CheckoutShippingGuard } from './shipping/shipping.guard';
 import { CheckoutShippingComponent } from './shipping/shipping.component';
 import { CartCheckoutComponent } from './checkout/checkout.component';
 import { CheckoutPaymentGuard } from './payment/payment.guard';
 import { CheckoutPaymentComponent } from './payment/payment.component';
+import { CheckoutSuccessGuard } from './success/success.guard';
+import { CheckoutSuccessComponent } from './success/success.component';
 
 export const catRoutes: NavRoute[] = [
   {data: {title: 'Cart' , isChild: true},
@@ -25,13 +25,18 @@ export const catRoutes: NavRoute[] = [
       {data: {title: 'Checkout Payment' , isChild: true},
       path: 'checkout/payment', 
       canActivate: [CheckoutPaymentGuard],
-      component: CheckoutPaymentComponent}
-    ],
+      component: CheckoutPaymentComponent}],
    component: CartComponent},
-   {data: {title: 'Checkout Success' , isChild: true},
+   
+      {data: {title: 'Checkout Success' , isChild: true},
+      path: 'checkout/success/:order', 
+      canActivate: [CheckoutSuccessGuard],
+      component: CheckoutSuccessComponent}
+    
+  /* {data: {title: 'Checkout Success' , isChild: true},
    path: 'checkout/success/:order', 
    canActivate: [CheckoutSuccessGuard],
-   component: CheckoutSuccessComponent}
+   component: CheckoutSuccessComponent}*/
 ];
 
 @NgModule({

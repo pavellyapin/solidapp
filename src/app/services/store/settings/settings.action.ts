@@ -20,6 +20,15 @@ export const SuccessGetActiveCategoriesAction = createAction(
   props<{ payload: any }>()
 );
 
+//Resolution
+export const BeginSetResolutionAction = createAction(
+  '[Categories] - Begin Set resolution'
+);
+
+export const SuccessSetResolutionAction = createAction(
+  '[Categories] - Success set resolution',
+  props<{ payload: any }>()
+);
 
 
 export const ErrorSettingsAction = createAction('[Settings] - Error', props<Error>());

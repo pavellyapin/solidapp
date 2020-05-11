@@ -42,4 +42,20 @@ export class ContentfulService {
     }))
       .then(res => res.items.pop()));
   }
+
+  getPage(query?: any): Observable<Entry<any>> {
+    return from(this.client.getEntries(Object.assign({
+      content_type: 'page',
+      'fields.name' : query
+    }))
+      .then(res => res.items.pop()));
+  }
+
+  getPostsForPage(query?: any): Observable<Entry<any>[]> {
+    return from(this.client.getEntries(Object.assign({
+      content_type: 'post',
+      links_to_entry : query
+    }))
+      .then(res => res.items));
+  }
 }

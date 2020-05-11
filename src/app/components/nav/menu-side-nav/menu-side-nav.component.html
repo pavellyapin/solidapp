@@ -1,0 +1,42 @@
+
+          <mat-accordion>
+                <mat-expansion-panel *ngFor = "let category of menuTree"
+                                     [hideToggle] = "false" 
+                                     class="mat-elevation-z0 doo-root-item">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                            {{category.fields.title}}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                    <mat-accordion>
+                            <mat-expansion-panel *ngFor = "let subCategory of category.subCategories"
+                                                 [hideToggle] = "false"
+                                                 [expanded] = "false" 
+                                                 class="mat-elevation-z0 doo-sub-item">
+                                     <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                                {{subCategory.fields.title}}
+                                        </mat-panel-title>
+                                      </mat-expansion-panel-header>
+                                       <div *ngFor = "let link of subCategory.links"
+                                            (click) = "navigateTo('cat/' + link.fields.name)"
+                                            class = "doo-pointer doo-menu-link">
+                                            {{link.fields.title}}
+                                        </div>
+
+
+                            </mat-expansion-panel>
+
+                    </mat-accordion>
+                </mat-expansion-panel>
+         </mat-accordion>
+         <div style = "padding-top: 20px;">
+                <button mat-button (click)="navigateTo('account/profile')">
+                        <mat-icon>perm_identity</mat-icon><span style = "padding-left: 10px;">My Account</span>
+                </button>
+         </div>
+         <div style = "padding-top: 20px;">
+                <button mat-button (click)="navigateTo('account/favorites')">
+                        <mat-icon>favorite_border</mat-icon><span style = "padding-left: 10px;">Favorites</span>
+                </button>
+         </div>

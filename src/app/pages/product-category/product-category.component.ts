@@ -51,7 +51,7 @@ import { Entry } from 'contentful';
 
       /* Grid column map */
       const colsMap = new Map([
-        ['xs', 1],
+        ['xs', 12],
         ['sm', 4],
         ['md', 8],
         ['lg', 15],
@@ -59,7 +59,7 @@ import { Entry } from 'contentful';
       ]);
       /* Big card column span map */
       const colsMapBig = new Map([
-        ['xs', 1],
+        ['xs', 12],
         ['sm', 2],
         ['md', 4],
         ['lg', 5],
@@ -67,7 +67,7 @@ import { Entry } from 'contentful';
       ]);
       /* Small card column span map */
       const rowsMapBig = new Map([
-        ['xs', 1],
+        ['xs', 21],
         ['sm', 3],
         ['md', 5],
         ['lg', 8],

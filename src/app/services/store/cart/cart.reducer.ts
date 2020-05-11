@@ -13,6 +13,7 @@ const reducer = createReducer(
             shipping : null,
             cartId: null, 
             total: null,
+            order:null,
             CartError: null };
   }),
 
@@ -52,6 +53,12 @@ const reducer = createReducer(
   on(CartActions.SuccessSetOrderShippingAction, (state: CartState, { payload }) => {
     return { ...state, 
             shipping: payload, 
+            CartError: null };
+  }),
+
+  on(CartActions.SuccessGetCartAction, (state: CartState, { payload }) => {
+    return { ...state, 
+            order: payload, 
             CartError: null };
   }),
 

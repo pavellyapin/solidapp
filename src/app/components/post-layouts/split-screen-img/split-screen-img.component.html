@@ -1,0 +1,19 @@
+<div fxLayout = "row"  fxLayoutAlign = "center center">
+    <div fxLayout = "column" fxFlex = "45" fxLayoutAlign = "center center">
+                <div class = "doo-cta-content doo-contentful" [innerHTML] = "post.fields.content | richTextPipe">
+                </div>
+                    <div fxLayoutGap = "20px">
+                           <button *ngFor = "let cta of post.fields.actions" 
+                                    color = "primary" 
+                                    mat-flat-button 
+                                    class = "doo-cta-btn">
+                                    {{cta.fields.name}}
+                            </button>
+                    </div>
+
+    </div>
+
+            <img  fxFlex = "45" class = "full-width doo-pointer" 
+            [src]="post.fields.media[0].fields.file.url">
+    
+</div>

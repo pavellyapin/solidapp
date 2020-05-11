@@ -1,10 +1,16 @@
 <div fxLayout="row" fxLayoutAlign="center" fxFlex>
-    <mat-toolbar class="doo-primary-toolbar">
+    <mat-toolbar fxLayoutAlign="center center" class="doo-primary-toolbar">
+    <div fxLayout="row" fxLayoutAlign="center" fxFlex = 90>
+      <button (click)= "onToggleMobileSideMenu()" *ngIf = "resolution == 'xs'" mat-button>
+        <mat-icon>
+                  menu
+        </mat-icon>
+      </button>
       <button (click)="navigateHome()" mat-button
               class="doo-nav-toggle-button">
               <img  [src]="siteSettings?.fields.logo.fields.file.url">
       </button>
-      <div fxLayout="row">
+      <div fxLayout="row" fxFlex *ngIf = "bigScreens.includes(resolution)" fxLayoutAlign = "center">
         <div *ngFor = "let category of rootCategories"
              class = "doo-root-category doo-pointer" 
              (click) = "expandMenu(category.fields.name)">
@@ -13,10 +19,10 @@
       </div>
     <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
       <span class="fill-remaining-space"></span>
-      <button mat-button (click)="goToFavorites()">
+      <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToFavorites()">
         <mat-icon>favorite_border</mat-icon>
       </button>
-      <button mat-button (click)="goToProfile()">
+      <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToProfile()">
         <mat-icon>perm_identity</mat-icon>
       </button>
       <button (click)= "goToCart()" mat-button>
@@ -25,7 +31,7 @@
                   shopping_basket
         </mat-icon>
       </button>
-
+    </div>  
     </mat-toolbar>
   <div *ngIf = "mainMenuOpen" fxFlex = "80" class = "doo-expand-menu mat-elevation-z1">
           <div fxLayout="row" fxFlex = "75">

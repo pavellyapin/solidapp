@@ -63,7 +63,7 @@ import { CartService } from '../cart.service';
         )
         .subscribe();
 
-        this.cartServiceSubscription =  this.cartService.changeEmitted$.subscribe((x)=>{
+        this.cartServiceSubscription =  this.cartService.shippingChangeEmitted$.subscribe((x)=>{
             if (this.personalInfo.invalid) {
                 this.personalInfo.markAllAsTouched();
             }

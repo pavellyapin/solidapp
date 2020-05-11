@@ -43,12 +43,14 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
     .pipe(
       map(favorites => {
         this.isFavorite = undefined;
-        favorites.forEach(element => {
-          if (this.object.sys.id == element.product.productId) {
-            this.isFavorite = element;
-            return
-          }
-        });
+        if (favorites) {
+          favorites.forEach(element => {
+            if (this.object.sys.id == element.product.productId) {
+              this.isFavorite = element;
+              return
+            }
+          });
+        }
       })
     )
     .subscribe();

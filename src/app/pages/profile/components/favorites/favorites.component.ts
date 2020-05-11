@@ -24,7 +24,6 @@ export class FavoritesComponent implements OnInit {
   UserSubscription: Subscription;
   favoritesItems: Array<any>;
   favItemsCards: Card[] = [];
-  favItemCount: number;
   cols: Observable<number>;
   colsBig: Observable<number>;
   rowsBig: Observable<number>;
@@ -52,7 +51,6 @@ export class FavoritesComponent implements OnInit {
     .pipe(
       map(x => {
         this.favoritesItems = x;
-        this.favItemCount = this.favoritesItems.length;
         this.favoritesCardsService.resetCards();
         this.createCards();
       })

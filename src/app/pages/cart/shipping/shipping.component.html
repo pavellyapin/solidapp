@@ -1,7 +1,7 @@
     <div fxLayout = "column" fxLayoutGap="10px" id = "doo-checkout-form"> 
         <div></div> 
         <div fxLayout = "column" [formGroup]="personalInfo">
-            <div fxLayout = "row" fxLayoutAlign = "space-between">
+            <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between">
                         <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
                             <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
                             <input  formControlName="firstName"
@@ -25,7 +25,7 @@
                                     <mat-error *ngIf="personalInfo.controls['lastName'].invalid">{{'errors.required' | translate}}</mat-error>
                         </mat-form-field>
             </div>
-            <div fxLayout = "row" fxLayoutAlign = "space-between" class = "doo-bottom-border">
+            <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between" class = "doo-bottom-border">
                     <mat-form-field fxFlex = "48" appearance="outline" class="full-width phone-field">
                             <span matPrefix>CA (+1) &nbsp;</span>
                         <input  formControlName="phone"

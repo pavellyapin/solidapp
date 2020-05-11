@@ -63,6 +63,8 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
                 this.utilService.loadScript(this.googleMapsURL).then(()=>{
                     this.scriptLoaded = true;
                 });
+            } else {
+                this.scriptLoaded = true;
             }
         });
 

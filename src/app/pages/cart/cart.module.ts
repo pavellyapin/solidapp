@@ -9,7 +9,6 @@ import { CartComponent } from './cart.component';
 import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
 import { CartCardsSpawnerComponent } from './cart-cards/cart-cards-spawner/cart-cards-spawner.component';
 import { CartCardsService } from './cart-cards/product-cards.service';
-import { CheckoutSuccessComponent } from './success/success.component';
 import { VariantsPipe } from 'src/app/components/pipes/pipes';
 import { PaidCartCardComponent } from './cart-cards/paid-cart-card/paid-cart-card.component';
 import { AddressComponentsModule } from 'src/app/components/address/address-components.module';
@@ -26,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
 import {CartService} from './cart.service';
 import { CheckoutPaymentComponent, PayPalModalComponent } from './payment/payment.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { CheckoutSuccessComponent } from './success/success.component';
 
 
 @NgModule({

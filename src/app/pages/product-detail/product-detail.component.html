@@ -1,84 +1,12 @@
-
-<div style="padding: 50px;"
-     fxFlex fxLayoutAlign="space-between" fxLayout="row">
-     <div fxLayout="column" fxFlex = "10">
-      <div *ngFor = "let image of productDetails.fields.media; let i = index"
-          [ngClass] = "i == displayedMediaIndex ? 'selected-image' : ''">
-        <img  class = "full-width doo-pointer"
-              (click) = "changeImage(i)" 
-              [src]="image?.fields.file.url">
-      </div>
-     </div>
-     <div fxLayout="column" fxFlex = "30" class = "selected-image-full">
-       <mat-icon *ngIf = "!isFavorite" class = "doo-pointer" (click)="addToFavorites()">favorite_border</mat-icon>
-       <mat-icon *ngIf = "isFavorite" class = "doo-pointer" (click)="removeFromFavorites()">favorite</mat-icon>
-        <img  class = "full-width doo-pointer" 
-               [src]="productDetails.fields.media[displayedMediaIndex].fields.file.url">
-     </div>
-     <div fxLayout="column" fxLayoutGap="50px" fxLayoutAlign="start start" fxFlex = "40">
-      <doo-bread-crumbs [productTitle] = "productDetails.fields.title"></doo-bread-crumbs>
-        <form [formGroup]="cartItemForm"  fxLayout="column" fxLayoutAlign="start start" class = "full-width"> 
-          <div fxLayout="row" class = "mat-title">
-            {{productDetails.fields.title}}
-          </div>
-          <div fxLayout="row" fxLayoutAlign="center" >
-            <span [ngClass] = "productDetails.fields.discount ? 'doo-stroked-price' : ''">
-                {{productDetails.fields.price | pricePipe}}
-            </span>
-            <span *ngIf = "productDetails.fields.discount">
-                {{productDetails.fields.discount | pricePipe}}
-            </span>
-          </div>
-          <div fxLayout="row" class = "mat-body" fxLayoutAlign="start" 
-              [innerHTML] = "productDetails.fields.description | richTextPipe">
-          </div>
-          <div fxLayout="column" fxLayoutGap="10px" class = "mat-body full-width doo-bottom-border"
-              *ngIf = "productVariants.get('size')">
-              <div fxLayout="row">
-                {{'product.size' | translate}}:
-              </div>
-                <mat-radio-group fxLayout="row" 
-                                 formControlName="size">
-                  <mat-radio-button fxFlex = "6" *ngFor="let variant of productVariants.get('size')" [value]="variant.name">
-                    {{variant.name}}
-                  </mat-radio-button>
-                </mat-radio-group>
-                <mat-error *ngIf="cartItemForm.controls['size'].invalid && formSubmit">{{'product.validations.size_required' | translate}}</mat-error>
-          </div>
-          <div fxLayout="column" fxLayoutGap="10px" class = "mat-body full-width doo-bottom-border"
-              *ngIf = "productVariants.get('color')">
-              <div fxLayout="row">
-                {{'product.color' | translate}}: {{cartItemForm.controls["color"].value}}
-              </div>
-                <mat-radio-group fxLayout="row" 
-                                 formControlName="color">
-                  <mat-radio-button *ngFor="let variant of productVariants.get('color')" [value]="variant.name" [checked] = "variant.checked">
-                    <div [ngStyle]="{'background-color': variant.code}" class = "doo-color-box">
-                    </div>
-                  </mat-radio-button>
-                </mat-radio-group>
-          </div>
-          <div fxLayout="row" class = "full-width">
-              <div fxLayout="column" fxLayoutAlign="center center">
-                  {{'product.qty' | translate}}
-              </div>
-              <mat-form-field class = "qty-input">
-                  <input  formControlName="qty" 
-                          autocomplete="qty" 
-                          matInput 
-                          [errorStateMatcher]="matcher"
-                          name="qty"
-                          type="text"/>
-                  <mat-error *ngIf="cartItemForm.controls['qty'].invalid">{{'product.validations.qty_required' | translate}}</mat-error>
-              </mat-form-field>
-             
-          </div>
-          <div fxLayout="row" class = "full-width">
-                        <button (click) = "addProductToCart()" class="full-width"
-                                color="accent" mat-flat-button type="submit">
-                                {{ 'cart.addToCart' | translate }}
-                        </button>
-          </div>
-        </form>
-   </div>
+<div [ngSwitch]="layout">
+    <doo-product-detail-fashion-layout 
+    [productDetails] = "productDetails" 
+    [cartItemForm] = "cartItemForm"
+    [productVariants] = "productVariants"
+    [isFavorite] = "isFavorite"
+    [formSubmit] = "formSubmit"
+    (favoriteToggle) = "favoriteToggle($event)"
+    (addToCart) = "addProductToCart()"
+    *ngSwitchCase="'fashion'">
+    </doo-product-detail-fashion-layout>
 </div>

@@ -15,7 +15,7 @@
                     </div>
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <form fxLayout = "row" fxLayoutAlign = "center" #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+              <form fxLayout = "row" fxLayoutAlign = "center" #checkout="ngForm" class="checkout">
                     <div fxLayout = "column" fxFlex>
                             <div class="cell example example2" id="example-2">
                             <div class="row">
@@ -43,7 +43,7 @@
                             <button color = "primary" 
                                     mat-flat-button 
                                     class = "doo-checkout-btn"
-                                    (click) = "continueToCheckout()">
+                                    (click) = "onSubmit()">
                                     PLACE ORDER
                             </button>
                     </div>

@@ -120,6 +120,12 @@ export class FirestoreService {
         }
     }
 
+    getOrderStatus(cart : any) {
+        return this.firestore.collection(this.authservice.uid)
+                        .doc("orders").collection("orders").doc(cart.cartId)
+                        .snapshotChanges();
+    }
+
     setOrderShippingInfo (address,personalInfo,cartId) : Observable<any>{
         if (this.authservice.uid) {
             return from (this.firestore
@@ -132,7 +138,7 @@ export class FirestoreService {
     }
 
     getCart (cartId) : Observable<any>{
-         if (this.authservice.uid) {
+        if (this.authservice.uid) {
             return from (this.firestore
                 .collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cartId).snapshotChanges());
@@ -145,5 +151,16 @@ export class FirestoreService {
     payPalPay (cart : CartData , cardId : string) : Observable<any>{
         var payPalCheckout = this.firebaseFunctions.httpsCallable('pay');
         return payPalCheckout({cart : cart, cartId : cardId , uid : this.authservice.uid});
+    }
+
+    setStripeToken (token,cartId) : Observable<any>{
+        if (this.authservice.uid) {
+            return from (this.firestore
+                .collection(this.authservice.uid)
+                .doc("orders").collection("orders").doc(cartId).collection('payment').add({payment : {token : token}}));
+        } else {
+            var setStripeCharge = this.firebaseFunctions.httpsCallable('setStripeCharge');
+            return setStripeCharge({token : token , cartId : cartId});
+        }
     }
 }

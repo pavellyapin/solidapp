@@ -2,12 +2,17 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 @Injectable()
 export class CartService {
-    // Observable string sources
-    private emitChangeSource = new Subject<any>();
-    // Observable string streams
-    changeEmitted$ = this.emitChangeSource.asObservable();
-    // Service message commands
-    emitChange(change: any) {
-        this.emitChangeSource.next(change);
+    private shippingChangeSource = new Subject<any>();
+    shippingChangeEmitted$ = this.shippingChangeSource.asObservable();
+    
+    private paymentChangeSource = new Subject<any>();
+    paymentChangeEmitted$ = this.paymentChangeSource.asObservable();
+
+    emitShippingChange(change: any) {
+        this.shippingChangeSource.next(change);
+    }
+
+    emitPaymentChange(change: any) {
+        this.paymentChangeSource.next(change);
     }
 }

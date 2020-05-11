@@ -2,16 +2,28 @@
 <app-nav-toolbar (logout)="logout()"
                  (expandMainMenu)="expandMainMenu()"
                  (toggleSideNav)="toggleSideNav()"
+                 (toggleMobileSideMenu) = "toggleMobileSideMenu()"
                  [mainMenuOpen] = "mainMenuOpen"
                  [siteSettings] = "siteSettings"
                  [cartItemCount] = "cartItemCount"
                  [rootCategories] = "rootCategories"
                  [categories] = "categories"
+                 [resolution] = "resolution"
                  [activePage]="getActivePage()"
                  [previousUrl]="getPreviousUrl()">
 </app-nav-toolbar>
 <mat-sidenav-container >
-  <mat-sidenav [opened]="isOpen" 
+    <mat-sidenav *ngIf = "resolution == 'xs'" [opened]="isMobileMenuOpen" 
+                 (closedStart)="isMobileMenuOpen = false"
+                 mode="over" 
+                 position = "start">
+                  <doo-menu-side-nav
+                  [rootCategories] = "rootCategories"
+                  [categories] = "categories"
+                  (goToURL) = "goToFromMobileNav($event)">
+                  </doo-menu-side-nav>
+    </mat-sidenav>
+    <mat-sidenav [opened]="isOpen" 
                (closedStart)="isOpen = false"
                 mode="over" 
                 position = "end">

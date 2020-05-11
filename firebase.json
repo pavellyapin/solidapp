@@ -32,6 +32,10 @@
         "function": "getCart"
       },
       {
+        "source": "/my-doo-7c70c/us-central1/setStripeCharge",
+        "function": "setStripeCharge"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

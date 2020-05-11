@@ -8,7 +8,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CartItem } from 'src/app/services/store/cart/cart.model';
 import * as CartActions from '../../services/store/cart/cart.action';
 import * as UserActions from '../../services/store/user/user.action';
-import { MyErrorStateMatcher } from 'src/app/components/pipes/pipes';
 import UserState from 'src/app/services/store/user/user.state';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
 
@@ -19,6 +18,7 @@ import { FavoriteItem } from 'src/app/services/store/user/user.model';
 })
 export class ProductDeatilComponent implements OnInit {
 
+  layout : string = 'fashion';
   product$: Observable<Entry<any>>;
   favorites$:Observable<FavoriteItem[]>;
   ProductSubscription: Subscription;
@@ -26,7 +26,6 @@ export class ProductDeatilComponent implements OnInit {
   productDetails:Entry<any>;
   isFavorite:FavoriteItem;
   cartItemForm:FormGroup;
-  matcher = new MyErrorStateMatcher();
   formSubmit = false;
   productVariants: Map<string,[any]> = new Map();
   displayedMediaIndex:number = 0;
@@ -60,12 +59,15 @@ export class ProductDeatilComponent implements OnInit {
     .pipe(
       map(favorites => {
         this.isFavorite = undefined;
-        favorites.forEach(element => {
-          if (this.productDetails.sys.id == element.product.productId) {
-            this.isFavorite = element;
-            return
-          }
-        });
+        if (favorites) {
+          favorites.forEach(element => {
+            if (this.productDetails.sys.id == element.product.productId) {
+              this.isFavorite = element;
+              return
+            }
+          });
+        }
+
       })
     )
     .subscribe();
@@ -108,12 +110,12 @@ export class ProductDeatilComponent implements OnInit {
     });
   }
 
-  addToFavorites() {
-    this.store.dispatch(UserActions.BeginAddToFavoritesAction({payload : this.productDetails.sys.id}));
-  }
-
-  removeFromFavorites() {
-    this.store.dispatch(UserActions.BeginRemoveFromFavoritesAction({payload : this.isFavorite.docId}));
+  favoriteToggle($event) {
+    if (!$event) {
+      this.store.dispatch(UserActions.BeginAddToFavoritesAction({payload : this.productDetails.sys.id}));
+    } else {
+      this.store.dispatch(UserActions.BeginRemoveFromFavoritesAction({payload : this.isFavorite.docId}));
+    }
   }
 
   changeImage(index) {

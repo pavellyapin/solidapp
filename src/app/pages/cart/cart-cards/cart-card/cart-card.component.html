@@ -2,15 +2,33 @@
           style="margin: 15px;"
           class = "doo-bottom-border"
           fxFlex fxLayout="row">
-  <div fxLayout="row" fxFlex fxLayoutAlign="space-between" >
-    <div fxLayout="column" fxFlex = "20">
-        <div fxFlex>
+  <div fxLayout="row"
+       fxLayout.xs="column"
+       fxFlex 
+       fxLayoutAlign="space-between">
+       <div fxLayout="row" fxHide fxShow.xs fxLayoutAlign="space-between">
+          <span class = "doo-pointer">
+              <mat-icon (click) = "removeFromCart()"> close</mat-icon>
+            </span>
+            <span class = "doo-cart-action doo-pointer">
+                <mat-icon *ngIf = "!isFavorite" color = "accent" (click)="addToFavorites()">favorite_border</mat-icon>
+                <mat-icon *ngIf = "isFavorite"  color = "accent" (click)="removeFromFavorites()">favorite</mat-icon>
+            </span>
+      </div>
+    <div fxLayout.xs="row" 
+         fxLayout.lg="row" 
+         fxLayoutAlign.xs="center"
+         fxFlex.lg = "25">
+        <div fxLayout="column" 
+             fxFlex.xs = "55" 
+             fxFlex.lg = "100">
+
           <img class = "full-width doo-pointer" 
                [lazyLoad]="object?.fields.media[0].fields.file.url" 
                [defaultImage]="'assets/placeholder-1.svg'">
         </div>
     </div>
-    <div fxLayout="column" fxFlex = "50" class = "cart-card-content">
+    <div fxLayout="column" fxFlex = "40" class = "cart-card-content">
         <span class = "mat-subheading-2">
           {{name}}
         </span>
@@ -23,7 +41,7 @@
         <span class = "mat-caption cart-item-variant">
           <span>{{'product.size' | translate}}: </span> {{object.fields.variants.size}}
         </span>
-        <div fxLayout="row" class = "mat-caption">
+        <div fxLayout="row" fxLayoutAlign.xs="center" class = "mat-caption">
             <div fxLayout="column" fxLayoutAlign="center center" class = "minus-icon">
                 <mat-icon> remove</mat-icon>
             </div>
@@ -40,18 +58,21 @@
             <div fxLayout="column" fxLayoutAlign="center center" class = "plus-icon">
                 <mat-icon>add</mat-icon>
             </div>
-          </div> 
-      <div fxLayout="row" fxLayoutAlign="start" class = "mat-title">
-          <div fxLayout="column" fxLayoutAlign="end center" [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''" >
-            <span [innerHTML] = "object.fields.price | pricePipe"> </span>
+      </div> 
+      <div fxLayout="column" fxFlex fxLayoutAlign="end">
+        <div fxLayout="row" class = "mat-title">
+            <div fxLayout="column" fxLayoutAlign="end center" [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''" >
+                <span [innerHTML] = "object.fields.price | pricePipe"> </span>
+              </div>
+              <span *ngIf = "object.fields.discount"
+                    [innerHTML] = "object.fields.discount | pricePipe">
+              </span>
         </div>
-          <span *ngIf = "object.fields.discount"
-                [innerHTML] = "object.fields.discount | pricePipe">
-          </span>
+
       </div>
  
     </div>
-    <div fxLayout="column" fxFlex = "10" fxLayoutAlign="space-between">
+    <div fxLayout="column" fxFlex = "10" fxHide fxShow.gt-sm fxLayoutAlign="space-between">
         <span class = "doo-cart-action doo-pointer">
             <mat-icon (click) = "removeFromCart()"> close</mat-icon>
           </span>

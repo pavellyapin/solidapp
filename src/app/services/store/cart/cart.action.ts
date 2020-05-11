@@ -55,4 +55,20 @@ export const BeginRemoveProductFromCartAction = createAction(
     
   ); 
 
+  export const BeginSetStripeTokenAction = createAction(
+    '[Cart] - Begin Set Stripe token',
+    props<{ payload: any }>()
+  ); 
+
+  export const SuccessSetStripeTokenAction = createAction(
+    '[Cart] - Success Set Stripe token',
+    props<{ payload: any }>()
+    
+  ); 
+
+  export const SuccessStripePaymentAction = createAction(
+    '[Cart] - Success Payment with stripe'
+    
+  ); 
+
 export const ErrorCartAction = createAction('[Cart] - Error', props<Error>());

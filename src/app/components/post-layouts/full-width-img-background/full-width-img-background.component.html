@@ -1,0 +1,21 @@
+<div fxLayout = "row" fxFlex style = "position:relative;" fxLayoutAlign = "center center">
+    <div fxLayout = "column" fxLayoutGap = "30px" class = "doo-overlay-box  doo-contentful" fxLayoutAlign = "center center">
+        
+                <div class = "doo-cta-content" [innerHTML] = "post.fields.content | richTextPipe">
+                </div>
+                    <div fxLayoutGap = "20px">
+                           <button *ngFor = "let cta of post.fields.actions" 
+                                    color = "primary" 
+                                    mat-flat-button 
+                                    class = "doo-cta-btn">
+                                    {{cta.fields.name}}
+                            </button>
+                    </div>
+        
+
+    </div>
+    <div fxLayout = "row" fxFlex = "90" fxLayoutAlign = "center" >
+            <img  class = "full-width doo-pointer" 
+            [src]="post.fields.media[0].fields.file.url">
+    </div>
+</div>

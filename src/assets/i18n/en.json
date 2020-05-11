@@ -68,6 +68,7 @@
       "total" : "Total",
       "successTitle" : "Your order is confirmed!",
       "paymentTitle": "Payment",
+      "placeOrder": "Place Order",
       "successContent" : "Thanks for shopping! Your order has been confirmed and an email was sent to your submiited address. If you have any question don't hesitate to contact us."
     } ,
 

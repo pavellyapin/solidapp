@@ -15,16 +15,18 @@ export class NavToolbarComponent implements OnInit {
   @Input() previousUrl: string[];
   @Input() mainMenuOpen;
   @Output() toggleSideNav = new EventEmitter();
+  @Output() toggleMobileSideMenu = new EventEmitter();
   @Output() expandMainMenu = new EventEmitter();
   @Output() logout = new EventEmitter();
   
   @Input() siteSettings: Entry<any>;
   @Input() categories: Entry<any>[];
+  @Input() resolution: any;
   @Input() rootCategories: Entry<any>[];
   @Input() cartItemCount:number;
   activeCategory: Entry<any>;
   subCategories: Entry<any>[];
-  
+  bigScreens = new Array('lg' , 'xl')
   constructor(
     private router: Router,
     private navService: NavigationService) {
@@ -39,7 +41,6 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public navigateCategory(link) {
-    //this.navService.setActivePage(this.activeCategory.fields.title,[this.activeCategory.fields.title],true);
     this.navService.resetStack([]);
     this.onExpandMainMenu();
     this.router.navigateByUrl('cat/' + link);
@@ -79,16 +80,16 @@ export class NavToolbarComponent implements OnInit {
         }
       });
       links.sort(sortBanners);
-      //Object.isExtensible(subCategory);
-      //subCategory = subCategory.map((item) => 
-      //Object.assign({}, item, {links:links})
-      //)
       subCategory.links = links;
     }.bind(this));
   }
 
   public onToggleSideNav() {
     this.toggleSideNav.emit();
+  }
+
+  public onToggleMobileSideMenu() {
+    this.toggleMobileSideMenu.emit();
   }
 
   public onExpandMainMenu() {

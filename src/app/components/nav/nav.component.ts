@@ -25,6 +25,7 @@ import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
 export class NavComponent implements OnInit {
   
   isOpen:boolean = false;
+  isMobileMenuOpen:boolean = false;
   isClosing:boolean = false;
   mainMenuOpen = false;
   settings$: Observable<SettingsState>;
@@ -40,6 +41,7 @@ export class NavComponent implements OnInit {
   cols: Observable<number>;
   colsBig: Observable<number>;
   rowsBig: Observable<number>;
+  resolution : any;
 
 
   constructor(
@@ -61,6 +63,7 @@ export class NavComponent implements OnInit {
     this.SettingsSubscription = this.settings$
     .pipe(
       map(x => {
+        this.resolution = x.resolution;
         this.siteSettings = x.siteConfig;
         if (x.categories) {
           this.categories = x.categories.map((item)=>({
@@ -200,6 +203,10 @@ export class NavComponent implements OnInit {
     }
   }
 
+  public toggleMobileSideMenu() {
+      this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
   public expandMainMenu() {
     if (this.mainMenuOpen) {
       this.mainMenuOpen = false;
@@ -228,6 +235,11 @@ export class NavComponent implements OnInit {
 
   public goToCart() {
     this.router.navigateByUrl('cart');
+  }
+
+  public goToFromMobileNav(url) {
+    this.toggleMobileSideMenu();
+    this.router.navigateByUrl(url);
   }
 
   public getPreviousUrl(): string[] {

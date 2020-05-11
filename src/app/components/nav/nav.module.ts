@@ -8,7 +8,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { NavMenuItemComponent } from './nav-menu-item/nav-menu-item.component';
 import { NavToolbarComponent } from './nav-toolbar/nav-toolbar.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { BreadCrumbsComponent } from './bread-crumbs/bread-crumbs.component';
@@ -23,14 +22,15 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MenuSideNavComponent} from './menu-side-nav/menu-side-nav.component'
 
 @NgModule({
   declarations: [NavComponent, 
-                 NavMenuItemComponent, 
                  NavToolbarComponent,
                  BreadCrumbsComponent,
                  CartCardComponent,
-                 CartCardsSpawnerComponent],
+                 CartCardsSpawnerComponent,
+                 MenuSideNavComponent],
   imports: [
     CommonModule,
     RouterModule,

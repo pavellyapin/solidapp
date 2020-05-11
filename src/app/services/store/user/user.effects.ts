@@ -21,6 +21,7 @@ export class UserEffects {
       switchMap(action =>
         this.firestoreService.getUserPersonalInfo().pipe(
           map((data: any) => {
+            console.log(data.payload.data());
             return UserActions.SuccessGetUserInfoAction({ payload: data.payload.data()});
           }),
           catchError((error: Error) => {

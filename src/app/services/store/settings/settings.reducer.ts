@@ -19,6 +19,10 @@ const reducer = createReducer(
     return { ...state, categories: payload, SettingsError: null };
   }),
 
+  on(SettingsActions.SuccessSetResolutionAction, (state: SettingsState, { payload }) => {
+    return { ...state, resolution: payload, SettingsError: null };
+  }),
+
 
   on(SettingsActions.ErrorSettingsAction, (state: SettingsState, error: Error) => {
     return { ...state, SettingsError: error };

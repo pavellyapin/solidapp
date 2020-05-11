@@ -11,10 +11,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
+import { ProductDeatilFashionLayoutComponent } from './fashion-layout/fashion-layout.component';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 
 @NgModule({
-  declarations: [ProductDeatilComponent],
+  declarations: [ProductDeatilComponent,
+                 ProductDeatilFashionLayoutComponent],
   imports: [
     CommonModule,
     PipesModule,
@@ -27,7 +30,8 @@ import { MatInputModule } from '@angular/material/input';
     MatRadioModule,
     MatInputModule,
     FlexLayoutModule,
-    ProductDetailRoutingModule
+    ProductDetailRoutingModule,
+    NgxImageZoomModule
   ],
   providers: [],
   entryComponents: []

@@ -1,4 +1,4 @@
-import {Component , OnInit, Inject} from '@angular/core';
+import {Component , OnInit} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -8,12 +8,10 @@ import { CartItem } from 'src/app/services/store/cart/cart.model';
 import { ContentfulService } from 'src/app/services/contentful/contentful.service';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Router } from '@angular/router';
-import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import {VariantsPipe} from '../../components/pipes/pipes'
 import * as CartActions from '../../services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
 import { CartCardsService } from './cart-cards/product-cards.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CartService } from './cart.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -26,10 +24,16 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class CartComponent implements OnInit {
 
   checkoutStage : string = 'checkout';
-  cart$: Observable<CartState>;
+  cartId$: Observable<string>;
+  cart$: Observable<CartItem[]>;
+  order$: Observable<any>;
   CartSubscription: Subscription;
+  OrderSubscription : Subscription;
+  CartIdSubscription: Subscription;
   initOrderSubscription: Subscription;
   setShippingSubscription: Subscription;
+  setPaymentSubscription: Subscription;
+  StripeSuccessSubscription : Subscription;
   cartId : string;
   cartItems: Array<CartItem>;
   cartItemsCards: Card[] = [];
@@ -58,7 +62,9 @@ export class CartComponent implements OnInit {
             this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/paypal.svg")
           );
 
-          this.cart$ = store.pipe(select('cart'));
+          this.cartId$ = store.pipe(select('cart' , 'cartId'));
+          this.cart$ = store.pipe(select('cart' , 'items'));
+          this.order$ = store.pipe(select('cart' , 'order'));
         }
 
   ngOnInit() {
@@ -80,13 +86,35 @@ export class CartComponent implements OnInit {
     this.CartSubscription = this.cart$
     .pipe(
       map(x => {
-        this.cartId = x.cartId;
-        this.cartItems = x.items;
+        this.cartItems = x;
         this.cartItemCount = 0;
         this.cartItems.forEach((item)=>{
           this.cartItemCount = this.cartItemCount + item.qty;
         })
         this.calculateTotal();
+      })
+    )
+    .subscribe();
+
+    this.CartIdSubscription = this.cartId$
+    .pipe(
+      map(x => {
+        this.cartId = x;
+      })
+    )
+    .subscribe();
+
+    this.OrderSubscription = this.order$
+    .pipe(
+      map(x => {
+        if (x) {
+          if (x.status =="paid") {
+            this.store.dispatch(CartActions.BeginResetCartAction());
+            this.router.navigateByUrl('cart/checkout/success/' + this.cartId);
+            this.loading = false;
+          }
+        }
+        //this.cartId = x;
       })
     )
     .subscribe();
@@ -102,6 +130,19 @@ export class CartComponent implements OnInit {
         this.router.navigateByUrl('cart/checkout/payment');  
         this.loading = false;  
       });
+
+      //This is for logged in user, another listener on cart status "paid"
+      this.setPaymentSubscription = this._actions$.pipe(ofType(CartActions.BeginSetStripeTokenAction)).subscribe(() => {
+        this.loading = true;  
+      });
+
+      this.StripeSuccessSubscription = this._actions$.pipe(ofType(CartActions.SuccessStripePaymentAction)).subscribe(() => {
+            this.store.dispatch(CartActions.BeginResetCartAction());
+            this.router.navigateByUrl('cart/checkout/success/' + this.cartId);
+            this.loading = false;  
+      });
+
+      
   }
   
 
@@ -120,7 +161,21 @@ export class CartComponent implements OnInit {
     );
   }
 
+  scrollTop() {
+    let scrollToTop = window.setInterval(() => {
+        let pos = window.pageYOffset;
+        if (pos > 0) {
+            window.scrollTo(0, pos - 1000); // how far to scroll on each step
+        } else {
+            window.clearInterval(scrollToTop);
+        }
+    }, 5);
+  }
+
   continueToCheckout() {
+
+    this.scrollTop();
+
     if  (this.checkoutStage == 'checkout') {
       this.loading = true;
     
@@ -141,7 +196,10 @@ export class CartComponent implements OnInit {
 
       this.store.dispatch(CartActions.BeginInitializeOrderAction({payload :{cartId : this.cartId, cart : {cart : reqCart , total : this.cartTotal.toFixed(2)}}}));
     } else if (this.checkoutStage == 'shipping') {
-      this.cartService.emitChange('change');
+      this.loading = true;
+      this.cartService.emitShippingChange('change');
+    } else if (this.checkoutStage == 'payment') {
+      this.cartService.emitPaymentChange('change');
     }
 
   }
@@ -163,7 +221,10 @@ export class CartComponent implements OnInit {
   ngOnDestroy(){
     this.initOrderSubscription.unsubscribe();
     this.setShippingSubscription.unsubscribe();
+    this.setPaymentSubscription.unsubscribe();
+    this.StripeSuccessSubscription.unsubscribe();
     this.CartSubscription.unsubscribe();
+    this.CartIdSubscription.unsubscribe();
     this.cartItemsService.resetCards();
     
   }

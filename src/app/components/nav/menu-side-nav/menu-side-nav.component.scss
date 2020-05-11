@@ -1,0 +1,35 @@
+@import 'src/css/_variables.scss';
+
+.doo-menu-link {
+    padding: 10px 30px;
+}
+
+.doo-sub-item {
+    border-bottom: solid;
+    border-width: 2px;
+    border-color: $lighter-grey;
+    border-radius: 0%;
+    mat-panel-title {
+        font-size: 16px !important;
+        letter-spacing: 2px;
+    }
+}
+
+
+.doo-root-item{
+    
+        border-bottom: solid;
+        border-width: 2px;
+        border-color: $lighter-grey;
+        border-radius: 0%;
+
+    ::ng-deep .mat-expansion-panel-body {
+                padding: 0 0 0;
+                }
+
+    mat-panel-title {
+        font-size: 20px;
+        letter-spacing: 2px;
+        font-weight: bold;
+    }
+}

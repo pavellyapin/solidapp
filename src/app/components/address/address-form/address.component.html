@@ -49,9 +49,9 @@
                     </span>
                 </div>
         </div>
-        <div *ngIf = "addManually && addMode" fxLayout = "row" >
+        <div *ngIf = "addManually && addMode" fxLayout = "row">
                 <form [formGroup]="addressInfo" 
-                    fxFlex = "100">
+                    fxFlex = "100" >
                        <mat-form-field color = "primary" appearance="outline" class="full-width">
                         <mat-label>{{ 'profile.address.addressLine1' | translate }}</mat-label>
                         <input #addressLine1  formControlName="addressLine1" 
@@ -62,7 +62,7 @@
                                     type="text"/>
                             <mat-error *ngIf="addressInfo.controls['addressLine1'].invalid">{{'errors.required' | translate}}</mat-error>
                         </mat-form-field> 
-                    <div fxLayout = "row" fxLayoutAlign="space-between">
+                    <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign="space-between">
            
                         <mat-form-field fxFlex = "48" color = "primary" appearance="outline" class="full-width">
                             <mat-label>{{ 'profile.address.addressLine2' | translate }}</mat-label>
@@ -85,7 +85,7 @@
                                 <mat-error *ngIf="addressInfo.controls['city'].invalid">{{'errors.required' | translate}}</mat-error>
                          </mat-form-field>
                     </div>
-                    <div fxLayout = "row" fxLayoutAlign="space-between">
+                    <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign="space-between">
                             <mat-form-field fxFlex = "48" appearance="outline" class="full-width" color = "primary">
                                     <mat-label>{{ 'profile.address.province' | translate }}</mat-label>
                                     <mat-select formControlName="province" 

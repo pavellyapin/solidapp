@@ -7,6 +7,7 @@ export default class CartState {
   items: Array<CartItem>;
   total? : any;
   shipping? : UserAddressInfo;
+  order? : any;
   CartError: Error;
 }
 

@@ -22,7 +22,8 @@ export class CartEffects {
           initOrder(action.payload).pipe(
             switchMap((result) => [
               CartActions.SuccessSetOrderTotalAction({ payload: action.payload.cart.total }),
-              CartActions.SuccessInitializeOrderAction({ payload: result.id })
+              CartActions.SuccessInitializeOrderAction({ payload: result.id }),
+              CartActions.BeginGetCartAction({ payload: result.id })
           ])
           ,
           catchError((error: Error) => {
@@ -50,6 +51,28 @@ export class CartEffects {
   )
 );
 
+  SetStripeToken$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(CartActions.BeginSetStripeTokenAction),
+    switchMap(action =>
+      this.firestoreService.
+      setStripeToken(action.payload.source ,  action.payload.cartId).pipe(
+        map((result) => {
+          if (result.code == 400) {
+            return CartActions.SuccessStripePaymentAction();
+          } else {
+            return CartActions.SuccessSetStripeTokenAction({ payload: action.payload.source });
+          }
+        }),
+        catchError((error: Error) => {
+          return of(CartActions.ErrorCartAction(error));
+        })
+      )
+    )
+  )
+  );
+
+
   GetOrder$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
       ofType(CartActions.BeginGetCartAction),
@@ -57,7 +80,7 @@ export class CartEffects {
         this.firestoreService.
           getCart(action.payload).pipe(
           map((result) => {
-            return CartActions.SuccessGetCartAction({ payload: result });
+            return CartActions.SuccessGetCartAction({ payload: result.payload.data() });
           }),
           catchError((error: Error) => {
             return of(CartActions.ErrorCartAction(error));

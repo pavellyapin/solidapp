@@ -14,5 +14,6 @@ export class ConfigService {
   init() {
     this.store.dispatch(SettingsActions.BeginLoadSettingsAction());
     this.store.dispatch(SettingsActions.BeginGetActiveCategoriesAction());
+    this.store.dispatch(SettingsActions.BeginSetResolutionAction());
   }
 }
