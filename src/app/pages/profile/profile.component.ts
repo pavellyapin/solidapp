@@ -25,6 +25,11 @@ export class ProfileComponent implements OnInit {
     this.store.dispatch(UserActions.BeginGetOrdersAction());
   }
 
+  ngAfterViewInit() {
+    this.navService.finishLoading();
+  }
+  
+
   public async logout() {
     this.store.dispatch(UserActions.BeginUserLogoutAction());
     this.store.dispatch(CartActions.BeginResetCartAction());

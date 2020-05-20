@@ -9,6 +9,7 @@ import * as UserActions from '../../../../services/store/user/user.action';
 import { Observable, Subscription } from 'rxjs';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import { map } from 'rxjs/operators';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-product-card',
@@ -21,11 +22,13 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   favorites$:Observable<FavoriteItem[]>;
   UserSubscription: Subscription;
   isFavorite:FavoriteItem;
+  productVariants: Map<string,[any]> = new Map();
 
   constructor(private injector: Injector, 
-              private navigationService: NavigationService,
+              private navService: NavigationService,
               private router: Router,
-              private store: Store<{ user:UserState }>) {
+              private store: Store<{ user:UserState }>,
+              private utilService: UtilitiesService) {
     super(injector.get(Card.metadata.NAME),
       injector.get(Card.metadata.INDEX),
       injector.get(Card.metadata.OBJECT),
@@ -54,19 +57,33 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       })
     )
     .subscribe();
+    this.sortVariants();
+  }
+
+  sortVariants() {
+    this.object.fields.variants.forEach(variant => {
+      if(this.productVariants.get(variant.fields.option)) {
+        this.productVariants.get(variant.fields.option).push({name:variant.fields.name,code:variant.fields.code});
+      } else {
+        this.productVariants.set(variant.fields.option , 
+                               [{name:variant.fields.name,code:variant.fields.code,checked:true}]);
+      }
+    });
   }
 
   goToProduct() {
-    this.navigationService.resetStack([]);
+    this.navService.startLoading();
+    this.navService.resetStack([]);
+    this.utilService.scrollTop();
     this.router.navigateByUrl(this.routerLink);
   }
 
-  addToFavorites() {
-    this.store.dispatch(UserActions.BeginAddToFavoritesAction({payload : this.object.sys.id}));
-  }
-
-  removeFromFavorites() {
-    this.store.dispatch(UserActions.BeginRemoveFromFavoritesAction({payload : this.isFavorite.docId}));
+  toggleFavorites(isFavorite) {
+    if (!isFavorite) {
+      this.store.dispatch(UserActions.BeginAddToFavoritesAction({payload : this.object.sys.id}));
+    } else {
+      this.store.dispatch(UserActions.BeginRemoveFromFavoritesAction({payload : this.isFavorite.docId}));
+    }
   }
 
   mouseEnter() {

@@ -1,4 +1,7 @@
 <div class="nav-container">
+<div fxLayout = "column" fxLayoutAlign = "center center" class = "mat-caption top-news-feed-row">
+    An Update to COVID–19
+</div>
 <app-nav-toolbar (logout)="logout()"
                  (expandMainMenu)="expandMainMenu()"
                  (toggleSideNav)="toggleSideNav()"
@@ -12,6 +15,9 @@
                  [activePage]="getActivePage()"
                  [previousUrl]="getPreviousUrl()">
 </app-nav-toolbar>
+<div fxLayout = "column" *ngIf = "resolution != 'xs'" fxLayoutAlign = "center center" class = "mat-caption bottom-news-feed-row">
+    FREE DELIVERY FROM $50 AND EASY RETURNS - RETURNS EXTENDED TO 60 DAYS
+  </div>
 <mat-sidenav-container >
     <mat-sidenav *ngIf = "resolution == 'xs'" [opened]="isMobileMenuOpen" 
                  (closedStart)="isMobileMenuOpen = false"
@@ -46,8 +52,8 @@
           </mat-grid-list> 
   </mat-sidenav>
   <mat-sidenav-content>
-      <div *ngIf = "mainMenuOpen" (click) = "hideMainMenu()" class = "doo-overlay">
-
+      <div *ngIf = "mainMenuOpen || loading" fxLayout = "row" fxLayoutAlign="center start" (click) = "hideMainMenu()" class = "doo-overlay">
+          <div class="lds-dual-ring"></div>
       </div>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

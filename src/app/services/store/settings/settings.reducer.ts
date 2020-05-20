@@ -23,6 +23,14 @@ const reducer = createReducer(
     return { ...state, resolution: payload, SettingsError: null };
   }),
 
+  //LOADING....
+  on(SettingsActions.BeginLoadingAction, (state: SettingsState, {}) => {
+    return { ...state, loading: true, SettingsError: null };
+  }),
+
+  on(SettingsActions.SuccessLoadingAction, (state: SettingsState, {}) => {
+    return { ...state, loading: false, SettingsError: null };
+  }),
 
   on(SettingsActions.ErrorSettingsAction, (state: SettingsState, error: Error) => {
     return { ...state, SettingsError: error };

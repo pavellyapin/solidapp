@@ -18,32 +18,32 @@
         </div>
       </div>
     <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
-      <span class="fill-remaining-space"></span>
       <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToFavorites()">
-        <mat-icon>favorite_border</mat-icon>
+        <mat-icon svgIcon="doo-favorite"></mat-icon>
       </button>
       <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToProfile()">
-        <mat-icon>perm_identity</mat-icon>
+        <mat-icon svgIcon="doo-profile"></mat-icon>
       </button>
       <button (click)= "goToCart()" mat-button>
-        <mat-icon [matBadge]="cartItemCount" 
-                  [matBadgeHidden]="!cartItemCount || cartItemCount == 0" >
-                  shopping_basket
-        </mat-icon>
+          <mat-icon fxFlex
+          svgIcon="doo-basket" 
+          [matBadge]="cartItemCount" 
+                  [matBadgeHidden]="!cartItemCount || cartItemCount == 0"></mat-icon>
+       
       </button>
     </div>  
     </mat-toolbar>
-  <div *ngIf = "mainMenuOpen" fxFlex = "80" class = "doo-expand-menu mat-elevation-z1">
+  <div *ngIf = "mainMenuOpen" fxFlex = "100" class = "doo-expand-menu mat-elevation-z1">
           <div fxLayout="row" fxFlex = "75">
             <div fxLayout= "column" 
                  fxLayoutGap="10px"
                  class = "sub-category-column" 
                  *ngFor = "let category of subCategories">
-                <span class = "mat-subheading-2">{{category.fields.title}}</span>
+                <span class = "mat-subheading-1">{{category.fields.title}}</span>
                 <div *ngFor = "let link of category.links"
-                    (click) = "navigateCategory(link.fields.name)"
-                    class = "doo-pointer">
-                    {{link.fields.title}}
+                    (click) = "navigateCategory(link.fields.name)">
+                    <span class = "doo-pointer crumb-item">{{link.fields.title}}</span>
+                    
                 </div>
             </div>
           </div>

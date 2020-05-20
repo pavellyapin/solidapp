@@ -22,12 +22,22 @@ export const SuccessGetActiveCategoriesAction = createAction(
 
 //Resolution
 export const BeginSetResolutionAction = createAction(
-  '[Categories] - Begin Set resolution'
+  '[Resolution] - Begin Set resolution'
 );
 
 export const SuccessSetResolutionAction = createAction(
-  '[Categories] - Success set resolution',
+  '[Resolution] - Success set resolution',
   props<{ payload: any }>()
+);
+
+//LOADING......
+
+export const BeginLoadingAction = createAction(
+  '[LOADING] - Begin'
+);
+
+export const SuccessLoadingAction = createAction(
+  '[LOADING] - Success'
 );
 
 

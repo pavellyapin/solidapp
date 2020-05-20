@@ -13,11 +13,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { ProductDeatilFashionLayoutComponent } from './fashion-layout/fashion-layout.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { ProductDeatilStandardLayoutComponent } from './standard-layout/fashion-layout.component';
 
 
 @NgModule({
   declarations: [ProductDeatilComponent,
-                 ProductDeatilFashionLayoutComponent],
+                 ProductDeatilFashionLayoutComponent,
+                 ProductDeatilStandardLayoutComponent],
   imports: [
     CommonModule,
     PipesModule,

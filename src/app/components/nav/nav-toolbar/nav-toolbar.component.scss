@@ -7,10 +7,10 @@
 }
 
 .doo-primary-toolbar {
-  @include mat-elevation(1);
+  @include mat-elevation(0);
   background-color: #ffffff;
   padding: 0px;
-  height: 100px;
+  height: 70px;
 }
 
 .doo-nav-toggle-button {
@@ -20,6 +20,12 @@
   border: 0;
 }
 
+mat-icon {
+  height: 20px;
+  width: 20px;
+  opacity: 0.7;
+}
+
 .doo-expand-menu {
   min-height: 400px; 
   background: white;
@@ -27,11 +33,21 @@
   position: absolute;
   top:105px;
   width:100%;
-  padding: 20px 20px;
+  padding: 20px 10%;
+  letter-spacing: 2px;
+  font-size: 12px;
+  .mat-subheading-1 {
+    letter-spacing: 2px;
+    font-size: 14px;
+  }
 }
 
 .doo-root-category {
-  padding : 10px 10px;
+  padding : 10px 20px;
+  font-size: 14px;
+  font-weight: 100;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .sub-category-column {

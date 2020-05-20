@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {NavRoute, NavRouteService} from "./nav-routing";
+import * as SettingsActions from 'src/app/services/store/settings/settings.action';
+import { Store } from '@ngrx/store';
 
 export class Page {
   title: string;
@@ -20,7 +22,7 @@ export class NavigationService {
   private activePage: Page;
   private navigationStack: Array<Array<string>> = [];
 
-  constructor(private navRouteService: NavRouteService) {
+  constructor(navRouteService: NavRouteService , private store: Store<{}>) {
     this.navigationItems = navRouteService.getNavRoutes();
   }
 
@@ -87,5 +89,13 @@ export class NavigationService {
       isChild ? this.pushToStack(url) : this.resetStack(url);
     }
     this.activePage = new Page(title, isChild);
+  }
+
+  public startLoading() {
+    this.store.dispatch(SettingsActions.BeginLoadingAction());
+  }
+
+  public finishLoading() {
+    this.store.dispatch(SettingsActions.SuccessLoadingAction());
   }
 }

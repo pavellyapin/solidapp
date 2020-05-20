@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import SettingsState from '../store/settings/settings.state';
-import * as SettingsActions from 'src/app/services/store/settings/settings.action';
 
 @Injectable({
   providedIn: 'root',
@@ -61,4 +58,15 @@ export class UtilitiesService {
             resolve(false);
         }); ;
     }
+
+    scrollTop() {
+        let scrollToTop = window.setInterval(() => {
+            let pos = window.pageYOffset;
+            if (pos > 0) {
+                window.scrollTo(0, pos - 1000); // how far to scroll on each step
+            } else {
+                window.clearInterval(scrollToTop);
+            }
+        }, 5);
+      }
 }

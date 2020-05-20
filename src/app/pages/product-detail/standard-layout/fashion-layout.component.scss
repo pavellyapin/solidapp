@@ -35,7 +35,7 @@
   text-align: center;
   padding-left: 30px;
 }
-
+.standard {
 mat-radio-button {
   margin-right: 20px;
 }
@@ -61,6 +61,7 @@ mat-radio-button {
   border-color: white;
 }
 
-::ng-deep .mat-radio-button:hover {
-  border-color: $primary !important;
+  ::ng-deep .mat-radio-button:hover {
+    border-color: $primary !important;
+  }
 }

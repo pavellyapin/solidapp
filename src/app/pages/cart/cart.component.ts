@@ -15,6 +15,7 @@ import { CartCardsService } from './cart-cards/product-cards.service';
 import { CartService } from './cart.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-cart',
@@ -51,15 +52,16 @@ export class CartComponent implements OnInit {
                   private variantPipe : VariantsPipe,
                   private cartService : CartService,
                   private matIconRegistry: MatIconRegistry,
-                  private domSanitizer: DomSanitizer)
+                  private domSanitizer: DomSanitizer,
+                  private utilService: UtilitiesService)
         {
           this.matIconRegistry.addSvgIcon(
             'doo-approved',
-            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/approved-green.svg")
+            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/approved-green.svg")
           );
           this.matIconRegistry.addSvgIcon(
             'paypal',
-            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/paypal.svg")
+            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/paypal.svg")
           );
 
           this.cartId$ = store.pipe(select('cart' , 'cartId'));
@@ -144,6 +146,10 @@ export class CartComponent implements OnInit {
 
       
   }
+
+  ngAfterViewInit() {
+    this.navService.finishLoading();
+  }
   
 
   calculateTotal(): void {
@@ -161,20 +167,9 @@ export class CartComponent implements OnInit {
     );
   }
 
-  scrollTop() {
-    let scrollToTop = window.setInterval(() => {
-        let pos = window.pageYOffset;
-        if (pos > 0) {
-            window.scrollTo(0, pos - 1000); // how far to scroll on each step
-        } else {
-            window.clearInterval(scrollToTop);
-        }
-    }, 5);
-  }
-
   continueToCheckout() {
 
-    this.scrollTop();
+    this.utilService.scrollTop();
 
     if  (this.checkoutStage == 'checkout') {
       this.loading = true;
@@ -213,7 +208,7 @@ export class CartComponent implements OnInit {
       this.checkoutStage = 'shipping';
       this.router.navigateByUrl('/cart/checkout/shipping');
     } else {
-      this.navService.resetStack([]);
+      this.navService.resetStack(['cart']);
       this.router.navigateByUrl(this.previousUrl);
     }
   }

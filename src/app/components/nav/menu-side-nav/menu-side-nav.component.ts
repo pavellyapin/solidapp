@@ -14,17 +14,17 @@ export class MenuSideNavComponent implements OnInit {
     @Input() set categories(value: Entry<any>[]) {
 
         this._categories = value;
+        if (this._rootCategories) {
+          this.buildMenu();
+      }
  
      }
 
      _rootCategories: any[];
 
      @Input() set rootCategories(value: any[]) {
-
         this._rootCategories = value;
-        if (this._categories) {
-            this.buildMenu();
-        }
+
      }
 
     

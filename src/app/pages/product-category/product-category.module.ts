@@ -15,6 +15,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -23,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     PipesModule,
     NavModule,
+    MatSidenavModule,
     ProductCategoryRoutingModule,
     TranslateModule,
     MatGridListModule,
@@ -30,6 +36,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatListModule,
     MatIconModule,
+    MatChipsModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatSelectModule,
     FlexLayoutModule,
     LazyLoadImageModule
   ],

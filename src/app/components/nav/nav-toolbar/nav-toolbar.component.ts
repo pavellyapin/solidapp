@@ -41,7 +41,10 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public navigateCategory(link) {
-    this.navService.resetStack([]);
+    if (this.navService.getCurrentUrl().pop() != link) {
+      this.navService.startLoading();
+    }
+    this.navService.resetStack([link]);
     this.onExpandMainMenu();
     this.router.navigateByUrl('cat/' + link);
   }
@@ -101,14 +104,21 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public goToProfile() {
+    if (this.navService.getCurrentUrl().pop() != 'account/profile') {
+      this.navService.startLoading();
+    }
     this.router.navigateByUrl('account/profile');
   }
 
   public goToCart() {
+    if (this.navService.getCurrentUrl().pop() != 'cart') {
+      this.navService.startLoading();
+    }
     this.router.navigateByUrl('cart');
   }
 
   public goToFavorites() {
+    this.navService.startLoading();
     this.router.navigateByUrl('account/favorites');
   }
 }

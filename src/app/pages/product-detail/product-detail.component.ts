@@ -10,6 +10,8 @@ import * as CartActions from '../../services/store/cart/cart.action';
 import * as UserActions from '../../services/store/user/user.action';
 import UserState from 'src/app/services/store/user/user.state';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
+import SettingsState from 'src/app/services/store/settings/settings.state';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
 
 @Component({
   selector: 'doo-product-detail',
@@ -20,20 +22,25 @@ export class ProductDeatilComponent implements OnInit {
 
   layout : string = 'fashion';
   product$: Observable<Entry<any>>;
+  settings$: Observable<SettingsState>;
   favorites$:Observable<FavoriteItem[]>;
   ProductSubscription: Subscription;
   UserSubscription: Subscription;
+  SettingsSubscription : Subscription;
   productDetails:Entry<any>;
   isFavorite:FavoriteItem;
   cartItemForm:FormGroup;
   formSubmit = false;
   productVariants: Map<string,[any]> = new Map();
   displayedMediaIndex:number = 0;
+  resolution : any;
 
-      constructor(private store: Store<{ products: ProductsState , user:UserState }>)
+      constructor(private navService: NavigationService,
+                  private store: Store<{ products: ProductsState , user:UserState , settings: SettingsState }>)
         {
           this.product$ = store.pipe(select('products' , 'productDetails'));
           this.favorites$ = store.pipe(select('user','favorites'));
+          this.settings$ = store.pipe(select('settings'));
         }
 
   ngOnInit() {
@@ -71,6 +78,18 @@ export class ProductDeatilComponent implements OnInit {
       })
     )
     .subscribe();
+
+    this.SettingsSubscription = this.settings$
+    .pipe(
+      map(x => {
+        this.resolution = x.resolution;
+      })
+    )
+    .subscribe();
+  }
+
+  ngAfterViewInit() {
+    this.navService.finishLoading();
   }
 
   addProductToCart() {
@@ -125,6 +144,7 @@ export class ProductDeatilComponent implements OnInit {
   ngOnDestroy(){
     this.ProductSubscription.unsubscribe();
     this.UserSubscription.unsubscribe();
+    this.SettingsSubscription.unsubscribe();
   }
 
 }

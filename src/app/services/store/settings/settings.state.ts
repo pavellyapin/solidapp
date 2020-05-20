@@ -4,6 +4,7 @@ export default class SettingsState {
   siteConfig?: Entry<any>;
   categories? : Entry<any>[];
   resolution? : any ;
+  loading? : boolean;
   SettingsError: Error;
 }
 

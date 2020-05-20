@@ -1,11 +1,11 @@
-<div fxLayout="row">
-  <span class = "doo-pointer" [routerLink] = "'/'">
+<div fxLayout="row" class = "doo-crumbs">
+  <span class = "doo-pointer crumb-item" [routerLink] = "'/'" style = "opacity: 0.5">
     {{'nav.home' | translate}}
   </span>
-  <span *ngFor = "let crumb of breadCrumbs" class = "doo-pointer" [routerLink] = "crumb.link">
-   <span style = "padding:0 10px">/</span> {{crumb.title}} 
+  <span *ngFor = "let crumb of breadCrumbs" [routerLink] = "crumb.link" style = "opacity: 0.5">
+   <span style = "padding:0 10px">/</span> <span class = "doo-pointer crumb-item">{{crumb.title}} </span>
   </span>
-  <span *ngIf="productTitle">
+  <span *ngIf="productTitle" style = "font-weight: bold">
     <span style = "padding:0 10px">/</span> {{productTitle}} 
   </span>
 </div>

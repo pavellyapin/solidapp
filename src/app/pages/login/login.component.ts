@@ -33,7 +33,8 @@ export class LoginComponent implements OnInit , OnDestroy{
 
   ngOnInit() {
     this.errorMessage = '';
-    this.navService.popFromStack();
+    //this.navService.popFromStack();
+    this.navService.resetStack(['account']);
     if (!this.authService.isLoggedIn()) {
       this.navigateTo();
     }
@@ -42,17 +43,24 @@ export class LoginComponent implements OnInit , OnDestroy{
       this.store.dispatch(UserActions.BeginGetUserAddressInfoAction());
       this.store.dispatch(CartActions.BeginResetCartIdAction());
       this.router.navigate(['']);
+      this.navService.finishLoading();
     });
   }
+
+  ngAfterViewInit() {
+    this.navService.finishLoading();
+  }
+  
 
   public async login(username: string, pw: string) {
 
     const creds = { email: username, password: pw };
+    this.navService.startLoading();
     this.store.dispatch(UserActions.BeginUserLoginAction({ payload: creds }));
   }
 
   public async register(username: string, pw: string) {
-
+    this.navService.startLoading();
     const creds = { email: username, password: pw };
     this.store.dispatch(UserActions.BeginRegisterUserAction({ payload: creds }));
   }

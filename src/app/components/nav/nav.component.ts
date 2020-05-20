@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {NavigationService, Page} from '../../services/navigation/navigation.service';
 import {NavRoute} from '../../services/navigation/nav-routing';
@@ -16,6 +16,8 @@ import { MediaObserver } from '@angular/flex-layout';
 import { CartItem } from 'src/app/services/store/cart/cart.model';
 import { ContentfulService } from 'src/app/services/contentful/contentful.service';
 import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-nav',
@@ -33,6 +35,8 @@ export class NavComponent implements OnInit {
   cart$: Observable<CartItem[]>;
   CartSubscription: Subscription;
   siteSettings: Entry<any>;
+  categories$: Observable<Entry<any>[]>;
+  CategoriesSubscription: Subscription;
   categories: Entry<any>[];
   rootCategories: Entry<any>[];
   cartItemCount:number = 0;
@@ -42,9 +46,13 @@ export class NavComponent implements OnInit {
   colsBig: Observable<number>;
   rowsBig: Observable<number>;
   resolution : any;
+  loading : any;
 
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer,
     private router: Router,
     private authService: AuthService,
     private mediaObserver: MediaObserver,
@@ -56,7 +64,28 @@ export class NavComponent implements OnInit {
         this.cartItemsCards = cards;
       });
     this.settings$ = store.pipe(select('settings'));
+    this.categories$ = store.pipe(select('settings', 'categories'));
     this.cart$ = store.pipe(select('cart','items'));
+
+    this.matIconRegistry.addSvgIcon(
+      'doo-basket',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/basket.svg")
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'doo-profile',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/profile.svg")
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'doo-favorite',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/favorite.svg")
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'doo-filters',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/filters.svg")
+    );
   }
 
   ngOnInit() {
@@ -65,8 +94,17 @@ export class NavComponent implements OnInit {
       map(x => {
         this.resolution = x.resolution;
         this.siteSettings = x.siteConfig;
-        if (x.categories) {
-          this.categories = x.categories.map((item)=>({
+        this.loading = x.loading;
+        this.changeDetectorRef.detectChanges();
+      })
+    )
+    .subscribe();
+
+    this.CategoriesSubscription = this.categories$
+    .pipe(
+      map(x => {
+        if (x) {
+          this.categories = x.map((item)=>({
             ...item,
             links: []
           }));
@@ -234,11 +272,13 @@ export class NavComponent implements OnInit {
   }
 
   public goToCart() {
+    this.navService.startLoading();
     this.router.navigateByUrl('cart');
   }
 
   public goToFromMobileNav(url) {
     this.toggleMobileSideMenu();
+    this.navService.startLoading();
     this.router.navigateByUrl(url);
   }
 
@@ -249,5 +289,6 @@ export class NavComponent implements OnInit {
   ngOnDestroy(): void {
     this.SettingsSubscription.unsubscribe();
     this.CartSubscription.unsubscribe();
+    this.CategoriesSubscription.unsubscribe();
   }
 }
