@@ -15,7 +15,9 @@
 
     </div>
     <div fxLayout = "row" fxFlex = "90" fxLayoutAlign = "center" >
-            <img  class = "full-width doo-pointer" 
-            [src]="post.fields.media[0].fields.file.url">
+            <img #postImg  class = "full-width doo-pointer post-placeholder"
+                [lazyLoad]="post.fields.media[0].fields.file.url"
+                [defaultImage]="'assets/placeholder-1.svg'"
+                (onStateChange)="myCallbackFunction($event)">
     </div>
 </div>

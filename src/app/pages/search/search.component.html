@@ -1,0 +1,129 @@
+
+<div fxLayout = "column" class = "doo-search-summary">
+  <div fxLayout = "row" fxLayoutAlign = "center">
+    {{productsLoaded?.length}} SEARCH RESULTS FOR
+  </div>
+  <div fxLayout = "row" class = "mat-display-1" fxLayoutAlign = "center">
+      "{{route.snapshot.params['key']}}"
+    </div>
+    <div fxLayout = "row" fxLayoutAlign = "center">
+        <mat-chip-list fxShow fxHide.xs>
+            <mat-chip *ngFor = "let cayegory of relatedCategories"
+                      color = "primary"
+                      selected
+                      [removable]="false">{{cayegory.fields.title}}
+                    </mat-chip>
+          </mat-chip-list>
+    </div>
+</div>
+
+
+<div fxLayout = "column" class = "doo-page-header">
+    <div fxLayout = "row" fxLayoutAlign = "space-between">
+      <div fxLayout = "row" fxLayoutGap = "10px">
+        <button mat-button (click)="filtersOpen = !filtersOpen" class = "doo-filters-btn">
+          <div fxLayout = "column" fxLayoutAlign = "center center">
+              <span>HIDE FILTERS</span>
+              <mat-icon svgIcon="doo-filters"></mat-icon>
+          </div>
+        </button>
+        <mat-chip-list fxShow fxHide.xs>
+            <mat-chip *ngFor = "let filter of filters"
+                      color = "primary"
+                      selected
+                      [removable]="true"
+                      (removed)="removeFilterChip(filter)">{{filter.name}}
+                       <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+          </mat-chip-list>
+        </div>
+        <mat-form-field fxFlex = "7" fxFlex.xs = "50" appearance="outline" color = "primary" class = "doo-sort-select">
+            <mat-label>SORT BY</mat-label>
+            <mat-select #sortSelect (selectionChange) = "sortBy($event)">
+                    <mat-option [value] = "'price-low-high'">
+                           Price low to high
+                    </mat-option>
+                    <mat-option [value] = "'price-high-low'">
+                        Price high to low
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+                       
+<mat-sidenav-container class = "doo-filters-nav">
+    <mat-sidenav [opened]="filtersOpen" 
+                  [mode]="navMode" 
+                  position = "start"
+                  [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters-mobile'">
+
+                  <mat-accordion [multi] = "true">
+                      <mat-expansion-panel [hideToggle] = "true" 
+                                           (opened)="colorPanelOpenState = true" 
+                                           (closed)="colorPanelOpenState = false"
+                                           [expanded] = "true"
+                                           class="mat-elevation-z0">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            {{'product.color' | translate}}
+                          </mat-panel-title>
+                          <mat-panel-description fxLayout= "row" fxLayoutAlign = "end center">
+                              <mat-icon>{{colorPanelOpenState ? 'remove' : 'add'}}</mat-icon>
+                          </mat-panel-description> 
+                        </mat-expansion-panel-header>
+                        <div fxLayout= "column">
+                            <div fxLayout= "column" fxFlex = "100" >
+                              <div fxLayout= "column" fxLayoutAlign = "start start">
+                                  <mat-checkbox *ngFor="let variant of productVariants.get('color')" 
+                                                [value]="variant.name"
+                                                [id] = "variant.name + '-color'"
+                                                #checkboxVariants
+                                                (change)="filterToggle($event , 'color')">{{variant.name}}</mat-checkbox>
+                              </div>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                      <mat-expansion-panel [hideToggle] = "true"
+                                           (opened)="sizePanelOpenState = true" 
+                                           (closed)="sizePanelOpenState = false"
+                                           [expanded] = "true" 
+                                           class="mat-elevation-z0">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                              {{'product.size' | translate}}
+                          </mat-panel-title>
+                          <mat-panel-description fxLayout= "row" fxLayoutAlign = "end center">
+                              <mat-icon>{{sizePanelOpenState ? 'remove' : 'add'}}</mat-icon>
+                          </mat-panel-description> 
+                          </mat-expansion-panel-header>
+                          <div fxLayout= "column">
+                              <div fxLayout= "column" fxFlex = "100" >
+                                <div fxLayout= "column" fxLayoutAlign = "start start">
+                                    <mat-checkbox *ngFor="let variant of productVariants.get('size')" 
+                                    [value]="variant.name"
+                                    [id] = "variant.name + '-size'"
+                                    #checkboxVariants
+                                    (change)="filterToggle($event , 'size')">{{variant.name}}</mat-checkbox>
+                                </div>
+                            </div>
+                          </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>                
+    </mat-sidenav>
+    <mat-sidenav-content>
+    <div fxLayout= "column" fxFlex = "100">
+
+        <mat-grid-list  [cols]="cols | async">
+            <mat-grid-tile *ngFor="let card of productCards"
+                          [colspan]="card.input.cols.value | async"
+                          [rowspan]="card.input.rows.value | async">
+                            <doo-products-spawner [card]="card">
+
+                            </doo-products-spawner>
+                          
+            </mat-grid-tile>
+          </mat-grid-list> 
+    </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

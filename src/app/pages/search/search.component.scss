@@ -1,0 +1,94 @@
+@import 'src/css/_variables.scss';
+
+mat-sidenav-container {
+    background-color: white;
+}
+
+.doo-page-header {
+    padding : 10px 5% 0px 5%;
+
+    doo-bread-crumbs {
+        padding-bottom : 20px;
+    }
+    
+    .mat-title {
+        letter-spacing: 4px;
+    }
+
+    mat-chip{
+        font-size: 12px;
+        color: white !important;
+    }
+}
+
+.doo-filters-btn {
+    font-size: 10px;
+    background: $lighter-grey;
+    span {
+        line-height: 15px;
+    }
+    mat-icon {
+        height: 20px;
+        width: 20px;
+        opacity: 0.7;
+      }
+}
+
+
+.doo-sort-select {
+    font-size  : 10px;
+}
+
+.doo-nav-filters {
+    padding-left: 5%;
+    width: 20%;
+}
+
+.doo-nav-filters-mobile {
+    padding-left: 0%;
+    width: 80%;
+}
+
+.doo-filters-nav {
+    padding-right: 5%;
+    mat-expansion-panel-header {
+        //height: 30px !important;
+    }
+
+        mat-checkbox {
+            padding : 5px 0px;
+            letter-spacing: 2px;
+            font-size: 12px;
+        }
+
+        .mat-drawer-side{
+            border: none;
+        }
+
+        mat-panel-title {
+            font-size: 12px;
+            letter-spacing: 4px;
+        }
+
+        ::ng-deep .mat-checkbox-frame {
+            border-radius: 1px !important;
+            border-width: 1px !important;
+            border-color: $light-grey;
+            padding : 5px !important;
+
+        }
+
+        ::ng-deep .mat-checkbox-inner-container {
+            height: 20px !important;
+            width: 20px !important;
+            margin-right : 15px !important;
+        }
+
+        ::ng-deep.mat-expansion-panel-header {
+            //padding : 0px 0px !important;
+        }
+}
+
+.doo-search-summary {
+    background: $lighter-grey;
+}

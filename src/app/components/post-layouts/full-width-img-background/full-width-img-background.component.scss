@@ -17,3 +17,21 @@
     letter-spacing: 4px;
     color: white;
 }
+
+.post-placeholder {
+    margin:15px;
+    animation-duration: 1.5s;
+    animation-name: fade;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  
+  @keyframes fade {
+    from {
+      opacity: 0.5;
+    }
+  
+    to {
+      opacity: 0.2;
+    }
+  }

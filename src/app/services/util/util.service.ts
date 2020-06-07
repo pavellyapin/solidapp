@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilitiesService {
+    
 
   constructor() {
   }
@@ -69,4 +70,15 @@ export class UtilitiesService {
             }
         }, 5);
       }
+
+     shuffleArray(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+        return a;
+    }
 }

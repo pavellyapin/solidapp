@@ -1,0 +1,28 @@
+<div fxLayout = "row">
+        <mat-icon *ngFor = "let star of stars" 
+                  #rateStar
+                  (mouseenter) = "hoverStar(star)"
+                  (mouseleave) = "hoverStar(0)"
+                  (click) = "starClick(star)"
+                  [ngClass] = "editable ? 'doo-rate-icon doo-pointer' : 'doo-rate-icon'"
+                  svgIcon="doo-star-outline">
+        </mat-icon>
+</div>
+<svg style="height: 1px;position : absolute">
+        <defs>
+                <linearGradient id="full" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" class = "svg-primary" />
+                        <stop offset="100%" class = "svg-primary" />
+                </linearGradient>
+                <linearGradient id="half" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" class = "svg-primary" />
+                        <stop offset="50%" class = "svg-primary" />
+                        <stop offset="50%"  class = "svg-white"/>
+                        <stop offset="100%" class = "svg-white" />
+                </linearGradient>
+                <linearGradient id="empty" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" class = "svg-white" />
+                        <stop offset="100%" class = "svg-white" />
+                </linearGradient>
+        </defs>
+</svg>

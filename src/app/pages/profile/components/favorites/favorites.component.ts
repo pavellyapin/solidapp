@@ -6,7 +6,6 @@ import { FavoritesCardsService } from './product-cards/favorites-cards.service';
 import { MediaObserver } from '@angular/flex-layout';
 import { Card } from 'src/app/components/cards/card';
 import { FavoritesCardComponent } from './product-cards/product-card/product-card.component';
-import { CartItem } from 'src/app/services/store/cart/cart.model';
 import { ContentfulService } from 'src/app/services/contentful/contentful.service';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Router } from '@angular/router';

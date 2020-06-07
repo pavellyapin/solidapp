@@ -6,6 +6,9 @@
                  (expandMainMenu)="expandMainMenu()"
                  (toggleSideNav)="toggleSideNav()"
                  (toggleMobileSideMenu) = "toggleMobileSideMenu()"
+                 (startSearchProducts) = "startSearchProducts($event)"
+                 [filteredOptions] = "filteredOptions"
+                 [searchControl] = "searchControl"
                  [mainMenuOpen] = "mainMenuOpen"
                  [siteSettings] = "siteSettings"
                  [cartItemCount] = "cartItemCount"
@@ -15,7 +18,7 @@
                  [activePage]="getActivePage()"
                  [previousUrl]="getPreviousUrl()">
 </app-nav-toolbar>
-<div fxLayout = "column" *ngIf = "resolution != 'xs'" fxLayoutAlign = "center center" class = "mat-caption bottom-news-feed-row">
+<div fxLayout = "column" *ngIf = "false" fxLayoutAlign = "center center" class = "mat-caption bottom-news-feed-row">
     FREE DELIVERY FROM $50 AND EASY RETURNS - RETURNS EXTENDED TO 60 DAYS
   </div>
 <mat-sidenav-container >
@@ -52,7 +55,10 @@
           </mat-grid-list> 
   </mat-sidenav>
   <mat-sidenav-content>
-      <div *ngIf = "mainMenuOpen || loading" fxLayout = "row" fxLayoutAlign="center start" (click) = "hideMainMenu()" class = "doo-overlay">
+      <div *ngIf = "mainMenuOpen" fxLayout = "row" fxLayoutAlign="center start" (click) = "hideMainMenu()" class = "doo-overlay">
+          
+      </div>
+      <div *ngIf = "loading && this.navService.getActivePage().title != 'Home'" fxLayout = "row" fxLayoutAlign="center start" class = "doo-overlay">
           <div class="lds-dual-ring"></div>
       </div>
     <router-outlet></router-outlet>

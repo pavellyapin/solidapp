@@ -70,6 +70,23 @@ export class FirestoreService {
                 postal:postal}));
     }
 
+    //Product Reviews
+
+    addProductReview(productId , review) {
+        return from (this.firestore
+            .collection("products")
+            .doc(productId).collection("reviews").add(review));
+    }
+
+    getProductReviews(productId) {
+            return from (this.firestore.collection("products")
+            .doc(productId).collection("reviews").snapshotChanges());
+    }
+
+    getReviews() {
+
+    }
+
     //Favorites-------------------------------------------------------------------------
 
     addToFavorites(productId) {

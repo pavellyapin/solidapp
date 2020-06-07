@@ -1,6 +1,7 @@
 <div [ngSwitch]="layout">
     <doo-product-detail-fashion-layout 
     [productDetails] = "productDetails" 
+    [productReviews] = "productReviews"
     [cartItemForm] = "cartItemForm"
     [productVariants] = "productVariants"
     [isFavorite] = "isFavorite"
@@ -10,4 +11,10 @@
     (addToCart) = "addProductToCart()"
     *ngSwitchCase="'fashion'">
     </doo-product-detail-fashion-layout>
+</div>
+<div [ngSwitch]="post.sys.contentType.sys.id" *ngFor = "let post of pageLayout?.fields.posts">
+                <doo-widgets *ngSwitchCase="'widget'" [widget] = "post">
+                </doo-widgets>
+                <doo-post-layouts *ngSwitchCase="'post'" [post] = "post">
+                </doo-post-layouts>
 </div>

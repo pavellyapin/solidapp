@@ -22,12 +22,19 @@ export class ProductDeatilComponent implements OnInit {
 
   layout : string = 'fashion';
   product$: Observable<Entry<any>>;
-  settings$: Observable<SettingsState>;
+  
+  pages$: Observable<Entry<any>[]>;
+  productReviews$: Observable<any[]>;
+  resolution$: Observable<string>;
   favorites$:Observable<FavoriteItem[]>;
   ProductSubscription: Subscription;
+  ProductReviewsSubscription: Subscription;
+  PagesSubscription: Subscription;
   UserSubscription: Subscription;
   SettingsSubscription : Subscription;
   productDetails:Entry<any>;
+  productReviews: any[];
+  pageLayout : Entry<any>;
   isFavorite:FavoriteItem;
   cartItemForm:FormGroup;
   formSubmit = false;
@@ -36,14 +43,20 @@ export class ProductDeatilComponent implements OnInit {
   resolution : any;
 
       constructor(private navService: NavigationService,
-                  private store: Store<{ products: ProductsState , user:UserState , settings: SettingsState }>)
+                  private store: Store<{ products: ProductsState , 
+                                         user:UserState , 
+                                         settings: SettingsState }>)
         {
           this.product$ = store.pipe(select('products' , 'productDetails'));
+          this.productReviews$ = store.pipe(select('products' , 'reviews'));
+          
           this.favorites$ = store.pipe(select('user','favorites'));
-          this.settings$ = store.pipe(select('settings'));
+          this.pages$ = store.pipe(select('settings' , 'pages'));
+          this.resolution$ = store.pipe(select('settings' , 'resolution'));
         }
 
   ngOnInit() {
+    
 
     this.cartItemForm = new FormGroup({        
       size:  new FormControl(''),
@@ -57,6 +70,29 @@ export class ProductDeatilComponent implements OnInit {
         this.productDetails = x;
         if (this.productDetails && this.productDetails.fields.variants) {
           this.sortVariants();
+        }
+        this.navService.finishLoading();
+      })
+    )
+    .subscribe();
+
+    this.ProductReviewsSubscription = this.productReviews$
+    .pipe(
+      map(x => {
+        this.productReviews = x;
+      })
+    )
+    .subscribe();
+
+    this.PagesSubscription = this.pages$
+    .pipe(
+      map(x => {
+        if (x) {
+          this.pageLayout = x.filter(page=> {
+            if(page.fields.type == "product") {
+              return page;
+            }
+          }).pop();
         }
       })
     )
@@ -79,10 +115,10 @@ export class ProductDeatilComponent implements OnInit {
     )
     .subscribe();
 
-    this.SettingsSubscription = this.settings$
+    this.SettingsSubscription = this.resolution$
     .pipe(
       map(x => {
-        this.resolution = x.resolution;
+        this.resolution = x;
       })
     )
     .subscribe();
@@ -91,6 +127,8 @@ export class ProductDeatilComponent implements OnInit {
   ngAfterViewInit() {
     this.navService.finishLoading();
   }
+
+  
 
   addProductToCart() {
     if(this.cartItemForm.valid) {
@@ -129,6 +167,8 @@ export class ProductDeatilComponent implements OnInit {
     });
   }
 
+
+
   favoriteToggle($event) {
     if (!$event) {
       this.store.dispatch(UserActions.BeginAddToFavoritesAction({payload : this.productDetails.sys.id}));
@@ -143,7 +183,9 @@ export class ProductDeatilComponent implements OnInit {
 
   ngOnDestroy(){
     this.ProductSubscription.unsubscribe();
+    this.ProductReviewsSubscription.unsubscribe();
     this.UserSubscription.unsubscribe();
+    this.PagesSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
   }
 

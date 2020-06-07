@@ -5,6 +5,14 @@
   width: 100%;
 }
 
+.doo-category-card {
+  ::ng-deep .doo-rate-icon {
+      padding : 2px 2px;
+      height: 15px;
+      width: 15px;
+    } 
+}
+
 .doo-stroked-price {
   text-decoration: line-through;
   opacity: 0.5;

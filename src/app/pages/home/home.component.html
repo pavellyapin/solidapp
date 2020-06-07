@@ -1,7 +1,12 @@
-
 <div fxLayout="column" fxLayoutGap="50px">
-            <doo-post-layouts *ngFor = "let post of posts" [post] = "post">
-            </doo-post-layouts>
+        <div [ngSwitch]="post.sys.contentType.sys.id" *ngFor = "let post of posts">
+                <doo-widgets *ngSwitchCase="'widget'" [widget] = "post">
+                </doo-widgets>
+                <doo-post-layouts *ngSwitchCase="'post'" [post] = "post">
+                </doo-post-layouts>
+        </div>
 </div>
+
+
 
 

@@ -20,6 +20,19 @@ export const SuccessGetActiveCategoriesAction = createAction(
   props<{ payload: any }>()
 );
 
+//Get Pages
+
+export const BeginGetAllPagesAction = createAction(
+  '[Pages] - Begin LOAD Pages'
+);
+
+export const SuccessGetAllPagesAction = createAction(
+  '[Pages] - Success LOAD Pages',
+  props<{ payload: any }>()
+);
+
+
+
 //Resolution
 export const BeginSetResolutionAction = createAction(
   '[Resolution] - Begin Set resolution'

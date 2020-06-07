@@ -15,8 +15,16 @@ const reducer = createReducer(
     return { ...state, loadedProducts: payload, ProductsError: null };
   }),
 
+  on(ProductsActions.SuccessSearchProductsAction, (state: ProductsState, { payload }) => {
+    return { ...state, searchResults: payload, ProductsError: null };
+  }),
+
   on(ProductsActions.BeginLoadProductDetailsAction, (state: ProductsState, { payload }) => {
     return { ...state, productDetails: payload, ProductsError: null };
+  }),
+
+  on(ProductsActions.SuccessLoadProductReviewsAction, (state: ProductsState, { payload }) => {
+    return { ...state, reviews: payload, ProductsError: null };
   }),
 
   on(ProductsActions.ErrorProductsAction, (state: ProductsState, error: Error) => {

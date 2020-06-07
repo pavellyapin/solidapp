@@ -15,7 +15,7 @@ export class ProfileGuard implements CanActivate {
   }
 
   canActivate(): Observable<boolean> {
-    return this.afAuth.authState.pipe(first()).pipe(
+    return this.afAuth.authState.pipe(
       (map(user => {
         if (!user) {
           this.store.dispatch(SettingsActions.SuccessLoadingAction());

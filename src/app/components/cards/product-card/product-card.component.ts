@@ -5,11 +5,12 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import UserState from 'src/app/services/store/user/user.state';
-import * as UserActions from '../../../../services/store/user/user.action';
+import * as UserActions from 'src/app/services/store/user/user.action';
 import { Observable, Subscription } from 'rxjs';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import { map } from 'rxjs/operators';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 
 @Component({
   selector: 'doo-product-card',
@@ -18,15 +19,18 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 })
 export class ProductCardComponent extends AbstractCardComponent implements OnInit {
 
-  imageIndex:number = 0;
+  layout : string = 'fashion';
   favorites$:Observable<FavoriteItem[]>;
+  productReviews : any;
   UserSubscription: Subscription;
+  ReviewsSubscription: Subscription;
   isFavorite:FavoriteItem;
   productVariants: Map<string,[any]> = new Map();
 
   constructor(private injector: Injector, 
               private navService: NavigationService,
               private router: Router,
+              private firebase: FirestoreService,
               private store: Store<{ user:UserState }>,
               private utilService: UtilitiesService) {
     super(injector.get(Card.metadata.NAME),
@@ -42,7 +46,18 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   }
 
   ngOnInit() {
-    this.UserSubscription = this.favorites$
+    this.UserSubscription = this.firebase.getProductReviews(this.object.sys.id)
+    .pipe(
+      map(reviewsSnap => {
+        this.productReviews = Array<any>();
+        reviewsSnap.forEach(element => {
+          this.productReviews.push( element.payload.doc.data());
+        });
+      })
+    )
+    .subscribe();
+
+    this.ReviewsSubscription = this.favorites$
     .pipe(
       map(favorites => {
         this.isFavorite = undefined;
@@ -57,7 +72,19 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       })
     )
     .subscribe();
+    
     this.sortVariants();
+  }
+
+  getOverallRate() {
+    let sum = 0 ;
+    if (this.productReviews) {
+      this.productReviews.forEach(review => {
+        sum += review.rate;
+      });
+      return sum / this.productReviews.length;
+    }
+    return 0;
   }
 
   sortVariants() {
@@ -75,10 +102,13 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
     this.navService.startLoading();
     this.navService.resetStack([]);
     this.utilService.scrollTop();
-    this.router.navigateByUrl(this.routerLink);
+    this.router.navigateByUrl('/product', { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl(this.routerLink);
+  }); 
+    
   }
 
-  toggleFavorites(isFavorite) {
+  favoriteToggle(isFavorite) {
     if (!isFavorite) {
       this.store.dispatch(UserActions.BeginAddToFavoritesAction({payload : this.object.sys.id}));
     } else {
@@ -86,18 +116,9 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
     }
   }
 
-  mouseEnter() {
-    if (this.object.fields.media.length > 1) {
-      this.imageIndex = 1;
-    }
-  }
-
-  mouseLeave() {
-    this.imageIndex = 0;
-  }
-
   ngOnDestroy(){
     this.UserSubscription.unsubscribe();
+    this.ReviewsSubscription.unsubscribe();
   }
 
 }

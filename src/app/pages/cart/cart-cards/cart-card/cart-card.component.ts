@@ -38,13 +38,15 @@ export class CartCardComponent extends AbstractCardComponent implements OnInit {
     this.UserSubscription = this.favorites$
     .pipe(
       map(x => {
-        this.isFavorite = undefined;
-        x.forEach(element => {
-          if (this.object.sys.id == element.product.productId) {
-            this.isFavorite = element;
-            return
-          }
-        });
+        if (x) {
+          x.forEach(element => {
+            if (this.object.sys.id == element.product.productId) {
+              this.isFavorite = element;
+              return
+            }
+          });
+        }
+
       })
     )
     .subscribe();

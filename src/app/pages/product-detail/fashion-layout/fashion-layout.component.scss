@@ -87,11 +87,13 @@ doo-bread-crumbs {
 
 
   
-::ng-deep .mat-radio-container{
-  display: none !important;
-}
+
 
 .color-variant {
+  ::ng-deep .mat-radio-container{
+    display: none !important;
+  }
+
   padding-bottom: 20px;
   padding-top : 30px;
   .color-label{
@@ -123,6 +125,10 @@ doo-bread-crumbs {
 }
 
 .size-variant {
+  ::ng-deep .mat-radio-container{
+    display: none !important;
+  }
+  
   padding-bottom: 50px;
   
   mat-radio-button {

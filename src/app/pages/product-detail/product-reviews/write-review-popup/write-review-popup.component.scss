@@ -1,0 +1,20 @@
+@import 'src/css/_variables.scss';
+  
+
+#doo-write-review-modal{
+  ::ng-deep .doo-rate-icon {
+    padding : 10px 10px;
+    height: 34px;
+    width: 34px;
+  }
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 1em !important;
+  }
+}
+
+.recommend-radio-group{
+  mat-radio-button {
+    padding : 10px 10px;
+  }
+}

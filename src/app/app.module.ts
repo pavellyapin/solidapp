@@ -26,6 +26,7 @@ import { AngularFireFunctionsModule ,FUNCTIONS_ORIGIN } from '@angular/fire/func
 import { ProductsReducer } from './services/store/product/product.reducer';
 import { ProductsEffects } from './services/store/product/product.effects';
 import { CartEffects } from './services/store/cart/cart.effects';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({keys: ['user','cart'],rehydrate: true})(reducer);
@@ -40,6 +41,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AppRoutingModule,
     NavModule,
     PipesModule,
+    FlexLayoutModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireFunctionsModule,

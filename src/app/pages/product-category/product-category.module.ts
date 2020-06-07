@@ -2,8 +2,6 @@ import {NgModule} from '@angular/core';
 import { ProductCategoryComponent } from './product-category.component';
 import { CommonModule } from '@angular/common';
 import { ProductCategoryRoutingModule } from './product-category-routing.module';
-import { ProductCardComponent } from './product-cards/product-card/product-card.component';
-import { ProductCardsSpawnerComponent } from './product-cards/product-cards-spawner/product-cards-spawner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProductCardsService } from './product-cards/product-cards.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -20,14 +18,16 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatSelectModule} from '@angular/material/select';
+import { CardsModule } from 'src/app/components/cards/cards.module';
 
 
 @NgModule({
-  declarations: [ProductCategoryComponent,ProductCardComponent,ProductCardsSpawnerComponent],
+  declarations: [ProductCategoryComponent],
   imports: [
     CommonModule,
     PipesModule,
     NavModule,
+    CardsModule,
     MatSidenavModule,
     ProductCategoryRoutingModule,
     TranslateModule,
@@ -44,7 +44,7 @@ import {MatSelectModule} from '@angular/material/select';
     LazyLoadImageModule
   ],
   providers: [ProductCardsService],
-  entryComponents: [ProductCardComponent]
+  entryComponents: []
 })
 export class ProductCategoryModule {
 }

@@ -15,6 +15,7 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   @Output() addToCart =  new EventEmitter();
 
   @Input() productDetails : any;
+  @Input() productReviews : any;
   @Input() cartItemForm:FormGroup;
   @Input() productVariants: Map<string,[any]>;
   @Input() isFavorite:FavoriteItem;
@@ -37,8 +38,6 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
         }
 
   ngOnInit() {
-
-    console.log('productDetails',this.productDetails);
   }
 
   ngAfterViewInit() {
@@ -59,7 +58,7 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   checkScroll() {
-    if (window.scrollY > this.mediaElementEnd.nativeElement.offsetHeight -500) {
+    if (window.scrollY > this.mediaElementEnd.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
       if (this.bigScreens.includes(this.resolution)) {
         this.renderer.removeClass(this.stickyProductDetail.nativeElement, 'sticky-product-detail');
         this.renderer.removeClass(this.stickyInnerCont.nativeElement, 'sticky-inner-cont');

@@ -35,6 +35,22 @@ export class SettingsEffects {
     )
   );
 
+  GetAllPages$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(SettingsActions.BeginGetAllPagesAction),
+    mergeMap(action =>
+      this.contentfulService.getAllPages().pipe(
+        map((data: any) => {
+          return SettingsActions.SuccessGetAllPagesAction({ payload: data });
+        }),
+        catchError((error: Error) => {
+          return of(SettingsActions.ErrorSettingsAction(error));
+        })
+      )
+    )
+  )
+);
+
   GetActiveCategories$: Observable<Action> = createEffect(() =>
   this.action$.pipe(
     ofType(SettingsActions.BeginGetActiveCategoriesAction),

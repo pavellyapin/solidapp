@@ -1,0 +1,12 @@
+<span [ngSwitch]="layout" >
+  <doo-product-card-fashion-layout
+  [productReviews] = "productReviews"
+  [productVariants] = "productVariants"
+  [object] = "object"
+  [isFavorite] = "isFavorite"
+  [rate] = "getOverallRate()"
+  (favoriteToggle) = "favoriteToggle($event)"
+  (navigateToProduct) = "goToProduct()"
+  *ngSwitchCase="'fashion'">
+  </doo-product-card-fashion-layout>
+</span>

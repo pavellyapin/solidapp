@@ -1,0 +1,22 @@
+@import 'src/css/_variables.scss';
+
+mat-icon {
+    fill : transparent;
+}
+
+.svg-primary {
+    stop-color:$primary;
+    stop-opacity:1
+}
+
+.svg-white {
+    stop-color:white;
+    stop-opacity:1
+}
+
+.doo-rate-icon {
+    ::ng-deep .cls-1 {
+        fill: inherit !important;
+        stroke :$primary;
+    }
+}

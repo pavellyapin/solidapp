@@ -13,8 +13,6 @@ import * as CartActions from '../../services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
 import { CartCardsService } from './cart-cards/product-cards.service';
 import { CartService } from './cart.service';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
@@ -51,18 +49,9 @@ export class CartComponent implements OnInit {
                   private router: Router,
                   private variantPipe : VariantsPipe,
                   private cartService : CartService,
-                  private matIconRegistry: MatIconRegistry,
-                  private domSanitizer: DomSanitizer,
                   private utilService: UtilitiesService)
         {
-          this.matIconRegistry.addSvgIcon(
-            'doo-approved',
-            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/approved-green.svg")
-          );
-          this.matIconRegistry.addSvgIcon(
-            'paypal',
-            this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/paypal.svg")
-          );
+
 
           this.cartId$ = store.pipe(select('cart' , 'cartId'));
           this.cart$ = store.pipe(select('cart' , 'items'));

@@ -1,0 +1,56 @@
+@import 'src/css/_variables.scss';
+
+
+
+
+.doo-rate-uneditable {
+    ::ng-deep .doo-rate-icon {
+        padding : 2px 2px;
+        height: 15px;
+        width: 15px;
+      } 
+}
+
+.doo-product-reviews {
+    .mat-display-3 {
+        margin : 0 0 0;
+        font-weight: 500;
+    }
+
+    .doo-rate-bar {
+        ::ng-deep .doo-rate-icon {
+            padding : 2px 2px;
+            height: 15px;
+            width: 15px;
+            ::ng-deep polygon {
+                stroke :$primary;
+                fill: $primary;
+            }
+          } 
+        span {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+
+    .rate-filter {
+        ::ng-deep .doo-rate-icon {
+            padding : 2px 2px;
+            height: 15px;
+            width: 15px;
+            ::ng-deep polygon {
+                stroke :white;
+                fill: white;
+            }
+          } 
+        span {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+
+    .mat-progress-bar {
+        height: 20px;
+        margin : 10px 10px;
+    }
+}

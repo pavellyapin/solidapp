@@ -16,8 +16,8 @@ import { MediaObserver } from '@angular/flex-layout';
 import { CartItem } from 'src/app/services/store/cart/cart.model';
 import { ContentfulService } from 'src/app/services/contentful/contentful.service';
 import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import { FormControl } from '@angular/forms';
+import * as ProductsActions from 'src/app/services/store/product/product.action';
 
 @Component({
   selector: 'app-nav',
@@ -47,48 +47,31 @@ export class NavComponent implements OnInit {
   rowsBig: Observable<number>;
   resolution : any;
   loading : any;
+  searchControl = new FormControl();
+  //searchOptions: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<Entry<any>[]>;
 
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer,
     private router: Router,
     private authService: AuthService,
     private mediaObserver: MediaObserver,
     private contentfulService: ContentfulService,
     private cartItemsService: CartCardsService,
-    store: Store<{ settings: SettingsState , cart: CartState}>,
-    private navService: NavigationService) {
+    private store: Store<{ settings: SettingsState , cart: CartState}>,
+    public navService: NavigationService) {
       this.cartItemsService.cards.subscribe(cards => {
         this.cartItemsCards = cards;
       });
     this.settings$ = store.pipe(select('settings'));
     this.categories$ = store.pipe(select('settings', 'categories'));
     this.cart$ = store.pipe(select('cart','items'));
-
-    this.matIconRegistry.addSvgIcon(
-      'doo-basket',
-      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/basket.svg")
-    );
-
-    this.matIconRegistry.addSvgIcon(
-      'doo-profile',
-      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/profile.svg")
-    );
-
-    this.matIconRegistry.addSvgIcon(
-      'doo-favorite',
-      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/favorite.svg")
-    );
-
-    this.matIconRegistry.addSvgIcon(
-      'doo-filters',
-      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/filters.svg")
-    );
   }
 
   ngOnInit() {
+
+
     this.SettingsSubscription = this.settings$
     .pipe(
       map(x => {
@@ -104,10 +87,18 @@ export class NavComponent implements OnInit {
     .pipe(
       map(x => {
         if (x) {
+          
           this.categories = x.map((item)=>({
             ...item,
             links: []
           }));
+
+          this.filteredOptions = this.searchControl.valueChanges
+          .pipe(
+            startWith(''),
+            map(value => this._filterSearch(value))
+          );
+
         }
         this.rootCategories = this.categories ? this.categories.
         filter(item => item.fields.root == true).sort(sortBanners) : this.categories;
@@ -193,6 +184,19 @@ export class NavComponent implements OnInit {
       }),
       startWith(startRowsBig),
     );
+  }
+
+  
+  private _filterSearch(value: string): Entry<any>[] {
+    const filterValue = value.toLowerCase();
+    return this.categories.filter(category => category.fields.title.toLowerCase().includes(filterValue));
+  }
+
+  startSearchProducts($event) {
+    this.store.dispatch(ProductsActions.BeginSearchProductsAction({payload : $event}));
+    this.router.navigateByUrl('search/' + $event);
+    this.searchControl.setValue('');
+    this.navService.startLoading();
   }
 
   createCards(): void {

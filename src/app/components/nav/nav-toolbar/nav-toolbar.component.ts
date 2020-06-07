@@ -1,8 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} from '@angular/core';
 import {Page, NavigationService} from '../../../services/navigation/navigation.service';
 import { Router } from '@angular/router';
 import { Entry } from 'contentful';
 import { sortBanners } from '../../pipes/pipes';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-nav-toolbar',
@@ -17,6 +20,7 @@ export class NavToolbarComponent implements OnInit {
   @Output() toggleSideNav = new EventEmitter();
   @Output() toggleMobileSideMenu = new EventEmitter();
   @Output() expandMainMenu = new EventEmitter();
+  @Output() startSearchProducts = new EventEmitter();
   @Output() logout = new EventEmitter();
   
   @Input() siteSettings: Entry<any>;
@@ -26,15 +30,20 @@ export class NavToolbarComponent implements OnInit {
   @Input() cartItemCount:number;
   activeCategory: Entry<any>;
   subCategories: Entry<any>[];
-  bigScreens = new Array('lg' , 'xl')
+  bigScreens = new Array('lg' , 'xl' , 'md' , 'sm')
   constructor(
     private router: Router,
     private navService: NavigationService) {
   }
+  @Input() searchControl : FormControl;
+  @Input() filteredOptions: Observable<Entry<any>[]>;
+  @ViewChild('searchInput',{static: false}) searchInput: ElementRef;
+  @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
 
   ngOnInit() {
 
   }
+
 
   public navigateHome() {
     this.router.navigateByUrl('/');
@@ -49,7 +58,19 @@ export class NavToolbarComponent implements OnInit {
     this.router.navigateByUrl('cat/' + link);
   }
 
-  public expandMenu(category:any) {
+  public expandMenu(categoryObject:any) {
+    if (categoryObject.fields.redirect) {
+      if (categoryObject.fields.redirect.sys.contentType.sys.id == 'page') {
+        this.router.navigateByUrl('page/' + categoryObject.fields.redirect.fields.name);
+        return;
+      }
+      if (categoryObject.fields.redirect.sys.contentType.sys.id == 'category') {
+        this.router.navigateByUrl('cat/' + categoryObject.fields.redirect.fields.name);
+        return;
+      }
+    }
+
+    let category = categoryObject.fields.name;
     if (!this.activeCategory) {
       this.buildMenu(category);
       this.onExpandMainMenu();
@@ -101,6 +122,12 @@ export class NavToolbarComponent implements OnInit {
 
   public onLogout() {
     this.logout.emit();
+  }
+
+  searchProducts($event) {
+    this.searchInput.nativeElement.blur();
+    this.autocomplete.closePanel(); 
+    this.startSearchProducts.emit(this.searchControl.value);
   }
 
   public goToProfile() {

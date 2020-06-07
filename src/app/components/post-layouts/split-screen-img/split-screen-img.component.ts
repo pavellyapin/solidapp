@@ -14,7 +14,7 @@ export class SplitScreenImagePostComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('split',this.post);
+    //console.log('split',this.post);
   }
 
 }

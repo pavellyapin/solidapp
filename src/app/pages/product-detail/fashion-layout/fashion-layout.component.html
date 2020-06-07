@@ -21,7 +21,7 @@
 
 
 
-<div fxLayoutAlign="start" fxLayout="column">
+<div fxLayoutAlign="start" fxLayout="column" fxLayoutGap = "20px">
     <div fxLayoutAlign="space-between" fxLayout="row"  fxLayout.xs="column">
         <div #mediaEnd fxLayout="column" fxFlex = "60">
             <div *ngFor = "let image of productDetails.fields.media; let i = index">
@@ -36,7 +36,8 @@
               <div #stickyProductDetail 
                    fxLayout="column" 
                    fxFlex 
-                   fxLayoutAlign="end center"  
+                   fxLayoutAlign="end start" 
+                   fxLayoutAlign.xs = "end center" 
                    [ngClass] = "this.bigScreens.includes(this.resolution) ? 'sticky-product-detail' : 'sticky-product-detail-mobile'">
                   <div #stickyInnerCont fxLayout="column" class = "sticky-inner-cont">
                      <form [formGroup]="cartItemForm" fxLayout="column" fxLayoutAlign="start start"> 
@@ -96,7 +97,51 @@
               </div>
            </div>
     </div>
-    <div fxLayout="row" style = "height: 1500px;">
-      Pasha
+    <div fxLayout="row" fxLayoutAlign = "center">
+        <mat-accordion fxFlex = "80" [multi] = "true">
+            <mat-expansion-panel [hideToggle] = "true"
+                                 [expanded] = "true" 
+                                 class="mat-elevation-z0">
+              <mat-expansion-panel-header class = "doo-bottom-border">
+                <mat-panel-title>
+                    <div fxFlex = "row" fxLayoutAlign = "start center" fxLayoutGap = "10px">
+                            <span style = "font-weight: 700" class = "mat-title">Description</span>
+                    </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div [innerHTML] = "productDetails.fields.description | richTextPipe">
+                
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel [hideToggle] = "true"
+                                 [expanded] = "true" 
+                                 class="mat-elevation-z0">
+              <mat-expansion-panel-header class = "doo-bottom-border">
+                <mat-panel-title>
+                        <div fxFlex = "row" fxLayoutAlign = "start center" fxLayoutGap = "10px">
+                                <span style = "font-weight: 700" class = "mat-title">Specifications</span>
+                        </div>
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div [innerHTML] = "productDetails.fields.specs | richTextPipe">
+                
+                  </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel [hideToggle] = "true" 
+                                 [expanded] = "true"
+                                 class="mat-elevation-z0">
+              <mat-expansion-panel-header class = "doo-bottom-border">
+                <mat-panel-title>
+                        <div fxFlex = "row" fxLayoutAlign = "start center" fxLayoutGap = "10px">
+                                <span style = "font-weight: 700" class = "mat-title">Reviews</span>
+                        </div>
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <doo-product-reviews [productReviews] = "productReviews" 
+                                     [productDetails] = "productDetails">
+                </doo-product-reviews>
+            </mat-expansion-panel>
+          </mat-accordion>
     </div>
+    
 </div>

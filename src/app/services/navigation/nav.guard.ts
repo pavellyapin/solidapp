@@ -3,13 +3,16 @@ import {ActivatedRouteSnapshot, CanActivateChild, RouterStateSnapshot, UrlTree,}
 import {Observable} from 'rxjs';
 import {NavigationService} from "./navigation.service";
 import {sideNavPath} from "./nav-routing";
+import { map } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NavGuard implements CanActivateChild {
   
-  constructor(private navigationService: NavigationService) {
+  constructor(private navigationService: NavigationService,
+              public afAuth: AngularFireAuth) {
   }
 
   canActivateChild(
@@ -20,23 +23,27 @@ export class NavGuard implements CanActivateChild {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (childRoute.data && childRoute.data.title) {
-      const parentPath: string = childRoute.parent.url
-        .map(url => url.path)
-        .join('/');
 
-      if (parentPath === sideNavPath) {
-        this.navigationService.selectNavigationItemByPath(
-          childRoute.url.map(url => url.path).join('/'),
-        );
-      }
-      
-      this.navigationService.setActivePage(
-        childRoute.data.title,
-        childRoute.url.map(url => url.path),
-        childRoute.data.isChild,
-      );
-    }
-    return true;
+      return this.afAuth.authState.pipe(map((auth)=> {
+        if (childRoute.data && childRoute.data.title) {
+          const parentPath: string = childRoute.parent.url
+            .map(url => url.path)
+            .join('/');
+
+          if (parentPath === sideNavPath) {
+            this.navigationService.selectNavigationItemByPath(
+              childRoute.url.map(url => url.path).join('/'),
+            );
+          }
+          
+          this.navigationService.setActivePage(
+            childRoute.data.title,
+            childRoute.url.map(url => url.path),
+            childRoute.data.isChild,
+          );
+        }
+        return true;
+      }));
+
   }
 }

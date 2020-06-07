@@ -6,6 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from '../pipes/pipes.module';
 import { MatButtonModule } from '@angular/material/button';
 import { SplitScreenImagePostComponent } from './split-screen-img/split-screen-img.component';
+import {LazyLoadImageModule} from 'ng-lazyload-image';
 
 @NgModule({
     declarations: [FullWidthImgBackgroundPostComponent,
@@ -14,6 +15,7 @@ import { SplitScreenImagePostComponent } from './split-screen-img/split-screen-i
     imports: [
         CommonModule,
         PipesModule,
+        LazyLoadImageModule,
         FlexLayoutModule,
         MatButtonModule,
     ],

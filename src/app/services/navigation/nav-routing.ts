@@ -22,6 +22,14 @@ export const navRoutes: NavRoute[] = [
       ),
   },
   {
+    data: {title: 'Custom Page'},
+    path: 'page',
+    loadChildren: () =>
+      import('../../pages/custom/custom.module').then(
+        m => m.CustomModule,
+      ),
+  },
+  {
     data: {title: 'Profile' , isChild: false},
     path: 'account',
     canActivate: [ProfileGuard],
@@ -45,6 +53,14 @@ export const navRoutes: NavRoute[] = [
     loadChildren: () =>
       import('../../pages/product-category/product-category.module').then(
         m => m.ProductCategoryModule,
+      )
+  },
+  {
+    data: {title: 'Search' , isChild: true},
+    path: 'search',
+    loadChildren: () =>
+      import('../../pages/search/search.module').then(
+        m => m.SearchModule,
       )
   },
   {

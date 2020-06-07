@@ -23,6 +23,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MenuSideNavComponent} from './menu-side-nav/menu-side-nav.component'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [NavComponent, 
@@ -36,6 +38,7 @@ import {MenuSideNavComponent} from './menu-side-nav/menu-side-nav.component'
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
     TranslateModule,
     MatSidenavModule,
     FlexLayoutModule,
@@ -45,6 +48,7 @@ import {MenuSideNavComponent} from './menu-side-nav/menu-side-nav.component'
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    MatInputModule,
     MatExpansionModule,
     MatMenuModule,
     MatBadgeModule,

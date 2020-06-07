@@ -6,7 +6,7 @@ $accent: mat-color($mat-pink ,200);
 @include angular-material-theme(mat-light-theme(
     mat-palette($mat-brown, 100),
     mat-palette($mat-pink ,200),
-    mat-palette($mat-deep-orange ,800)
+    mat-palette($mat-pink ,300)
 ));
 
 
@@ -81,7 +81,7 @@ $easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
     position: absolute; 
     height: 100%; 
     width: 100%;
-    padding-top: 200px;;
+    padding-top: 200px;
     background: $primary;
     z-index: 100;
     opacity: 0.3;

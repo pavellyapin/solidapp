@@ -18,11 +18,44 @@ export const SuccessLoadProductsAction = createAction(
   props<{ payload: any }>()
 );
 
+//Search Products
+
+export const BeginSearchProductsAction = createAction(
+  '[Products] - Begin SEARCH',
+  props<{ payload: any }>()
+);
+
+export const SuccessSearchProductsAction = createAction(
+  '[Product] - Success SEARCH',
+  props<{ payload: any }>()
+);
+
 //Load Product Details
 
 export const BeginLoadProductDetailsAction = createAction(
   '[Products] - Begin LOAD DETAILS',
   props<{ payload: any }>()
+);
+
+//Product Reviews
+
+export const BeginLoadProductReviewsAction = createAction(
+  '[Products] - Begin load reviews',
+  props<{ payload: any }>()
+);
+
+export const SuccessLoadProductReviewsAction = createAction(
+  '[Product] - Success load reviews',
+  props<{ payload: any }>()
+);
+
+export const BeginWriteProductReviewAction = createAction(
+  '[Products] - Begin write review',
+  props<{ payload: any }>()
+);
+
+export const SuccessWriteProductReviewAction = createAction(
+  '[Products] - Success write review'
 );
 
 export const ErrorProductsAction = createAction('[Product] - Error', props<Error>());

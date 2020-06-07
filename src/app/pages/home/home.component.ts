@@ -7,6 +7,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 @Component({
   selector: 'app-home-page',
   templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
@@ -24,7 +25,6 @@ export class HomeComponent implements OnInit {
             if (this.homePageContent) {
               this.contentful.getPostsForPage(this.homePageContent.sys.id).pipe(map((posts)=>{
                 this.posts = posts;
-                console.log('posts' , this.posts)
                 this.navSerivce.finishLoading();
               })).subscribe();
             }

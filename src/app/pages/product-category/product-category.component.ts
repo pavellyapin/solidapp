@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import ProductsState from 'src/app/services/store/product/product.state';
 import { Observable, Subscription } from 'rxjs';
@@ -6,10 +6,11 @@ import { map, startWith } from 'rxjs/operators';
 import { Card } from 'src/app/components/cards/card';
 import { MediaObserver } from '@angular/flex-layout';
 import { ProductCardsService } from './product-cards/product-cards.service';
-import { ProductCardComponent } from './product-cards/product-card/product-card.component';
 import { Entry } from 'contentful';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { ProductCardComponent } from 'src/app/components/cards/product-card/product-card.component';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
     selector: 'app-product-category-page',
@@ -37,14 +38,17 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
     filtersOpen : boolean;
     colorPanelOpenState : boolean = true;
     sizePanelOpenState: boolean = true;
+    productsLoadedInt : number = 9;
 
     @ViewChildren("checkboxVariants") checkboxVariants!: QueryList<any>
     @ViewChild('sortSelect',{static: false}) sortSelect: ElementRef;
+    @ViewChild('productsGrid',{static: false}) productsGrid: ElementRef;
     
     constructor(store: Store<{ products: ProductsState , settings : SettingsState }>,
                 private mediaObserver: MediaObserver,
-                private cardsService: ProductCardsService,
-                private navService : NavigationService)
+                public cardsService: ProductCardsService,
+                private navService : NavigationService,
+                private utilService : UtilitiesService)
     {
       this.cardsService.cards.subscribe(cards => {
         this.productCards = cards;
@@ -58,10 +62,12 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
       this.ProductSubscription = this.product$
       .pipe(
         map(x => {
-          this.productsLoaded = x.loadedProducts;
+          
           this.activeCategory = x.activeCategory;
           this.cardsService.resetCards();
-          if (this.productsLoaded) {
+          if (x.loadedProducts) {
+            this.productsLoaded = this.utilService.
+            shuffleArray(x.loadedProducts.map(products=> {return products}));
             this.createCards();
           }
         })
@@ -88,7 +94,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
         ['xs', 12],
         ['sm', 4],
         ['md', 8],
-        ['lg', 15],
+        ['lg', 9],
         ['xl', 18],
       ]);
       /* Big card column span map */
@@ -96,7 +102,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
         ['xs', 6],
         ['sm', 2],
         ['md', 4],
-        ['lg', 5],
+        ['lg', 3],
         ['xl', 3],
       ]);
       /* Small card column span map */
@@ -104,7 +110,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
         ['xs', 11],
         ['sm', 3],
         ['md', 5],
-        ['lg', 8],
+        ['lg', 5],
         ['xl', 2],
       ]);
       let startCols: number;
@@ -152,7 +158,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
     }
 
     createCards(): void {
-      this.productsLoaded.forEach((v , index) => {
+      this.productsLoaded.slice(this.cardsService.cards.value.length,this.cardsService.cards.value.length + this.productsLoadedInt).forEach((v , index) => {
         this.sortVariants(v);
         if (this.filters.length == 0 || this.filterProduct(v)) {
           this.cardsService.addCard(
@@ -286,6 +292,13 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
       else if (s1.input.object.value.fields.price === s2.input.object.value.fields.price) return 0
       else return 1
     }
+
+    @HostListener('window:scroll', ['$event'])
+    checkScroll() {
+      if (window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
+        this.createCards();
+      } 
+    } 
   
 
     ngOnDestroy(): void {

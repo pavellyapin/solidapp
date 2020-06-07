@@ -1,5 +1,5 @@
 <div      style="margin: 15px;"
-          class="mat-elevation-z0"
+          class="doo-category-card mat-elevation-z0"
           fxFlex 
           fxLayoutAlign="space-between" 
           fxLayout="column">
@@ -15,7 +15,7 @@
               [lazyLoad]="object?.fields.media[0].fields.file.url"
               [defaultImage]="'assets/placeholder-1.svg'"
               (click)= "goToProduct()">
-              <img  class = "full-width doo-pointer first-image"
+              <img  *ngIf = "object?.fields.media.length > 1" class = "full-width doo-pointer first-image"
               style = "position: absolute"
               [lazyLoad]="object?.fields.media[1].fields.file.url"
               [defaultImage]="'assets/placeholder-1.svg'"
@@ -24,19 +24,23 @@
     </div>
    
     <div fxLayout="column">
-    <div fxLayout="row" fxLayoutAlign="center" fxLayoutAlign.xs="start" class = "product-name-label">
-        {{name}}
+    <div fxLayout="row" fxLayoutAlign="start" fxLayoutAlign.xs="start" class = "product-name-label">
+        {{object.fields.title}}
+    </div>
+    <div fxLayout="row" fxLayoutGap = "5px" *ngIf = "productReviews" >
+        <doo-review-stars [rate] = "rate" [editable] = "false"></doo-review-stars>
+        <span class = "mat-caption">{{productReviews.length}}</span>
     </div>
     <div fxLayout="column" class = "mat-body color-variant" fxShow fxHide.xs
         *ngIf = "productVariants.get('color')">
-          <div fxLayout="row" fxLayoutAlign="center">
+          <div fxLayout="row" fxLayoutAlign="star">
             <div *ngFor="let variant of productVariants.get('color')">
               <div [ngStyle]="{'background-color': variant.code}" class = "doo-color-box">
               </div>
             </div>
           </div>
     </div> 
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutAlign.xs="start">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="star" fxLayoutAlign.xs="start">
         <span [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''" [innerHTML] = "object.fields.price | pricePipe">
             
         </span>

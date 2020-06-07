@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import ProductsState from 'src/app/services/store/product/product.state';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Entry } from 'contentful';
 
 @Component({
   selector: 'doo-bread-crumbs',
@@ -12,20 +13,20 @@ import { map } from 'rxjs/operators';
 export class BreadCrumbsComponent implements OnInit {
 
   @Input() productTitle: string;
-  product$: Observable<ProductsState>;
+  activeCategory$: Observable<Entry<any>>;
   ProductSubscription: Subscription;
   breadCrumbs = [];
 
   constructor(store: Store<{ products: ProductsState }>) {
-    this.product$ = store.pipe(select('products'));
+    this.activeCategory$ = store.pipe(select('products' , 'activeCategory'));
   }
 
   ngOnInit() {
-    this.ProductSubscription = this.product$
+    this.ProductSubscription = this.activeCategory$
     .pipe(
       map(x => {
-        if (x.activeCategory) {
-          this.buildBreadCrumbs(x.activeCategory);
+        if (x) {
+          this.buildBreadCrumbs(x);
         }
       })
     )

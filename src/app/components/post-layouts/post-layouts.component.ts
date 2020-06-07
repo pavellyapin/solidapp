@@ -13,7 +13,7 @@ export class PostLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-      console.log('layout' , this.post);
+      //console.log('layout' , this.post);
   }
 
 }

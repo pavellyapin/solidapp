@@ -21,7 +21,7 @@ export class ContentfulService {
 
   getActiveCategories(): Observable<Entry<any>[]> {
     return from(this.client.getEntries(Object.assign({
-      content_type: 'category'
+      content_type: 'category',
     }))
       .then(res => res.items));
   }
@@ -30,6 +30,15 @@ export class ContentfulService {
     return from(this.client.getEntries(Object.assign({
       content_type: 'product',
       links_to_entry : query,
+      limit : '50'
+    }))
+      .then(res => res.items));
+  }
+
+  searchProducts(query?: object): Observable<Entry<any>[]> {
+    return from(this.client.getEntries(Object.assign({
+      content_type: 'product',
+      'fields.title[match]' : query,
       limit : '50'
     }))
       .then(res => res.items));
@@ -49,6 +58,14 @@ export class ContentfulService {
       'fields.name' : query
     }))
       .then(res => res.items.pop()));
+  }
+
+  getAllPages(): Observable<Entry<any>[]> {
+    return from(this.client.getEntries(Object.assign({
+      content_type: 'page',
+      include : 2
+    }))
+      .then(res => res.items));
   }
 
   getPostsForPage(query?: any): Observable<Entry<any>[]> {
