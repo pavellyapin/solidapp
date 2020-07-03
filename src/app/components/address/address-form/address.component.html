@@ -1,26 +1,27 @@
-<div fxLayoutGap="50px" fxLayout="column" >
-     <div fxLayout="column" fxLayoutGap="15px">
+<div fxLayoutGap="50px" fxLayout="column" class = "doo-address-form">
+     <div fxLayout="column" fxLayoutGap="5px">
             <div fxLayout = "row" *ngIf = "mode != 'alwaysOpen'">
-                    <h2 fxFlex = "50" class="mat-h2" >{{ 'profile.address.primary' | translate }}</h2>
-                    <div fxFlex = "50"
+                    <div fxFlex
                         fxLayoutAlign="end"
                         (click) = "addMode = !addMode ;" 
                         class="mat-caption doo-pointer">
                         {{ addMode ? ('profile.buttons.close' | translate ) : userAddressInfo ? ('profile.buttons.edit' | translate ) : ('profile.buttons.add' | translate ) }}
                     </div>
             </div>
-          <div fxLayout = "row">
+          <div fxLayout = "column">
             <div *ngIf = "!addMode && !userAddressInfo" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
                 <div>
                     {{ 'profile.address.noAddressSaved' | translate }}
                 </div>
             </div>
             <div *ngIf = "!addMode && userAddressInfo" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon color = "accent">location_on</mat-icon>
+                    <mat-icon svgIcon="doo-location" color = "accent"></mat-icon>
                     <div class="add-field-placeholder" >
-                            {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : userAddressInfo.addressLine2  }} {{userAddressInfo.addressLine1}}
+                            {{addressInfo.controls["addressLine2"].value ? addressInfo.controls["addressLine2"].value + ' - ' : 
+                              addressInfo.controls["addressLine2"].value  }} 
+                              {{addressInfo.controls["addressLine1"].value}}
                         <br>
-                        {{userAddressInfo.city + ' ' + userAddressInfo.province + ' ' + userAddressInfo.postal}}
+                        {{addressInfo.controls["city"].value + ' ' + addressInfo.controls["province"].value + ' ' + addressInfo.controls["postal"].value}}
                     </div>
             </div>
             <div *ngIf = "addMode && scriptLoaded" fxFlex = "100"> 
@@ -29,14 +30,6 @@
                          adressType="geocode">
                     </address-autocomplete-input> 
             </div>
-        </div>
-        <div *ngIf = "addMode && userAddressInfo && mode != 'alwaysOpen'" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                <mat-icon color = "accent">location_on</mat-icon>
-                <div class="add-field-placeholder" >
-                        {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : userAddressInfo.addressLine2  }} {{userAddressInfo.addressLine1}}
-                    <br>
-                    {{userAddressInfo.city + ' ' + userAddressInfo.province + ' ' + userAddressInfo.postal}}
-                </div>
         </div>
         <div fxLayout = "row" 
             *ngIf = "!addManually && addMode"
@@ -110,18 +103,18 @@
                     </div>
                 </form>
             </div>
-            <div fxLayout = "row"
+            <div fxLayout = "row" fxLayoutAlign = "center"
                  *ngIf = "addMode && mode != 'alwaysOpen'">
                  <div fxLayoutGap="20px"
-                      fxLayout = "column"
-                      fxFlex = "70">
-                    <button (click)="saveAddress()" class="full-width"
-                            color="primary" mat-raised-button type="submit">
+                      fxLayout = "row"
+                      fxFlex = "50">
+                    <button (click)="saveAddress()" class="doo-checkout-btn full-width"
+                            color="primary" mat-flat-button type="submit">
                             {{ 'profile.buttons.save' | translate }}
                     </button>   
                     
                     
-                    <button (click) = "addManually = !addManually" class="full-width"
+                    <button *ngIf = "false" (click) = "addManually = !addManually" class="doo-checkout-btn full-width"
                             color="primary" mat-stroked-button>
                             {{ 'profile.buttons.cancel' | translate }}
                     </button>

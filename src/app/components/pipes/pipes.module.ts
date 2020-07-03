@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ImagePipe, RichTextPipe, PricePipe, VariantsPipe, DatePipe, RatePipe, TimeAgoPipe } from './pipes';
+import { ImagePipe, RichTextPipe, PricePipe, VariantsPipe, DatePipe, RatePipe, TimeAgoPipe, PricePipeSimple } from './pipes';
 
 @NgModule({
     declarations: [ImagePipe, 
@@ -8,10 +8,17 @@ import { ImagePipe, RichTextPipe, PricePipe, VariantsPipe, DatePipe, RatePipe, T
                    VariantsPipe,
                    DatePipe,
                    RatePipe,
-                   TimeAgoPipe],
+                   TimeAgoPipe,
+                   PricePipeSimple],
     imports:      [
     ],
-    exports: [PricePipe,RichTextPipe,VariantsPipe,DatePipe,TimeAgoPipe,RatePipe]
+    exports: [PricePipe,
+              RichTextPipe,
+              VariantsPipe,
+              DatePipe,
+              TimeAgoPipe,
+              RatePipe,
+              PricePipeSimple]
   })
   export class PipesModule {
   }

@@ -1,0 +1,69 @@
+<div fxLayout = "column" [fxLayoutGap] = "block.fields.layout.fields.bottomGap + 'px'">
+   <div fxLayout = "row" fxLayoutAlign = "center">
+        <div fxLayout = "row" 
+             [fxFlex] = "block.fields.layout.fields.width" 
+             fxLayout.xs = "column" 
+             fxLayoutGap.xs = "50px" 
+             fxLayoutAlign = "center">
+        <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.layout.fields.direction)  ? 2 : 1"
+             fxLayout = "column" 
+             fxFlex = "50"
+             fxFlex.xs = "100"
+             fxLayoutGap = "50px"
+             style = "padding: 0 15px;">
+                        <div class = "doo-cta-content doo-contentful" [innerHTML] = "block.fields.content | richTextPipe">
+                        </div>
+                        <div fxLayoutAlign = "center" fxLayoutGap = "20px">
+                             <div *ngFor = "let cta of block.fields.actions">
+                                        <div [ngSwitch]="cta.fields.appearence">
+                                                        <button *ngSwitchCase="'flat'" 
+                                                        color = "primary" 
+                                                        mat-flat-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        </button> 
+                                                        <button *ngSwitchCase="'stroked'" 
+                                                        color = "primary" 
+                                                        mat-stroked-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        </button>
+                                                        <button *ngSwitchCase="'arrow'" 
+                                                        color = "primary" 
+                                                        mat-stroked-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        <mat-icon  svgIcon="doo-arrow-right"></mat-icon>
+                                                        </button>    
+                                                        <button *ngSwitchCase="'rasied'" 
+                                                        color = "primary" 
+                                                        mat-rasied-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        </button>                                               
+                                        </div>
+                             </div>
+                        </div>
+
+        </div>
+        <div fxFlex = "50" 
+             fxFlex.xs = "100"
+             [fxFlexOrder]="['start' , 'center'].includes(block.fields.layout.fields.direction)  ? 1 : 2">
+        <img  *ngIf = "block.fields.media[0].fields.file.details.image"
+              class = "full-width doo-pointer" 
+              [src]="block.fields.media[0].fields.file.url">
+        <video  #mainVid 
+              *ngIf = "!block.fields.media[0].fields.file.details.image" 
+              [src] = "block.fields.media[0].fields.file.url" 
+              autoplay 
+              muted 
+              loop
+              playsinline 
+              style = "width: 100%;display: block;">
+       </video> 
+        </div>
+             
+        </div>
+  </div>
+        <div></div>
+</div>

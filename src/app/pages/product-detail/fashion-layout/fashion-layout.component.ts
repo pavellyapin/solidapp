@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import { EventEmitter } from '@angular/core';
 import { MyErrorStateMatcher } from 'src/app/components/pipes/pipes';
+import { ProductReviewsComponent } from '../product-reviews/product-reviews.component';
 
 @Component({
   selector: 'doo-product-detail-fashion-layout',
@@ -24,17 +25,19 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   @ViewChild('mediaEnd',{static: false}) mediaElementEnd: ElementRef;
   @ViewChild('stickyProductDetail',{static: false}) stickyProductDetail: ElementRef;
   @ViewChild('stickyInnerCont',{static: false}) stickyInnerCont: ElementRef;
+  @ViewChild('reviewsComponent',{static: false}) 
+  public reviewsComponent: ProductReviewsComponent;
 
   displayedMediaIndex:number = 0;
   zoomed : boolean = false;
   matcher = new MyErrorStateMatcher();
-  bigScreens = new Array('lg' , 'xl' , 'md' , 'sm')
+  bigScreens = new Array('lg' , 'xl' , 'md')
   
   
 
       constructor(private renderer: Renderer2)
         {
-          
+          window.addEventListener('scroll', this.checkScroll.bind(this), {passive:true});
         }
 
   ngOnInit() {
@@ -45,6 +48,7 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   }
 
   addProductToCart() {
+    
     this.addToCart.emit();
   }
 
@@ -56,7 +60,6 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
     this.zoomed = zoom;
   }
 
-  @HostListener('window:scroll', ['$event'])
   checkScroll() {
     if (window.scrollY > this.mediaElementEnd.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
       if (this.bigScreens.includes(this.resolution)) {
@@ -78,7 +81,7 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   } 
 
   ngOnDestroy(){
-    
+    window.removeEventListener('scroll', this.checkScroll.bind(this));
   }
 
 }

@@ -1,5 +1,25 @@
 .doo-carousel {
+    //padding-left: 10%;
+    //padding-right: 10%;
+    width : 100%;
     ::ng-deep doo-product-card-fashion-layout {
-        height: 700px;
+        //height: 580px;
+    }
+}
+
+
+
+.carousel-cont{
+    position: relative;
+    .doo-carousel-left-arrow {
+        position: absolute;
+        left : 5%;
+        top: 30%;
+        z-index: 10;
+    }
+    .doo-carousel-right-arrow {
+        position: absolute;
+        left : 93%;
+        top: 30%;
     }
 }

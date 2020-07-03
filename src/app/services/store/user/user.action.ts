@@ -141,4 +141,15 @@ export const SuccessGetOrdersAction = createAction(
   props<{ payload: any}>()
 );
 
+//Subscribe 
+
+export const BeginSubscribeEmailAction = createAction(
+  '[User] - Begin Subscribe Email',
+  props<{ payload: any}>()
+);
+
+export const SuccessSubscribeEmailAction = createAction(
+  '[User] - Success Subscribe Email'
+);
+
 export const ErrorUserAction = createAction('[User] - Error', props<Error>());

@@ -55,6 +55,13 @@ export const BeginRemoveProductFromCartAction = createAction(
     
   ); 
 
+  export const BeginSetShippingMethodAction = createAction(
+    '[Cart] - Begin Set Shipping Method',
+    props<{ payload: any }>()
+  ); 
+
+  
+
   export const BeginSetStripeTokenAction = createAction(
     '[Cart] - Begin Set Stripe token',
     props<{ payload: any }>()

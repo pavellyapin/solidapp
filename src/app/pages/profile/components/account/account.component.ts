@@ -33,17 +33,17 @@ export class AccountComponent implements OnInit , OnDestroy {
               this.personalInfo = new FormGroup({        
                   firstName: new FormControl(''),
                   lastName: new FormControl(''),
-              })
+              });
 
               this.contactInfo = new FormGroup({        
                   phone: new FormControl(''),
                   email: new FormControl('')
-              })
+              });
 
               this.passwordInfo = new FormGroup({        
                   oldPassword: new FormControl(''),
                   newPassword: new FormControl('')
-              })
+              });
   }
 
   ngOnInit() {

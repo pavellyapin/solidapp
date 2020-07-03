@@ -1,0 +1,8 @@
+<div [ngSwitch]="block.fields.layout.fields.type">
+        <doo-background-img-block [block] = "block" [resolution] = "resolution" *ngSwitchCase="'Background Image'">
+        </doo-background-img-block>
+        <doo-text-block [block] = "block" [resolution] = "resolution" *ngSwitchCase="'Text'">
+        </doo-text-block>
+        <doo-split-screen-img [block] = "block" *ngSwitchCase="'Split'">
+        </doo-split-screen-img>
+</div>

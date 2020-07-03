@@ -6,20 +6,22 @@ import { sortBanners } from '../../pipes/pipes';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { navbarTransition } from '../../pipes/animations';
 
 @Component({
   selector: 'app-nav-toolbar',
   templateUrl: './nav-toolbar.component.html',
   styleUrls: ['./nav-toolbar.component.scss'],
+  animations: [navbarTransition]
 })
 export class NavToolbarComponent implements OnInit {
 
   @Input() activePage: Page;
   @Input() previousUrl: string[];
   @Input() mainMenuOpen;
-  @Output() toggleSideNav = new EventEmitter();
   @Output() toggleMobileSideMenu = new EventEmitter();
   @Output() expandMainMenu = new EventEmitter();
+  @Output() expandCartNav = new EventEmitter();
   @Output() startSearchProducts = new EventEmitter();
   @Output() logout = new EventEmitter();
   
@@ -30,15 +32,30 @@ export class NavToolbarComponent implements OnInit {
   @Input() cartItemCount:number;
   activeCategory: Entry<any>;
   subCategories: Entry<any>[];
-  bigScreens = new Array('lg' , 'xl' , 'md' , 'sm')
-  constructor(
-    private router: Router,
-    private navService: NavigationService) {
-  }
+  bigScreens = new Array('lg' , 'xl' , 'md')
+  lastScrollTop = 0;
+  state : any = 'top';
+  timerId : any;
+
   @Input() searchControl : FormControl;
   @Input() filteredOptions: Observable<Entry<any>[]>;
   @ViewChild('searchInput',{static: false}) searchInput: ElementRef;
   @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
+
+  constructor(
+    private router: Router,
+    private navService: NavigationService) {
+      window.addEventListener('scroll', () => {
+        var st = window.pageYOffset || document.documentElement.scrollTop;
+        if (st > this.lastScrollTop && !this.mainMenuOpen){
+           this.state = 'bottom'
+           this.timerId = setTimeout(() => {this.state = 'top' ; clearTimeout(this.timerId);} , 3000);
+        } else {
+           this.state = 'top'
+        }
+        this.lastScrollTop = st <= 0 ? 0 : st;
+      } , {passive:true})
+  }
 
   ngOnInit() {
 
@@ -60,14 +77,8 @@ export class NavToolbarComponent implements OnInit {
 
   public expandMenu(categoryObject:any) {
     if (categoryObject.fields.redirect) {
-      if (categoryObject.fields.redirect.sys.contentType.sys.id == 'page') {
-        this.router.navigateByUrl('page/' + categoryObject.fields.redirect.fields.name);
-        return;
-      }
-      if (categoryObject.fields.redirect.sys.contentType.sys.id == 'category') {
-        this.router.navigateByUrl('cat/' + categoryObject.fields.redirect.fields.name);
-        return;
-      }
+      this.navService.ctaClick(categoryObject.fields.redirect);
+      return;
     }
 
     let category = categoryObject.fields.name;
@@ -108,10 +119,6 @@ export class NavToolbarComponent implements OnInit {
     }.bind(this));
   }
 
-  public onToggleSideNav() {
-    this.toggleSideNav.emit();
-  }
-
   public onToggleMobileSideMenu() {
     this.toggleMobileSideMenu.emit();
   }
@@ -131,17 +138,18 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public goToProfile() {
-    if (this.navService.getCurrentUrl().pop() != 'account/profile') {
+    if (this.navService.getCurrentUrl().pop() != 'account/overview') {
       this.navService.startLoading();
     }
-    this.router.navigateByUrl('account/profile');
+    this.router.navigateByUrl('account/overview');
   }
 
   public goToCart() {
-    if (this.navService.getCurrentUrl().pop() != 'cart') {
+    this.expandCartNav.emit();
+    /*if (this.navService.getCurrentUrl().pop() != 'cart') {
       this.navService.startLoading();
     }
-    this.router.navigateByUrl('cart');
+    this.router.navigateByUrl('cart');*/
   }
 
   public goToFavorites() {

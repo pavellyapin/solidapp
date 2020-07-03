@@ -1,0 +1,44 @@
+<div fxLayout = "column" class = "doo-footer-cont">
+    <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between" class = "sections-row">
+            <div *ngFor = "let section of footerSections" fxLayout = "column">
+                    <span class = "section-header"[innerHTML] = "section.fields.content | richTextPipe">
+                     </span>
+                     <div class = "mat-caption" *ngFor = "let link of section.fields.actions">
+                       <button (click) = "navService.ctaClick(link.fields.action)" mat-button>{{link.fields.name}}</button>
+                     </div>
+               </div>
+            <div fxLayout = "column" class = "doo-subscribe-form" fxLayoutGap = "10px">
+                    <span class = "mat-caption subscribe-header">Join our mailing list:</span>
+                    <div [formGroup]="subscribeForm" 
+                    fxLayout = "row" 
+                    (keyup.enter)="subscribeEmail()">
+                    <mat-form-field fxFlex = "70" appearance="outline" class="full-width">
+                        <input  formControlName="email" 
+                                autocomplete="email" 
+                                matInput 
+                                name="email" 
+                                placeholder="ENTER EMAIL"
+                                type="text"/>
+                    </mat-form-field>
+                    <div fxLayout="column">
+                            <button (click)="subscribeEmail()"  class = "doo-checkout-btn full-width"
+                            color="basic" mat-flat-button type="submit">
+                            Subscribe
+                            </button>
+                    </div>
+                </div>
+                <div class = "social-row" fxLayout = "row" fxLayoutGap = "15px">
+                        <mat-icon class = "social-icon" svgIcon = "doo-twitter"></mat-icon>
+                        <mat-icon class = "social-icon" svgIcon = "doo-facebook"></mat-icon>
+                        <mat-icon class = "social-icon" svgIcon = "doo-insta"></mat-icon>
+                        <mat-icon class = "social-icon" svgIcon = "doo-youtube"></mat-icon>
+                        <mat-icon class = "social-icon" svgIcon = "doo-googleplus"></mat-icon>
+                        <mat-icon class = "social-icon" svgIcon = "doo-linkedin"></mat-icon>
+                </div>
+            </div>
+    </div>
+    <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "center center" class = "bottom-links">
+        <div>© Powered By Splidoo Creative Agency. 2019.</div>
+                    <button *ngFor = "let link of footerLinks" (click) = "navService.ctaClick(link.fields.action)" mat-button>{{link.fields.name}}</button>
+    </div>
+</div>

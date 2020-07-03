@@ -6,16 +6,10 @@ import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CartRoutingModule } from './cart-routing.module';
 import { CartComponent } from './cart.component';
-import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
-import { CartCardsSpawnerComponent } from './cart-cards/cart-cards-spawner/cart-cards-spawner.component';
-import { CartCardsService } from './cart-cards/product-cards.service';
 import { VariantsPipe } from 'src/app/components/pipes/pipes';
-import { PaidCartCardComponent } from './cart-cards/paid-cart-card/paid-cart-card.component';
 import { AddressComponentsModule } from 'src/app/components/address/address-components.module';
 import { CheckoutShippingComponent } from './shipping/shipping.component';
-import { CartCheckoutComponent } from './checkout/checkout.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { MatGridListModule } from '@angular/material/grid-list';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,17 +20,15 @@ import {CartService} from './cart.service';
 import { CheckoutPaymentComponent, PayPalModalComponent } from './payment/payment.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CheckoutSuccessComponent } from './success/success.component';
+import { MatSelectModule } from '@angular/material/select';
+import { CartCardsModule } from 'src/app/components/cart-card/cards.module';
 
 
 @NgModule({
   declarations: [CartComponent,
-                 CartCardComponent,
-                 PaidCartCardComponent,
-                 CartCardsSpawnerComponent,
                  PayPalModalComponent,
                  CheckoutSuccessComponent,
                  CheckoutShippingComponent,
-                 CartCheckoutComponent,
                  CheckoutPaymentComponent],
   imports: [
     CommonModule,
@@ -44,21 +36,22 @@ import { CheckoutSuccessComponent } from './success/success.component';
     PipesModule,
     FormsModule,
     ReactiveFormsModule,
-    MatGridListModule,
     TranslateModule,
     MatDialogModule,
     MatCardModule,
     MatExpansionModule,
+    MatSelectModule,
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
     MatInputModule,
     FlexLayoutModule,
     AddressComponentsModule,
+    CartCardsModule,
     LazyLoadImageModule
   ],
-  providers: [CartCardsService,VariantsPipe,CartService],
-  entryComponents: [CartCardComponent,PaidCartCardComponent,PayPalModalComponent]
+  providers: [VariantsPipe,CartService],
+  entryComponents: [PayPalModalComponent]
 })
 export class CartModule {
 }

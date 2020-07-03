@@ -4,8 +4,14 @@
 
 .doo-crumbs {
     font-size: 12px;
-    //padding-left: 10px;
-    //padding-top: 10px;
+    //overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    //height: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
+    -ms-overflow-style: none;
 }
 
 

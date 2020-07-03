@@ -113,6 +113,14 @@ export class FirestoreService {
                         .doc("orders").collection("orders").ref.where("status" , "==" , "paid").get());
     }
 
+    //Subscribe-----------------------------------------------------------------------
+
+
+    subscribe(email : string) {
+        console.log('email',email);
+        var subscribeEmail = this.firebaseFunctions.httpsCallable('subscribeEmail');
+        return subscribeEmail({email : email});
+    }
 
     //Payments------------------------------------------------------------------------
 
@@ -136,6 +144,7 @@ export class FirestoreService {
             return initOrder({"cart" : cart, status : "created"});
         }
     }
+
 
     getOrderStatus(cart : any) {
         return this.firestore.collection(this.authservice.uid)

@@ -7,7 +7,14 @@ import {Component , OnInit, Input, ViewChildren, QueryList, Renderer2, ChangeDet
 })
 export class ReviewStarsComponent implements OnInit {
 
-@Input() rate : number;
+@Input() set rate(rate : any){
+    this._rate = rate;
+    if (this.rateStars) {
+      this.setStarsView();
+  }
+  
+};
+_rate : any;
 @Input() editable : boolean ;
 @Output() starClickEvent : EventEmitter<any> = new EventEmitter();
 
@@ -36,9 +43,9 @@ rateSubmitted : boolean = false;
         //remove if any exist aleady
         this.renderer.setStyle(star._elementRef.nativeElement , 'fill' , 'white')
 
-        if ( this.rate >= i) {
+        if ( this._rate >= i) {
             this.renderer.setStyle(star._elementRef.nativeElement,'fill','url(' + window.location.href + '#full)');
-        } else if (i % this.rate < 1 && i % this.rate != 0) {
+        } else if (i % this._rate < 1 && i % this._rate != 0) {
             this.renderer.setStyle(star._elementRef.nativeElement,'fill','url(' + window.location.href + '#half)');
         } else {
             this.renderer.setStyle(star._elementRef.nativeElement,'fill','url(' + window.location.href + '#empty)');
@@ -50,7 +57,7 @@ rateSubmitted : boolean = false;
 
   hoverStar(star) {
       if (this.editable) {
-        this.rate = star;
+        this._rate = star;
         if (!this.rateSubmitted) {
           this.setStarsView();
         }
@@ -59,7 +66,7 @@ rateSubmitted : boolean = false;
 
   starClick(star) {
     if (this.editable) {
-        this.rate = star;
+        this._rate = star;
         this.rateSubmitted = true;
         this.starClickEvent.emit(star);
         this.setStarsView();

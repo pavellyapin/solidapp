@@ -12,6 +12,10 @@
         "function": "updateEmail"
       },
       {
+        "source": "/my-doo-7c70c/us-central1/subscribeEmail",
+        "function": "subscribeEmail"
+      },
+      {
         "source": "/my-doo-7c70c/us-central1/pay",
         "function": "pay"
       },

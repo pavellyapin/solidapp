@@ -6,18 +6,12 @@
 }
 
 .doo-category-card {
+  //height: 500px;
   ::ng-deep .doo-rate-icon {
       padding : 2px 2px;
       height: 15px;
       width: 15px;
     } 
-}
-
-.doo-stroked-price {
-  text-decoration: line-through;
-  opacity: 0.5;
-  padding-right: 10px;
-  color: $accent;
 }
 
 .selected-image-full {
@@ -86,4 +80,21 @@
 .product-name-label {
   font-size: 12px;
   letter-spacing: 2px;
+}
+
+.card-placeholder {
+  animation-duration: 1.5s;
+  animation-name: fade;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 0.2;
+  }
 }

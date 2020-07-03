@@ -3,6 +3,9 @@ import { ContentfulService } from 'src/app/services/contentful/contentful.servic
 import { map } from 'rxjs/operators';
 import { Entry } from 'contentful';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { Observable, Subscription } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import SettingsState from 'src/app/services/store/settings/settings.state';
 
 @Component({
   selector: 'app-home-page',
@@ -12,23 +15,36 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 export class HomeComponent implements OnInit {
 
 
-  homePageContent : any;
-  posts : Entry<any>[];
+  homePageContent : Entry<any>;
+  settings$: Observable<Entry<any>[]>;
+  SettingsSubscription: Subscription;
 
-  constructor(private contentful : ContentfulService , private navSerivce : NavigationService) {
-    
+  constructor(store: Store<{ settings : SettingsState }> ,
+              private navSerivce : NavigationService) {
+                
+                this.settings$ = store.pipe(select('settings','pages'));
   }
 
   ngOnInit() {
-      this.contentful.getPage('home').pipe(map((page)=> {
-          this.homePageContent = page;
-            if (this.homePageContent) {
-              this.contentful.getPostsForPage(this.homePageContent.sys.id).pipe(map((posts)=>{
-                this.posts = posts;
-                this.navSerivce.finishLoading();
-              })).subscribe();
+    this.SettingsSubscription = this.settings$
+    .pipe(
+      map(x => {
+        if (x) {
+          this.homePageContent = x.filter(page=>{
+            if (page.fields.type == 'main') {
+              console.log(page);
+              return page;
             }
-      })).subscribe();
+          }).pop();
+        }
+        this.navSerivce.finishLoading();
+      })
+    )
+    .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.SettingsSubscription.unsubscribe();
   }
 
 }

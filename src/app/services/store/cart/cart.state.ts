@@ -5,8 +5,9 @@ import { UserAddressInfo } from '../user/user.model';
 export default class CartState {
   cartId?: string;
   items: Array<CartItem>;
-  total? : any;
-  shipping? : UserAddressInfo;
+  total? : number;
+  addressInfo? : UserAddressInfo;
+  shippingMethod? : any;
   order? : any;
   CartError: Error;
 }

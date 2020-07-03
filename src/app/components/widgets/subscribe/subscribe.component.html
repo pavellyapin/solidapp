@@ -1,0 +1,29 @@
+<div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "center" class = "doo-subscribe-form">
+        <div fxLayout = "column" fxFlex = "60">
+                <div fxLayout = "row" >
+                        <div class = "doo-contentful" [innerHTML] = "widget.fields.content | richTextPipe">
+                        
+                        </div>
+                </div>
+        </div>
+        <div fxLayout = "column" fxFlex = "30">
+            <div [formGroup]="subscribeForm" 
+                fxLayout = "row" 
+                (keyup.enter)="subscribeEmail()">
+                <mat-form-field fxFlex = "70" appearance="outline" class="full-width">
+                    <input  formControlName="email" 
+                            autocomplete="email" 
+                            matInput 
+                            name="email" 
+                            placeholder="ENTER EMAIL"
+                            type="text"/>
+                </mat-form-field>
+                <div fxLayout="column">
+                        <button (click)="subscribeEmail()"  class = "doo-checkout-btn full-width"
+                        color="primary" mat-flat-button type="submit">
+                        Subscribe
+                        </button>
+                </div>
+            </div>
+        </div>
+    </div>

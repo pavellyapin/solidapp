@@ -5,7 +5,6 @@ import { NavRoute } from 'src/app/services/navigation/nav-routing';
 import { CartComponent } from './cart.component';
 import { CheckoutShippingGuard } from './shipping/shipping.guard';
 import { CheckoutShippingComponent } from './shipping/shipping.component';
-import { CartCheckoutComponent } from './checkout/checkout.component';
 import { CheckoutPaymentGuard } from './payment/payment.guard';
 import { CheckoutPaymentComponent } from './payment/payment.component';
 import { CheckoutSuccessGuard } from './success/success.guard';
@@ -17,7 +16,7 @@ export const catRoutes: NavRoute[] = [
    children : [
       {data: {title: 'Checkout' , isChild: true},
       path: '', 
-      component: CartCheckoutComponent},
+      component: CheckoutShippingComponent},
       {data: {title: 'Checkout Shipping' , isChild: true},
       path: 'checkout/shipping', 
       canActivate: [CheckoutShippingGuard],

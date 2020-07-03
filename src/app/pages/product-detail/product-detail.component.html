@@ -1,4 +1,4 @@
-<div [ngSwitch]="layout">
+<div style = "padding-bottom: 10%;" [ngSwitch]="layout">
     <doo-product-detail-fashion-layout 
     [productDetails] = "productDetails" 
     [productReviews] = "productReviews"
@@ -12,9 +12,9 @@
     *ngSwitchCase="'fashion'">
     </doo-product-detail-fashion-layout>
 </div>
-<div [ngSwitch]="post.sys.contentType.sys.id" *ngFor = "let post of pageLayout?.fields.posts">
-                <doo-widgets *ngSwitchCase="'widget'" [widget] = "post">
+<div [ngSwitch]="block.sys.contentType.sys.id" *ngFor = "let block of pageLayout?.fields.blocks">
+                <doo-widgets *ngSwitchCase="'widget'" [widget] = "block">
                 </doo-widgets>
-                <doo-post-layouts *ngSwitchCase="'post'" [post] = "post">
-                </doo-post-layouts>
+                <doo-block-layouts *ngSwitchCase="'block'" [block] = "block">
+                </doo-block-layouts>
 </div>

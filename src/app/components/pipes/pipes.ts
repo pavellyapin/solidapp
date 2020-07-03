@@ -41,6 +41,15 @@ import { ErrorStateMatcher } from '@angular/material/core';
   }
 
   @Pipe({
+    name: 'pricePipeSimple'
+  })
+    export class PricePipeSimple {
+        transform(price:any):any {
+          return 'CAD$' + parseFloat(price).toFixed(2);
+    }
+  }
+
+  @Pipe({
     name: 'ratePipe'
   })
     export class RatePipe {

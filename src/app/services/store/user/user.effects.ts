@@ -155,6 +155,26 @@ UpdatePersonalInfo$: Observable<Action> = createEffect(() =>
     )
   );
 
+  SubscribeEmail: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+      ofType(UserActions.BeginSubscribeEmailAction),
+      switchMap(action =>
+        this.firestoreService.subscribe(action.payload.get("email").value).pipe(
+          map((data: any) => {
+            if (data.code == 400) {
+              return UserActions.SuccessSubscribeEmailAction();
+            } else {
+              return UserActions.ErrorUserAction(data.message);
+            }
+          }),
+          catchError((error: Error) => {
+            return of(UserActions.ErrorUserAction(error));
+          })
+        )
+      )
+    )
+  );
+
   UpdateUserContactInfo: Observable<Action> = createEffect(() =>
     this.action$.pipe(
         ofType(UserActions.BeginUpdateUserContactInfoAction),

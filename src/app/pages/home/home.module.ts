@@ -10,7 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { PostLayoutsModule } from 'src/app/components/post-layouts/post-layouts.module';
+import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
+import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { PostLayoutsModule } from 'src/app/components/post-layouts/post-layouts.
     MatTooltipModule,
     MatSidenavModule,
     FlexLayoutModule,
-    PostLayoutsModule,
+    BlockLayoutsModule,
+    WidgetsModule
   ],
   declarations: [HomeComponent],
   providers: [],

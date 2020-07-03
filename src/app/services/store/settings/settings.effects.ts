@@ -20,11 +20,11 @@ export class SettingsEffects {
       mergeMap(action =>
         this.contentfulService.getSettings().pipe(
           map((data: any) => {
-            const theme = data.fields.theme + '.css';
+            /*const theme = data.fields.theme + '.css';
             const styleElement = document.createElement('link');
             styleElement.setAttribute('rel', 'stylesheet');
             styleElement.href = theme;
-            document.head.appendChild(styleElement);
+            document.head.appendChild(styleElement);*/
             return SettingsActions.SuccessLoadSettingsAction({ payload: data });
           }),
           catchError((error: Error) => {

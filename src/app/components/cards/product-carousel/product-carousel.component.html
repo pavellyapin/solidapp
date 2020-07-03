@@ -1,11 +1,21 @@
 
-
-      <div class="doo-carousel">
-
-                <div *ngFor="let card of _productCards">
-                                <doo-products-spawner [card]="card">
-    
-                                </doo-products-spawner>
-                              
-                            </div>
-        </div>
+<div class = "carousel-cont">
+    <mat-icon *ngIf = "bigScreens.includes(this.resolution)"
+              svgIcon="doo-arrow-left"
+              (click) = "flipCarousel('left')" 
+              class = "doo-carousel-left-arrow doo-pointer"></mat-icon>
+    <div class = "full-width" fxLayoutAlign = "center center">
+            <div class="doo-carousel" [fxFlex] = "width ? width : 70" fxFlex.xs = "100" fxFlex.sm = "100">
+                    <div *ngFor="let card of _productCards" >
+                                    <doo-products-spawner [card]="card">
+        
+                                    </doo-products-spawner>
+                                
+                    </div>
+            </div>
+    </div>
+    <mat-icon *ngIf = "bigScreens.includes(this.resolution)"
+              svgIcon="doo-arrow-right"
+              (click) = "flipCarousel('right')" 
+               class = "doo-carousel-right-arrow doo-pointer"></mat-icon>
+</div>

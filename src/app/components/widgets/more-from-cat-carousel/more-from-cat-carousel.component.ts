@@ -1,11 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { Entry } from 'contentful';
 import { Store, select } from '@ngrx/store';
 import ProductsState from 'src/app/services/store/product/product.state';
 import { Card } from '../../cards/card';
 import { ProductCardComponent } from '../../cards/product-card/product-card.component';
-import { ProductCardsService } from './product-cards.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -15,17 +14,17 @@ import { map } from 'rxjs/operators';
 })
 export class MoreFromCatCarouselComponent implements OnInit {
 
-  @Input() widget;
+  @Input() widget :Entry<any>;
 
   loadedProducts$: Observable<Entry<any>[]>;
   LoadedProductsSubscription: Subscription;
   loadedProducts: any[];
   relatedProductCards: Card[] = [];
   productVariants: Map<string,[any]> = new Map();
+  cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
 
-  constructor(store: Store<{ products: ProductsState }>,
-              private cardsService: ProductCardsService) {
-    this.cardsService.cards.subscribe(cards => {
+  constructor(store: Store<{ products: ProductsState }>) {
+    this.cards.subscribe(cards => {
       this.relatedProductCards = cards;
     });
 
@@ -43,7 +42,7 @@ export class MoreFromCatCarouselComponent implements OnInit {
           this.loadedProducts = x;
           this.createCardsForCarousel();
         } else {
-          this.cardsService.resetCards();
+          this.resetCards();
         }
         
       })
@@ -54,7 +53,7 @@ export class MoreFromCatCarouselComponent implements OnInit {
   createCardsForCarousel(): void {
     this.loadedProducts.forEach((v , index) => {
       this.sortVariantsForCarousel(v);
-        this.cardsService.addCard(
+        this.addCard(
           new Card(
             {
               name: {
@@ -69,24 +68,8 @@ export class MoreFromCatCarouselComponent implements OnInit {
                 key: Card.metadata.OBJECT,
                 value:  v,
               },
-              routerLink: {
-                key: Card.metadata.ROUTERLINK,
-                value: '/product/' + v.sys.id,
-              },
-              iconClass: {
-                key: Card.metadata.ICONCLASS,
-                value: 'fa-users',
-              },
-              cols: {
-                key: Card.metadata.COLS,
-                value: this['colsBig'],
-              },
-              rows: {
-                key: Card.metadata.ROWS,
-                value: this['rowsBig'],
-              },
-              color: {
-                key: Card.metadata.COLOR,
+              style: {
+                key: Card.metadata.STYLE,
                 value: 'blue',
               },
             }, ProductCardComponent,
@@ -111,9 +94,17 @@ export class MoreFromCatCarouselComponent implements OnInit {
     });
   }
 
+  addCard(card: Card): void {
+    this.cards.next(this.cards.getValue().concat(card));
+  }
+
+  resetCards(): void {
+    this.cards.getValue().splice(0,this.cards.getValue().length);
+  }
+
   ngOnDestroy(){
     this.LoadedProductsSubscription.unsubscribe();
-    this.cardsService.resetCards();
+    this.resetCards();
   }
 
 }

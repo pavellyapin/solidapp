@@ -11,6 +11,7 @@ import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import { map } from 'rxjs/operators';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
+import SettingsState from 'src/app/services/store/settings/settings.state';
 
 @Component({
   selector: 'doo-product-card',
@@ -23,52 +24,64 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   favorites$:Observable<FavoriteItem[]>;
   productReviews : any;
   UserSubscription: Subscription;
-  ReviewsSubscription: Subscription;
+  FavoritesSubscription: Subscription;
+  resolution$: Observable<string>;
+  resolution : any;
+  SettingsSubscription : Subscription;
   isFavorite:FavoriteItem;
+  cardStyle : any;
   productVariants: Map<string,[any]> = new Map();
 
-  constructor(private injector: Injector, 
+  constructor(public injector: Injector, 
               private navService: NavigationService,
               private router: Router,
               private firebase: FirestoreService,
-              private store: Store<{ user:UserState }>,
+              private store: Store<{ user:UserState , settings: SettingsState }>,
               private utilService: UtilitiesService) {
     super(injector.get(Card.metadata.NAME),
       injector.get(Card.metadata.INDEX),
-      injector.get(Card.metadata.OBJECT),
-      injector.get(Card.metadata.ROUTERLINK),
-      injector.get(Card.metadata.ICONCLASS),
-      injector.get(Card.metadata.COLS),
-      injector.get(Card.metadata.ROWS),
-      injector.get(Card.metadata.COLOR));
-
+      injector.get(Card.metadata.OBJECT));
+                
+      this.cardStyle = this.injector.get(Card.metadata.STYLE);
       this.favorites$ = store.pipe(select('user','favorites'));
+      this.resolution$ = store.pipe(select('settings' , 'resolution'));
   }
 
   ngOnInit() {
-    this.UserSubscription = this.firebase.getProductReviews(this.object.sys.id)
-    .pipe(
-      map(reviewsSnap => {
-        this.productReviews = Array<any>();
-        reviewsSnap.forEach(element => {
-          this.productReviews.push( element.payload.doc.data());
-        });
-      })
-    )
-    .subscribe();
-
-    this.ReviewsSubscription = this.favorites$
-    .pipe(
-      map(favorites => {
-        this.isFavorite = undefined;
-        if (favorites) {
-          favorites.forEach(element => {
-            if (this.object.sys.id == element.product.productId) {
-              this.isFavorite = element;
-              return
-            }
+    if (this.cardStyle != 'simple') {
+      this.UserSubscription = this.firebase.getProductReviews(this.object.sys.id)
+      .pipe(
+        map(reviewsSnap => {
+          this.productReviews = Array<any>();
+          reviewsSnap.forEach(element => {
+            this.productReviews.push( element.payload.doc.data());
           });
-        }
+        })
+      )
+      .subscribe();
+  
+      this.FavoritesSubscription = this.favorites$
+      .pipe(
+        map(favorites => {
+          this.isFavorite = undefined;
+          if (favorites) {
+            favorites.forEach(element => {
+              if (this.object.sys.id == element.product.productId) {
+                this.isFavorite = element;
+                return
+              }
+            });
+          }
+        })
+      )
+      .subscribe();
+    }
+
+
+    this.SettingsSubscription = this.resolution$
+    .pipe(
+      map(x => {
+        this.resolution = x;
       })
     )
     .subscribe();
@@ -103,7 +116,7 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
     this.navService.resetStack([]);
     this.utilService.scrollTop();
     this.router.navigateByUrl('/product', { skipLocationChange: true }).then(() => {
-      this.router.navigateByUrl(this.routerLink);
+      this.router.navigateByUrl('product/' + this.object.sys.id);
   }); 
     
   }
@@ -118,7 +131,8 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
 
   ngOnDestroy(){
     this.UserSubscription.unsubscribe();
-    this.ReviewsSubscription.unsubscribe();
+    this.FavoritesSubscription.unsubscribe();
+    this.SettingsSubscription.unsubscribe();
   }
 
 }

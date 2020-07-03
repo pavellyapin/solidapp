@@ -1,4 +1,4 @@
-import {Component , OnInit, Inject, Input, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
+import {Component , OnInit, Inject, Input, ViewChildren, QueryList} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from 'src/app/components/pipes/pipes';
@@ -28,7 +28,7 @@ export class ProductReviewsComponent implements OnInit {
   @ViewChildren("starCount") starCount!: QueryList<any>
   filters = new Array<any>();
   
-      constructor(private dialog: MatDialog , private changeDetectorRef: ChangeDetectorRef)
+      constructor(private dialog: MatDialog)
         {
           
         }

@@ -1,0 +1,10 @@
+<span [ngSwitch]="layout" >
+  <doo-cart-card-fashion-layout
+  [isFavorite] = "isFavorite"
+  [object] = "object"
+  [cartItemForm] = "cartItemForm"
+  (favoritesEmmitter) = "favoriteToggle($event)"
+  (cartEmmitter) = "removeFromCart()"
+  *ngSwitchCase="'fashion'">
+  </doo-cart-card-fashion-layout>
+</span>

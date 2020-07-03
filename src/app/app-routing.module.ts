@@ -14,6 +14,14 @@ const routes: Routes = [
     canActivateChild: [NavGuard],
   },
   {
+    data: {title: 'Cart' , isChild: false},
+    path: 'cart',
+    loadChildren: () =>
+      import('./pages/cart/cart.module').then(
+        m => m.CartModule,
+      )
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },

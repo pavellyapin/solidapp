@@ -176,14 +176,6 @@ import { ActivatedRoute } from '@angular/router';
                   key: Card.metadata.OBJECT,
                   value:  v,
                 },
-                routerLink: {
-                  key: Card.metadata.ROUTERLINK,
-                  value: '/product/' + v.sys.id,
-                },
-                iconClass: {
-                  key: Card.metadata.ICONCLASS,
-                  value: 'fa-users',
-                },
                 cols: {
                   key: Card.metadata.COLS,
                   value: this['colsBig'],

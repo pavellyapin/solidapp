@@ -2,12 +2,18 @@
   <div fxLayout = "row" *ngIf = "favItemsCards.length == 0" class = "no-favorites-placeholder">
     {{'profile.favorites.empty' | translate}}
   </div>
- <mat-grid-list [cols]="cols | async">
-  <mat-grid-tile *ngFor="let card of favItemsCards"
-                 [colspan]="card.input.cols.value | async"
-                 [rowspan]="card.input.rows.value | async">
-    <doo-favorites-spawner [card]="card"></doo-favorites-spawner>
-  </mat-grid-tile>
-</mat-grid-list>   
+  <div #productsGrid fxLayout= "column" fxFlex = "100">
+
+      <mat-grid-list  [cols]="cols | async">
+          <mat-grid-tile *ngFor="let card of favItemsCards"
+                        [colspan]="card.input.cols.value | async"
+                        [rowspan]="card.input.rows.value | async">
+                          <doo-products-spawner [card]="card">
+
+                          </doo-products-spawner>
+                        
+          </mat-grid-tile>
+        </mat-grid-list> 
+  </div>  
 </div>
 

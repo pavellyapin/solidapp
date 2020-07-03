@@ -1,7 +1,10 @@
-<div fxLayout="row" fxLayoutAlign="center" fxFlex>
-    <mat-toolbar fxLayout = "column"  fxFlex = "80" fxLayoutAlign="center center" class="doo-primary-toolbar">
-    <div fxLayout="row" fxLayoutAlign="space-between" class = "full-width">
-      <button (click)= "onToggleMobileSideMenu()" *ngIf = "resolution == 'xs'" mat-button>
+<div fxLayout = "column" fxLayoutAlign = "center center" class = "mat-caption top-news-feed-row">
+    An Update to COVID–19
+</div>
+<div fxLayout="row" fxLayoutAlign="center" fxFlex class="doo-primary-toolbar">
+    <mat-toolbar fxLayout = "column"  fxFlex = "100" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="space-between" class = "doo-menu-actions full-width">
+      <button (click)= "onToggleMobileSideMenu()" *ngIf = "!bigScreens.includes(resolution)" mat-button>
         <mat-icon>
                   menu
         </mat-icon>
@@ -39,8 +42,7 @@
             <mat-icon svgIcon="doo-profile"></mat-icon>
           </button>
           <button (click)= "goToCart()" mat-button>
-              <mat-icon fxFlex
-              svgIcon="doo-basket" 
+              <mat-icon svgIcon="doo-basket" 
               [matBadge]="cartItemCount" 
                       [matBadgeHidden]="!cartItemCount || cartItemCount == 0"></mat-icon>
            
@@ -48,13 +50,17 @@
     </div>
 
     </div>  
-    <div fxLayout="row" class = "full-width" fxLayoutAlign = "start">
-        <div fxLayout="row" fxFlex *ngIf = "bigScreens.includes(resolution)" fxLayoutAlign = "start">
+    <div *ngIf = "bigScreens.includes(resolution)" 
+         [@navbarAnimation]="state" 
+         fxLayout="row" 
+         class = "full-width doo-menu-items" 
+         fxLayoutAlign = "start">
+        <div fxLayout="row" fxFlex fxLayoutAlign = "start">
             <div fxLayout="row" fxLayoutAlign = "center center" *ngFor = "let category of rootCategories"
                  class = "doo-root-category doo-pointer" 
                  (click) = "expandMenu(category)">
                  {{category.fields.title}}
-                 <mat-icon *ngIf = "!category.fields.redirect">keyboard_arrow_down</mat-icon>
+                 <mat-icon *ngIf = "!category.fields.redirect" svgIcon="doo-arrow-down"></mat-icon>
             </div>
           </div>
     </div>
@@ -76,7 +82,7 @@
           <div fxFlex = "25">
               <img  class = "full-width" 
                     [lazyLoad]="activeCategory?.fields.media.fields.file.url" 
-                    [defaultImage]="'assets/placeholder-1.svg'">
+                    [defaultImage]="'assets/placeholders/placeholder-1.svg'">
           </div>
   </div>
 </div>

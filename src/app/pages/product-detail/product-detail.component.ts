@@ -12,6 +12,7 @@ import UserState from 'src/app/services/store/user/user.state';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-product-detail',
@@ -43,6 +44,7 @@ export class ProductDeatilComponent implements OnInit {
   resolution : any;
 
       constructor(private navService: NavigationService,
+                  private utilService : UtilitiesService,
                   private store: Store<{ products: ProductsState , 
                                          user:UserState , 
                                          settings: SettingsState }>)
@@ -131,6 +133,7 @@ export class ProductDeatilComponent implements OnInit {
   
 
   addProductToCart() {
+    this.utilService.scrollTop();
     if(this.cartItemForm.valid) {
         let item = new CartItem();
         item.variants = {}
@@ -158,11 +161,11 @@ export class ProductDeatilComponent implements OnInit {
     this.productDetails.fields.variants.forEach(variant => {
       this.cartItemForm.controls[variant.fields.option].setValidators(Validators.required)
       if(this.productVariants.get(variant.fields.option)) {
-        this.productVariants.get(variant.fields.option).push({name:variant.fields.name,code:variant.fields.code});
+        this.productVariants.get(variant.fields.option).push({name:variant.fields.name,code:variant.fields.name});
       } else {
         this.productVariants.set(variant.fields.option , 
                                [{name:variant.fields.name,code:variant.fields.code,checked:true}]);
-        this.cartItemForm.controls[variant.fields.option].setValue(variant.fields.code);
+        this.cartItemForm.controls[variant.fields.option].setValue(variant.fields.name);
       }
     });
   }

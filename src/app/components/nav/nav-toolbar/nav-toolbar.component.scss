@@ -8,10 +8,26 @@
 }
 
 .doo-primary-toolbar {
-  @include mat-elevation(0);
   background-color: #ffffff;
-  padding: 0px;
-  height: 110px;
+  mat-toolbar {
+    @include mat-elevation(0);
+    background-color: #ffffff;
+    padding: 0% 10%;
+    //height: 110px;
+    position: relative;
+    z-index: 12;
+  }
+  .doo-menu-items{
+    padding: 0% 10%;
+    position: absolute !important;
+    background-color: #ffffff;
+    top: 0px;
+    z-index: 1;
+  }
+  .doo-menu-actions {
+    z-index: 15;
+    background :white;
+  }
 }
 
 .doo-nav-toggle-button {
@@ -45,12 +61,15 @@ mat-icon {
 
 .doo-root-category {
   padding : 10px 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   mat-icon {
-    font-size: 20px;
+    padding-left: 5px;
+    padding-bottom: 15px;
+    width: 12px;
+    height: 12px;
   }
 }
 
@@ -86,4 +105,12 @@ mat-icon {
     padding-bottom : 0px !important;
     //margin : 0px !important;
   }
+}
+
+.top-news-feed-row {
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: $light-grey;
+  min-height: 30px;
+  opacity: 0.7;
 }

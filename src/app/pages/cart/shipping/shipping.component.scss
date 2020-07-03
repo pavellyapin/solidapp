@@ -1,4 +1,23 @@
 
+@import 'src/css/_variables.scss';
+
+#doo-shipping-form {
+  .doo-bottom-border{
+    padding-bottom: 10px;
+  }
+
+    
+ ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0em !important;
+  }
+
+
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: $black;
+}
+
 ::ng-deep  .phone-field {
     .mat-form-field-prefix {
       top : -0.2em !important;
@@ -6,8 +25,5 @@
     }
   }
 
-  
-::ng-deep #doo-checkout-form .mat-form-field-wrapper {
-    padding-bottom: 1em !important;
-  }
+
   

@@ -4,37 +4,87 @@
         font-weight: 900;
         letter-spacing: 4px;
         margin-bottom: 25px;
+        line-height: 60px;
     }
   
     ::ng-deep h2 {
-      font-size: 48px !important;
+      font-size: 32px !important;
       font-weight: 700;
       letter-spacing: 4px;
       margin-bottom: 25px;
+      line-height: 60px;
     }
   
     ::ng-deep h3 {
-      font-size: 42px !important;
+      font-size: 28px !important;
       font-weight: 500;
       letter-spacing: 4px;
     }
   
     ::ng-deep h4 {
-      font-size: 36px !important;
+      font-size: 24px !important;
       font-weight: 500;
       letter-spacing: 2px;
     }
   
     ::ng-deep h5 {
-      font-size: 28px !important;
+      font-size: 20px !important;
       font-weight: 500;
       letter-spacing: 2px;
     }
     
     ::ng-deep h6 {
         font-size: 18px !important;
+        line-height: 24px;
         font-weight: bolder;
         letter-spacing: 2px;
         margin-bottom: 15px;
+    }
+
+    ::ng-deep p {
+      line-height: 28px;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .doo-contentful{
+      ::ng-deep h1 {
+          font-size: 32px !important;
+          font-weight: 900;
+          letter-spacing: 4px;
+          margin-bottom: 25px;
+      }
+    
+      ::ng-deep h2 {
+        font-size: 28px !important;
+        font-weight: 700;
+        letter-spacing: 4px;
+        margin-bottom: 25px;
+      }
+    
+      ::ng-deep h3 {
+        font-size: 20px !important;
+        font-weight: 500;
+        letter-spacing: 4px;
+      }
+    
+      ::ng-deep h4 {
+        font-size: 16px !important;
+        font-weight: 500;
+        letter-spacing: 2px;
+      }
+    
+      ::ng-deep h5 {
+        font-size: 18px !important;
+        font-weight: 500;
+        letter-spacing: 2px;
+      }
+      
+      ::ng-deep h6 {
+          font-size: 14px !important;
+          font-weight: bolder;
+          letter-spacing: 2px;
+          margin-bottom: 15px;
+      }
     }
   }

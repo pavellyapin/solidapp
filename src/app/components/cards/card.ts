@@ -1,17 +1,15 @@
 import {InjectionToken} from '@angular/core';
 import { Observable } from 'rxjs';
-import { Entry } from 'contentful';
 
 export class Card {
   static metadata: any = {
     NAME: new InjectionToken<string>('name'),
     INDEX: new InjectionToken<number>('index'),
     OBJECT : new InjectionToken<any>('object'),
-    ROUTERLINK: new InjectionToken<string>('routerLink'),
-    ICONCLASS: new InjectionToken<string>('iconClass'),
     COLS: new InjectionToken<Observable<number>>('cols'),
     ROWS: new InjectionToken<Observable<number>>('rows'),
-    COLOR: new InjectionToken<string>('color')
+    COLOR: new InjectionToken<string>('color'),
+    STYLE: new InjectionToken<string>('style')
   };
 
   constructor(readonly input: {
@@ -19,31 +17,27 @@ export class Card {
       key: InjectionToken<string>,
       value: string
     },
-    index: {
+    index?: {
       key: InjectionToken<number>,
       value: number
     },
-    object: {
+    object?: {
       key: InjectionToken<any>,
       value: any
     },
-    routerLink?: {
-      key: InjectionToken<string>,
-      value: string
-    },
-    iconClass?: {
-      key: InjectionToken<string>,
-      value: string
-    },
-    cols: {
+    cols?: {
       key: InjectionToken<Observable<number>>,
       value: Observable<number>
     },
-    rows: {
+    rows?: {
       key: InjectionToken<Observable<number>>,
       value: Observable<number>
     },
     color?: {
+      key: InjectionToken<string>,
+      value: string
+    }
+    style?: {
       key: InjectionToken<string>,
       value: string
     }

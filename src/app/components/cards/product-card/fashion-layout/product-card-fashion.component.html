@@ -3,36 +3,39 @@
           fxFlex 
           fxLayoutAlign="space-between" 
           fxLayout="column">
-  <div fxLayout="column"  fxLayoutAlign="space-between" fxFlex>
-    <div fxLayout="column" class = "selected-image-full">
-        <mat-icon class = "doo-pointer" color = "accent" (click)="toggleFavorites(isFavorite)">{{isFavorite ? 'favorite' : 'favorite_border'}}</mat-icon>
+  <div fxLayout="column"  fxLayoutAlign="space-between">
+    <div fxLayout="column" class = "selected-image-full doo-pointer">
+        <mat-icon *ngIf = "showVariants" class = "doo-pointer" color = "accent" (click)="toggleFavorites(isFavorite)">{{isFavorite ? 'favorite' : 'favorite_border'}}</mat-icon>
         <div *ngIf = "object.fields.new" class = "new-label">
             {{'product.new' | translate}}
         </div>
-      <div fxFlex style = "position: relative">
-        <img  class = "full-width doo-pointer"
+      <div fxFlex style = "position: relative" class = "doo-pointer" (click)= "goToProduct()">
+        <img  class = "full-width card-placeholder"
               style = "position: absolute"
-              [lazyLoad]="object?.fields.media[0].fields.file.url"
-              [defaultImage]="'assets/placeholder-1.svg'"
-              (click)= "goToProduct()">
-              <img  *ngIf = "object?.fields.media.length > 1" class = "full-width doo-pointer first-image"
-              style = "position: absolute"
+              #cardImg
               [lazyLoad]="object?.fields.media[1].fields.file.url"
-              [defaultImage]="'assets/placeholder-1.svg'"
-              (click)= "goToProduct()">
+              [defaultImage]="'assets/placeholders/placeholder-1.svg'">
+              <img  *ngIf = "object?.fields.media.length > 1" 
+              class = "full-width first-image card-placeholder"
+              style = "position: absolute"
+              #cardImg
+              (onStateChange)="myCallbackFunction($event)"
+              [lazyLoad]="object?.fields.media[0].fields.file.url"
+              [defaultImage]="'assets/placeholders/placeholder-1.svg'">
       </div>
     </div>
    
-    <div fxLayout="column">
+    <div fxLayout="column" 
+         style = "padding-top: 150%">
     <div fxLayout="row" fxLayoutAlign="start" fxLayoutAlign.xs="start" class = "product-name-label">
         {{object.fields.title}}
     </div>
-    <div fxLayout="row" fxLayoutGap = "5px" *ngIf = "productReviews" >
+    <div fxLayout="row" fxLayoutGap = "5px" *ngIf = "productReviews && showReviews" >
         <doo-review-stars [rate] = "rate" [editable] = "false"></doo-review-stars>
         <span class = "mat-caption">{{productReviews.length}}</span>
     </div>
     <div fxLayout="column" class = "mat-body color-variant" fxShow fxHide.xs
-        *ngIf = "productVariants.get('color')">
+        *ngIf = "productVariants.get('color') && showVariants">
           <div fxLayout="row" fxLayoutAlign="star">
             <div *ngFor="let variant of productVariants.get('color')">
               <div [ngStyle]="{'background-color': variant.code}" class = "doo-color-box">
@@ -40,12 +43,13 @@
             </div>
           </div>
     </div> 
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="star" fxLayoutAlign.xs="start">
+      <div fxLayout="row" fxLayoutAlign="star" fxLayoutAlign.xs="start">
+          <span *ngIf = "object.fields.discount" [innerHTML] = "object.fields.discount | pricePipe">
+          </span>
         <span [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''" [innerHTML] = "object.fields.price | pricePipe">
             
         </span>
-        <span *ngIf = "object.fields.discount" [innerHTML] = "object.fields.discount | pricePipe">
-        </span>
+
       </div>
     </div>
   </div>

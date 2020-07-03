@@ -21,8 +21,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
-import { PostLayoutsModule } from 'src/app/components/post-layouts/post-layouts.module';
 import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
+import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
 
 
 @NgModule({
@@ -52,7 +52,7 @@ import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
     FlexLayoutModule,
     ProductDetailRoutingModule,
     NgxImageZoomModule,
-    PostLayoutsModule
+    BlockLayoutsModule
   ],
   providers: [],
   entryComponents: [WriteReviewModalComponent]

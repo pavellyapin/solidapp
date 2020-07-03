@@ -11,11 +11,8 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { AccountComponent } from './components/account/account.component';
 import { AddressComponentsModule } from '../../components/address/address-components.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { FavoritesCardComponent } from './components/favorites/product-cards/product-card/product-card.component';
-import { FavoritesCardsSpawnerComponent } from './components/favorites/product-cards/product-cards-spawner/product-cards-spawner.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
-import { FavoritesCardsService } from './components/favorites/product-cards/favorites-cards.service';
 import { OrdersComponent } from './components/orders/orders.component';
 import { OrderDeatilComponent } from './components/orders/order-details/order-detail.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -24,18 +21,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { AccountOverviewComponent } from './components/overview/account.component';
+import { CardsModule } from 'src/app/components/cards/cards.module';
 
 @NgModule({
   declarations: [ProfileComponent,
+                 AccountOverviewComponent,
                  AccountComponent,
                  FavoritesComponent,
                  OrdersComponent,
-                 OrderDeatilComponent,
-                 FavoritesCardComponent,
-                 FavoritesCardsSpawnerComponent],
+                 OrderDeatilComponent],
   imports: [
     CommonModule,
     PipesModule,
+    CardsModule,
     ProfileRoutingModule,
     MatCardModule,
     MatInputModule,
@@ -52,8 +51,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     AddressComponentsModule,
     TranslateModule
   ],
-  providers : [FavoritesCardsService],
-  entryComponents: [FavoritesCardComponent]
+  providers : [],
+  entryComponents: []
 })
 export class ProfileModule {
 }

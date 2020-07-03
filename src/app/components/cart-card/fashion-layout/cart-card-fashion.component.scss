@@ -1,0 +1,32 @@
+@import 'src/css/_variables.scss';
+
+.doo-cart-card {
+  :host {
+    height: 100%;
+    width: 100%;
+  }
+
+  .mat-subheading-2 {
+    margin : 0px;
+  }
+
+  .doo-stroked-price {
+    font-size: 14px;
+  }
+
+  .doo-cart-action {
+    padding-left: 20px;
+  }
+
+  .cart-card-content {
+    padding-left: 10px;
+  }
+
+  .cart-item-variant{
+    padding-bottom: 5px;
+    letter-spacing: 2px;
+  }
+  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-top: 1.25em;
+  }
+}

@@ -12,30 +12,29 @@ import { NavToolbarComponent } from './nav-toolbar/nav-toolbar.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { BreadCrumbsComponent } from './bread-crumbs/bread-crumbs.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { CartCardComponent } from './cart-cards/cart-card/cart-card.component';
-import { CartCardsSpawnerComponent } from './cart-cards/cart-cards-spawner/cart-cards-spawner.component';
-import { CartCardsService } from './cart-cards/product-cards.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
-import {MenuSideNavComponent} from './menu-side-nav/menu-side-nav.component'
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { FooterModule } from '../footer/footer.module';
+import { MobileSideNavComponent } from './mobile-side-nav/mobile-side-nav.component';
+import { CartSideNavComponent } from './cart-side-nav/cart-side-nav.component';
+import { CartCardsModule } from '../cart-card/cards.module';
 
 @NgModule({
   declarations: [NavComponent, 
                  NavToolbarComponent,
                  BreadCrumbsComponent,
-                 CartCardComponent,
-                 CartCardsSpawnerComponent,
-                 MenuSideNavComponent],
+                 MobileSideNavComponent,
+                 CartSideNavComponent],
   imports: [
     CommonModule,
     RouterModule,
+    FooterModule,
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
@@ -44,7 +43,6 @@ import { MatInputModule } from '@angular/material/input';
     FlexLayoutModule,
     MatListModule,
     MatGridListModule,
-    MatCardModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -53,11 +51,12 @@ import { MatInputModule } from '@angular/material/input';
     MatMenuModule,
     MatBadgeModule,
     PipesModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    CartCardsModule
   ],
-  providers : [CartCardsService],
+  providers : [],
   exports:[BreadCrumbsComponent],
-  entryComponents: [CartCardComponent]
+  entryComponents: []
 })
 export class NavModule {
 }

@@ -7,10 +7,6 @@ mat-sidenav-container {
     background-color: white;
 }
 
-mat-sidenav {
-    width: 20%;
-    padding-left: 10%;
-}
 mat-sidenav-content {
     background-color: white;
     border: none;
@@ -20,4 +16,15 @@ mat-sidenav-content {
 
 .mat-drawer-side{
     border: none;
+}
+
+.doo-nav-filters {
+    padding-left: 10%;
+    width: 20%;
+}
+
+.doo-nav-filters-mobile {
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 80%;
 }

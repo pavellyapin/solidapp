@@ -1,3 +1,18 @@
+@import 'src/css/_variables.scss';
+
+  .doo-address-form {
+    mat-icon {
+      padding-right: 10px;
+      height: 25px;
+      width: 25px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $primary;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $primary;
+      }
+    }
   .mat-caption {
     text-decoration: underline;
   }
@@ -38,3 +53,4 @@
     border-top-color: inherit !important;
   }
   
+}

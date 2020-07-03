@@ -1,31 +1,42 @@
 
-      <div fxLayout="row" fxLayoutAlign="center">
-          <h1 class="mat-display-1">Your Account</h1>
-      </div>
-      <mat-sidenav-container >
-          <mat-sidenav [opened]="true" 
-                        mode="side" 
-                        position = "start">
+        <button mat-button (click)="filtersOpen = !filtersOpen" class = "doo-filters-btn">
+                <div fxLayout = "column" fxLayoutAlign = "center center">
+                    <span>HIDE FILTERS</span>
+                    <mat-icon svgIcon="doo-filters"></mat-icon>
+                </div>
+              </button>
+     <mat-sidenav-container style = "padding-top: 5%;">
+          <mat-sidenav [opened]="filtersOpen" 
+                       [mode]="navMode" 
+                        style = "padding-top: 2%;"
+                        position = "start"
+                        [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters-mobile'">
                         <div fxLayout= "row">
                             <div fxLayout= "column" fxFlex = "100" >
                               <div fxLayout= "column" fxLayoutAlign = "start start" class = "doo-bottom-border">
-                                  <button mat-button [routerLink] = "'profile'">
-                                      <span class = "mat-subheading-2">
-                                          Profile
+                                  <div class = "mat-headline">Account Menu</div>
+                                  <button mat-button [routerLink] = "'overview'" (click) = "filtersOpen = !filtersOpen">
+                                      <span class = "mat-subheading-1">
+                                          Overview
                                       </span>
                                       </button>
-                                      <button mat-button [routerLink] = "'addressinfo'">
-                                          <span class = "mat-subheading-2">
+                                      <button mat-button [routerLink] = "'profile'" (click) = "filtersOpen = !filtersOpen">
+                                        <span class = "mat-subheading-1">
+                                            Profile
+                                        </span>
+                                      </button>
+                                      <button mat-button [routerLink] = "'addressinfo'" (click) = "filtersOpen = !filtersOpen">
+                                          <span class = "mat-subheading-1">
                                               Addresses
                                           </span>
                                         </button>
-                                        <button mat-button [routerLink] = "'favorites'">
-                                            <span class = "mat-subheading-2">
+                                        <button mat-button [routerLink] = "'favorites'" (click) = "filtersOpen = !filtersOpen">
+                                            <span class = "mat-subheading-1">
                                                 Favorites
                                             </span>
                                         </button>
-                                       <button mat-button [routerLink] = "'orders'">
-                                            <span class = "mat-subheading-2">
+                                       <button mat-button [routerLink] = "'orders'" (click) = "filtersOpen = !filtersOpen">
+                                            <span class = "mat-subheading-1">
                                                 Orders
                                             </span>
                                         </button>

@@ -1,9 +1,9 @@
-<div fxLayout="column" fxLayoutGap="50px">
-        <div [ngSwitch]="post.sys.contentType.sys.id" *ngFor = "let post of posts">
-                <doo-widgets *ngSwitchCase="'widget'" [widget] = "post">
+<div fxLayout="column">
+        <div [ngSwitch]="block.sys.contentType.sys.id" *ngFor = "let block of homePageContent?.fields.blocks">
+                <doo-widgets *ngSwitchCase="'widget'" [widget] = "block">
                 </doo-widgets>
-                <doo-post-layouts *ngSwitchCase="'post'" [post] = "post">
-                </doo-post-layouts>
+                <doo-block-layouts *ngSwitchCase="'block'" [block] = "block">
+                </doo-block-layouts>
         </div>
 </div>
 

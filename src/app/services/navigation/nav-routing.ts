@@ -70,14 +70,6 @@ export const navRoutes: NavRoute[] = [
       import('../../pages/product-detail/product-detail.module').then(
         m => m.ProductDetailModule,
       )
-  },
-  {
-    data: {title: 'Cart' , isChild: true},
-    path: 'cart',
-    loadChildren: () =>
-      import('../../pages/cart/cart.module').then(
-        m => m.CartModule,
-      )
   }
 ];
 
@@ -88,7 +80,7 @@ export class NavRouteService {
   navRoute: Route;
   navRoutes: NavRoute[];
 
-  constructor(router: Router) {
+  constructor(public router: Router) {
     this.navRoute = router.config.find(route => route.path === sideNavPath);
     this.navRoutes = this.navRoute.children
       .filter(route => route.data)

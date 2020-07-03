@@ -3,7 +3,6 @@ import { ProductCategoryComponent } from './product-category.component';
 import { CommonModule } from '@angular/common';
 import { ProductCategoryRoutingModule } from './product-category-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ProductCardsService } from './product-cards/product-cards.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { NavModule } from 'src/app/components/nav/nav.module';
@@ -43,7 +42,7 @@ import { CardsModule } from 'src/app/components/cards/cards.module';
     FlexLayoutModule,
     LazyLoadImageModule
   ],
-  providers: [ProductCardsService],
+  providers: [],
   entryComponents: []
 })
 export class ProductCategoryModule {

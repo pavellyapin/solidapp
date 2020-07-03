@@ -8,7 +8,6 @@ import { VariantsPipe } from 'src/app/components/pipes/pipes';
 import { CartService } from '../cart.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
-import { CartCardsService } from '../cart-cards/product-cards.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 
 
@@ -20,7 +19,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
   export class CheckoutPaymentComponent  {
 
     cart$: Observable<CartState>;
-    cartTotal : string;
+    cartTotal : number;
     cartId : string;
     CartSubscription: Subscription;
     cartServiceSubscription: Subscription;
@@ -40,7 +39,6 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     constructor(private store: Store<{ cart: CartState }> ,
                 private variantPipe : VariantsPipe,
                 private cartService : CartService,
-                private cartItemsService: CartCardsService,
                 private dialog: MatDialog,
                 private cd: ChangeDetectorRef,
                 private utilService: UtilitiesService) {
@@ -148,7 +146,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     payPalPay() {
         let reqCart = [];
             
-        this.cartItemsService.cards.value.forEach(function(item){
+       /* this.cartItemsService.cards.value.forEach(function(item){
             reqCart.push(
                 {product_id : item.input.object.value.sys.id,
                 thumbnail : item.input.object.value.fields.media[0].fields.file.url,
@@ -165,7 +163,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
             this.dialog.open(PayPalModalComponent, {
             width: '750px',
             data: {cart: reqCart, total: parseFloat(this.cartTotal).toFixed(2)}
-            });
+            }); */
         
         }
 

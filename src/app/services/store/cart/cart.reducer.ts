@@ -10,7 +10,7 @@ const reducer = createReducer(
   on(CartActions.BeginResetCartAction, (state: CartState, {}) => {
     return { ...state, 
             items: [],
-            shipping : null,
+            addressInfo : null,
             cartId: null, 
             total: null,
             order:null,
@@ -52,7 +52,13 @@ const reducer = createReducer(
 
   on(CartActions.SuccessSetOrderShippingAction, (state: CartState, { payload }) => {
     return { ...state, 
-            shipping: payload, 
+            addressInfo: payload, 
+            CartError: null };
+  }),
+
+  on(CartActions.BeginSetShippingMethodAction, (state: CartState, { payload }) => {
+    return { ...state, 
+            shippingMethod: payload, 
             CartError: null };
   }),
 

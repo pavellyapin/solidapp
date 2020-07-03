@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SelectValue } from 'src/app/components/pipes/pipes';
-import { Store, select } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import * as UserActions from 'src/app/services/store/user/user.action';
-import UserState from 'src/app/services/store/user/user.state';
-import { Observable, Subscription, from } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UserAddressInfo } from 'src/app/services/store/user/user.model';
-import { map } from 'rxjs/operators';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
@@ -18,6 +15,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
   export class AddressFormComponent implements OnInit , OnDestroy {
 
     @Input() mode:string;
+    @Input() userAddressInfo:UserAddressInfo;
     @Output() addressFormEmitter = new EventEmitter<FormGroup>();
 
     scriptLoaded : boolean = false;
@@ -27,10 +25,8 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     addAddressLine2:boolean = false;
     address: any;
     addressComponents: any;
-    addressInfo: FormGroup;
-    UserSubscription: Subscription;
+    addressInfo : FormGroup;
     actionSubscription: Subscription;
-    userAddressInfo: UserAddressInfo;
     googleMapsURL : any = "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAlKy-UhEx80WkZjrzDkhmd0nftq42X3Gg";
 
     @ViewChild('search',{static: false}) search: ElementRef;
@@ -40,19 +36,17 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     @ViewChild('postal',{static: false}) postal: ElementRef;
 
 
-    constructor (private store: Store<{ user: UserState }>,
-                 private _actions$: Actions,
+    constructor (private _actions$: Actions,
                  private changeDetectorRef: ChangeDetectorRef,
                  private utilService: UtilitiesService) {
-
-        this.address$ = store.pipe(select('user' , 'addressInfo'));
 
         this.addressInfo = new FormGroup({        
             addressLine1: new FormControl('' , Validators.required),
             addressLine2: new FormControl(''),
             city: new FormControl('' , Validators.required),
             province: new FormControl('' , Validators.required),
-            postal: new FormControl('' , Validators.required)
+            postal: new FormControl('' , Validators.required),
+            shipping : new FormControl('' , Validators.required)
         })
     }
 
@@ -68,39 +62,37 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
             }
         });
 
-        if (this.mode == "alwaysOpen") {
+        if (!this.userAddressInfo.addressLine1) {
             this.addMode = true;
-            this.addManually = true;
         }
 
-
-
-        this.UserSubscription = this.address$
-        .pipe(
-          map(x => {
-            this.userAddressInfo = x;
-            if (this.userAddressInfo) {
-                this.addressInfo.controls["addressLine1"].setValue(this.userAddressInfo.addressLine1);
-                this.addressInfo.controls["addressLine2"].setValue(this.userAddressInfo.addressLine2);
-                this.addressInfo.controls["city"].setValue(this.userAddressInfo.city);
-                this.addressInfo.controls["province"].setValue(this.userAddressInfo.province);
-                this.addressInfo.controls["postal"].setValue(this.userAddressInfo.postal);
-            }
-
-          })
-        )
-        .subscribe();
+        this.addressInfo.controls["addressLine1"].setValue(this.userAddressInfo.addressLine1);
+        this.addressInfo.controls["addressLine2"].setValue(this.userAddressInfo.addressLine2);
+        this.addressInfo.controls["city"].setValue(this.userAddressInfo.city);
+        this.addressInfo.controls["province"].setValue(this.userAddressInfo.province);
+        this.addressInfo.controls["postal"].setValue(this.userAddressInfo.postal);
+ 
         this.actionSubscription = this._actions$.pipe(ofType(UserActions.SuccessGetUserAddressInfoAction)).subscribe(() => {
         this.addMode = this.addManually = false;    
         });
 
         this.changeDetectorRef.detectChanges();
     } 
-    
 
+    resetForm() {
+        this.addressInfo = new FormGroup({        
+            addressLine1: new FormControl('' , Validators.required),
+            addressLine2: new FormControl(''),
+            city: new FormControl('' , Validators.required),
+            province: new FormControl('' , Validators.required),
+            postal: new FormControl('' , Validators.required)
+        });
+    }
 
-
-    getAddress(place: any) {    
+    getAddress(place: any) {  
+        this.resetForm();
+        this.addManually = true;
+        this.changeDetectorRef.detectChanges();
         this.address = place;
         this.addressComponents = place['address_components'];
 
@@ -132,26 +124,32 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
             }
         }
         this.addressLine1.nativeElement.focus();
-        this.addressInfo.controls["addressLine1"].setValue(streetNumber + ' ' + streetName);
+        if (streetNumber && streetName) {
+            this.addressInfo.controls["addressLine1"].setValue(streetNumber + ' ' + streetName);
+        } 
         this.addressLine2.nativeElement.focus();
         
       }
 
       ngOnChanges() {
-          this.addressFormEmitter.emit(this.addressInfo);
+          
       }
 
       saveAddress() {
-        this.store.dispatch(UserActions.BeginUpdateUserAddressInfoAction({ payload: this.addressInfo }));
+        this.addressFormEmitter.emit(this.addressInfo);
+        this.addMode = this.addManually = false;
+        this.changeDetectorRef.detectChanges();
+        //this.store.dispatch(UserActions.BeginUpdateUserAddressInfoAction({ payload: this.addressInfo }));
       }
 
       provinces: SelectValue[] = [
-        {value: 'ON', viewValue: 'Ontario'}
+        {value: 'ON', viewValue: 'Ontario'},
+        {value: 'QC', viewValue: 'Quebec'}
       ]; 
 
           
      ngOnDestroy(): void {
-        this.UserSubscription.unsubscribe();
+        
     }
 
   }

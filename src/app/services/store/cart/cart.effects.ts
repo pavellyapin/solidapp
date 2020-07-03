@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, from } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import * as CartActions from './cart.action';
 import { FirestoreService } from '../../firestore/firestore.service';
+import { ContentfulService } from '../../contentful/contentful.service';
 
 
 
@@ -12,7 +13,8 @@ import { FirestoreService } from '../../firestore/firestore.service';
 export class CartEffects {
   constructor(
     private action$: Actions, 
-    private firestoreService: FirestoreService) {}
+    private firestoreService: FirestoreService,
+    private contentfulService: ContentfulService) {}
 
   InitializeOrder$: Observable<Action> = createEffect(() =>
     this.action$.pipe(

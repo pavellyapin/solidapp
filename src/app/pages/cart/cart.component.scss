@@ -4,18 +4,13 @@
 :host {
   height: 100%;
   width: 100%;
-}
+} 
 
-.doo-stroked-price {
-  text-decoration: line-through;
-  opacity: 0.5;
-  padding-right: 10px;
-  color: $accent;
-}
-
-::ng-deep .currency-label {
-  font-size: 12px;
-  opacity: 0.5;
+.doo-nav-toggle-button {
+  width: 220px;
+  padding: 5px 20px;
+  margin: 0;
+  border: 0;
 }
 
 .doo-color-box {

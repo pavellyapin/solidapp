@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {NavRoute, NavRouteService} from "./nav-routing";
 import * as SettingsActions from 'src/app/services/store/settings/settings.action';
 import { Store } from '@ngrx/store';
+import { Title } from '@angular/platform-browser';
 
 export class Page {
   title: string;
@@ -22,7 +23,9 @@ export class NavigationService {
   private activePage: Page;
   private navigationStack: Array<Array<string>> = [];
 
-  constructor(navRouteService: NavRouteService , private store: Store<{}>) {
+  constructor(private navRouteService: NavRouteService , 
+              private store: Store<{}>,
+              private titleService: Title) {
     this.navigationItems = navRouteService.getNavRoutes();
   }
 
@@ -88,6 +91,7 @@ export class NavigationService {
     if (url.length > 0) {
       isChild ? this.pushToStack(url) : this.resetStack(url);
     }
+    this.titleService.setTitle(title);
     this.activePage = new Page(title, isChild);
   }
 
@@ -96,6 +100,29 @@ export class NavigationService {
   }
 
   public finishLoading() {
+    //let timerId = setTimeout(() => this.store.dispatch(SettingsActions.SuccessLoadingAction()), 3000);
     this.store.dispatch(SettingsActions.SuccessLoadingAction());
+  }
+
+  public ctaClick(cta) {
+    this.store.dispatch(SettingsActions.BeginLoadingAction());
+    if (cta.sys) {
+      switch (cta.sys.contentType.sys.id) {
+        case 'category':
+          this.navRouteService.router.navigateByUrl('cat/' + cta.fields.name)
+          break;
+        case 'page':
+            this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.navRouteService.router.navigateByUrl('page/' + cta.fields.name)
+          });
+         break;
+      }
+    } else {
+      this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.navRouteService.router.navigateByUrl(cta);
+      });
+      
+    }
+
   }
 }

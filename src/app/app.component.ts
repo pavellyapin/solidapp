@@ -20,7 +20,11 @@ export class AppComponent {
                 // the lang to use, if the lang isn't available, it will use the current loader to get them
                translate.use('en');
 
-               
+               this.matIconRegistry.addSvgIcon(
+                'doo-logo',
+                this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/logo.svg")
+                );
+
                 this.matIconRegistry.addSvgIcon(
                   'doo-basket',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/basket.svg")
@@ -53,5 +57,52 @@ export class AppComponent {
                   'doo-star-outline',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/star-outline.svg")
                 );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-arrow-left',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/arrow-left.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-arrow-right',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/arrow-right.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-arrow-down',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/arrow-down.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-twitter',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/twitter.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-facebook',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/facebook.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-insta',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/insta.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-youtube',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/youtube.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-linkedin',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/linkedin.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-googleplus',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/googleplus.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-location',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/location.svg")
+                );
+                
   }
 }

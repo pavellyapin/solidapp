@@ -5,6 +5,7 @@ import {NavigationService} from "./navigation.service";
 import {sideNavPath} from "./nav-routing";
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { UtilitiesService } from '../util/util.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class NavGuard implements CanActivateChild {
   
   constructor(private navigationService: NavigationService,
-              public afAuth: AngularFireAuth) {
+              public afAuth: AngularFireAuth,
+              private utils : UtilitiesService) {
   }
 
   canActivateChild(
@@ -25,6 +27,7 @@ export class NavGuard implements CanActivateChild {
     | UrlTree {
 
       return this.afAuth.authState.pipe(map((auth)=> {
+        this.utils.scrollTop();
         if (childRoute.data && childRoute.data.title) {
           const parentPath: string = childRoute.parent.url
             .map(url => url.path)

@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ViewChild, ElementRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import ProductsState from 'src/app/services/store/product/product.state';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Card } from 'src/app/components/cards/card';
 import { MediaObserver } from '@angular/flex-layout';
-import { ProductCardsService } from './product-cards/product-cards.service';
 import { Entry } from 'contentful';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
@@ -32,13 +31,14 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     rowsBig: Observable<number>;
     resolution : any;
     navMode : any;
-    bigScreens = new Array('lg' , 'xl')
+    bigScreens = new Array('lg' , 'xl' , 'md')
     productVariants: Map<string,[any]> = new Map();
     filters = new Array<any>();
     filtersOpen : boolean;
     colorPanelOpenState : boolean = true;
     sizePanelOpenState: boolean = true;
     productsLoadedInt : number = 9;
+    cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
 
     @ViewChildren("checkboxVariants") checkboxVariants!: QueryList<any>
     @ViewChild('sortSelect',{static: false}) sortSelect: ElementRef;
@@ -46,11 +46,11 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     
     constructor(store: Store<{ products: ProductsState , settings : SettingsState }>,
                 private mediaObserver: MediaObserver,
-                public cardsService: ProductCardsService,
                 private navService : NavigationService,
                 private utilService : UtilitiesService)
     {
-      this.cardsService.cards.subscribe(cards => {
+      window.addEventListener('scroll', this.loadMore.bind(this), {passive:true});
+      this.cards.subscribe(cards => {
         this.productCards = cards;
       });
       this.product$ = store.pipe(select('products'));
@@ -64,8 +64,8 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
         map(x => {
           
           this.activeCategory = x.activeCategory;
-          this.cardsService.resetCards();
-          if (x.loadedProducts) {
+          this.resetCards();
+          if (x.loadedProducts && x.loadedProducts.length > 0) {
             this.productsLoaded = this.utilService.
             shuffleArray(x.loadedProducts.map(products=> {return products}));
             this.createCards();
@@ -91,27 +91,27 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 
       /* Grid column map */
       const colsMap = new Map([
-        ['xs', 12],
-        ['sm', 4],
-        ['md', 8],
+        ['xs', 24],
+        ['sm', 16],
+        ['md', 18],
         ['lg', 9],
-        ['xl', 18],
+        ['xl', 9],
       ]);
       /* Big card column span map */
       const colsMapBig = new Map([
-        ['xs', 6],
-        ['sm', 2],
-        ['md', 4],
+        ['xs', 12],
+        ['sm', 8],
+        ['md', 6],
         ['lg', 3],
         ['xl', 3],
       ]);
       /* Small card column span map */
       const rowsMapBig = new Map([
-        ['xs', 11],
-        ['sm', 3],
-        ['md', 5],
+        ['xs', 21],
+        ['sm', 13],
+        ['md', 10],
         ['lg', 5],
-        ['xl', 2],
+        ['xl', 5],
       ]);
       let startCols: number;
       let startColsBig: number;
@@ -153,15 +153,29 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
       
     }
 
+    loadMore() {
+      if (window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
+        this.createCards();
+      }
+    }
+
+    addCard(card: Card): void {
+      this.cards.next(this.cards.getValue().concat(card));
+    }
+  
+    resetCards(): void {
+      this.cards.getValue().splice(0,this.cards.getValue().length);
+    }
+
     ngAfterViewInit() {
       this.navService.finishLoading();
     }
 
     createCards(): void {
-      this.productsLoaded.slice(this.cardsService.cards.value.length,this.cardsService.cards.value.length + this.productsLoadedInt).forEach((v , index) => {
+      this.productsLoaded.slice(this.cards.value.length,this.cards.value.length + this.productsLoadedInt).forEach((v , index) => {
         this.sortVariants(v);
         if (this.filters.length == 0 || this.filterProduct(v)) {
-          this.cardsService.addCard(
+          this.addCard(
             new Card(
               {
                 name: {
@@ -176,14 +190,6 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
                   key: Card.metadata.OBJECT,
                   value:  v,
                 },
-                routerLink: {
-                  key: Card.metadata.ROUTERLINK,
-                  value: '/product/' + v.sys.id,
-                },
-                iconClass: {
-                  key: Card.metadata.ICONCLASS,
-                  value: 'fa-users',
-                },
                 cols: {
                   key: Card.metadata.COLS,
                   value: this['colsBig'],
@@ -192,9 +198,9 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
                   key: Card.metadata.ROWS,
                   value: this['rowsBig'],
                 },
-                color: {
-                  key: Card.metadata.COLOR,
-                  value: 'blue',
+                style: {
+                  key: Card.metadata.STYLE,
+                  value: 'full',
                 },
               }, ProductCardComponent,
             ),
@@ -243,7 +249,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
         });
       }
       
-      this.cardsService.resetCards();
+      this.resetCards();
       this.createCards();
     }
 
@@ -260,7 +266,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
         }
       })
        
-      this.cardsService.resetCards();
+      this.resetCards();
       this.createCards();
     }
 
@@ -275,9 +281,9 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
         sortedCards.sort(this.priceHighLow);
       }
       this.sortSelect['value'] = '';
-      this.cardsService.resetCards();
+      this.resetCards();
       sortedCards.forEach(card => {
-        this.cardsService.addCard(card);
+        this.addCard(card);
       })
     }
 
@@ -293,18 +299,13 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
       else return 1
     }
 
-    @HostListener('window:scroll', ['$event'])
-    checkScroll() {
-      if (window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
-        this.createCards();
-      } 
-    } 
   
 
     ngOnDestroy(): void {
+      window.removeEventListener('scroll', this.loadMore.bind(this));
       this.ProductSubscription.unsubscribe();
       this.SettingsSubscription.unsubscribe();
-      this.cardsService.resetCards();
+      this.resetCards();
     }
 
 

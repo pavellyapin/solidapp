@@ -1,12 +1,19 @@
 @import 'src/css/_variables.scss';
 
-.top-news-feed-row {
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: $light-grey;
-  min-height: 30px;
-  opacity: 0.7;
+app-nav-toolbar {
+  position: sticky !important;
+  top: 0px;
+  z-index: 10;
+  background: white;
+  ::ng-deep .mat-toolbar {
+    background-color: inherit !important;
+  }
 }
+
+mat-sidenav-content {
+  padding-top: 50px;
+}
+
 
 .bottom-news-feed-row {
   border-bottom: solid;
@@ -26,9 +33,9 @@
     }
   }
   .nav-container {
-  display: flex;
-  flex-direction: column;
-  //position: absolute;
+    mat-sidenav {
+      padding-top: 50px;
+    }
   top: 0;
   bottom: 0;
   left: 0;
@@ -55,3 +62,46 @@
   padding: 0px;
 }
 
+
+  
+.doo-overlay {
+  position: absolute; 
+  height: 100%; 
+  width: 100%;
+  padding-top: 200px;
+  background: $primary;
+  z-index: 100;
+  opacity: 0.7;
+  }
+
+  .doo-loading-overlay {
+    position: absolute;
+    height: 100%; 
+    width: 100%;
+    background: white;
+    z-index: 100;
+    opacity: 1;
+    }
+
+.doo-loading-screen {
+  background: $lighter-grey;
+  padding-top: 200px;
+  padding-bottom: 200px;
+  width: 80%;
+  text-align: center;
+  margin:15px;
+  animation-duration: .5s;
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes loading {
+  from {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 0.2;
+  }
+}

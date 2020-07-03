@@ -70,24 +70,19 @@ doo-bread-crumbs {
   color:white;
   padding : 0 10px;
 }
-
-
-.doo-stroked-price {
-  text-decoration: line-through;
-  opacity: 0.5;
-  padding-right: 10px;
-  color: $accent;
-}
-
 .doo-add-btn{
   text-transform: uppercase;
   padding: 5px 10px;
 }
 
-
-
-  
-
+.doo-rate-uneditable {
+  padding-bottom: 10px;
+  ::ng-deep .doo-rate-icon {
+      padding : 2px 2px;
+      height: 15px;
+      width: 15px;
+    } 
+}
 
 .color-variant {
   ::ng-deep .mat-radio-container{
@@ -157,5 +152,26 @@ doo-bread-crumbs {
     border-radius: 2px;
     width: 100%;
     text-align: center;
+  }
+}
+
+.plus-icon {
+  padding-left: 10px;
+}
+
+.minus-icon {
+  padding-right: 10px;
+  opacity: 0.5;
+}
+
+.qty-input {
+  text-align: center;
+  width:50px;
+  font-weight: bold;
+  ::ng-deep .mat-form-field-infix{
+    background-color: $lighter-grey;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $light-grey;
   }
 }
