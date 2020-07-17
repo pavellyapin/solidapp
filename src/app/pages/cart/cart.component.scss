@@ -6,6 +6,15 @@
   width: 100%;
 } 
 
+.doo-empty-cart {
+  padding-top: 20%;
+}
+
+.cart-items-cont {
+  overflow: scroll;
+  height: 80%;
+}
+
 .doo-nav-toggle-button {
   width: 220px;
   padding: 5px 20px;
@@ -20,7 +29,34 @@
 
 .doo-cart-summary-box {
   background-color: $lighter-grey;
-  padding: 40px 20px 20px 20px;
+  width:  35%;
+  .doo-cart-summary{
+    padding : 20px;
+    border-top: solid;
+    border-width: 2px;
+    border-color: $light-grey;
+  }
+}
+
+.doo-mobile-cart-summary-box {
+  background-color: $lighter-grey;
+  padding: 5px 10px 10px 10px;
+  width:  65%;
+  
+}
+
+.nav-cart-title{
+  padding-left: 10px;
+  .mat-caption{
+    font-weight: 900;
+    opacity: 0.7;
+    margin : 10px 0px;
+  }
+}
+
+.doo-mobile-cart-btn {
+  background-color: $light-grey;
+  margin-bottom: 10px;
 }
 
 .qty-input {
@@ -38,6 +74,37 @@
   ::ng-deep .mat-form-field-wrapper {
     margin: 0 0 !important;
     padding-bottom: 0em;
+  }
+}
+
+  .doo-loading-overlay {
+    height: 100%; 
+    width: 100%;
+    background: white;
+    z-index: 100;
+    opacity: 1;
+    }
+
+.doo-loading-screen {
+  background: $lighter-grey;
+  padding-top: 200px;
+  padding-bottom: 200px;
+  width: 80%;
+  text-align: center;
+  margin:15px;
+  animation-duration: .5s;
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes loading {
+  from {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 0.2;
   }
 }
 

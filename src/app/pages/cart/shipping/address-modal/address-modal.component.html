@@ -1,0 +1,14 @@
+<div fxLayout = "column">
+        <div class = "full-width" fxLayoutAlign = "end">
+                <mat-icon class = "doo-pointer" svgIcon = "doo-close" (click) = "dialogRef.close()"></mat-icon>
+        </div>
+        <span class = "mat-subheading-2 doo-letter-space">
+                {{'profile.address.enterShippingAddress' | translate}}
+        </span>
+        <doo-address-form #addressForm 
+        [isWithName] = "true"
+        [userAddressInfo] = "data.userAddressInfo" 
+        [userInfo] = "data.userInfo"
+        (personalFormEmitter)="personalInfoUpdate($event)"
+        (addressFormEmitter)="addressUpdate($event)"></doo-address-form>
+</div>

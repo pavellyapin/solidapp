@@ -22,7 +22,7 @@ export class BackgroundImageBlockComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('post',this.block);
+    //console.log('post',this.block);
   }
 
   loadComplete() {

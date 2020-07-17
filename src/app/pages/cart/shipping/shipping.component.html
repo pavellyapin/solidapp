@@ -1,77 +1,76 @@
-   <div fxLayout = "column" fxLayoutGap = "20px" [formGroup]="shippingInfo">
+   <div fxLayout = "column" fxLayoutGap = "20px">
      <div fxLayout = "row" fxLayoutAlign = "center">
-        <div fxLayout = "column" fxFlex = "80" fxLayoutGap="10px" id = "doo-shipping-form"> 
+        <div fxLayout = "column" fxFlex = "80" fxFlex.lt-sm = "90" fxLayoutGap="30px" id = "doo-shipping-form"> 
                 <div></div> 
-                <div fxLayout = "column">
-                <span class = "mat-subheading-2">
-                        {{'profile.address.enterShippingAddress' | translate}}
-                </span>
-                <doo-address-form #addressForm [mode] = "'NotalwaysOpen'" [userAddressInfo] = "userAddressInfo" (addressFormEmitter)="addressUpdate($event)"></doo-address-form>
-
-                        <span class = "mat-subheading-2">
-                                Contact info
+                <span class = "mat-headline doo-letter-space">
+                               Shipping Details
                         </span>
-                <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between">
-                                <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
-                                <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
-                                <input  formControlName="firstName"
-                                        autocomplete="firstName"
-                                        [errorStateMatcher]="matcher" 
-                                        matInput 
-                                        name="firstName" 
-                                        placeholder=""
-                                        type="text"/>
-                                        <mat-error *ngIf="shippingInfo.controls['firstName'].invalid">{{'errors.required' | translate}}</mat-error>
-                                </mat-form-field>
-                                <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
-                                <mat-label>{{ 'profile.account.lastName' | translate }}</mat-label>
-                                <input  formControlName="lastName"
-                                        autocomplete="lastName"
-                                        [errorStateMatcher]="matcher" 
-                                        matInput 
-                                        name="lastName" 
-                                        placeholder=""
-                                        type="text"/>
-                                        <mat-error *ngIf="shippingInfo.controls['lastName'].invalid">{{'errors.required' | translate}}</mat-error>
-                                </mat-form-field>
-                </div>
-                <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between" class = "doo-bottom-border">
-                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width phone-field">
-                                <span matPrefix>CA (+1) &nbsp;</span>
-                                <input  formControlName="phone"
-                                        autocomplete="phone" 
-                                        matInput 
-                                        name="phone" 
-                                        placeholder="{{ 'profile.account.mobile' | translate }}"
-                                        type="tel"/>
-                        </mat-form-field>
-                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
-                                <mat-label>{{ 'profile.account.email' | translate }}</mat-label>
-                                <input  formControlName="email"
-                                        autocomplete="email"
-                                        [errorStateMatcher]="matcher" 
-                                        matInput 
-                                        name="email" 
-                                        placeholder="{{ 'profile.account.email' | translate }}"
-                                        type="text"/>
-                                        <mat-error *ngIf="shippingInfo.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
-                        </mat-form-field>
-                </div>
                         
-                        <span class = "mat-subheading-2">
+                <div fxLayout = "column" class = "doo-shipping-box">
+                        <div fxLayout = "row">
+                                <mat-icon svgIcon="doo-location" color = "accent"></mat-icon>
+                                <div fxLayout = "column" fxLayoutGap="5px">
+                                        <div class="add-field-placeholder" >
+                                                {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
+                                        </div>                                
+                                        <div *ngIf = "!userAddressInfo" fxLayout = "row" fxFlex = "100">
+                                                
+                                        <div class="add-field-placeholder">
+                                                {{ 'profile.address.noAddressSaved' | translate }}
+                                        </div>
+                                        </div>
+                                        <div *ngIf = "userAddressInfo" fxLayout = "row" fxFlex = "100">
+                                                <div class="add-field-placeholder" >
+                                                        {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : 
+                                                        userAddressInfo.addressLine2 }} 
+                                                        {{userAddressInfo.addressLine1}}
+                                                <br>
+                                                {{userAddressInfo.city + ' ' + userAddressInfo.province + ' ' + userAddressInfo.postal}}
+                                                </div>
+                                        </div>
+                                </div>
+                                <div fxFlex fxLayout = "row" fxLayoutAlign="end">
+                                                <div (click) = "openAddressModal()" 
+                                                     class="mat-caption doo-pointer doo-undeline">
+                                                    {{ 'profile.buttons.edit' | translate }}
+                                                </div>
+                                        </div>
+                            </div>
+                </div>
+                
+                <div fxLayout="column" fxLayoutGap="5px" class = "promo-form">
+                        <span class = "mat-caption">Enter promo code here to enjoy friendly discounts</span>
+                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field fxFlex = "75" color = "primary" appearance="outline" class="full-width">
+                                                <mat-label>PROMO CODE</mat-label>
+                                                <input      autocomplete="promo" 
+                                                    matInput 
+                                                    name="promo" 
+                                                    placeholder=""
+                                                    type="text"/>
+                                    </mat-form-field> 
+                                    <div fxLayout="column" fxFlex = "20">
+                                        <button fxFlex class = "full-width" color = "primary" 
+                                            mat-raised-button>APPLY</button>
+                                    </div>
+                        </div>                  
+                </div>
+                <div [formGroup]="shippingMethodForm" fxLayout = "column" class = "doo-shipping-box">      
+                        <span class = "mat-subheading-2 doo-letter-space">
                                 Choose delivery method
                         </span>
-                                        <mat-form-field appearance="outline" class="doo-bottom-border full-width" color = "primary">
+                                        <mat-form-field appearance="outline" class="full-width doo-letter-space" color = "primary">
                                                 <mat-label>Shipping Method</mat-label>
-                                                <mat-select formControlName="shipping"
+                                                <mat-select #shippingMethod 
+                                                            formControlName="shipping"
                                                             (selectionChange) = "setShippingMethod($event.value)" 
                                                             name="shipping" >
-                                                                <mat-option *ngFor="let item of shippingOptions" [value]="item">
+                                                                <mat-option *ngFor="let item of shippingOptions" class = "doo-letter-space" [value]="item">
                                                                         {{item.fields.name}} - {{item.fields.price ? (item.fields.price | pricePipeSimple) : 'FREE'}}
                                                                 </mat-option>
                                                 </mat-select>
-                                                <mat-error *ngIf="shippingInfo.controls['shipping'].invalid">{{'errors.required' | translate}}</mat-error>
                                             </mat-form-field>
+                                            <span class = "mat-caption">Free shipping on orders statring from $50</span>
                 </div>
                 
         </div>  
@@ -80,8 +79,9 @@
                 <button color = "primary" 
                         mat-flat-button 
                         class = "doo-checkout-btn"
-                        (click) = "continueToCheckout()">
+                        (click) = "continueCheckout()">
                         {{'cart.continueCheckout' | translate}}
                 </button>
     </div>
+    <div></div>
 </div>

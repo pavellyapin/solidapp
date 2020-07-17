@@ -172,42 +172,45 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     }
 
     createCards(): void {
-      this.productsLoaded.slice(this.cards.value.length,this.cards.value.length + this.productsLoadedInt).forEach((v , index) => {
-        this.sortVariants(v);
-        if (this.filters.length == 0 || this.filterProduct(v)) {
-          this.addCard(
-            new Card(
-              {
-                name: {
-                  key: Card.metadata.NAME,
-                  value:  v.fields.title,
-                },
-                index: {
-                  key: Card.metadata.INDEX,
-                  value:  index,
-                },
-                object: {
-                  key: Card.metadata.OBJECT,
-                  value:  v,
-                },
-                cols: {
-                  key: Card.metadata.COLS,
-                  value: this['colsBig'],
-                },
-                rows: {
-                  key: Card.metadata.ROWS,
-                  value: this['rowsBig'],
-                },
-                style: {
-                  key: Card.metadata.STYLE,
-                  value: 'full',
-                },
-              }, ProductCardComponent,
-            ),
-          );
-        }
-        },
-      );
+      if (this.productsLoaded) {
+        this.productsLoaded.slice(this.cards.value.length,this.cards.value.length + this.productsLoadedInt).forEach((v , index) => {
+          this.sortVariants(v);
+          if (this.filters.length == 0 || this.filterProduct(v)) {
+            this.addCard(
+              new Card(
+                {
+                  name: {
+                    key: Card.metadata.NAME,
+                    value:  v.fields.title,
+                  },
+                  index: {
+                    key: Card.metadata.INDEX,
+                    value:  index,
+                  },
+                  object: {
+                    key: Card.metadata.OBJECT,
+                    value:  v,
+                  },
+                  cols: {
+                    key: Card.metadata.COLS,
+                    value: this['colsBig'],
+                  },
+                  rows: {
+                    key: Card.metadata.ROWS,
+                    value: this['rowsBig'],
+                  },
+                  style: {
+                    key: Card.metadata.STYLE,
+                    value: 'full',
+                  },
+                }, ProductCardComponent,
+              ),
+            );
+          }
+          },
+        );
+      }
+
       this.navService.finishLoading();
     }
 

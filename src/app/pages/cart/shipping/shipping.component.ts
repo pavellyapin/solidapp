@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import CartState from 'src/app/services/store/cart/cart.state';
 import { Observable, Subscription } from 'rxjs';
@@ -8,10 +8,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import UserState from 'src/app/services/store/user/user.state';
 import { UserPerosnalInfo, UserAddressInfo } from 'src/app/services/store/user/user.model';
 import { MyErrorStateMatcher } from 'src/app/components/pipes/pipes';
-import { CartService } from '../cart.service';
 import { AddressFormComponent } from 'src/app/components/address/address-form/address.component';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Entry } from 'contentful';
+import * as UserActions from 'src/app/services/store/user/user.action';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
     selector: 'doo-checkout-shipping',
@@ -20,42 +23,45 @@ import { Entry } from 'contentful';
   })
   export class CheckoutShippingComponent  {
 
-    cartTotal$: Observable<Number>;
-    user$: Observable<UserState>;
-    cartId : string;
+    //Subscription
     CartSubscription: Subscription;
     UserSubscription: Subscription;
-    cartServiceSubscription: Subscription;
     cartTotalSubscription: Subscription;
-    addressInfo: FormGroup;
-    shippingInfo: FormGroup;
+    SettingsSubscription: Subscription;
+    /////////////
+
+    cartTotal$: Observable<Number>;
+    cartId : string;
+    cartTotal : any;
+
+    user$: Observable<UserState>;
     userInfo: UserPerosnalInfo;
     userAddressInfo: UserAddressInfo;
-    matcher = new MyErrorStateMatcher();
-    settings$: Observable<Entry<any>>;
-    SettingsSubscription: Subscription;
-    siteSettings: Entry<any>;
+    shippingMethodForm : FormGroup;
     shippingOptions : any;
-    cartTotal : any;
-    
+    matcher = new MyErrorStateMatcher();
+
+    settings$: Observable<SettingsState>;
+    siteSettings: Entry<any>;
+    resolution:any;
+    bigScreens = new Array('lg' , 'xl' , 'md')
+
+
     @ViewChild('addressForm',{static: false}) 
     public addressFormComponent: AddressFormComponent;
          
 
-    constructor(private store: Store<{ cart: CartState , user: UserState , settings : SettingsState }> , 
-                private cartService : CartService) {
+    constructor(private store: Store<{ cart: CartState , user: UserState , settings : SettingsState }>,
+                private navService: NavigationService,
+                private dialog: MatDialog,
+                private route : ActivatedRoute) {
         this.cartTotal$ = store.pipe(select('cart' , 'total'));
         this.user$ = store.pipe(select('user'));
-        this.settings$ = store.pipe(select('settings','siteConfig'));
+        this.settings$ = store.pipe(select('settings'));
 
-
-        this.shippingInfo = new FormGroup({        
-            firstName: new FormControl('' ,Validators.required),
-            lastName: new FormControl('',Validators.required),
-            phone: new FormControl(''),
-            email: new FormControl('',Validators.required),
-            shipping: new FormControl('')
-        });
+        this.shippingMethodForm = new FormGroup({        
+          shipping : new FormControl('' , Validators.required)
+      })
     }
 
     ngOnInit() {
@@ -72,12 +78,9 @@ import { Entry } from 'contentful';
         .pipe(
           map(x => {
             this.userInfo = x.personalInfo;
-            this.userAddressInfo = x.addressInfo;
-            this.shippingInfo.controls["firstName"].setValue(this.userInfo.firstName);
-            this.shippingInfo.controls["lastName"].setValue(this.userInfo.lastName);
-  
-            this.shippingInfo.controls["phone"].setValue(this.userInfo.phone);
-            this.shippingInfo.controls["email"].setValue(this.userInfo.email);
+            if (x.addressInfo) {
+              this.userAddressInfo = x.addressInfo;
+            }
           })
         )
         .subscribe();
@@ -86,26 +89,12 @@ import { Entry } from 'contentful';
         .pipe(
           map(x => {
             //console.log(x);
-            this.siteSettings = x;
+            this.siteSettings = x.siteConfig;
+            this.resolution = x.resolution;
             this.setShippingOptions();
           })
         )
         .subscribe();
-
-        this.cartServiceSubscription =  this.cartService.shippingChangeEmitted$.subscribe((x)=>{
-            if (this.shippingInfo.invalid) {
-                this.shippingInfo.markAllAsTouched();
-            }
-            if (this.addressInfo.invalid) {
-                this.addressInfo.markAllAsTouched();
-            }
-            if (this.addressInfo.valid && this.shippingInfo.valid) {
-               /* this.store.dispatch(CartActions.
-                    BeginSetOrderShippingAction({payload :{address : this.addressInfo.value , 
-                                                 personalInfo : this.shippingInfo.value , 
-                                                 cartId : this.cartId}}));*/
-            }
-        })
     }
 
     setShippingOptions() {
@@ -116,7 +105,7 @@ import { Entry } from 'contentful';
           }
         });
         this.setShippingMethod(this.shippingOptions[0]);
-        this.shippingInfo.controls["shipping"].setValue(this.shippingOptions[0]);
+        this.shippingMethodForm.controls["shipping"].setValue(this.shippingOptions[0]);
       }
     }
 
@@ -125,15 +114,71 @@ import { Entry } from 'contentful';
         BeginSetShippingMethodAction({payload : shippingMethod}));
     }
 
-    addressUpdate(form : FormGroup) {
-        this.addressInfo = form;
+    openAddressModal() {
+      let config;
+      if (this.bigScreens.includes(this.resolution)) {
+        config = {
+          height: '80%',
+          width: '60vw',
+          data: {userAddressInfo : this.userAddressInfo , userInfo : this.userInfo }
+        };
+      } else {
+        config = {
+          position: {
+            top: '0px',
+            right: '0px'
+          },
+          height: '100%',
+          width: '100vw',
+          panelClass: 'full-screen-modal',
+          data: {userAddressInfo : this.userAddressInfo , userInfo : this.userInfo }
+        };
+      }
+
+      this.dialog.open(CartShippingModalComponent,config); 
+    }
+
+    continueCheckout() {
+      if (this.userAddressInfo) {
+        this.navService.startLoading();
+        this.store.dispatch(CartActions.
+          BeginSetOrderShippingAction({payload :{address : this.userAddressInfo , 
+                                                 personalInfo : this.userInfo ,
+                                                 shipping : this.shippingMethodForm.controls["shipping"].value.fields,
+                                                 cartId : this.route.snapshot.params["cartId"]}}));
+      } else {
+        this.openAddressModal();
+      }
     }
 
     ngOnDestroy(){
-        this.cartServiceSubscription.unsubscribe();
         this.CartSubscription.unsubscribe();
         this.UserSubscription.unsubscribe();
         this.SettingsSubscription.unsubscribe();
         
       }
+  }
+
+  @Component({
+    selector: 'doo-cart-shipping-address-modal',
+    templateUrl: './address-modal/address-modal.component.html'
+  })
+  export class CartShippingModalComponent {
+  
+    
+    constructor(
+      private store: Store<{}>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public dialogRef: MatDialogRef<CartShippingModalComponent>) {
+      }
+    
+    addressUpdate($event) {
+      this.store.dispatch(UserActions.SuccessGetUserAddressInfoAction({ payload: $event }));
+      this.dialogRef.close();
+    }
+
+    personalInfoUpdate($event) {
+      this.store.dispatch(UserActions.SuccessSetCartUserAction({ payload: $event }));
+    }
+  
   }

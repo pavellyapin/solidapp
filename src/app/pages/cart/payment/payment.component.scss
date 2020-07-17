@@ -1,5 +1,37 @@
 @import 'src/css/_variables.scss';
 
+
+.doo-cart-payment {
+  .doo-shipping-box {
+    background: white;
+    padding:20px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    mat-icon {
+      padding-right: 10px;
+      height: 25px;
+      width: 25px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $primary;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $primary;
+      }
+    }
+
+    .add-field-placeholder {
+      font-size: 12px;
+      opacity: 0.5;
+      letter-spacing: 2px;
+    }
+    
+    .doo-undeline {
+      text-decoration: underline;
+      color: $accent;
+    }
+  }
+}
 ::ng-deep .mat-button-wrapper {
     display: inline !important;
 }
@@ -8,16 +40,42 @@
 mat-expansion-panel {
     margin-bottom: 30px;
     background-color: $lighter-grey;
+    ::ng-deep .mat-content{
+      overflow: visible !important;
+    }
+}
+
+mat-expansion-panel-header {
+  mat-icon {
+    height: 35px;
+    width: 35px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $primary;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $primary;
+      fill: $primary;
+    }
+  }
+}
+
+.accepted-cards{
+  mat-icon {
+    height: 35px;
+    width: 35px;
+  }
+}
+
+.selected-method {
+  //border-style: solid;
+  border-width: 2px;
+  border-color: $accent;
 }
 
 doo-checked-icon {
     margin-right: 15px;
 }
-
-
-
-
-
 
   
   .example.example2 * {

@@ -1,12 +1,13 @@
 
 <div *ngIf = "zoomed" class = "full-screen">
       <div fxLayout = "row" class = "sticky-exit-zoom">
-          <div fxLayout="row" 
-          class = "mat-subheading-1">
-          <mat-icon  (click) = "mediaZoom(false)" 
+          <div fxLayout="row"
+          fxLayoutGap = "20px" 
+          class = "mat-headline">
+          <mat-icon svgIcon = "doo-arrow-left" (click) = "mediaZoom(false)" 
                   class = "doo-pointer"
                   color = "accent">navigate_before</mat-icon>
-                  <span class = "doo-pointer" (click) = "mediaZoom(false)">
+                  <span class = "doo-pointer doo-letter-space" (click) = "mediaZoom(false)">
                       Back to Product
                   </span>
       </div>
@@ -41,13 +42,17 @@
                    fxLayoutAlign.xs = "end center" 
                    [ngClass] = "bigScreens.includes(this.resolution) ? 'sticky-product-detail' : 'sticky-product-detail-mobile'">
                   <div #stickyInnerCont fxLayout="column" class = "sticky-inner-cont">
-                     <form [formGroup]="cartItemForm" fxLayout="column" class = "full-width" fxLayoutAlign="start start" style = "padding:20px;"> 
+                     <form [formGroup]="cartItemForm" 
+                           fxLayout="column" 
+                           class = "full-width" 
+                           fxLayoutAlign="start start"> 
                        <div fxLayout="row" class = "mat-title">
                          {{productDetails.fields.title}}
                        </div>
                        <div fxLayout="row" fxLayoutGap = "5px" *ngIf = "productReviews" class = "doo-rate-uneditable">
                           <doo-review-stars [rate] = "reviewsComponent.getOverallRate()" [editable] = "false"></doo-review-stars>
                           <span class = "mat-caption">{{productReviews.length}}</span>
+                          <span class = "mat-caption">Reviews</span>
                       </div>
                        <div fxLayout="row" fxLayoutAlign="center" class = "mat-subheading-1">
                          <span [innerHTML] = "productDetails.fields.price | pricePipe" 
@@ -60,22 +65,21 @@
                           25% Off Your Purchase with code LONGWEEKEND See Details <br>
                           Free Shipping and Free Returns See Details
                        </div>
-                       <div fxLayout="row" fxLayoutAlign.xs="center" class = "mat-caption">
-                          <div fxLayout="column" fxLayoutAlign="center center" class = "minus-icon">
-                              <mat-icon> remove</mat-icon>
+                       <div fxLayout="row" fxLayoutAlign.xs="center" class = "mat-caption doo-qty-input">
+                          <div (click) = "addQty.emit()" fxLayout="column" fxLayoutAlign="center center" class = "minus-icon doo-pointer">
+                              <mat-icon svgIcon="doo-plus"></mat-icon>
                           </div>
                                 
                             <mat-form-field class = "qty-input">
                                 <input  formControlName="qty" 
                                         autocomplete="qty"
-                                        [value] = "1" 
                                         matInput 
                                         name="qty"
                                         type="text"/>
                                        
                             </mat-form-field>
-                          <div fxLayout="column" fxLayoutAlign="center center" class = "plus-icon">
-                              <mat-icon>add</mat-icon>
+                          <div (click) = "removeQty.emit()" fxLayout="column" fxLayoutAlign="center center" class = "plus-icon doo-pointer">
+                              <mat-icon svgIcon = "doo-minus"></mat-icon>
                           </div>
                     </div> 
                        <div fxLayout="column" fxLayoutGap="10px" class = "mat-body full-width color-variant"
@@ -111,7 +115,7 @@
                                              {{ 'cart.addToCart' | translate }}
                                      </button>
                                      <div fxLayout="column" class = "fav-icon doo-pointer" fxLayoutAlign="center center">
-                                       <mat-icon (click)="toggleFavorites(isFavorite)">{{isFavorite ? 'favorite' : 'favorite_border'}}</mat-icon>
+                                        <mat-icon [ngClass] = "isFavorite ? 'fav-fill' : 'fav-border'" svgIcon = "doo-favorite" (click)="toggleFavorites(isFavorite)"></mat-icon>
                                      </div>
                        </div>
                      </form>

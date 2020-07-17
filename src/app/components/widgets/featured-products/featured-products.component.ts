@@ -32,7 +32,7 @@ export class FeaturedProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('widget',this.widget);
+    //console.log('widget',this.widget);
 
     this.loadedProducts = this.widget.fields.blocks;
     this.createCardsForCarousel();

@@ -17,27 +17,13 @@
     text-decoration: underline;
   }
 
-  .add-field-placeholder {
-    opacity: 0.5;
-    padding-inline-start: 20px;
-  }
-
-  .manual-add-btn {
-    padding: 10px 0px;
-    .mat-caption {
-        text-decoration: none;
-        padding-left: 10px;
-        font-weight: 900;
-      }
-  }
-
-  button {
-    padding-top: 5px;
-    padding-bottom: 5px;
+  input {
+    letter-spacing: 2px;
   }
 
   ::ng-deep .mat-form-field-wrapper {
     margin : 5px 0 !important;
+    padding-bottom: 3px !important;
   }
 
   ::ng-deep .mat-form-field-label-wrapper {
@@ -51,6 +37,16 @@
 
   ::ng-deep .mat-form-field-outline-gap {
     border-top-color: inherit !important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    letter-spacing: 2px;
+    padding: 0.85em 0 0.85em 0;
+    border-top: 0.5em solid transparent;
+  }
+
+  ::ng-deep .mat-form-field-subscript-wrapper {
+    margin-top: 1.666667em;
   }
   
 }

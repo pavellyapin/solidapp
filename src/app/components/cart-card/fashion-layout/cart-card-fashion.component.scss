@@ -16,6 +16,43 @@
 
   .doo-cart-action {
     padding-left: 20px;
+    mat-icon {
+      height: 15px;
+      width: 15px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $black;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $black;
+      }
+    }
+
+    .fav-border {
+      height: 20px;
+      width: 20px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $accent;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $accent;
+      }
+    }
+
+    .fav-fill {
+      height: 20px;
+      width: 20px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $accent;
+        fill: $accent;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $accent;
+        fill: $accent;
+      }
+    }
   }
 
   .cart-card-content {

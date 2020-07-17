@@ -1,22 +1,74 @@
 
-<div fxLayout = "column" fxFlex fxLayoutAlign = "center" fxLayoutGap = "20px">
+<div [formGroup]="paymentMethodForm" fxLayout = "row" fxLayoutAlign = "center" class = "doo-cart-payment">
+<div fxLayout = "column" fxFlex = "80" fxLayoutAlign = "center" fxLayoutGap = "20px">
     <div></div>
+                <div fxLayout = "column" class = "doo-shipping-box" fxLayoutGap="5px">
+
+                        <div fxLayout = "row">
+                                <mat-icon svgIcon="doo-location" color = "accent"></mat-icon>
+                                <div fxLayout = "column" fxLayoutGap="5px">
+                                    <span class = "mat-caption doo-letter-space">
+                                        Shipping Details
+                                     </span>
+                                        <div class="add-field-placeholder" >
+                                                {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
+                                        </div>                                
+                                        <div *ngIf = "!userAddressInfo" fxLayout = "row" fxFlex = "100">
+                                                
+                                        <div class="add-field-placeholder">
+                                                {{ 'profile.address.noAddressSaved' | translate }}
+                                        </div>
+                                        </div>
+                                        <div *ngIf = "userAddressInfo" fxLayout = "row" fxFlex = "100">
+                                                <div class="add-field-placeholder" >
+                                                        {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : 
+                                                        userAddressInfo.addressLine2 }} 
+                                                        {{userAddressInfo.addressLine1}}
+                                                <br>
+                                                {{userAddressInfo.city + ' ' + userAddressInfo.province + ' ' + userAddressInfo.postal}}
+                                                </div>
+                                        </div>
+                                </div>
+                                <div fxFlex fxLayout = "row" fxLayoutAlign="end">
+                                                <div (click) = "backToAddress()" 
+                                                     class="mat-caption doo-pointer doo-undeline">
+                                                    {{ 'profile.buttons.edit' | translate }}
+                                                </div>
+                                        </div>
+                            </div>
+                </div>
+    <mat-radio-group fxLayout="row" 
+    formControlName="method">
     <mat-accordion>
             <mat-expansion-panel [hideToggle] = "true" 
-                                 (opened) = "payType = 'credit'" 
-                                 (closed) = "payType = 'paypal'"
-                                 [expanded] = "payType == 'credit'" 
-                                 class="mat-elevation-z0">
-              <mat-expansion-panel-header class = "doo-bottom-border">
+                                 [disabled] = "true"
+                                 [expanded] = "paymentMethodForm.controls['method'].value == 'cc'"
+                                 [ngClass] = "paymentMethodForm.controls['method'].value == 'cc' ? 'selected-method mat-elevation-z5' : 'mat-elevation-z0'">
+              <mat-expansion-panel-header class = "doo-pointer" (click) = "paymentMethodForm.controls['method'].setValue('cc')">
                 <mat-panel-title>
-                    <div fxFlex = "row" fxLayoutAlign = "start center" fxLayoutGap = "10px">
-                            <mat-icon color = "accent">{{payType == 'credit' ? 'check_circle_outline' : 'radio_button_unchecked'}}</mat-icon>
-                            <span style = "font-weight: 700" class = "doo-letter-space">Credit / Debit Card</span>
+                    <div fxLayout = "row" fxFlex fxLayoutAlign = "start center" fxLayoutGap = "10px">
+                        <mat-radio-button [value]="'cc'">
+                        </mat-radio-button>
+                        <div fxFlex fxLayoutAlign = "start center" class = "doo-letter-space">
+                          <div>Pay with Credit or Debit Card</div> 
+                          <div fxFlex fxLayoutAlign = "end">
+                              <mat-icon svgIcon="doo-cc"></mat-icon>
+                          </div>
+                        </div>
+                            
                     </div>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <form fxLayout = "row" fxLayoutAlign = "center" #checkout="ngForm" class="checkout">
-                    <div fxLayout = "column" fxFlex>
+                    <div fxLayout = "column" fxLayoutGap = "10px" fxFlex>
+                      <span class = "mat-caption doo-letter-space">We accept all major credit and debit cards.</span>
+                      <div fxLayout = "row" class = "accepted-cards" fxLayoutGap = "10px">
+                          <mat-icon svgIcon="doo-visa"></mat-icon>
+                          <mat-icon svgIcon="doo-mastercard"></mat-icon>
+                          <mat-icon svgIcon="doo-amex"></mat-icon>
+                          <mat-icon svgIcon="doo-discover"></mat-icon>
+                      </div>
+                        
                             <div class="cell example example2" id="example-2">
                             <div class="row">
                                     <div class="field">
@@ -39,7 +91,7 @@
                                   </div>
                       <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
                       </div>
-                      <div fxLayout="column"  fxLayoutAlign="end" style = "padding-top: 50px;" fxFlex>
+                      <div fxLayout="column"  fxLayoutAlign="end" style = "padding-top: 50px;">
                             <button color = "primary" 
                                     mat-flat-button 
                                     class = "doo-checkout-btn"
@@ -51,16 +103,16 @@
     
             </form>
             </mat-expansion-panel>
-            <mat-expansion-panel [hideToggle] = "true" 
-                                 (opened) = "payType = 'paypal'" 
-                                 (closed) = "payType = 'credit'"
-                                 [expanded] = "payType == 'paypal'" 
-                                 class="mat-elevation-z0">
-              <mat-expansion-panel-header class = "doo-bottom-border">
+            <mat-expansion-panel [hideToggle] = "true"
+                                 [disabled] = "true" 
+                                 [expanded] = "paymentMethodForm.controls['method'].value == 'paypal'" 
+                                 [ngClass] = "paymentMethodForm.controls['method'].value == 'paypal' ? 'selected-method mat-elevation-z5' : 'mat-elevation-z0'">
+              <mat-expansion-panel-header class = "doo-pointer" (click) = "paymentMethodForm.controls['method'].setValue('paypal')">
                 <mat-panel-title>
-                        <div fxFlex = "row" fxLayoutAlign = "start center" fxLayoutGap = "10px">
-                                <mat-icon color = "accent">{{payType == 'paypal' ? 'check_circle_outline' : 'radio_button_unchecked'}}</mat-icon>
-                                <span style = "font-weight: 700" class = "doo-letter-space">PayPal</span>
+                        <div fxLayout = "row" fxLayoutAlign = "start center" fxLayoutGap = "10px">
+                            <mat-radio-button [value]="'paypal'">
+                              </mat-radio-button>
+                              <span style = "font-weight: 700" class = "doo-letter-space">PayPal</span>
                         </div>
                 </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -89,11 +141,7 @@
                 </div>
             </mat-expansion-panel>
           </mat-accordion>
-
-
-        <div fxFlex = "row" class = "mat-subheading-2 doo-letter-space">
-            Order details
-        </div>
+          </mat-radio-group>
 </div>
-
+</div>
 

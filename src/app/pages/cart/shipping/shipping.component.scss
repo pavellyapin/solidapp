@@ -8,10 +8,88 @@
 
     
  ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0em !important;
+    padding-bottom: 0.2em !important;
+  }
+
+  .doo-shipping-box {
+    background: white;
+    padding:20px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    mat-icon {
+      padding-right: 10px;
+      height: 25px;
+      width: 25px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $primary;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $primary;
+      }
+    }
+
+    .doo-undeline {
+      color: $accent;
+      text-decoration: underline;
+    }
+  }
+
+  .promo-form{
+    background: $primary;
+    padding:20px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: $light-grey;
+
+    .mat-caption{
+      opacity: 0.7;
+      letter-spacing: 2px;
+    }
+    ::ng-deep .mat-form-field-outline-start {
+      background: white;
+    }
+  
+    ::ng-deep .mat-form-field-outline-end {
+      background: white;
+    }
+
+    ::ng-deep .mat-form-field-outline-gap {
+      background: white;
+    }
+  
+    ::ng-deep .mat-form-field-flex {
+      padding-left: 25px !important;
+    }
+
+  
+    ::ng-deep .mat-form-field-wrapper {
+      padding-bottom : 0px !important;
+    }
   }
 
 
+}
+
+::ng-deep .full-screen-modal {
+  max-width: unset !important;
+  width: 100%;
+  height: 100%;
+  .mat-dialog-container {
+    max-width: 100vw;
+    max-height: 100vh;
+    height: 100%;
+    width: 100%;
+    .mat-dialog-content {
+      max-height: unset !important;
+    }
+  }
+}
+
+.add-field-placeholder {
+  opacity: 0.5;
+  padding-inline-start: 20px;
 }
 
 ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {

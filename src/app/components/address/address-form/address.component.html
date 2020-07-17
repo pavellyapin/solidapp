@@ -1,29 +1,15 @@
-<div fxLayoutGap="50px" fxLayout="column" class = "doo-address-form">
+<div fxLayoutGap="20px" fxLayout="column" class = "doo-address-form">
+                <doo-name-form #nameForm
+                *ngIf = "isWithName"
+                [userInfo]="userInfo"
+                [showSaveButton] = "false"></doo-name-form>
      <div fxLayout="column" fxLayoutGap="5px">
-            <div fxLayout = "row" *ngIf = "mode != 'alwaysOpen'">
-                    <div fxFlex
-                        fxLayoutAlign="end"
-                        (click) = "addMode = !addMode ;" 
-                        class="mat-caption doo-pointer">
-                        {{ addMode ? ('profile.buttons.close' | translate ) : userAddressInfo ? ('profile.buttons.edit' | translate ) : ('profile.buttons.add' | translate ) }}
-                    </div>
-            </div>
+
           <div fxLayout = "column">
-            <div *ngIf = "!addMode && !userAddressInfo" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                <div>
-                    {{ 'profile.address.noAddressSaved' | translate }}
-                </div>
-            </div>
-            <div *ngIf = "!addMode && userAddressInfo" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon svgIcon="doo-location" color = "accent"></mat-icon>
-                    <div class="add-field-placeholder" >
-                            {{addressInfo.controls["addressLine2"].value ? addressInfo.controls["addressLine2"].value + ' - ' : 
-                              addressInfo.controls["addressLine2"].value  }} 
-                              {{addressInfo.controls["addressLine1"].value}}
-                        <br>
-                        {{addressInfo.controls["city"].value + ' ' + addressInfo.controls["province"].value + ' ' + addressInfo.controls["postal"].value}}
-                    </div>
-            </div>
+                                  
+                <span class = "mat-subheading-2 doo-letter-space">
+                        Start typing address or enter manually
+                </span>
             <div *ngIf = "addMode && scriptLoaded" fxFlex = "100"> 
                     <address-autocomplete-input 
                         (setAddress)="getAddress($event)" 
@@ -35,25 +21,28 @@
             *ngIf = "!addManually && addMode"
             (click) = "addManually = !addManually" 
             class = "manual-add-btn doo-pointer">
-                <mat-icon color = "accent">add_circle_outline</mat-icon>
-                <div class="mat-caption">
+                <mat-icon svgIcon = "doo-add"></mat-icon>
+                <div class="mat-caption doo-letter-space">
                     <span>
                             {{ 'profile.address.enterAddressManually' | translate }}
                     </span>
                 </div>
         </div>
         <div *ngIf = "addManually && addMode" fxLayout = "row">
-                <form [formGroup]="addressInfo" 
+                <form [formGroup]="addressForm" 
+                    fxLayout = "column"
+                    fxLayoutGap = "5px"
                     fxFlex = "100" >
                        <mat-form-field color = "primary" appearance="outline" class="full-width">
                         <mat-label>{{ 'profile.address.addressLine1' | translate }}</mat-label>
                         <input #addressLine1  formControlName="addressLine1" 
                                     autocomplete="addressLine1" 
                                     matInput 
+                                    [errorStateMatcher]="matcher" 
                                     name="addressLine1" 
                                     placeholder=""
                                     type="text"/>
-                            <mat-error *ngIf="addressInfo.controls['addressLine1'].invalid">{{'errors.required' | translate}}</mat-error>
+                            <mat-error *ngIf="addressForm.controls['addressLine1'].invalid">{{'errors.required' | translate}}</mat-error>
                         </mat-form-field> 
                     <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign="space-between">
            
@@ -75,20 +64,20 @@
                                         name="city" 
                                         placeholder=""
                                         type="text"/>
-                                <mat-error *ngIf="addressInfo.controls['city'].invalid">{{'errors.required' | translate}}</mat-error>
+                                <mat-error *ngIf="addressForm.controls['city'].invalid">{{'errors.required' | translate}}</mat-error>
                          </mat-form-field>
                     </div>
                     <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign="space-between">
                             <mat-form-field fxFlex = "48" appearance="outline" class="full-width" color = "primary">
                                     <mat-label>{{ 'profile.address.province' | translate }}</mat-label>
-                                    <mat-select formControlName="province" 
+                                    <mat-select #province formControlName="province" 
                                             name="province" 
                                             placeholder="{{ 'profile.address.province' | translate }}">
                                             <mat-option *ngFor="let item of provinces" [value]="item.value">
                                                     {{item.viewValue}}
                                             </mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="addressInfo.controls['province'].invalid">{{'errors.required' | translate}}</mat-error>
+                                    <mat-error *ngIf="addressForm.controls['province'].invalid">{{'errors.required' | translate}}</mat-error>
                                 </mat-form-field>
                                 <mat-form-field fxFlex = "48" appearance="outline" class="full-width" color = "primary">
                                     <mat-label>{{ 'profile.address.postal' | translate }}</mat-label>
@@ -98,26 +87,21 @@
                                             name="postal" 
                                             placeholder=""
                                             type="text"/>
-                                            <mat-error *ngIf="addressInfo.controls['postal'].invalid">{{'errors.required' | translate}}</mat-error>
+                                            <mat-error *ngIf="addressForm.controls['postal'].invalid">{{'errors.required' | translate}}</mat-error>
                                 </mat-form-field>
                     </div>
                 </form>
             </div>
             <div fxLayout = "row" fxLayoutAlign = "center"
-                 *ngIf = "addMode && mode != 'alwaysOpen'">
-                 <div fxLayoutGap="20px"
-                      fxLayout = "row"
+                 *ngIf = "addMode">
+                 <div fxLayoutGap="30px"
+                      fxLayout = "column"
                       fxFlex = "50">
+                    <div></div>
                     <button (click)="saveAddress()" class="doo-checkout-btn full-width"
                             color="primary" mat-flat-button type="submit">
                             {{ 'profile.buttons.save' | translate }}
                     </button>   
-                    
-                    
-                    <button *ngIf = "false" (click) = "addManually = !addManually" class="doo-checkout-btn full-width"
-                            color="primary" mat-stroked-button>
-                            {{ 'profile.buttons.cancel' | translate }}
-                    </button>
                  </div>
 
             </div>

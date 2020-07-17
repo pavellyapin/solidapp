@@ -9,6 +9,10 @@ import { CartService } from '../cart.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import UserState from 'src/app/services/store/user/user.state';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserAddressInfo, UserPerosnalInfo } from 'src/app/services/store/user/user.model';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,11 +22,17 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
   })
   export class CheckoutPaymentComponent  {
 
-    cart$: Observable<CartState>;
-    cartTotal : number;
-    cartId : string;
+    //Subscription
     CartSubscription: Subscription;
     cartServiceSubscription: Subscription;
+    UserSubscription: Subscription;
+    //////////////
+    
+    
+    cart$: Observable<CartState>;
+    shippingAddress : any;
+    cartTotal : number;
+    cartId : string;
     scriptLoaded: boolean  = false;
     stripeURL : any = "https://js.stripe.com/v3/";
     stripeScriptText : any = "var stripe = Stripe('pk_test_qFVmFuri91DwZ8Y0DDAN5u0t00mNjGH4bc'); var elements = stripe.elements();";
@@ -36,13 +46,27 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     cardHandler = this.onChange.bind(this);
     error: string;
 
-    constructor(private store: Store<{ cart: CartState }> ,
+    paymentMethodForm : FormGroup;
+
+    user$ : Observable<UserState>;
+    userInfo : UserPerosnalInfo;
+    userAddressInfo: UserAddressInfo;
+    
+
+    constructor(private store: Store<{ cart: CartState , user: UserState }> ,
+                private router: Router,
                 private variantPipe : VariantsPipe,
                 private cartService : CartService,
                 private dialog: MatDialog,
                 private cd: ChangeDetectorRef,
                 private utilService: UtilitiesService) {
         this.cart$ = store.pipe(select('cart'));
+        this.user$ = store.pipe(select('user'));
+
+        this.paymentMethodForm = new FormGroup({        
+          method : new FormControl('cc' , Validators.required)
+      })
+
     }
 
     ngOnInit() {
@@ -52,6 +76,17 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
           map(x => {
             this.cartTotal = x.total;
             this.cartId = x.cartId;
+            this.shippingAddress = x.addressInfo;
+          })
+        )
+        .subscribe();
+
+        this.UserSubscription = this.user$
+        .pipe(
+          map(x => {
+            this.userInfo = x.personalInfo;
+            this.userAddressInfo = x.addressInfo;
+            
           })
         )
         .subscribe();
@@ -73,6 +108,10 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
         this.cartServiceSubscription =  this.cartService.paymentChangeEmitted$.subscribe((x)=>{
             this.onSubmit();
         })
+    }
+
+    backToAddress() {
+      this.router.navigateByUrl('cart/checkout/' + this.cartId +'/shipping');
     }
 
     initStripe() {

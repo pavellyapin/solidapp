@@ -44,6 +44,12 @@ const reducer = createReducer(
             CartError: null };
   }),
 
+  on(CartActions.SuccessBackGroundInitializeOrderAction, (state: CartState, { payload }) => {
+    return { ...state, 
+            cartId: payload, 
+            CartError: null };
+  }),
+
   on(CartActions.SuccessSetOrderTotalAction, (state: CartState, { payload }) => {
     return { ...state, 
             total: payload, 

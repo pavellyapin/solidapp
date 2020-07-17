@@ -103,6 +103,68 @@ export class AppComponent {
                   'doo-location',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/location.svg")
                 );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-email',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/email.svg")
+                );
+
                 
+                this.matIconRegistry.addSvgIcon(
+                  'doo-lock',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/lock.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-close',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/close.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-search',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/search.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-add',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/add.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-cc',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/cc.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-visa',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/visa.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-mastercard',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/mastercard.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-amex',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/amex.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-discover',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/discover.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-plus',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/plus.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-minus',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/minus.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-hamburger',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/hamburger.svg")
+                );
   }
 }

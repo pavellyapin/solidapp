@@ -1,0 +1,107 @@
+
+    <div *ngIf = "cart" fxLayout="column" class = "doo-order-success full-width" style="padding: 2% 5%;">
+        <div fxLayout = "row" class = "mat-h2 doo-bottom-border">
+              {{'cart.successTitle' | translate}}
+        </div>
+                <div fxLayout = "column" fxLayoutAlign = "center" fxLayoutGap="20px">
+                    <div>
+            
+                    </div>
+                    <div fxLayout = "column" class = "doo-order-summary" fxLayoutGap="20px">
+                        <div >
+                            Order: <span class = "doo-order-number">{{route.snapshot.params["order"]}}</span>
+                        </div> 
+                        
+                        <div>
+                            {{'cart.successContent' | translate}}
+                        </div>
+                        <div fxLayout = "row" fxLayoutAlign = "space-between">
+                            <button color = "primary" 
+                                    mat-flat-button 
+                                    style = "padding:10px 30px;"
+                                    class = "doo-checkout-btn">
+                                    Track Your Order
+                            </button> 
+                        </div>
+                    </div>
+                    <div fxLayout = "column">
+                            
+                    </div>
+                </div>
+            <span class = "mat-headline doo-letter-space">
+                    Shipping Details
+             </span>
+                    <div fxLayout = "row" class = "doo-shipping-box">
+                            <mat-icon svgIcon="doo-location" color = "accent"></mat-icon>
+                            <div fxLayout = "column" fxLayoutGap="5px">
+                                    <div class="add-field-placeholder" >
+                                            {{cart.personalInfo.firstName + ' ' + cart.personalInfo.lastName}}
+                                    </div>                                
+                                            <div class="add-field-placeholder" >
+                                                    {{cart.address.addressLine2 ? cart.address.addressLine2 + ' - ' : 
+                                                    cart.address.addressLine2 }} 
+                                                    {{cart.address.addressLine1}}
+                                            <br>
+                                            {{cart.address.city + ' ' + cart.address.province + ' ' + cart.address.postal}}
+                                            </div>
+                            </div>
+                    </div>
+            <div    *ngFor = "let item of cart.cart.cart" style="margin: 15px;"
+                    fxLayoutGap = "10px"
+                    fxLayout="column">
+                    <div fxLayout="row"
+                        fxLayout.xs="column"
+                        fxLayoutAlign="space-between">
+                        <div fxLayout="row" 
+                            fxLayoutAlign="center"
+                            fxFlex = "20">
+                            <div fxLayout="column" 
+                                fxFlex.xs = "55" 
+                                fxFlex.lg = "100">
+                            <img class = "full-width doo-pointer" 
+                                [lazyLoad]="item.thumbnail" 
+                                [defaultImage]="'assets/placeholders/placeholder-1.svg'">
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxFlex = "75" class = "cart-card-content">
+                            <span class = "mat-subheading-2 doo-letter-space">
+                                    {{item.name}}
+                                </span>
+                                <span class = "add-field-placeholder">
+                                    <span>{{'product.qty' | translate}}: </span> {{item.qty}}
+                                </span>
+                                <span class = "mat-subheading-1" [innerHTML] = "item.price | pricePipe">
+                                </span>
+                    
+                        </div>
+                    </div>
+            </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

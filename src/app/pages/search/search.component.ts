@@ -184,9 +184,9 @@ import { ActivatedRoute } from '@angular/router';
                   key: Card.metadata.ROWS,
                   value: this['rowsBig'],
                 },
-                color: {
-                  key: Card.metadata.COLOR,
-                  value: 'blue',
+                style: {
+                  key: Card.metadata.STYLE,
+                  value: 'full',
                 },
               }, ProductCardComponent,
             ),

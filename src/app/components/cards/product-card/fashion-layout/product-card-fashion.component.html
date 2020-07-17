@@ -5,7 +5,7 @@
           fxLayout="column">
   <div fxLayout="column"  fxLayoutAlign="space-between">
     <div fxLayout="column" class = "selected-image-full doo-pointer">
-        <mat-icon *ngIf = "showVariants" class = "doo-pointer" color = "accent" (click)="toggleFavorites(isFavorite)">{{isFavorite ? 'favorite' : 'favorite_border'}}</mat-icon>
+        <mat-icon *ngIf = "showVariants" [ngClass] = "isFavorite ? 'fav-fill' : 'fav-border'" svgIcon = "doo-favorite" (click)="toggleFavorites(isFavorite)"></mat-icon>
         <div *ngIf = "object.fields.new" class = "new-label">
             {{'product.new' | translate}}
         </div>

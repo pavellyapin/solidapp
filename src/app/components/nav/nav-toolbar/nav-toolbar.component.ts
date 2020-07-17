@@ -48,8 +48,10 @@ export class NavToolbarComponent implements OnInit {
       window.addEventListener('scroll', () => {
         var st = window.pageYOffset || document.documentElement.scrollTop;
         if (st > this.lastScrollTop && !this.mainMenuOpen){
-           this.state = 'bottom'
-           this.timerId = setTimeout(() => {this.state = 'top' ; clearTimeout(this.timerId);} , 3000);
+          if (this.state == 'top') {
+            this.state = 'bottom'
+            this.timerId = setTimeout(() => {this.state = 'top' ; clearTimeout(this.timerId);} , 3000);
+          }
         } else {
            this.state = 'top'
         }

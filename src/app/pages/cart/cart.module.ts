@@ -8,7 +8,7 @@ import { CartRoutingModule } from './cart-routing.module';
 import { CartComponent } from './cart.component';
 import { VariantsPipe } from 'src/app/components/pipes/pipes';
 import { AddressComponentsModule } from 'src/app/components/address/address-components.module';
-import { CheckoutShippingComponent } from './shipping/shipping.component';
+import { CheckoutShippingComponent, CartShippingModalComponent } from './shipping/shipping.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -19,15 +19,19 @@ import { MatInputModule } from '@angular/material/input';
 import {CartService} from './cart.service';
 import { CheckoutPaymentComponent, PayPalModalComponent } from './payment/payment.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { CheckoutSuccessComponent } from './success/success.component';
 import { MatSelectModule } from '@angular/material/select';
 import { CartCardsModule } from 'src/app/components/cart-card/cards.module';
+import { LoginComponentsModule } from 'src/app/components/login/login-components.module';
+import { GuestCheckoutComponent } from './guest/guest.component';
+import { FooterModule } from 'src/app/components/footer/footer.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 @NgModule({
   declarations: [CartComponent,
+                 GuestCheckoutComponent,
                  PayPalModalComponent,
-                 CheckoutSuccessComponent,
+                 CartShippingModalComponent,
                  CheckoutShippingComponent,
                  CheckoutPaymentComponent],
   imports: [
@@ -35,12 +39,14 @@ import { CartCardsModule } from 'src/app/components/cart-card/cards.module';
     CartRoutingModule,
     PipesModule,
     FormsModule,
+    FooterModule,
     ReactiveFormsModule,
     TranslateModule,
     MatDialogModule,
     MatCardModule,
     MatExpansionModule,
     MatSelectModule,
+    MatSidenavModule,
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
@@ -48,10 +54,11 @@ import { CartCardsModule } from 'src/app/components/cart-card/cards.module';
     FlexLayoutModule,
     AddressComponentsModule,
     CartCardsModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    LoginComponentsModule
   ],
   providers: [VariantsPipe,CartService],
-  entryComponents: [PayPalModalComponent]
+  entryComponents: [PayPalModalComponent,CartShippingModalComponent]
 })
 export class CartModule {
 }

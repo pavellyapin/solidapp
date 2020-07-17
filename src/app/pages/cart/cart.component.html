@@ -1,139 +1,127 @@
 
-<div fxLayout="column" style="flex: 1 1 100%;min-height:100vh;" fxLayoutAlign="center">
-    <div fxFlex
-         fxLayout ="row" 
-         fxLayout.sm-="column"
-         fxLayout.xs="column"
-         fxLayoutAlign="space-between"> 
-        <div fxLayout="column" fxFlexFill fxFlex = "65">
-            <div fxLayout.lg="row" 
-                 fxLayout.sm="column"
-                 fxLayout.xs="column"  
-                 fxLayoutAlign = "space-between" 
-                 class = "doo-bottom-border">
-                <div fxLayout="column">
-                    <div fxLayout = "row">
-                        <button [routerLink] = "'/'" mat-button
-                                class="doo-nav-toggle-button">
-                                    <img  [src]="siteSettings?.fields.logo.fields.file.url">
-                        </button>
-                    </div>
-
-                            <div *ngIf = "false" fxLayout="row" 
-                                class = "mat-subheading-1">
-                                <mat-icon  (click) = "navigateToPrevious()" 
-                                        class = "doo-pointer"
-                                        color = "accent">navigate_before</mat-icon>
-                                        <span class = "doo-pointer" (click) = "navigateToPrevious()">
-                                            {{(checkoutStage == 'checkout' ? 'cart.continueShopping' : 
-                                                checkoutStage == 'shipping' ? 'cart.backToCart' : 'cart.backToShipping') | translate}}
+     <mat-sidenav-container>
+          <mat-sidenav  [opened]="summaryOpen" 
+                        (closedStart)="summaryOpen = false"
+                        [mode]="bigScreens.includes(this.resolution) ? 'side' : 'over'"
+                        [ngClass] = "bigScreens.includes(this.resolution) ? 'doo-cart-summary-box' : 'doo-mobile-cart-summary-box'"
+                        position = "end">
+                        <div fxLayout="column" fxLayoutAlign = "space-between" fxFlex >
+                                <div fxLayout = "row" fxLayoutAlign="start center" class = "nav-cart-title">
+                                        <span class = "mat-caption doo-letter-space">
+                                            ({{cartItemCount}}) Items in your cart
                                         </span>
+                                    </div>
+                        
+                            <div class = "cart-items-cont">
+                                <doo-cart-items [cartItems] = "cartItems"></doo-cart-items>
                             </div>
-                            <h1 *ngIf = "checkoutStage == 'shipping'" class = "mat-h1">
-                                {{'cart.shippingTitle' | translate}}
-                            </h1>  
-                            <h1 *ngIf = "checkoutStage == 'payment'" class = "mat-h1">
-                                {{'cart.paymentTitle' | translate}}
-                            </h1>  
-                </div>
-                <div *ngIf = "false" fxLayout = "column">
-                        <button color = "primary" 
-                                        mat-flat-button 
-                                        class = "doo-checkout-btn"
-                                        (click) = "continueToCheckout()">
-                                        SIGN IN
-                        </button>
-                    <span fxLayout = "row" class = "mat-caption caption-cont">
-                            Got an account? Sign in for faster checkout
-                    </span>
-                </div>
-            
-            </div>
-            <div *ngIf = "loading" fxLayout = "column" fxFlex>
-                    <div *ngFor = "let item of cartItems" fxLayout = "row" class = "cart-placeholder doo-bottom-border">
-                            <div fxLayout = "column" fxFlex = "50">
-                                    <img class = "full-width" 
-                                    [src]="'assets/card-placeholder-1.svg'">
+                            <div fxLayout="column" class = "doo-cart-summary">
+                                    <div fxLayout="column" class = "doo-bottom-border">
+                                            <div fxLayout="row" class = "mat-subheading-1" fxLayoutAlign="space-between">
+                                                <span class = "doo-letter-space">{{'cart.subtotal' | translate}}</span>
+                                                <span [innerHTML] = "cartTotal | pricePipe"> 
+                                                </span>
+                                            </div>
+                                            <div fxLayout="row" class = "mat-caption" fxLayoutAlign="space-between">
+                                                <span class = "doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
+                                                <span [innerHTML] = "shippingCost ? (shippingCost | pricePipe) : 'FREE'"> 
+                                                </span>
+                                            </div>
+                                            <div fxLayout="row" class = "mat-caption" fxLayoutAlign="space-between">
+                                                <span class = "doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
+                                                <span [innerHTML] = "primaryTax ? (primaryTax | pricePipe) : 'FREE'"> 
+                                                </span>
+                                            </div>
+                                            <div fxLayout="row" class = "mat-caption" fxLayoutAlign="space-between">
+                                                <span class = "doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
+                                                <span [innerHTML] = "secondaryTax ? (secondaryTax | pricePipe) : 'FREE'"> 
+                                                </span>
+                                            </div>
+                                    </div>
+                                            <div fxLayout="row" class = "mat-subheading-2" fxLayoutAlign="space-between" style = "padding: 15px 0px;">
+                                                <span class = "doo-letter-space">TOTAL</span>
+                                                <span [innerHTML] = "grandTotal | pricePipe"> 
+                                                </span>
+                                            </div>
                             </div>
-                        </div>
-            </div>
-            <div *ngIf = "!loading && cartTotal" fxLayout="column">
-                    <router-outlet></router-outlet>
-            </div>
-        </div>
-        <div fxLayout="column" fxFlex = "35">
-        <div fxLayout="column" fxFlex  class = "doo-cart-summary-box">
-                <div>
-                        {{'cart.shoppingList' | translate}} ({{cartItemCount}})
-                </div>
-        
-            <div fxFlex = "50" style = "overflow: scroll;">
-                <doo-cart-items [cartItems] = "cartItems"></doo-cart-items>
-            </div>
-            <div fxLayout="column" class = "doo-bottom-border">
-                    <span class = "mat-subheading-2 doo-bottom-border doo-letter-space">
-                            {{'cart.orderSummary' | translate}}
-                    </span>
-                    <div fxLayout="row" class = "mat-subheading-1" fxLayoutAlign="space-between">
-                        <span class = "doo-letter-space">{{'cart.subtotal' | translate}}</span>
-                        <span [innerHTML] = "cartTotal | pricePipe"> 
-                        </span>
-                    </div>
-                    <div fxLayout="row" class = "mat-caption" fxLayoutAlign="space-between">
-                        <span class = "doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
-                        <span [innerHTML] = "shippingCost ? (shippingCost | pricePipe) : 'FREE'"> 
-                        </span>
-                    </div>
-                    <div fxLayout="row" class = "mat-caption" fxLayoutAlign="space-between">
-                        <span class = "doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
-                        <span [innerHTML] = "primaryTax ? (primaryTax | pricePipe) : 'FREE'"> 
-                        </span>
-                    </div>
-                    <div fxLayout="row" class = "mat-caption" fxLayoutAlign="space-between">
-                        <span class = "doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
-                        <span [innerHTML] = "secondaryTax ? (secondaryTax | pricePipe) : 'FREE'"> 
-                        </span>
-                    </div>
-            </div>
-                    <div fxLayout="row" class = "mat-subheading-2" fxLayoutAlign="space-between" style = "padding: 15px 0px;">
-                        <span class = "doo-letter-space">TOTAL</span>
-                        <span [innerHTML] = "cartTotal | pricePipe"> 
-                        </span>
-                    </div>
-                    <div *ngIf = "false" fxLayout="row" fxLayoutAlign="space-between" class = "promo-form">
-                                    <mat-form-field fxFlex = "48" color = "primary" appearance="outline" class="full-width">
-                                            <mat-label>PROMO CODE</mat-label>
-                                            <input      autocomplete="promo" 
-                                                        matInput 
-                                                        name="promo" 
-                                                        placeholder=""
-                                                        type="text"/>
-                                        </mat-form-field> 
-                                        <div fxLayout="column" fxFlex = "48">
-                                            <button fxFlex class = "full-width" color = "accent" 
-                                                mat-stroked-button>APPLY</button>
+
+                        </div> 
+
+            </mat-sidenav>
+            <mat-sidenav-content style="flex: 1 1 100%;min-height:100vh;">
+                    <div fxLayout= "column" fxFlex = "100">
+                            <div fxLayout="column" fxFlex>
+                                    <div fxLayout="row" 
+                                         fxLayout.lt-sm="column"
+                                         fxLayoutAlign = "space-between" 
+                                         class = "doo-bottom-border">
+                                        <div fxLayout="column" fxLayoutGap = "10px">
+                                            <div></div>
+                                            <div fxLayout = "row">
+                                                <button [routerLink] = "'/'" mat-button
+                                                        class="doo-nav-toggle-button">
+                                                            <img  [src]="siteSettings?.fields.logo.fields.file.url">
+                                                </button>
+                                            </div>
                                         </div>
-                                                    
+                                    </div>
+                                                <div *ngIf = "!cartTotal" 
+                                                    class = "doo-empty-cart" 
+                                                    fxLayoutGap = "20px" 
+                                                    fxLayout = "column" 
+                                                    fxLayoutAlign="center center">
+                                                    <span class = "mat-subheading-2">
+                                                            Explore our store 
+                                                    </span>
+                                                    <span class = "mat-caption">
+                                                        You don't have any items in your cart
+                                                    </span>
+                                                   <div fxLayout = "row" class = "full-width" fxLayoutAlign="center center">
+                                                        <button color="primary" class = "doo-checkout-btn" mat-flat-button fxFlex = "40" [routerLink] = "'/'">
+                                                            SHOP
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                    <div *ngIf = "cartTotal" fxLayout="column">
+                                            <div *ngIf = "loading" fxLayout = "row" fxLayoutAlign="center start" class = "doo-loading-overlay">
+                                                    <div class="doo-loading-screen">
+                                                      <img src = "assets/icons/logo.png">
+                                                    </div>
+                                            </div>
+                                            <div class = "doo-mobile-cart-btn doo-pointer" 
+                                                 (click) = "utilService.scrollTop() ; summaryOpen = true;" 
+                                                 *ngIf = "!bigScreens.includes(this.resolution) && !loading"
+                                                 fxLayout="row" 
+                                                 fxLayoutGap = "20px" 
+                                                 fxLayoutAlign="end">
+                                                    <div fxLayout = "column" >
+                                                            <div fxLayout="row" 
+                                                                class = "mat-caption" 
+                                                                fxLayoutGap = "20px"
+                                                                fxLayoutAlign="space-between" style = "padding: 15px 0px;">
+                                                                    <span class = "doo-letter-space">TOTAL</span>
+                                                                    <span [innerHTML] = "cartTotal | pricePipe"> 
+                                                                    </span>
+                                                            </div>
+                                                    </div>
+                                                    <div fxLayout = "column" fxLayoutAlign="center center">
+                                                            <mat-icon svgIcon="doo-arrow-right"></mat-icon>
+                                                    </div>
+                                            </div>
+                                            <router-outlet *ngIf = "!loading"></router-outlet>
+
+                                            <doo-footer *ngIf = "!loading"></doo-footer>
+                                    </div>
+                                    
+                                </div>
                     </div>
-                    <span *ngIf = "false" class = "mat-caption" style = "opacity: 0.5;">
-                            Apply a promo code to get a discount, it will show on final price
-                    </span>
-            
-                    <div *ngIf = "false" fxLayout="column"  fxLayoutAlign="end" style = "padding-top: 50px;">
-                            <button color = "primary" 
-                                    mat-flat-button 
-                                    class = "doo-checkout-btn"
-                                    (click) = "continueToCheckout()">
-                                    {{(checkoutStage == 'checkout' ? 'cart.continueCheckout' : 
-                                                checkoutStage == 'shipping' ? 'cart.continuePayment' : 'cart.placeOrder') | translate}}
-                            </button>
-                    </div>
-        </div> 
-        <div *ngIf = "false" fxLayout="row" fxLayoutAlign="center" class = "mat-caption caption-cont">
-            <span>
-                    Need help ? Call 1-888-1234-4567
-            </span>
-            </div>
-        </div>
-    </div>
-</div>
+            </mat-sidenav-content>
+     </mat-sidenav-container>
+
+
+
+
+
+
+
+

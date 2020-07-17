@@ -17,6 +17,24 @@ const reducer = createReducer(
       }
     }),
 
+    on(UserActions.SuccessSetCartUserAction, 
+      (state: UserState, { payload}) => {
+        return {
+          ...state,
+          personalInfo: payload,
+          UserError: null
+        }
+      }),
+
+    on(UserActions.BeginSetUserIDAction, 
+      (state: UserState, { payload}) => {
+        return {
+          ...state,
+          uid: payload,
+          UserError: null
+        }
+      }),
+
     on(UserActions.SuccessGetUserAddressInfoAction, 
       (state: UserState, { payload}) => {
         return {
@@ -49,7 +67,7 @@ const reducer = createReducer(
                 ...state,
                 uid : '',
                 personalInfo : new UserPerosnalInfo,
-                addressInfo : new UserAddressInfo,
+                addressInfo : null,
                 orders: [],
                 favorites : [],
                 UserError: null

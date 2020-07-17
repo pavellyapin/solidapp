@@ -14,8 +14,9 @@ const routes: Routes = [
     canActivateChild: [NavGuard],
   },
   {
-    data: {title: 'Cart' , isChild: false},
+    data: {title: 'Cart' , isChild: true},
     path: 'cart',
+    canActivateChild: [NavGuard],
     loadChildren: () =>
       import('./pages/cart/cart.module').then(
         m => m.CartModule,

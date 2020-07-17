@@ -14,6 +14,7 @@ import * as ProductsActions from 'src/app/services/store/product/product.action'
 import { Actions, ofType } from '@ngrx/effects';
 import * as CartActions from '../../services/store/cart/cart.action';
 import { CartSideNavComponent } from './cart-side-nav/cart-side-nav.component';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-nav',
@@ -35,6 +36,7 @@ export class NavComponent implements OnInit {
   categories: Entry<any>[];
   rootCategories: Entry<any>[];
   resolution : any;
+  bigScreens = new Array('lg' , 'xl' , 'md')
   loading : any;
   searchControl = new FormControl();
   filteredOptions: Observable<Entry<any>[]>;
@@ -50,6 +52,7 @@ export class NavComponent implements OnInit {
     private authService: AuthService,
     private store: Store<{ settings: SettingsState}>,
     private _actions$: Actions,
+    private utilService : UtilitiesService,
     public navService: NavigationService) {
 
     this.settings$ = store.pipe(select('settings'));
@@ -118,10 +121,12 @@ export class NavComponent implements OnInit {
   }
 
   public toggleMobileSideMenu() {
+      this.utilService.scrollTop();
       this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   public expandMainMenu() {
+    this.isOpen = false;
     if (this.mainMenuOpen) {
       this.mainMenuOpen = false;
     } else {
@@ -130,12 +135,12 @@ export class NavComponent implements OnInit {
   }
 
   expandCartNav() {
-    if (!this.isOpen) {
+    this.utilService.scrollTop();
+    if (!this.isOpen || !this.cartSideNavComponent.cartItemCount) {
       this.toggleSideNav(false);
     } else {
       this.goToCart();
     }
-    
   }
 
   public hideMainMenu() {

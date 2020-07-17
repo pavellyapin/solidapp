@@ -6,10 +6,10 @@
   width: 100%;
   height: 100%;
   left: 0;
-  top: 0;
+  top: 100px;
   overflow: auto;
   background: white;
-  z-index: 10;
+  z-index: 20;
   img { display: block; }
 }
 
@@ -26,7 +26,7 @@
   left:0;
   bottom: 0;
   background: white;
-  padding : 10px 20px;
+  padding : 10px 10px;
   .color-variant {
     display: none !important;
   }
@@ -34,6 +34,12 @@
     display: none !important;
   }
   .doo-line-promo {
+    display: none !important;
+  }
+  .doo-rate-uneditable{
+    display: none !important;
+  }
+  .doo-qty-input {
     display: none !important;
   }
 }
@@ -55,7 +61,7 @@ doo-bread-crumbs {
 .sticky-exit-zoom {
   position:sticky;
   position: -webkit-sticky;
-  top: 50px;
+  top: 100px;
   left: 0;
 }
 
@@ -65,10 +71,34 @@ doo-bread-crumbs {
   opacity: 0.5;
 }
 
+
 .fav-icon {
-  background: $primary;
-  color:white;
   padding : 0 10px;
+  background: $primary;
+  mat-icon {
+    height: 20px;
+    width: 20px;
+  }
+
+  .fav-border {
+    ::ng-deep .cls-1 {
+      stroke: white;
+    }
+    ::ng-deep .cls-2 {
+      stroke: white;
+    }
+  }
+
+  .fav-fill {
+    ::ng-deep .cls-1 {
+      stroke: white;
+      fill: white;
+    }
+    ::ng-deep .cls-2 {
+      stroke: white;
+      fill: white;
+    }
+  }
 }
 .doo-add-btn{
   text-transform: uppercase;
@@ -90,7 +120,6 @@ doo-bread-crumbs {
   }
 
   padding-bottom: 20px;
-  padding-top : 30px;
   .color-label{
     font-size: 12px;
     letter-spacing: 2px;
@@ -156,16 +185,41 @@ doo-bread-crumbs {
 }
 
 .plus-icon {
+  mat-icon {
+    height: 15px;
+    width: 15px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $black;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $black;
+    }
+  }
+
   padding-left: 10px;
 }
 
 .minus-icon {
+  mat-icon {
+    height: 15px;
+    width: 15px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $black;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $black;
+    }
+  }
+
   padding-right: 10px;
   opacity: 0.5;
 }
 
 .qty-input {
   text-align: center;
+  padding-top: 15px;
   width:50px;
   font-weight: bold;
   ::ng-deep .mat-form-field-infix{

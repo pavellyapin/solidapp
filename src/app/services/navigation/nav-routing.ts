@@ -70,6 +70,14 @@ export const navRoutes: NavRoute[] = [
       import('../../pages/product-detail/product-detail.module').then(
         m => m.ProductDetailModule,
       )
+  },
+  {
+    data: {title: 'Order' , isChild: true},
+    path: 'order',
+    loadChildren: () =>
+      import('../../pages/order/order.module').then(
+        m => m.OrderModule,
+      )
   }
 ];
 

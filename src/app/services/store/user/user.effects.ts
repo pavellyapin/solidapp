@@ -21,7 +21,6 @@ export class UserEffects {
       switchMap(action =>
         this.firestoreService.getUserPersonalInfo().pipe(
           map((data: any) => {
-            console.log(data.payload.data());
             return UserActions.SuccessGetUserInfoAction({ payload: data.payload.data()});
           }),
           catchError((error: Error) => {
@@ -53,9 +52,10 @@ export class UserEffects {
     ofType(UserActions.BeginUserLoginAction),
     switchMap(action =>
       this.authService.doLogin(action.payload.email,action.payload.password).pipe(
-        map(() => {
-          return UserActions.BeginGetUserInfoAction();
-        }),
+        switchMap((x) => [UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
+                          UserActions.BeginGetUserAddressInfoAction()]
+        ),
         catchError((error: Error) => {
           return of(UserActions.ErrorUserAction(error));
         })

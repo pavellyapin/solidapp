@@ -1,5 +1,5 @@
 <div fxLayout = "column" class = "doo-footer-cont">
-    <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between" class = "sections-row">
+    <div *ngIf = "showAll" fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between" class = "sections-row">
             <div *ngFor = "let section of footerSections" fxLayout = "column">
                     <span class = "section-header"[innerHTML] = "section.fields.content | richTextPipe">
                      </span>
@@ -39,6 +39,8 @@
     </div>
     <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "center center" class = "bottom-links">
         <div>© Powered By Splidoo Creative Agency. 2019.</div>
-                    <button *ngFor = "let link of footerLinks" (click) = "navService.ctaClick(link.fields.action)" mat-button>{{link.fields.name}}</button>
+        <div fxLayout = "row"> 
+                <button *ngFor = "let link of footerLinks" (click) = "navService.ctaClick(link.fields.action)" mat-button>{{link.fields.name}}</button>
+        </div>   
     </div>
 </div>

@@ -10,8 +10,24 @@ app-nav-toolbar {
   }
 }
 
-mat-sidenav-content {
+mat-drawer-container {
+  min-height: 700px;
+}
+
+mat-drawer-content {
   padding-top: 50px;
+}
+
+.doo-cart-side-nav{
+  background-color:white;
+  height: 600px;
+  width: 35%;
+}
+
+.doo-mobile-cart-side-nav{
+  background-color:white;
+  height: 600px;
+  width: 350px;
 }
 
 
@@ -27,37 +43,19 @@ mat-sidenav-content {
 .sidenav-container {
   height: 100%;
 
-  mat-sidenav {
+  mat-drawer {
     box-shadow: 0 0 10px -5px #bbb;
     border: none;
     }
   }
   .nav-container {
-    mat-sidenav {
-      padding-top: 50px;
-    }
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   }
 
-.nav-cart-title{
-  background-color: $light-grey;
-  margin-bottom: 10px;
-  .mat-subheading-1{
-    font-weight: 900;
-    opacity: 0.7;
-    margin : 10px 0px;
-  }
-}
 
-
-.mat-sidenav-container { background-color: #0000 }
-.mat-sidenav {
-  background-color:white;
-  width: 300px;
-}
 .mat-nav-list {
   padding: 0px;
 }

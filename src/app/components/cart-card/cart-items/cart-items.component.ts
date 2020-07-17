@@ -44,7 +44,7 @@ export class CartItemsComponent implements OnInit {
           /* Grid column map */
           const colsMap = new Map([
             ['xs', 12],
-            ['sm', 4],
+            ['sm', 12],
             ['md', 12],
             ['lg', 12],
             ['xl', 12],
@@ -52,18 +52,18 @@ export class CartItemsComponent implements OnInit {
           /* Big card column span map */
           const colsMapBig = new Map([
             ['xs', 12],
-            ['sm', 4],
+            ['sm', 12],
             ['md', 12],
             ['lg', 12],
             ['xl', 12],
           ]);
           /* Small card column span map */
           const rowsMapBig = new Map([
-            ['xs', 23],
-            ['sm', 2],
-            ['md', 5],
-            ['lg', 5],
-            ['xl', 5],
+            ['xs', 15],
+            ['sm', 7],
+            ['md', 7],
+            ['lg', 7],
+            ['xl', 7],
           ]);
           let startCols: number;
           let startColsBig: number;

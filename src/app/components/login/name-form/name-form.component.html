@@ -1,0 +1,56 @@
+<div class = "doo-name-form" fxLayout="column">
+        <div></div>
+        <div fxLayout="column">
+              <div fxLayout = "row">
+                <div *ngIf = "!editMode" (click) = "editMode = !editMode" fxLayout = "row" fxFlex = "100">
+                    <mat-icon  class = "doo-pointer" svgIcon="doo-profile" color = "accent"></mat-icon>
+                    <div class="add-field-placeholder doo-pointer" >
+                        {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
+                    </div>
+                </div>
+                <form *ngIf = "editMode" [formGroup]="userForm" fxLayout = "column" fxLayoutGap = "10px" fxFlex
+                    (keyup.enter)="savePersonalInfo()">
+                    <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between" >
+                            <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
+                                    <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
+                                    <input  formControlName="firstName" 
+                                            autocomplete="firstName" 
+                                            matInput 
+                                            name="firstName" 
+                                            type="text"/>
+                                            <mat-error *ngIf="userForm.controls['firstName'].invalid">{{'errors.required' | translate}}</mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
+                                    <mat-label>{{ 'profile.account.lastName' | translate }}</mat-label>
+                                    <input  formControlName="lastName" 
+                                            autocomplete="lastName" 
+                                            matInput 
+                                            name="lastName" 
+                                            type="text"/>
+                                            <mat-error *ngIf="userForm.controls['lastName'].invalid">{{'errors.required' | translate}}</mat-error>
+                                </mat-form-field>
+                    </div>
+                    <div fxLayout = "row" fxLayoutAlign = "space-between" >
+                            <mat-form-field fxFlex appearance="outline" class="full-width">
+                                    <mat-label>{{ 'profile.account.email' | translate }}</mat-label>
+                                    <input  formControlName="email" 
+                                            autocomplete="email" 
+                                            matInput 
+                                            name="email" 
+                                            type="text"/>
+                                            <mat-error *ngIf="userForm.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
+                                </mat-form-field>
+                    </div>
+                    <div *ngIf = "showSaveButton" fxLayout = "row" fxLayoutAlign = "center">
+                            <div fxLayout = "row"
+                                 fxFlex = "50">
+                                <button (click)="savePersonalInfo()" class="doo-checkout-btn full-width"
+                                        color="primary" mat-stroked-button type="submit">
+                                        {{ 'profile.buttons.save' | translate }}
+                                </button>  
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

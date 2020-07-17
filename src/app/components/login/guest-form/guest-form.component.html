@@ -1,0 +1,93 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <div class="doo-guest-form" 
+       fxLayout="row" 
+       fxLayout.lt-sm = "column" 
+       fxFlex.lt-sm = "90" 
+       fxLayoutAlign="center" 
+       fxLayoutGap="50px">
+        <form fxLayout = "column" 
+              fxLayoutGap="20px" 
+              fxFlex = "40" 
+              (keyup.enter)="login(username, password)">
+            <div fxLayout = "column">
+                <mat-form-field appearance="outline" class="login-field">
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon svgIcon="doo-email"></mat-icon></span>
+                    <input [(ngModel)]="username" autocomplete="username" matInput name="username" placeholder="Email"
+                          type="text"/>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="login-field">
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon svgIcon="doo-lock"></mat-icon></span>
+                    <input [(ngModel)]="password" autocomplete="current-password" matInput name="password" placeholder="Password"
+                          type="password"/>
+                  </mat-form-field>
+            </div>
+
+        <div fxLayout = "row" fxLayoutAlign="space-between">
+          <div fxLayout = "column" fxLayoutAlign="center center">
+              <mat-checkbox class="example-margin">Remember me</mat-checkbox>
+          </div>
+            <button mat-button>
+              Forgot password?
+            </button>
+        </div>
+        <div fxLayout = "row" fxLayoutAlign="space-between" fxLayoutGap="10px">
+          <button fxFlex (click)="login(username, password)" class = "doo-checkout-btn"
+                  color="primary" mat-flat-button type="submit">
+            SIGN IN
+          </button>
+          <button fxFlex (click)="login(username, password)" class = "doo-checkout-btn"
+                  color="primary" mat-stroked-button type="submit">
+            SIGN UP
+          </button>
+        </div>
+
+        <mat-error [textContent]="errorMessage"></mat-error>
+
+        </form>
+        <form [formGroup]="guestForm" 
+              fxLayout = "column" 
+              fxLayoutGap="20px" 
+              fxFlex = "40" 
+              fxFlex.lt-sm = "90" 
+              (keyup.enter)="continueGuest()">
+            <div fxLayout = "column">
+                        <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between">
+                                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
+                                        <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
+                                        <input  formControlName="firstName"
+                                                autocomplete="firstName"
+                                                matInput 
+                                                name="firstName" 
+                                                placeholder=""
+                                                type="text"/>
+                                                <mat-error *ngIf="guestForm.controls['firstName'].invalid">{{'errors.required' | translate}}</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
+                                        <mat-label>{{ 'profile.account.lastName' | translate }}</mat-label>
+                                        <input  formControlName="lastName"
+                                                autocomplete="lastName"
+                                                matInput 
+                                                name="lastName" 
+                                                placeholder=""
+                                                type="text"/>
+                                                <mat-error *ngIf="guestForm.controls['lastName'].invalid">{{'errors.required' | translate}}</mat-error>
+                                        </mat-form-field>
+                        </div>
+                <mat-form-field appearance="outline" class="login-field">
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon svgIcon="doo-email"></mat-icon></span>
+                    <input matInput 
+                           formControlName="email"
+                           autocomplete="email" 
+                           name="email" 
+                           placeholder="Email"
+                           type="text"/>
+                  </mat-form-field>
+                <button (click)="continueGuest()" class = "doo-checkout-btn"
+                        color="primary" mat-flat-button type="submit">
+                    CONTINUE AS A GUEST
+                </button>
+              </div>
+        </form>
+  </div>
+
+</div>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { Observable, Subscription, BehaviorSubject, forkJoin } from 'rxjs';
 import CartState from 'src/app/services/store/cart/cart.state';
 import { Store, select } from '@ngrx/store';
@@ -22,6 +22,7 @@ export class CartSideNavComponent implements OnInit {
   cartItemsCards: Card[] = [];
   cartItems: Array<any>;
 
+  @Output() expandCartNav = new EventEmitter();
   cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
 
   constructor(
@@ -72,8 +73,12 @@ export class CartSideNavComponent implements OnInit {
   }
 
   public goToCart() {
-    this.navService.startLoading();
-    this.router.navigateByUrl('cart');
+    if (!this.cartItemCount) {
+        this.expandCartNav.emit();
+    } else {
+        this.navService.startLoading();
+        this.router.navigateByUrl('cart');
+    }
   }
 
   ngOnDestroy(): void {

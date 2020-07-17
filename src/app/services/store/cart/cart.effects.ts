@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import * as CartActions from './cart.action';
 import { FirestoreService } from '../../firestore/firestore.service';
-import { ContentfulService } from '../../contentful/contentful.service';
 
 
 
@@ -13,8 +12,7 @@ import { ContentfulService } from '../../contentful/contentful.service';
 export class CartEffects {
   constructor(
     private action$: Actions, 
-    private firestoreService: FirestoreService,
-    private contentfulService: ContentfulService) {}
+    private firestoreService: FirestoreService) {}
 
   InitializeOrder$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
@@ -36,12 +34,30 @@ export class CartEffects {
     )
   );
 
+  BackgroundInitializeOrder$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(CartActions.BeginBackGroundInitializeOrderAction),
+    switchMap(action =>
+      this.firestoreService.
+        initOrder(action.payload).pipe(
+          switchMap((result) => [
+            CartActions.SuccessBackGroundInitializeOrderAction({ payload: result.id })
+        ])
+        ,
+        catchError((error: Error) => {
+          return of(CartActions.ErrorCartAction(error));
+        })
+      )
+    )
+  )
+);
+
   SetOrderShipping$: Observable<Action> = createEffect(() =>
   this.action$.pipe(
     ofType(CartActions.BeginSetOrderShippingAction),
     switchMap(action =>
       this.firestoreService.
-      setOrderShippingInfo(action.payload.address , action.payload.personalInfo,  action.payload.cartId).pipe(
+      setOrderShippingInfo(action.payload).pipe(
         map((result) => {
           return CartActions.SuccessSetOrderShippingAction({ payload: action.payload.address });
         }),
@@ -60,7 +76,7 @@ export class CartEffects {
       this.firestoreService.
       setStripeToken(action.payload.source ,  action.payload.cartId).pipe(
         map((result) => {
-          if (result.code == 400) {
+          if (result.code == 200) {
             return CartActions.SuccessStripePaymentAction();
           } else {
             return CartActions.SuccessSetStripeTokenAction({ payload: action.payload.source });

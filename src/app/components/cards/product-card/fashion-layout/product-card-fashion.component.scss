@@ -22,6 +22,32 @@
     top: 10px;
     z-index: 10;
   }
+
+  .fav-border {
+    height: 20px;
+    width: 20px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $accent;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $accent;
+    }
+  }
+
+  .fav-fill {
+    height: 20px;
+    width: 20px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $accent;
+      fill: $accent;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $accent;
+      fill: $accent;
+    }
+  }
   .new-label {
     position: absolute;
     left: 0px;

@@ -28,6 +28,11 @@ export const SuccessGetUserInfoAction = createAction(
   props<{ payload: any}>()
 );
 
+export const SuccessSetCartUserAction = createAction(
+  '[User] - Success Set Cart User',
+  props<{ payload: any}>()
+);
+
 //User Logout
 
 export const BeginUserLogoutAction = createAction(
@@ -73,6 +78,12 @@ export const BeginUpdateUserContactInfoAction = createAction(
   '[User] - Begin Update Contact Info',
   props<{ payload: FormGroup }>()
 );
+
+export const BeginSetUserIDAction = createAction(
+  '[User] - Begin Set user ID',
+  props<{ payload: FormGroup }>()
+);
+
 
 //Update Password
 

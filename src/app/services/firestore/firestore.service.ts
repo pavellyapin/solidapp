@@ -132,11 +132,15 @@ export class FirestoreService {
                     .doc("orders").collection("orders").doc(cart.cartId).update({cart : cart.cart}).then(()=> {
                             return {id : cart.cartId};
                          }
-                    ));
+                    ).catch((error)=> {
+                        console.error(error);
+                    }));
             } else {
                 return from (this.firestore
                     .collection(this.authservice.uid)
-                    .doc("orders").collection("orders").add({cart : cart.cart , status : "created"}));
+                    .doc("orders").collection("orders").add({cart : cart.cart , status : "created"}).catch((error)=> {
+                        console.error(error);
+                    }));
             }
 
         } else {
@@ -152,14 +156,14 @@ export class FirestoreService {
                         .snapshotChanges();
     }
 
-    setOrderShippingInfo (address,personalInfo,cartId) : Observable<any>{
+    setOrderShippingInfo (cart : any) : Observable<any>{
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection(this.authservice.uid)
-                .doc("orders").collection("orders").doc(cartId).update({shipping : address , personalInfo : personalInfo}));
+                .doc("orders").collection("orders").doc(cart.cartId).update({shipping : cart.address , personalInfo : cart.personalInfo}));
         } else {
-            var setShipping = this.firebaseFunctions.httpsCallable('setShipping');
-            return setShipping({address : address, personalInfo : personalInfo, cartId : cartId});
+            var initOrder = this.firebaseFunctions.httpsCallable('initOrder');
+            return initOrder({"cart" : cart});
         }
     }
 

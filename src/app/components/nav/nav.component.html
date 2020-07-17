@@ -20,25 +20,27 @@
 <div fxLayout = "column" *ngIf = "false" fxLayoutAlign = "center center" class = "mat-caption bottom-news-feed-row">
     FREE DELIVERY FROM $50 AND EASY RETURNS - RETURNS EXTENDED TO 60 DAYS
   </div>
-<mat-sidenav-container >
-    <mat-sidenav *ngIf = "resolution == 'xs'" [opened]="isMobileMenuOpen" 
+<mat-drawer-container>
+    <mat-drawer *ngIf = "resolution == 'xs'" [opened]="isMobileMenuOpen" 
                  (closedStart)="isMobileMenuOpen = false"
+                 autoFocus = "false"
                  mode="over" 
+                 style = "width: 100%"
                  position = "start">
                   <doo-mobile-side-nav
                   [rootCategories] = "rootCategories"
                   [categories] = "categories"
                   (goToURL) = "goToFromMobileNav($event)">
                   </doo-mobile-side-nav>
-    </mat-sidenav>
-    <mat-sidenav [opened]="isOpen" 
+    </mat-drawer>
+    <mat-drawer [opened]="isOpen" 
                  (closedStart)="isOpen = false"
-                 mode="over" 
-                 style = "height: 600px"
+                 mode="over"
+                 [ngClass] = "bigScreens.includes(this.resolution) ? 'doo-cart-side-nav' : 'doo-mobile-cart-side-nav'" 
                  position = "end">
-                 <doo-cart-side-nav #cartSideNav></doo-cart-side-nav>
-  </mat-sidenav>
-  <mat-sidenav-content>
+                 <doo-cart-side-nav #cartSideNav (expandCartNav) = "expandCartNav()"></doo-cart-side-nav>
+  </mat-drawer>
+  <mat-drawer-content>
       <div *ngIf = "mainMenuOpen" fxLayout = "row" fxLayoutAlign="center start" (click) = "hideMainMenu()" class = "doo-overlay">
           
       </div>
@@ -48,7 +50,7 @@
           </div>
       </div>
     <router-outlet style = "padding-top: 250px;"></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </mat-drawer-content>
+</mat-drawer-container>
 </div>
-<doo-footer></doo-footer>
+<doo-footer [showAll] = "true"></doo-footer>

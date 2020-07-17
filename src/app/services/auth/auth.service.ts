@@ -44,6 +44,8 @@ export class AuthService {
     return from(new Promise((resolve, reject) => {
       if (firebase.auth().currentUser) {
         this.afAuth.auth.signOut();
+        this.uid = null;
+        this.idToken = null;
         resolve();
       } else {
         reject();

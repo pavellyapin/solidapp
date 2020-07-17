@@ -1,11 +1,11 @@
 
 <mat-form-field appearance="outline" class="full-width address-autocomplete-field">
                 <span matPrefix>
-                        <mat-icon color = "accent">search</mat-icon>
+                        <mat-icon svgIcon = "doo-search"></mat-icon>
                 </span>
+                <mat-label>{{ 'profile.address.addressSearch' | translate }}</mat-label>
                         <input matInput 
                                name="address" 
-                               placeholder="{{ 'profile.address.addressSearch' | translate }}"
                                type="text"
                                #addresstext>                       
 </mat-form-field>

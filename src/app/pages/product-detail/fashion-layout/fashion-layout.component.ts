@@ -14,6 +14,8 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
 
   @Output() favoriteToggle =  new EventEmitter();
   @Output() addToCart =  new EventEmitter();
+  @Output() public addQty =  new EventEmitter();
+  @Output() public removeQty =  new EventEmitter();
 
   @Input() productDetails : any;
   @Input() productReviews : any;
@@ -61,7 +63,7 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   }
 
   checkScroll() {
-    if (window.scrollY > this.mediaElementEnd.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
+    if (window.scrollY > this.mediaElementEnd.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 550 : 800)) {
       if (this.bigScreens.includes(this.resolution)) {
         this.renderer.removeClass(this.stickyProductDetail.nativeElement, 'sticky-product-detail');
         this.renderer.removeClass(this.stickyInnerCont.nativeElement, 'sticky-inner-cont');

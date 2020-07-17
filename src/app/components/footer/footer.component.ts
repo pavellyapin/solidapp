@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Entry } from 'contentful';
 import { Store, select } from '@ngrx/store';
@@ -20,6 +20,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
     footerSections : Entry<any>[];
     footerLinks : Entry<any>[];
     subscribeForm: FormGroup;
+    @Input()showAll : boolean;
   
     constructor(private store: Store<{ settings : SettingsState }> ,
                 public navService : NavigationService) {
@@ -38,7 +39,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
           if (x) {
             this.footerSections = x.fields.footer.filter(section => {if (section.sys.contentType.sys.id == 'block') {return section}});
             this.footerLinks = x.fields.footer.filter(section => {if (section.sys.contentType.sys.id == 'cta') {return section}});
-            console.log('footer' , this.footerLinks)
+            //console.log('footer' , this.footerLinks)
           }
         })
       )
