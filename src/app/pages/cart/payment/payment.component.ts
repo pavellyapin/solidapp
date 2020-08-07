@@ -4,8 +4,6 @@ import CartState from 'src/app/services/store/cart/cart.state';
 import { Observable, Subscription } from 'rxjs';
 import * as CartActions from '../../../services/store/cart/cart.action';
 import { map } from 'rxjs/operators';
-import { VariantsPipe } from 'src/app/components/pipes/pipes';
-import { CartService } from '../cart.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
@@ -13,6 +11,7 @@ import UserState from 'src/app/services/store/user/user.state';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserAddressInfo, UserPerosnalInfo } from 'src/app/services/store/user/user.model';
 import { Router } from '@angular/router';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
 
 
 @Component({
@@ -55,9 +54,8 @@ import { Router } from '@angular/router';
 
     constructor(private store: Store<{ cart: CartState , user: UserState }> ,
                 private router: Router,
-                private variantPipe : VariantsPipe,
-                private cartService : CartService,
                 private dialog: MatDialog,
+                private navService: NavigationService,
                 private cd: ChangeDetectorRef,
                 private utilService: UtilitiesService) {
         this.cart$ = store.pipe(select('cart'));
@@ -104,10 +102,6 @@ import { Router } from '@angular/router';
                 this.scriptLoaded = true;
             }
         });
-
-        this.cartServiceSubscription =  this.cartService.paymentChangeEmitted$.subscribe((x)=>{
-            this.onSubmit();
-        })
     }
 
     backToAddress() {
@@ -183,36 +177,20 @@ import { Router } from '@angular/router';
     }
 
     payPalPay() {
-        let reqCart = [];
-            
-       /* this.cartItemsService.cards.value.forEach(function(item){
-            reqCart.push(
-                {product_id : item.input.object.value.sys.id,
-                thumbnail : item.input.object.value.fields.media[0].fields.file.url,
-                name : item.input.name.value +  
-                (item.input.object.value.fields.variants ? 
-                this.variantPipe.transform(item.input.object.value.fields.variants) : ''),
-                qty : item.input.object.value.fields.qty,
-                price : item.input.object.value.fields.discount ? 
-                        item.input.object.value.fields.discount : 
-                        item.input.object.value.fields.price }
-            )
-            }.bind(this));
-
-            this.dialog.open(PayPalModalComponent, {
+           this.dialog.open(PayPalModalComponent, {
             width: '750px',
-            data: {cart: reqCart, total: parseFloat(this.cartTotal).toFixed(2)}
-            }); */
+            data: {total: this.cartTotal}
+            }); 
         
         }
 
     async onSubmit() {
         
         const { source, error } = await stripe.createSource(this.cardNumber);
-    
         if (error) {
           console.log('Something is wrong:', error);
         } else {
+          this.navService.startLoading();
           this.store.dispatch(CartActions.BeginSetStripeTokenAction({payload :{cartId : this.cartId, source : source}}));
         }
       }

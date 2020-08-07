@@ -1,5 +1,5 @@
 <div fxLayout="column">
-        <div [ngSwitch]="block.sys.contentType.sys.id" *ngFor = "let block of homePageContent?.fields.blocks">
+        <div [ngSwitch]="block.sys.contentType?.sys.id" *ngFor = "let block of homePageContent?.fields.blocks">
                 <doo-widgets *ngSwitchCase="'widget'" [widget] = "block">
                 </doo-widgets>
                 <doo-block-layouts *ngSwitchCase="'block'" [block] = "block">

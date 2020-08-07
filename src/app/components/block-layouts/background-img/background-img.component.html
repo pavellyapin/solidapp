@@ -1,36 +1,59 @@
-<div fxLayout = "column" 
-    [fxLayoutGap] = "block.fields.layout.fields.bottomGap + 'px'" 
-    [fxLayoutGap.xs] = "block.fields.layout.fields.bottomGap/2 + 'px'">
-    <div fxLayout = "row" style = "position:relative;" fxLayoutAlign = "center center">
+<div fxLayout = "column" [fxLayoutGap] = "block.fields.bottomPadding">
+    <div fxLayout = "row" style = "position:relative;" 
+        [fxLayoutAlign] = "block.fields.contentPosition + ' ' +  block.fields.verticalContentPosition">
         <div *ngIf = "imgLoaded" 
             fxLayout = "row"
-            [fxFlex] = "block.fields.layout.fields.width"
+            [fxFlex] = "block.fields.width"
             fxLayoutGap = "30px" 
             class = "doo-overlay-box full-width doo-contentful" 
-            [fxLayoutAlign] = "block.fields.layout.fields.direction">
+            [fxLayoutAlign] = "block.fields.contentPosition">
             <div></div>
                 <div fxFlexLayout = "column" 
-                    [fxFlex] = "['start' , 'end'].includes(block.fields.layout.fields.direction)  ? 35 : 80"
+                    [fxFlex] = "block.fields.textBoxWidth"
                     fxFlex.sm = "80"
-                    fxFlex.xs = "100"
-                    class = "doo-cta-content">
-            
-                        <div style = "text-align: center" [innerHTML] = "block.fields.content | richTextPipe">
+                    fxFlex.xs = "100">
+                        <div [class.primary-color] = "block.fields.textColor == 'Primary'"
+                             [class.accent-color] = "block.fields.textColor == 'Accent'"
+                             [class.white-color] = "block.fields.textColor == 'White'"
+                             [class.black-color] = "block.fields.textColor == 'Black'"  
+                            [style.text-align] = "block.fields.textAlign" [innerHTML] = "block.fields.content | richTextPipe">
                         </div>
-                                <div fxLayoutAlign = "center" fxLayoutGap = "20px">
-                                    <button *ngFor = "let cta of block.fields.actions" 
-                                                color = "primary" 
-                                                mat-flat-button 
-                                                (click) = "navService.ctaClick(cta.fields.action)"
-                                                class = "doo-cta-btn">
-                                                {{cta.fields.name}}
-                                        </button>
+                                <div [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px">
+                                    <div *ngFor = "let cta of block.fields.actions">
+                                        <div [ngSwitch]="cta.fields.appearence">
+                                                        <button *ngSwitchCase="'flat'" 
+                                                        color = "primary" 
+                                                        mat-flat-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        </button> 
+                                                        <button *ngSwitchCase="'stroked'" 
+                                                        color = "primary" 
+                                                        mat-stroked-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        </button>
+                                                        <button *ngSwitchCase="'arrow'" 
+                                                        color = "primary" 
+                                                        mat-stroked-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        <mat-icon  svgIcon="doo-arrow-right"></mat-icon>
+                                                        </button>    
+                                                        <button *ngSwitchCase="'rasied'" 
+                                                        color = "primary" 
+                                                        mat-rasied-button 
+                                                        class = "doo-cta-btn">
+                                                        {{cta.fields.name}}
+                                                        </button>                                               
+                                        </div>
+                             </div>
                                 </div>
                 </div>
                 <div></div>
         </div>
         <div fxLayout = "row" 
-            [fxFlex] = "block.fields.layout.fields.width" 
+            [fxFlex] = "block.fields.width" 
             fxLayoutAlign = "center" 
             [ngClass] = "bigScreens.includes(this.resolution) ? '' : 'crop'">
                 <img #postImg *ngIf = "block.fields.media[0].fields.file.details.image"   

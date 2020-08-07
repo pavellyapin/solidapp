@@ -12,7 +12,7 @@
               class="doo-nav-toggle-button">
               <img  [src]="siteSettings?.fields.logo.fields.file.url">
       </button>
-      <form *ngIf = "bigScreens.includes(resolution)" fxFlex = "50" class="mat-caption doo-search-box">
+      <form *ngIf = "bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled" fxFlex = "50" class="mat-caption doo-search-box">
         <mat-form-field appearance="outline" class = "full-width">
             <span matPrefix><mat-icon svgIcon = "doo-search"></mat-icon></span>
           <input #searchInput type="text"
@@ -33,7 +33,7 @@
         </mat-form-field>
       </form>
     <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
-    <div fxLayout="row" fxLayoutAlign="center center">
+    <div *ngIf = "siteSettings.fields.cartEnabled" fxLayout="row" fxLayoutAlign="center center">
         <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToFavorites()">
             <mat-icon svgIcon="doo-favorite"></mat-icon>
           </button>

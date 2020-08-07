@@ -1,4 +1,4 @@
-<div [ngSwitch]="block.fields.layout.fields.type">
+<div [ngSwitch]="block.fields.type">
         <doo-background-img-block [block] = "block" [resolution] = "resolution" *ngSwitchCase="'Background Image'">
         </doo-background-img-block>
         <doo-text-block [block] = "block" [resolution] = "resolution" *ngSwitchCase="'Text'">

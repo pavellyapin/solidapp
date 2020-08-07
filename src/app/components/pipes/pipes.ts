@@ -12,7 +12,8 @@ import { ErrorStateMatcher } from '@angular/material/core';
       constructor (public sanitizer: DomSanitizer) {}
         transform(url:string):any {
           var fullUrl = 'https:' + url;
-          return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
+          return fullUrl;
+          //return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
     }
   }
 

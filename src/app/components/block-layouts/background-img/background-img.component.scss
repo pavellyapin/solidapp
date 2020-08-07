@@ -3,8 +3,22 @@
 
 .doo-overlay-box{
     position:absolute;
-    //text-align: center;
-    color:white;
+}
+
+.primary-color {
+  color: $primary;
+}
+
+.accent-color {
+  color: $accent;
+}
+
+.white-color {
+  color: white;
+}
+
+.black-color {
+  color: black;
 }
 
 .doo-cta-btn{
@@ -15,7 +29,6 @@
 .mat-display-3{
     font-weight: 900;
     letter-spacing: 4px;
-    color: white;
 }
 
 .post-placeholder {

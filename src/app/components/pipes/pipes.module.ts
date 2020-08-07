@@ -13,6 +13,7 @@ import { ImagePipe, RichTextPipe, PricePipe, VariantsPipe, DatePipe, RatePipe, T
     imports:      [
     ],
     exports: [PricePipe,
+              ImagePipe,
               RichTextPipe,
               VariantsPipe,
               DatePipe,

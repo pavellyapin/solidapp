@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
 
 @Component({
   selector: 'doo-split-screen-img',
@@ -9,7 +10,7 @@ export class SplitScreenImagePostComponent implements OnInit {
 
   @Input() block;
 
-  constructor() {
+  constructor(public navService : NavigationService) {
     
   }
 

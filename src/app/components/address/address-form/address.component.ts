@@ -167,6 +167,7 @@ import { NameFormComponent } from '../../login/name-form/name-form.component';
           this.userInfo = new UserPerosnalInfo;
           this.userInfo.firstName = this.nameFormComponent.userForm.controls["firstName"].value;
           this.userInfo.lastName = this.nameFormComponent.userForm.controls["lastName"].value;
+          this.userInfo.email = this.nameFormComponent.userForm.controls["email"].value;
           this.personalFormEmitter.emit(this.userInfo);
       }
 

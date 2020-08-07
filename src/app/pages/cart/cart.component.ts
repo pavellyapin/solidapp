@@ -7,10 +7,8 @@ import { Card } from 'src/app/components/cards/card';
 import { CartItem } from 'src/app/services/store/cart/cart.model';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Router } from '@angular/router';
-import {VariantsPipe} from '../../components/pipes/pipes'
 import * as CartActions from '../../services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
-import { CartService } from './cart.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Entry } from 'contentful';
@@ -18,6 +16,7 @@ import { ContentfulService } from 'src/app/services/contentful/contentful.servic
 import * as UserActions from 'src/app/services/store/user/user.action';
 import UserState from 'src/app/services/store/user/user.state';
 import { UserPerosnalInfo } from 'src/app/services/store/user/user.model';
+import { ImagePipe } from 'src/app/components/pipes/pipes';
 
 @Component({
   selector: 'doo-cart',
@@ -30,8 +29,7 @@ export class CartComponent implements OnInit {
   CartSubscription: Subscription;
   CartIdSubscription: Subscription;
   initOrderSubscription: Subscription;
-  setShippingSubscription: Subscription;
-  setPaymentSubscription: Subscription;
+  OrderSubscription : Subscription;
   StripeSuccessSubscription : Subscription;
   SettingsSubscription: Subscription;
   UserInfoSubscription : Subscription;
@@ -48,11 +46,12 @@ export class CartComponent implements OnInit {
 
   cart$: Observable<CartState>;
   cartItems$: Observable<CartItem[]>;
+  order$: Observable<any>;
   
   cartTotal: number;
   primaryTax : number;
   secondaryTax : number;
-  shippingCost : number;
+  shippingCost : number = 0;
   grandTotal : Number;
 
   summaryOpen : boolean = false;
@@ -68,7 +67,7 @@ export class CartComponent implements OnInit {
                   public navService: NavigationService,
                   private router: Router,
                   private cd: ChangeDetectorRef,
-                  public cartService : CartService,
+                  private imagePipe : ImagePipe,
                   public utilService: UtilitiesService,
                   private contentfulService: ContentfulService)
         {
@@ -77,6 +76,7 @@ export class CartComponent implements OnInit {
           this.cart$ = store.pipe(select('cart'));
           this.user$ = store.pipe(select('user'));
           this.cartItems$ = store.pipe(select('cart' , 'items'));
+          this.order$ = store.pipe(select('cart' , 'order'));
         }
 
   ngOnInit() {
@@ -116,11 +116,18 @@ export class CartComponent implements OnInit {
 
     this.initializeCartState();
 
-    this.UserInfoSubscription = this._actions$.pipe(ofType(UserActions.SuccessGetUserInfoAction)).subscribe(() => {
+    /*
+    //Everytime user updates address or personal info we want to initialize the order
+    //We are reusing the same function so container does not sleep
+    */
+    this.UserInfoSubscription = this._actions$.pipe(ofType(
+      UserActions.SuccessGetUserInfoAction,
+      CartActions.SuccessSetOrderShippingAction)).subscribe(() => {
       this.initializeOrder(this.cartId);
     });
 
-
+    //After every time init of order is successful we want to navigate to the next checkout step
+    //First step is guest page, or if user logged in first is shipping
     this.initOrderSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe(() => {
       switch(this.navService.getActivePage().title) {
         case 'Checkout Shipping':
@@ -139,15 +146,22 @@ export class CartComponent implements OnInit {
       this.navService.finishLoading();
       });
 
-      this.setShippingSubscription = this._actions$.pipe(ofType(CartActions.SuccessSetOrderShippingAction)).subscribe(() => {
-        this.initializeOrder(this.cartId); 
-      });
+      //This is for LOGGED IN users, we have a function triggered on insert to {payment}
+      //This observable will be updated everytime cart firestore obejct is updated
+      this.OrderSubscription = this.order$
+      .pipe(
+        map(x => {
+          if (x) {
+            if (x.status =="paid") {
+              this.store.dispatch(CartActions.BeginResetCartAction());
+              this.router.navigateByUrl('order/success/' + this.cartId);
+            }
+          }
+        })
+      )
+      .subscribe();
 
-      //This is for logged in user, another listener on cart status "paid"
-      this.setPaymentSubscription = this._actions$.pipe(ofType(CartActions.BeginSetStripeTokenAction)).subscribe(() => {
-        this.loading = true;  
-      });
-
+      //This is for GUEST users, we are waiting for a function return when stripe is successful
       this.StripeSuccessSubscription = this._actions$.pipe(ofType(CartActions.SuccessStripePaymentAction)).subscribe(() => {
             this.store.dispatch(CartActions.BeginResetCartAction());
             this.router.navigateByUrl('order/success/' + this.cartId);
@@ -197,7 +211,6 @@ export class CartComponent implements OnInit {
               this.cartTotal = this.cartTotal + (item.cartItem.qty*(item.fields.discount ? item.fields.discount : item.fields.price));
               
             });
-            this.store.dispatch(CartActions.SuccessSetOrderTotalAction({ payload: this.cartTotal.toFixed(2) }));
             this.primaryTax = this.siteSettings.fields.primaryTax? 
                                   parseFloat(((this.siteSettings.fields.primaryTaxValue *  this.cartTotal)/100).toFixed(2))
                                       : undefined;
@@ -205,6 +218,7 @@ export class CartComponent implements OnInit {
                                   parseFloat(((this.siteSettings.fields.secondaryTaxValue *  this.cartTotal)/100).toFixed(2))
                                       : undefined;   
             this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;  
+            this.store.dispatch(CartActions.SuccessSetOrderTotalAction({ payload: this.grandTotal.toFixed(2) }));
             this.cartItems.forEach(item=> {
               this.cartItemCount = this.cartItemCount + item.cartItem.qty;
             });   
@@ -239,7 +253,7 @@ export class CartComponent implements OnInit {
     this.cartItems.forEach(function(item){
           reqCart.push(
             {product_id : item.cartItem.productId,
-            thumbnail : item.fields.media[0].fields.file.url,
+            thumbnail : this.imagePipe.transform(item.fields.media[0].fields.file.url),
             name : item.fields.title,
             variants : item.cartItem.variants,
             qty : item.cartItem.qty,
@@ -264,8 +278,7 @@ export class CartComponent implements OnInit {
 
   ngOnDestroy(){
     this.initOrderSubscription.unsubscribe();
-    this.setShippingSubscription.unsubscribe();
-    this.setPaymentSubscription.unsubscribe();
+    this.OrderSubscription.unsubscribe();
     this.StripeSuccessSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
     this.CartSubscription.unsubscribe();

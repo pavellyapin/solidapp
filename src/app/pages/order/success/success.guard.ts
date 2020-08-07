@@ -15,12 +15,13 @@ export class CheckoutSuccessGuard implements CanActivate  {
   cartId$: Observable<string>;
   cartId: string;
   
-  constructor(public afAuth: AngularFireAuth) {
+  constructor(public afAuth: AngularFireAuth,private store: Store<{}>) {
       
   }
 
 
   canActivate(route: ActivatedRouteSnapshot) : Observable<boolean> | boolean {
+    this.store.dispatch(CartActions.BeginResetCartAction());
       return this.afAuth.authState.pipe(map((auth)=> {
         return true
       }));
