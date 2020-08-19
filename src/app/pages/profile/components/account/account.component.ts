@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import UserState from 'src/app/services/store/user/user.state';
 import * as UserActions from 'src/app/services/store/user/user.action';
@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UserPerosnalInfo } from 'src/app/services/store/user/user.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
 
 @Component({
   selector: 'profile-account',
@@ -17,7 +17,6 @@ export class AccountComponent implements OnInit , OnDestroy {
 
   user$: Observable<UserPerosnalInfo>;
   UserSubscription: Subscription;
-  actionSubscription: Subscription;
   userInfo: UserPerosnalInfo;
   personalInfo: FormGroup;
   contactInfo: FormGroup;
@@ -27,7 +26,8 @@ export class AccountComponent implements OnInit , OnDestroy {
   passwordEditMode:boolean;
   
   constructor(private store: Store<{ user: UserState }>,
-              private _actions$: Actions) {
+              private navService: NavigationService,
+              private cd: ChangeDetectorRef) {
                 this.user$ = store.pipe(select('user','personalInfo'));
 
               this.personalInfo = new FormGroup({        
@@ -51,20 +51,35 @@ export class AccountComponent implements OnInit , OnDestroy {
       .pipe(
         map(x => {
           this.userInfo = x;
-          this.personalInfo.controls["firstName"].setValue(this.userInfo.firstName);
-          this.personalInfo.controls["lastName"].setValue(this.userInfo.lastName);
-
-          this.contactInfo.controls["phone"].setValue(this.userInfo.phone);
-          this.contactInfo.controls["email"].setValue(this.userInfo.email);
         })
       )
       .subscribe();
-      this.actionSubscription = this._actions$.pipe(ofType(UserActions.SuccessGetUserInfoAction)).subscribe(() => {
-      this.editMode = this.contactEditMode = false;    
-      });
+  }
+
+  toggleEditForm(type) {
+    if (type == 'personal') {
+      if (this.editMode) {
+        this.editMode = false;
+      } else {
+        this.personalInfo.controls["firstName"].setValue(this.userInfo.firstName);
+        this.personalInfo.controls["lastName"].setValue(this.userInfo.lastName);
+        this.editMode = true;
+        this.cd.detectChanges();
+      }
+    } else if(type == 'contact') {
+      if (this.contactEditMode) {
+        this.contactEditMode = false;
+      } else {
+        this.contactInfo.controls["phone"].setValue(this.userInfo.phone);
+        this.contactInfo.controls["email"].setValue(this.userInfo.email);
+        this.contactEditMode = true;
+        this.cd.detectChanges();
+      }
+    }
   }
 
   savePersonalInfo() {
+    this.navService.startLoading();
     this.store.dispatch(UserActions.BeginUpdatePerosnalInfoUserAction({ payload: this.personalInfo }));
   }
 
@@ -74,6 +89,7 @@ export class AccountComponent implements OnInit , OnDestroy {
   }
 
   updateContactInfo() {
+    this.navService.startLoading();
     if (this.contactInfo.controls["email"].value == this.userInfo.email) {
       this.store.dispatch(UserActions.BeginUpdateUserContactInfoAction({ payload: this.contactInfo }));
     } else {
@@ -83,6 +99,5 @@ export class AccountComponent implements OnInit , OnDestroy {
 
   ngOnDestroy(): void {
     this.UserSubscription.unsubscribe();
-    this.actionSubscription.unsubscribe();
   }
 }

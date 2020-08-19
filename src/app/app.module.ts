@@ -65,7 +65,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
         useFactory: (http: HttpClient) => new TranslateHttpLoader(http,'./assets/i18n/', '.json'),
         deps: [HttpClient],
       },
-    })],
+    })
+   ],
   providers: [
     {
       provide: APP_INITIALIZER,

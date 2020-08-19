@@ -1,7 +1,5 @@
 import {Route, Router} from '@angular/router';
 import {Injectable} from '@angular/core';
-import { LoginGuard } from 'src/app/pages/login/login.guard';
-import { ProfileGuard } from 'src/app/pages/profile/profile.guard';
 
 export interface NavRoute extends Route {
   path?: string;
@@ -32,19 +30,9 @@ export const navRoutes: NavRoute[] = [
   {
     data: {title: 'Profile' , isChild: false},
     path: 'account',
-    canActivate: [ProfileGuard],
     loadChildren: () =>
       import('../../pages/profile/profile.module').then(
         m => m.ProfileModule,
-      ),
-  },
-  {
-    data: {title: 'Login'},
-    path: 'login',
-    canActivate: [LoginGuard],
-    loadChildren: () =>
-      import('../../pages/login/login.module').then(
-        m => m.LoginModule,
       ),
   },
   {

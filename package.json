@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-material-extensions/password-strength": "^6.0.0",
     "@angular/animations": "~9.1.3",
     "@angular/cdk": "^9.2.1",
     "@angular/common": "~9.1.3",
@@ -37,6 +38,7 @@
     "@types/googlemaps": "^3.39.3",
     "contentful": "^7.11.3",
     "core-js": "~3.2.1",
+    "firebase": "^5.8.6",
     "firebase-tools": "^7.13.1",
     "hammerjs": "~2.0.8",
     "jquery": "^3.5.1",

@@ -1,0 +1,25 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <div fxLayout="row" 
+       fxLayout.lt-sm = "column" 
+       fxFlex = "60" 
+       fxFlex.lt-md = "100"
+       class="doo-error-form doo-contentful"
+       fxLayoutAlign="center" 
+       fxLayoutGap="50px">
+        <div fxLayout = "column"
+             fxLayoutGap="20px" 
+             fxLayoutAlign = "center center">
+             <h2>Error</h2>
+             <span class = "doo-letter-space accent-color">There was an error related to your login action</span>
+             <mat-error [textContent]="errorMessage"></mat-error>
+             <mat-icon class = "doo-primary-icon">error</mat-icon>
+             <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+                <button fxFlex [routerLink] = "'/login'" class = "doo-checkout-btn"
+                        color="primary" mat-flat-button type="submit">
+                  BACK TO LOGIN
+                </button>
+              </div>
+        </div>
+  </div>
+
+</div>

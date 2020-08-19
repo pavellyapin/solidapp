@@ -9,13 +9,10 @@ $accent: mat-color($mat-pink ,200);
     mat-palette($mat-pink ,300)
 ));
 
-
-
+//Effect variables for crumb item
 $duration: .2s;
 $distance: 8px;
 $easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
-
-
 .crumb-item {
     position: relative;
     padding-bottom: 8px;
@@ -55,23 +52,64 @@ $easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
       }
   }
 
-  .lds-dual-ring:after {
-    content: " ";
-    display: block;
-    width: 150px;
-    height: 150px;
-    margin: 1px;
-    border-radius: 50%;
-    border: 10px solid $accent;
-    border-color: $accent transparent;
-    animation: lds-dual-ring 2.2s linear infinite;
+  .primary-color {
+    color: $primary;
+  }
+  
+  .accent-color {
+    color: $accent;
+  }
+  
+  .white-color {
+    color: white;
+  }
+  
+  .black-background {
+    background: black;
   }
 
-  @keyframes lds-dual-ring {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  .primary-background {
+    background: $primary;
+  }
+  
+  .accent-background {
+    background: $accent;
+  }
+  
+  .white-background {
+    background: white;
+  }
+  
+  .black-color {
+    color: black;
+  }
+  
+ .doo-cta-btn{
+    padding: 10px 25px !important;
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .doo-cta-btn{
+        padding: 5px 15px !important;
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+  }
+
+  .doo-light-card {
+    background: rgba(255, 255, 255, 0.3);
+    padding : 50px;
+    box-shadow: 0px 0px 20px 0px $primary;
+    border-radius: 5px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .doo-light-card{
+        background: rgba(255, 255, 255, 0.3);
+        padding : 5px;
+        box-shadow: none;
+        border-radius: 0px;
+      }
   }

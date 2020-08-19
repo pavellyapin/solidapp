@@ -3,27 +3,7 @@
 
 .doo-overlay-box{
     position:absolute;
-}
-
-.primary-color {
-  color: $primary;
-}
-
-.accent-color {
-  color: $accent;
-}
-
-.white-color {
-  color: white;
-}
-
-.black-color {
-  color: black;
-}
-
-.doo-cta-btn{
-    padding: 10px 25px;
-    font-size: 14px;
+    z-index: 1;
 }
 
 .mat-display-3{

@@ -1,0 +1,29 @@
+
+@import 'src/css/_variables.scss';
+@import 'src/css/contentful.scss';
+
+
+.doo-register-form {
+  padding: 0 10px;
+  .doo-checkout-btn{
+    border-radius: 25px !important;
+  }
+
+  ::ng-deep mat-icon {
+    padding-right: 10px;
+    height: 25px;
+    width: 25px;
+    color: $accent;
+  }
+
+  .google-icon{
+    height: 35px;
+    width: 35px;
+    padding-bottom: 10px
+  }
+
+  .facebook-icon{
+    width: 35px;
+    padding: 12px 0px;
+  }
+}

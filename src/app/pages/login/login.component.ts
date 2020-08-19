@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth/auth.service';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import UserState from 'src/app/services/store/user/user.state';
 import * as UserActions from 'src/app/services/store/user/user.action';
 import * as CartActions from 'src/app/services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import SettingsState from 'src/app/services/store/settings/settings.state';
+import { map } from 'rxjs/operators';
+import { Entry } from 'contentful';
 ;
 
 @Component({
@@ -17,27 +19,77 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 })
 export class LoginComponent implements OnInit , OnDestroy{
 
+  settings$: Observable<SettingsState>;
+  SettingsSubscription: Subscription;
+  
+  loginPageContent : Entry<any>;
+  loading:boolean = false;
+  resolution:any;
+  bigScreens = new Array('lg' , 'xl' , 'md')
+  siteSettings: Entry<any>;
+  actionCode : string;
+  codeValid : boolean = true;
+
   errorMessage: string;
   username:any;
   password:any;
   
   subscription :Subscription;
+  errorSubscription :Subscription;
 
-  constructor(private authService: AuthService,
-              private router: Router,
+  constructor(private router: Router,
               private _actions$: Actions,
-              private store: Store<{ user: UserState }>,
-              private navService : NavigationService) {
+              private activatedRoute: ActivatedRoute,
+              private store: Store<{ user: UserState , settings : SettingsState}>,
+              private navService : NavigationService,
+              private changeDetectorRef: ChangeDetectorRef) {
+
+            this.settings$ = store.pipe(select('settings'));
         
   }
 
   ngOnInit() {
     this.errorMessage = '';
-    //this.navService.popFromStack();
-    this.navService.resetStack(['account']);
-    if (!this.authService.isLoggedIn()) {
-      this.navigateTo();
-    }
+    this.SettingsSubscription = this.settings$
+    .pipe(
+      map(x => {
+        this.siteSettings = x.siteConfig;
+        if (x.pages) {
+          this.loginPageContent = x.pages.filter(page=>{
+            if (page.fields.type == 'login') {
+              return page;
+            }
+          }).pop();
+        }
+        this.loading = x.loading;
+        this.changeDetectorRef.detectChanges();
+        this.resolution = x.resolution;
+      })
+    )
+    .subscribe();
+
+      this.errorSubscription = this._actions$.pipe(ofType(UserActions.ErrorUserAction)).subscribe((x) => {
+        if(x["code"] == 'auth/invalid-action-code') {
+          this.router.navigateByUrl('login/error');
+        }
+      });
+
+          
+    this.activatedRoute.queryParams
+    .subscribe(params => {
+      this.codeValid = true;
+      this.actionCode = params['oobCode'];
+      if (this.actionCode) {
+        this.navService.startLoading();
+        this.store.dispatch(UserActions.BeginVerifyResetPasswordCodeAction({ payload: this.actionCode }));
+      }
+    });
+
+    /*this.router.events.subscribe((val) => {
+       if (val instanceof NavigationEnd) {
+
+      }
+  });*/
 
     this.subscription = this._actions$.pipe(ofType(UserActions.SuccessGetUserInfoAction)).subscribe(() => {
       this.store.dispatch(UserActions.BeginGetUserAddressInfoAction());
@@ -46,35 +98,14 @@ export class LoginComponent implements OnInit , OnDestroy{
         BeginInitializeOrderAction({payload :{cartId : null, 
                                               cart : {cart : null}
                                             }}));
-      this.router.navigate(['']);
+      this.router.navigate(['account/overview']);
       this.navService.finishLoading();
     });
-  }
-
-  ngAfterViewInit() {
     this.navService.finishLoading();
-  }
-  
-
-  public async login(username: string, pw: string) {
-
-    const creds = { email: username, password: pw };
-    this.navService.startLoading();
-    this.store.dispatch(UserActions.BeginUserLoginAction({ payload: creds }));
-  }
-
-  public async register(username: string, pw: string) {
-    this.navService.startLoading();
-    const creds = { email: username, password: pw };
-    this.store.dispatch(UserActions.BeginRegisterUserAction({ payload: creds }));
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  public navigateTo(url?: string) {
-    url = url || 'nav';
-    this.router.navigate([url], { replaceUrl: true });
+    this.errorSubscription.unsubscribe();
   }
 }

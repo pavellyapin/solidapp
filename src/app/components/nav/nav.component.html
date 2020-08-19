@@ -20,8 +20,8 @@
 <div fxLayout = "column" *ngIf = "false" fxLayoutAlign = "center center" class = "mat-caption bottom-news-feed-row">
     FREE DELIVERY FROM $50 AND EASY RETURNS - RETURNS EXTENDED TO 60 DAYS
   </div>
-<mat-drawer-container>
-    <mat-drawer *ngIf = "resolution == 'xs'" [opened]="isMobileMenuOpen" 
+<mat-drawer-container [ngClass] = "bigScreens.includes(this.resolution) ? 'main-nav-container' : 'main-nav-container-mobile'">
+    <mat-drawer  [opened]="isMobileMenuOpen" 
                  (closedStart)="isMobileMenuOpen = false"
                  autoFocus = "false"
                  mode="over" 
@@ -44,7 +44,7 @@
       <div *ngIf = "mainMenuOpen" fxLayout = "row" fxLayoutAlign="center start" (click) = "hideMainMenu()" class = "doo-overlay">
           
       </div>
-      <div *ngIf = "loading && this.navService.getActivePage().title != 'Home'" fxLayout = "row" fxLayoutAlign="center start" class = "doo-loading-overlay">
+      <div *ngIf = "loading && !['Home','Profile'].includes(this.navService.getActivePage().title)" fxLayout = "row" fxLayoutAlign="center start" class = "doo-loading-overlay">
           <div class="doo-loading-screen">
             <img src = "assets/icons/logo.png">
           </div>

@@ -140,7 +140,7 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public goToProfile() {
-    if (this.navService.getCurrentUrl().pop() != 'account/overview') {
+    if (this.navService.getCurrentUrl().pop() && !this.navService.getCurrentUrl().pop().match('account')) {
       this.navService.startLoading();
     }
     this.router.navigateByUrl('account/overview');
@@ -155,7 +155,9 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public goToFavorites() {
-    this.navService.startLoading();
+    if (this.navService.getCurrentUrl().pop() != 'account/overview') {
+      this.navService.startLoading();
+    }
     this.router.navigateByUrl('account/favorites');
   }
 }

@@ -4,6 +4,7 @@ import { from, Observable } from 'rxjs';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { AuthService } from '../auth/auth.service';
 import { CartData } from 'src/app/pages/cart/payment/payment.component';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root',
@@ -15,18 +16,6 @@ export class FirestoreService {
     constructor(private firestore: AngularFirestore , 
                 public authservice: AuthService,
                 private firebaseFunctions: AngularFireFunctions) {
-    }
-
-    createUser(user) {
-        return new Promise<any>((resolve, reject) =>{
-            this.firestore
-                .collection("customers")
-                .doc("customers")
-                .collection(user.uid)
-                .doc("personalInfo")
-                .set(user.personalInfo)
-                .then(res => {}, err => reject(err));
-        });
     }
 
     getUserPersonalInfo() {
@@ -106,7 +95,7 @@ export class FirestoreService {
 
     //Orders-------------------------------------------------------------------------
 
-    getOrders() : Observable<firebase.firestore.QuerySnapshot> {
+    getOrders() : Observable<any> {
         return from (this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
                         .doc("orders").collection("orders").ref.where("status" , "==" , "paid").get());
     }
@@ -115,7 +104,6 @@ export class FirestoreService {
 
 
     subscribe(email : string) {
-        console.log('email',email);
         var subscribeEmail = this.firebaseFunctions.httpsCallable('subscribeEmail');
         return subscribeEmail({email : email});
     }
@@ -124,7 +112,6 @@ export class FirestoreService {
 
     initOrder (cart : any) : Observable<any>{
         if (this.authservice.uid) {
-            console.log('cart',cart);
             if (cart.cartId) {
                 return from (this.firestore
                     .collection("customers").doc("customers").collection(this.authservice.uid)
@@ -143,8 +130,15 @@ export class FirestoreService {
             }
 
         } else {
-            var initOrder = this.firebaseFunctions.httpsCallable('initOrder');
-            return initOrder({"cart" : cart, status : "created"});
+            return from (firebase.auth().signInAnonymously().then((creds)=>{
+                return this.firestore
+                    .collection("customers").doc("customers").collection(creds.user.uid)
+                    .doc("orders").collection("orders").add({cart : cart.cart , status : "created"}).catch((error)=> {
+                        console.error(error);
+                    });
+            }).catch(function(error) {
+                console.error(error);
+              }));
         }
     }
 
@@ -156,7 +150,6 @@ export class FirestoreService {
     }
 
     setOrderShippingInfo (cart : any) : Observable<any>{
-        console.log(cart);
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
@@ -167,11 +160,24 @@ export class FirestoreService {
         }
     }
 
+    //This method is a listener, mainly for payment section to listen on status changes
     getCart (cartId) : Observable<any>{
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cartId).snapshotChanges());
+        } else {
+            var getCart = this.firebaseFunctions.httpsCallable('getCart');
+            return getCart({"cartId" : cartId});
+        }
+    }
+
+    //This is a 1 time data fetch, for success
+    getCartData (cartId) : Observable<any>{
+        if (this.authservice.uid) {
+            return from (this.firestore
+                .collection("customers").doc("customers").collection(this.authservice.uid)
+                .doc("orders").collection("orders").doc(cartId).get());
         } else {
             var getCart = this.firebaseFunctions.httpsCallable('getCart');
             return getCart({"cartId" : cartId});

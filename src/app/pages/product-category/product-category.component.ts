@@ -23,6 +23,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     ProductSubscription: Subscription;
     SettingsSubscription: Subscription;
     productsLoaded:Entry<any>[];
+    productsDisplayed:Entry<any>[];
     activeCategory:Entry<any>;
     productCards: Card[] = [];
     previousUrl:string = '';
@@ -62,13 +63,18 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
       this.ProductSubscription = this.product$
       .pipe(
         map(x => {
-          
           this.activeCategory = x.activeCategory;
           this.resetCards();
+          this.productVariants = new Map();
+          this.productsLoaded = [];
+          this.productsDisplayed = [];
           if (x.loadedProducts && x.loadedProducts.length > 0) {
-            this.productsLoaded = this.utilService.
-            shuffleArray(x.loadedProducts.map(products=> {return products}));
+            this.productsLoaded = x.loadedProducts;
+            this.productsDisplayed = this.utilService.
+            shuffleArray(this.productsLoaded.map(products=> {return products}));
             this.createCards();
+          } else {
+            this.navService.finishLoading();
           }
         })
       )
@@ -154,7 +160,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     }
 
     loadMore() {
-      if (window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
+      if (this.productsLoaded.length > 0 && window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
         this.createCards();
       }
     }
@@ -172,8 +178,8 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     }
 
     createCards(): void {
-      if (this.productsLoaded) {
-        this.productsLoaded.slice(this.cards.value.length,this.cards.value.length + this.productsLoadedInt).forEach((v , index) => {
+      if (this.productsDisplayed) {
+        this.productsDisplayed.slice(this.cards.value.length,this.cards.value.length + this.productsLoadedInt).forEach((v , index) => {
           this.sortVariants(v);
           if (this.filters.length == 0 || this.filterProduct(v)) {
             this.addCard(
@@ -251,6 +257,14 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
           }
         });
       }
+
+      if (this.filters.length != 0) {
+        this.productsDisplayed = this.productsLoaded.filter((product)=>{if (this.filterProduct(product)) {return product}});
+      } else {
+        this.productsDisplayed = this.utilService.
+        shuffleArray(this.productsLoaded.map(products=> {return products}));
+      }
+      
       
       this.resetCards();
       this.createCards();
@@ -269,6 +283,12 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
         }
       })
        
+      if (this.filters.length != 0) {
+        this.productsDisplayed = this.productsLoaded.filter((product)=>{if (this.filterProduct(product)) {return product}});
+      } else {
+        this.productsDisplayed = this.utilService.
+        shuffleArray(this.productsLoaded.map(products=> {return products}));
+      }
       this.resetCards();
       this.createCards();
     }

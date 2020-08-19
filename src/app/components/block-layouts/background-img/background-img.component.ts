@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { StateChange } from 'ng-lazyload-image';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 
@@ -14,8 +14,10 @@ export class BackgroundImageBlockComponent implements OnInit {
   bigScreens = new Array('lg' , 'xl' , 'md')
   imgLoaded : boolean = false;
   @ViewChild('postImg',{static: false}) mediaElement: ElementRef;
+  @ViewChild('content',{static: false}) contentElement: ElementRef;
 
   constructor(private renderer: Renderer2,
+              private zone:NgZone,
               private changeDetectorRef: ChangeDetectorRef,
               public navService : NavigationService) {
     
@@ -46,9 +48,11 @@ export class BackgroundImageBlockComponent implements OnInit {
         // The image has been loaded successfully so lets put it into the DOM
         break;
       case 'loading-succeeded':
-        this.renderer.removeClass(this.mediaElement.nativeElement, 'post-placeholder');
-        this.imgLoaded = true;
-        this.changeDetectorRef.detectChanges();
+          this.zone.run(() => { // <== added
+            this.renderer.removeClass(this.mediaElement.nativeElement, 'post-placeholder');
+            this.changeDetectorRef.detectChanges();
+            this.imgLoaded = true;
+        });
         // The image has successfully been loaded and placed into the DOM
         break;
       case 'loading-failed':

@@ -2,13 +2,16 @@
 @import '~@angular/material/theming';
 @import 'src/css/_variables.scss';
   
+
+.doo-account-profile {
+  padding: 0 5%;
   .add-field-placeholder {
     opacity: 0.5;
     padding-inline-start: 20px;
   }
   ::ng-deep  .phone-field {
       .mat-form-field-prefix {
-        top : 0em !important;
+        top : -0.3em !important;
         opacity: 0.5;
       }
     }
@@ -16,5 +19,20 @@
   .mat-caption {
     text-decoration: underline;
   }
+
+  mat-icon {
+    height: 25px;
+    width: 25px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $accent;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $accent;
+    }
+  }
+}
+
+
 
   

@@ -1,7 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import UserState, { initializeState } from './user.state';
 import * as UserActions from './user.action';
-import { UserAddressInfo, UserPerosnalInfo } from './user.model';
 
 const initialState = initializeState();
 
@@ -66,7 +65,7 @@ const reducer = createReducer(
               return {
                 ...state,
                 uid : '',
-                personalInfo : new UserPerosnalInfo,
+                personalInfo : null,
                 addressInfo : null,
                 orders: [],
                 favorites : [],

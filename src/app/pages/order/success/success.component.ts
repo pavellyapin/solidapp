@@ -27,21 +27,12 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
     }
 
     ngOnInit () {
-       this.cartSubscription = this.firestore.getCart(this.route.snapshot.params["order"]).pipe(
+       this.cartSubscription = this.firestore.getCartData(this.route.snapshot.params["order"]).pipe(
             map((data) => {
               this.navService.finishLoading();
-              console.log(this.route.snapshot.params["order"]);
-              console.log(data);
-              
-                if (data.code == 400) {
-                    this.cart = data.doc
-                } else {
-                    this.cart = data.payload.data();
-                }
-                console.log(this.cart);
+              this.cart = data.data();
             }) 
         ).subscribe();
-       
     }
 
     ngOnDestory() {

@@ -25,7 +25,7 @@ export class ProductCarouselComponent implements OnInit {
     
 
     constructor(@Inject(JQ_TOKEN) private $:any,
-                store: Store<{ settings: SettingsState }>) {
+                store: Store<{ settings: SettingsState }>,) {
         this.resolution$ = store.pipe(select('settings' , 'resolution'));
     }
     

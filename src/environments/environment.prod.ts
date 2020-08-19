@@ -3,7 +3,7 @@ export const environment = {
   functionsOrigin: 'https://doodemo.com',
   firebase: {
     apiKey: "AIzaSyDu3VtGYv3v5PtdZDPrdaIfuzO0F_0zCxY",
-    authDomain: "my-doo-7c70c.firebaseapp.com",
+    authDomain: "doodemo.com",
     databaseURL: "https://my-doo-7c70c.firebaseio.com",
     projectId: "my-doo-7c70c",
     storageBucket: "my-doo-7c70c.appspot.com",

@@ -1,41 +1,43 @@
-
-        <button mat-button (click)="filtersOpen = !filtersOpen" class = "doo-filters-btn">
-                <div fxLayout = "column" fxLayoutAlign = "center center">
-                    <span>HIDE FILTERS</span>
-                    <mat-icon svgIcon="doo-filters"></mat-icon>
-                </div>
-              </button>
-     <mat-sidenav-container style = "padding-top: 5%;">
-          <mat-sidenav [opened]="filtersOpen" 
-                       [mode]="navMode" 
-                        style = "padding-top: 2%;"
+       
+        <div *ngIf = "!this.bigScreens.includes(this.resolution) && showToggle"
+             fxLayout = "row"
+             fxLayoutAlign = "end end"
+             class = "doo-filters-btn">
+            <button mat-button  
+                    (click)="filtersOpen = !filtersOpen">
+                        <mat-icon svgIcon="doo-profile-round"></mat-icon>
+            </button>
+        </div>
+        <mat-drawer [opened]="filtersOpen" 
+                       [mode]="navMode"
+                        autoFocus = "false" 
                         position = "start"
                         [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters-mobile'">
                         <div fxLayout= "row">
                             <div fxLayout= "column" fxFlex = "100" >
                               <div fxLayout= "column" fxLayoutAlign = "start start" class = "doo-bottom-border">
                                   <div class = "mat-headline">Account Menu</div>
-                                  <button mat-button [routerLink] = "'overview'" (click) = "filtersOpen = !filtersOpen">
-                                      <span class = "mat-subheading-1">
-                                          Overview
-                                      </span>
+                                      <button mat-button (click)= "navigateToApp('overview')">
+                                        <span class = "mat-subheading-1">
+                                            Overview
+                                        </span>
                                       </button>
-                                      <button mat-button [routerLink] = "'profile'" (click) = "filtersOpen = !filtersOpen">
+                                      <button mat-button (click)= "navigateToApp('profile')">
                                         <span class = "mat-subheading-1">
                                             Profile
                                         </span>
                                       </button>
-                                      <button mat-button [routerLink] = "'addressinfo'" (click) = "filtersOpen = !filtersOpen">
+                                      <button mat-button (click)= "navigateToApp('addressinfo')">
                                           <span class = "mat-subheading-1">
                                               Addresses
                                           </span>
                                         </button>
-                                        <button mat-button [routerLink] = "'favorites'" (click) = "filtersOpen = !filtersOpen">
+                                        <button mat-button (click)= "navigateToApp('favorites')">
                                             <span class = "mat-subheading-1">
                                                 Favorites
                                             </span>
                                         </button>
-                                       <button mat-button [routerLink] = "'orders'" (click) = "filtersOpen = !filtersOpen">
+                                       <button mat-button (click)= "navigateToApp('orders')">
                                             <span class = "mat-subheading-1">
                                                 Orders
                                             </span>
@@ -49,12 +51,17 @@
                                   </button>
                           </div>
                         </div>
-          </mat-sidenav>
-          <mat-sidenav-content>
-          <div fxLayout= "column" fxFlex = "100">
-
-              <router-outlet></router-outlet>
+          </mat-drawer>
+     <mat-drawer-container [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-profile-container' : 'doo-profile-container-mobile'">
+          <mat-drawer-content>
+          <div fxLayout= "column">
+            <div *ngIf = "loading" fxLayout = "row" fxLayoutAlign="center start">
+                <div class="doo-loading-screen">
+                  <img src = "assets/icons/logo.png">
+                </div>
+            </div>
+              <router-outlet *ngIf = "!loading"></router-outlet>
           </div>
-          </mat-sidenav-content>
-        </mat-sidenav-container>
+          </mat-drawer-content>
+        </mat-drawer-container>
 

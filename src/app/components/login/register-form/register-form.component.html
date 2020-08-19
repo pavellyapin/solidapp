@@ -1,0 +1,84 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <div fxLayout="row" 
+       fxLayout.lt-sm = "column" 
+       fxFlex 
+       fxLayoutAlign="center" 
+       fxLayoutGap="50px">
+        <form fxLayout = "column"
+              class="doo-register-form doo-contentful"
+              fxLayoutGap="20px"
+              [formGroup]="registerForm" 
+              fxLayoutAlign = "start start"
+              fxFlex = "60" 
+              fxFlex.lt-md = "100"
+              (keyup.enter)="registerNewUser()">
+              <h2>Sign up</h2>
+              <span class = "doo-letter-space accent-color">Welcome back dear user, happy to catch up</span>
+             <div fxLayout = "column" class = "full-width">
+                <mat-form-field appearance="outline" class="login-field">
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon class = "doo-primary-icon" svgIcon="doo-email"></mat-icon></span>
+                    <input  formControlName="email" 
+                            autocomplete="email" 
+                            matInput 
+                            name="email" 
+                            placeholder="Email"
+                            type="text"/>
+                            <mat-error *ngIf="registerForm.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="login-field">
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon class = "doo-primary-icon" svgIcon="doo-lock"></mat-icon></span>
+                    <mat-pass-toggle-visibility #toggle matSuffix></mat-pass-toggle-visibility>
+                    <input  formControlName="password" 
+                            autocomplete="password" 
+                            matInput name="password" 
+                            placeholder="New password"
+                            [type]="toggle.type"/>
+                            <mat-hint align="end" aria-live="polite">
+                                {{registerForm.controls["password"].value.length}} / 25
+                            </mat-hint>
+                            <mat-error *ngIf="registerForm.controls['password'].invalid">{{'errors.required' | translate}}</mat-error>
+                  </mat-form-field>
+                  <mat-password-strength #passwordComponent (onStrengthChanged) = "pwStrengthChange($event)" [password]="registerForm.controls['password'].value">
+                  </mat-password-strength>
+                  <mat-password-strength-info *ngIf = "showInfo" [passwordComponent]="passwordComponent">
+                  </mat-password-strength-info>
+            </div>
+            <mat-error [textContent]="errorMessage"></mat-error>
+
+       <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+          <button fxFlex (click)="registerNewUser()" class = "doo-checkout-btn"
+                  color="primary" mat-flat-button type="submit">
+            CREATE ACCOUNT
+          </button>
+        </div>
+        <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+          <button fxFlex (click)="googleLogin()" class = "doo-checkout-btn"
+                  color="primary" mat-stroked-button type="button">
+                  <div fxLayout = "row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon class = "google-icon" svgIcon="doo-google-color"></mat-icon>
+                    <span>Register with Google</span>
+                  </div>
+          </button>
+        </div>
+        <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+          <button fxFlex (click)="facebookLogin()" class = "doo-checkout-btn"
+                  color="primary" mat-stroked-button type="button">
+                  <div fxLayout = "row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon class = "facebook-icon" svgIcon="doo-facebook-color"></mat-icon>
+                    <span>Register with Facebook</span>
+                  </div>
+          </button>
+        </div>
+        
+        <div fxLayout = "row" class = "full-width" fxLayoutAlign="center">
+            <span style = "line-height: 36px;opacity: 0.5;letter-spacing: 2px;">Already got an account?</span>
+            <button class = "doo-letter-space" color = "accent" [routerLink] = "'login'" mat-button type="button">
+              Sign in!
+            </button>
+        </div>
+        
+        
+
+        </form>
+  </div>
+</div>

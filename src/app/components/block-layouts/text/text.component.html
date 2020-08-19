@@ -1,7 +1,14 @@
-<div fxLayout = "row" fxFlex 
-     class = "doo-contentful" 
-     style = "padding-top: 50px;" 
-     [fxLayoutAlign] = "block.fields.contentPosition + ' ' +  block.fields.verticalContentPosition">
-        <div [fxFlex] = "block.fields.width" [innerHTML] = "block.fields.content | richTextPipe">
+<div fxLayout = "column" [fxLayoutGap] = "block.fields.bottomPadding">
+        <div fxLayout = "column">
+          <div fxLayout = "row" 
+                class = "doo-contentful" 
+                [fxLayoutAlign] = "block.fields.contentPosition + ' ' +  block.fields.verticalContentPosition">
+                   <div [fxFlex] = "block.fields.width" [innerHTML] = "block.fields.content | richTextPipe">
+                   </div>
+           </div>
+           <div fxLayout = "row">
+                <doo-actions [fxFlex] = "block.fields.width" [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px" fxLayout = "row" [actions] = "block.fields.actions"></doo-actions>
+           </div>
         </div>
+        <div></div>
 </div>

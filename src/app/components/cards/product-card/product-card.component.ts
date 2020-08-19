@@ -130,8 +130,11 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   }
 
   ngOnDestroy(){
-    this.UserSubscription.unsubscribe();
-    this.FavoritesSubscription.unsubscribe();
+    if (this.cardStyle != 'simple') {
+      this.UserSubscription.unsubscribe();
+      this.FavoritesSubscription.unsubscribe();
+    }
+    
     this.SettingsSubscription.unsubscribe();
   }
 

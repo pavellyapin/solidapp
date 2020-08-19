@@ -17,7 +17,6 @@ export class FeaturedProductsComponent implements OnInit {
   @Input() widget :Entry<any>;
 
   loadedProducts$: Observable<Entry<any>[]>;
-  LoadedProductsSubscription: Subscription;
   loadedProducts: any[];
   relatedProductCards: Card[] = [];
   productVariants: Map<string,[any]> = new Map();
@@ -91,7 +90,6 @@ export class FeaturedProductsComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.LoadedProductsSubscription.unsubscribe();
     this.resetCards();
   }
 

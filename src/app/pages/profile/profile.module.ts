@@ -23,6 +23,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { AccountOverviewComponent } from './components/overview/account.component';
 import { CardsModule } from 'src/app/components/cards/cards.module';
+import { ProfileAddressComponent } from './components/address/address.component';
 
 @NgModule({
   declarations: [ProfileComponent,
@@ -30,7 +31,8 @@ import { CardsModule } from 'src/app/components/cards/cards.module';
                  AccountComponent,
                  FavoritesComponent,
                  OrdersComponent,
-                 OrderDeatilComponent],
+                 OrderDeatilComponent,
+                 ProfileAddressComponent],
   imports: [
     CommonModule,
     PipesModule,

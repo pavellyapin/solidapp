@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
         if (x) {
           this.homePageContent = x.filter(page=>{
             if (page.fields.type == 'main') {
-              console.log(page);
+              //console.log(page);
               return page;
             }
           }).pop();

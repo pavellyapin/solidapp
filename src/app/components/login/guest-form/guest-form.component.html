@@ -1,50 +1,83 @@
 <div fxLayout="row" fxLayoutAlign="center">
-  <div class="doo-guest-form" 
-       fxLayout="row" 
+  <div fxLayout="row" 
        fxLayout.lt-sm = "column" 
-       fxFlex.lt-sm = "90" 
+       fxFlex 
        fxLayoutAlign="center" 
        fxLayoutGap="50px">
-        <form fxLayout = "column" 
-              fxLayoutGap="20px" 
-              fxFlex = "40" 
-              (keyup.enter)="login(username, password)">
-            <div fxLayout = "column">
+        <form fxLayout = "column"
+              class="doo-login-form doo-contentful"
+              fxLayoutGap="20px"
+              [formGroup]="loginForm" 
+              fxLayoutAlign = "start start"
+              [fxFlex] = "isFromLogin ? 60 : 40" 
+              fxFlex.lt-md = "100"
+              (keyup.enter)="login()">
+            <h2>Enter Shop</h2>
+            <span class = "doo-letter-space accent-color">Welcome back dear user, happy to catch up</span>
+            <div fxLayout = "column" class = "full-width">
                 <mat-form-field appearance="outline" class="login-field">
-                    <span matPrefix class = "doo-prefix-icon"><mat-icon svgIcon="doo-email"></mat-icon></span>
-                    <input [(ngModel)]="username" autocomplete="username" matInput name="username" placeholder="Email"
-                          type="text"/>
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon class = "doo-primary-icon" svgIcon="doo-email"></mat-icon></span>
+                    <input  formControlName="email" 
+                            autocomplete="email" 
+                            matInput 
+                            name="email" 
+                            placeholder="Email"
+                            type="text"/>
+                            <mat-error *ngIf="loginForm.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="login-field">
-                    <span matPrefix class = "doo-prefix-icon"><mat-icon svgIcon="doo-lock"></mat-icon></span>
-                    <input [(ngModel)]="password" autocomplete="current-password" matInput name="password" placeholder="Password"
-                          type="password"/>
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon class = "doo-primary-icon" svgIcon="doo-lock"></mat-icon></span>
+                    <input  formControlName="password" 
+                            autocomplete="password" 
+                            matInput name="password" 
+                            placeholder="Password"
+                            type="password"/>
+                            <mat-error *ngIf="loginForm.controls['password'].invalid">{{'errors.required' | translate}}</mat-error>
                   </mat-form-field>
             </div>
+            <mat-error [textContent]="errorMessage"></mat-error>
 
-        <div fxLayout = "row" fxLayoutAlign="space-between">
-          <div fxLayout = "column" fxLayoutAlign="center center">
-              <mat-checkbox class="example-margin">Remember me</mat-checkbox>
-          </div>
-            <button mat-button>
-              Forgot password?
-            </button>
-        </div>
-        <div fxLayout = "row" fxLayoutAlign="space-between" fxLayoutGap="10px">
-          <button fxFlex (click)="login(username, password)" class = "doo-checkout-btn"
+       <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+          <button fxFlex (click)="login()" class = "doo-checkout-btn"
                   color="primary" mat-flat-button type="submit">
             SIGN IN
           </button>
-          <button fxFlex (click)="login(username, password)" class = "doo-checkout-btn"
-                  color="primary" mat-stroked-button type="submit">
-            SIGN UP
+        </div>
+        <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+          <button fxFlex (click)="googleLogin()" class = "doo-checkout-btn"
+                  color="primary" mat-stroked-button type="button">
+                  <div fxLayout = "row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon class = "google-icon" svgIcon="doo-google-color"></mat-icon>
+                    <span>Login with Google</span>
+                  </div>
+          </button>
+        </div>
+        <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+          <button fxFlex (click)="facebookLogin()" class = "doo-checkout-btn"
+                  color="primary" mat-stroked-button type="button">
+                  <div fxLayout = "row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon class = "facebook-icon" svgIcon="doo-facebook-color"></mat-icon>
+                    <span>Login with Facebook</span>
+                  </div>
           </button>
         </div>
 
-        <mat-error [textContent]="errorMessage"></mat-error>
+        <div fxLayout = "row" class = "full-width" fxLayoutAlign="center">
+             <button class = "doo-letter-space" color = "accent" [routerLink] = "'forgotpassword'" mat-button type="button">
+              Forgot password?
+            </button>
+            <span style = "line-height: 36px;opacity: 0.5;">|</span>
+            <button class = "doo-letter-space" color = "accent" [routerLink] = "'createuser'" mat-button type="button">
+              Create account
+            </button>
+        </div>
+        
+        
 
         </form>
-        <form [formGroup]="guestForm" 
+        <form *ngIf = "!isFromLogin"
+              class="doo-guest-form"
+              [formGroup]="guestForm" 
               fxLayout = "column" 
               fxLayoutGap="20px" 
               fxFlex = "40" 

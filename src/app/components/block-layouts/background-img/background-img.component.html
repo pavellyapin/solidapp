@@ -1,54 +1,30 @@
-<div fxLayout = "column" [fxLayoutGap] = "block.fields.bottomPadding">
+<div fxLayout = "column" [fxLayoutGap] = "block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
     <div fxLayout = "row" style = "position:relative;" 
         [fxLayoutAlign] = "block.fields.contentPosition + ' ' +  block.fields.verticalContentPosition">
-        <div *ngIf = "imgLoaded" 
+      <div  *ngIf = "imgLoaded"
             fxLayout = "row"
             [fxFlex] = "block.fields.width"
             fxLayoutGap = "30px" 
-            class = "doo-overlay-box full-width doo-contentful" 
+            class = "doo-overlay-box doo-contentful" 
             [fxLayoutAlign] = "block.fields.contentPosition">
             <div></div>
                 <div fxFlexLayout = "column" 
                     [fxFlex] = "block.fields.textBoxWidth"
                     fxFlex.sm = "80"
-                    fxFlex.xs = "100">
+                    fxFlex.xs = "100"
+                    [class.primary-background] = "block.fields.textBackground == 'Primary'"
+                    [class.accent-background] = "block.fields.textBackground == 'Accent'"
+                    [class.white-background] = "block.fields.textBackground == 'White'"
+                    [class.black-background] = "block.fields.textBackground == 'Black'" 
+                    style = "padding:20px">
                         <div [class.primary-color] = "block.fields.textColor == 'Primary'"
                              [class.accent-color] = "block.fields.textColor == 'Accent'"
                              [class.white-color] = "block.fields.textColor == 'White'"
                              [class.black-color] = "block.fields.textColor == 'Black'"  
                             [style.text-align] = "block.fields.textAlign" [innerHTML] = "block.fields.content | richTextPipe">
                         </div>
-                                <div [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px">
-                                    <div *ngFor = "let cta of block.fields.actions">
-                                        <div [ngSwitch]="cta.fields.appearence">
-                                                        <button *ngSwitchCase="'flat'" 
-                                                        color = "primary" 
-                                                        mat-flat-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        </button> 
-                                                        <button *ngSwitchCase="'stroked'" 
-                                                        color = "primary" 
-                                                        mat-stroked-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        </button>
-                                                        <button *ngSwitchCase="'arrow'" 
-                                                        color = "primary" 
-                                                        mat-stroked-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        <mat-icon  svgIcon="doo-arrow-right"></mat-icon>
-                                                        </button>    
-                                                        <button *ngSwitchCase="'rasied'" 
-                                                        color = "primary" 
-                                                        mat-rasied-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        </button>                                               
-                                        </div>
-                             </div>
-                                </div>
+                        <doo-actions [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px" fxLayout = "row" [actions] = "block.fields.actions"></doo-actions>
+                         
                 </div>
                 <div></div>
         </div>

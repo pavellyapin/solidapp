@@ -1,18 +1,11 @@
-.login-page {
-  height: 100%;
-  width: 100%;
-}
+@import '~@angular/material/theming';
+@import 'src/css/contentful.scss';
+@import 'src/css/_variables.scss';
 
-.logo-container {
-  height: auto;
-  width: 250px;
-}
 
-.login-field {
-  width: 100%;
-}
-
-button {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.doo-nav-toggle-button {
+  width: 220px;
+  padding: 5px 20px;
+  margin: 0;
+  border: 0;
 }

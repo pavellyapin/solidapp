@@ -2,10 +2,6 @@
 @import '~@angular/material/theming';
 @import 'src/css/_variables.scss';
 
-mat-sidenav-container {
-    min-height: 500px;
-    background-color: white;
-}
 
 mat-sidenav-content {
     background-color: white;
@@ -14,17 +10,80 @@ mat-sidenav-content {
     padding-left: 10%;
 }
 
+.doo-filters-btn{
+    padding-right: 5%;
+    button {
+        background: $accent;
+        border-bottom-right-radius: 15px !important;
+        border-bottom-left-radius: 15px !important;
+        padding: 0 5px !important;
+        //min-width: 45px;
+        mat-icon {
+            height: 25px;
+            width: 25px;
+            
+            ::ng-deep .cls-1 {
+              stroke: white;
+            }
+            ::ng-deep .cls-2 {
+              stroke: white;
+            }
+          }
+    }
+}
+
 .mat-drawer-side{
     border: none;
+}
+
+.doo-profile-container{
+    min-height: 700px;
+    max-width: 1200px;
+    padding-left: 25%;
+    padding-right: 5%;
+}
+
+.doo-profile-container-mobile{
+    min-height: 700px;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 0px;
 }
 
 .doo-nav-filters {
     padding-left: 10%;
     width: 20%;
+    height: 500px;
+    position: fixed;
+    margin-top: 150px;
+    background: transparent;
 }
 
 .doo-nav-filters-mobile {
     padding-left: 5%;
     padding-right: 5%;
-    width: 80%;
+    width: 100%;
+}
+
+.doo-loading-screen {
+  background: $lighter-grey;
+  padding-top: 200px;
+  padding-bottom: 200px;
+  width: 80%;
+  text-align: center;
+  margin:15px;
+  animation-duration: .5s;
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes loading {
+  from {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 0.2;
+  }
 }

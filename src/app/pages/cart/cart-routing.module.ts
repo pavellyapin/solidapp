@@ -10,7 +10,7 @@ import { CheckoutPaymentComponent } from './payment/payment.component';
 import { GuestCheckoutComponent } from './guest/guest.component';
 import { GuestCheckoutGuard } from './guest/guest.guard';
 
-export const catRoutes: NavRoute[] = [
+export const cartRoutes: NavRoute[] = [
   {data: {title: 'Cart' , isChild: true},
    path: '', 
    children : [
@@ -30,7 +30,7 @@ export const catRoutes: NavRoute[] = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(catRoutes)],
+  imports: [RouterModule.forChild(cartRoutes)],
   exports: [RouterModule],
 })
 export class CartRoutingModule {

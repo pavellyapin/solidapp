@@ -5,18 +5,17 @@ import { FormGroup } from '@angular/forms';
 
 //User Login
 
-export const UserLoginAction = createAction(
-  '[User] - Login',
-  props<User>()
-);
-
 export const BeginUserLoginAction = createAction(
   '[User] - Begin Login',
   props<{ payload: any }>()
 );
 
-export const SuccessUserLoginAction = createAction(
-  '[User] - Success Login'
+export const BeginGoogleUserLoginAction = createAction(
+  '[User] - Begin Google Login'
+);
+
+export const BeginFacebookUserLoginAction = createAction(
+  '[User] - Begin Facebook Login'
 );
 
 export const BeginGetUserInfoAction = createAction(
@@ -85,7 +84,7 @@ export const BeginSetUserIDAction = createAction(
 );
 
 
-//Update Password
+// Password
 
 export const BeginUpdatePasswordAction = createAction(
   '[User] - Begin Update User Password',
@@ -96,11 +95,40 @@ export const SuccessUpdatePasswordAction = createAction(
   '[User] - Success Update User Password'
 );
 
+export const BeginForgotPasswordAction = createAction(
+  '[User] - Begin forgot Password',
+  props<{ payload: any }>()
+);
+
+export const SuccessForgotPasswordAction = createAction(
+  '[User] - Success forgot Password'
+);
+
+export const BeginVerifyResetPasswordCodeAction = createAction(
+  '[User] - Begin verify Password reset code',
+  props<{ payload: any }>()
+);
+
+export const SuccessVerifyResetPasswordCodeAction = createAction(
+  '[User] - Success verify Password reset code',
+  props<{ payload: any }>()
+);
+
+export const BeginConfirmPasswordResetAction = createAction(
+  '[User] - Begin Password reset',
+  props<{ payload: any }>()
+);
+
+export const SuccessConfirmPasswordResetAction = createAction(
+  '[User] - Success Password reset',
+  props<{ payload: any }>()
+);
+
 //Address information
 
 export const BeginUpdateUserAddressInfoAction = createAction(
   '[User] - Begin Update Address Info',
-  props<{ payload: FormGroup }>()
+  props<{ payload: any }>()
 );
 
 export const BeginGetUserAddressInfoAction = createAction(

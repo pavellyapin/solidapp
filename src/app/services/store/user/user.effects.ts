@@ -64,6 +64,40 @@ export class UserEffects {
   )
 );
 
+  UserGoogleLogin$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(UserActions.BeginGoogleUserLoginAction),
+    switchMap(action =>
+      this.authService.doLoginWithGoogle().pipe(
+        switchMap((x) => [UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
+                          UserActions.BeginGetUserAddressInfoAction()]
+        ),
+        catchError((error: Error) => {
+          return of(UserActions.ErrorUserAction(error));
+        })
+      )
+    )
+  )
+);
+
+  UserFacebookLogin$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(UserActions.BeginFacebookUserLoginAction),
+    switchMap(action =>
+      this.authService.doLoginWithFacebook().pipe(
+        switchMap((x) => [UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
+                          UserActions.BeginGetUserAddressInfoAction()]
+        ),
+        catchError((error: Error) => {
+          return of(UserActions.ErrorUserAction(error));
+        })
+      )
+    )
+  )
+);
+
   UserLogout$: Observable<Action> = createEffect(() =>
   this.action$.pipe(
     ofType(UserActions.BeginUserLogoutAction),
@@ -86,11 +120,6 @@ export class UserEffects {
     switchMap(action =>
       this.authService.doRegister(action.payload.email,action.payload.password).pipe(
         map((data: any) => {
-          let newUser:User = {
-            uid: data.user.uid,
-            personalInfo : {firstName: '' , lastName: '' , phone : '' , email : action.payload.email}
-          }
-          this.firestoreService.createUser(newUser);
           return UserActions.BeginGetUserInfoAction();
         }),
         catchError((error: Error) => {
@@ -134,6 +163,55 @@ UpdatePersonalInfo$: Observable<Action> = createEffect(() =>
       )
     )
   );
+
+  ForgotPassword$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(UserActions.BeginForgotPasswordAction),
+    switchMap(action =>
+      this.authService.forgotPassword(action.payload).pipe(
+        map(() => {
+          return UserActions.SuccessForgotPasswordAction();
+        }),
+        catchError((error: Error) => {
+          return of(UserActions.ErrorUserAction(error));
+        })
+      )
+    )
+  )
+);
+
+  VerifyPasswordResetCode$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(UserActions.BeginVerifyResetPasswordCodeAction),
+    switchMap(action =>
+      this.authService.verifyPasswordResetCode(action.payload).pipe(
+        map((res) => {
+          return UserActions.SuccessVerifyResetPasswordCodeAction(res);
+        }),
+        catchError((error: Error) => {
+          return of(UserActions.ErrorUserAction(error));
+        })
+      )
+    )
+  )
+);
+
+ConfirmPasswordReset$: Observable<Action> = createEffect(() =>
+this.action$.pipe(
+  ofType(UserActions.BeginConfirmPasswordResetAction),
+  switchMap(action =>
+    this.authService.confirmPasswordReset(action.payload.code , action.payload.newPassword).pipe(
+      map((res) => {
+        return UserActions.SuccessConfirmPasswordResetAction(res);
+      }),
+      catchError((error: Error) => {
+        return of(UserActions.ErrorUserAction(error));
+      })
+    )
+  )
+)
+);
+
 
   UpdateUserEmail: Observable<Action> = createEffect(() =>
   this.action$.pipe(
@@ -198,11 +276,11 @@ UpdatePersonalInfo$: Observable<Action> = createEffect(() =>
         ofType(UserActions.BeginUpdateUserAddressInfoAction),
         switchMap(action =>
           this.firestoreService.
-          updateUserAddress(action.payload.get("addressLine1").value,
-                            action.payload.get("addressLine2").value,
-                            action.payload.get("city").value,
-                            action.payload.get("province").value,
-                            action.payload.get("postal").value).pipe(
+          updateUserAddress(action.payload.addressLine1,
+                            action.payload.addressLine2,
+                            action.payload.city,
+                            action.payload.province,
+                            action.payload.postal).pipe(
             map(() => {
               return UserActions.BeginGetUserAddressInfoAction();
             }),
@@ -277,7 +355,7 @@ UpdatePersonalInfo$: Observable<Action> = createEffect(() =>
       ofType(UserActions.BeginGetOrdersAction),
       switchMap(action =>
         this.firestoreService.getOrders().pipe(
-          map((data: firebase.firestore.QuerySnapshot) => {
+          map((data: any) => {
             let orders = Array<any>();
             data.forEach(element => {
               let x = element.data();

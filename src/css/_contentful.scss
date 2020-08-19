@@ -4,21 +4,23 @@
         font-weight: 900;
         letter-spacing: 4px;
         margin-bottom: 25px;
-        line-height: 60px;
+        line-height: 72px;
     }
   
     ::ng-deep h2 {
-      font-size: 32px !important;
-      font-weight: 700;
+      font-size: 42px !important;
+      font-weight: 900;
       letter-spacing: 4px;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       line-height: 60px;
     }
   
     ::ng-deep h3 {
-      font-size: 28px !important;
+      font-size: 34px !important;
       font-weight: 500;
       letter-spacing: 4px;
+      margin-bottom: 5px;
+      line-height: 36px;
     }
   
     ::ng-deep h4 {
@@ -31,6 +33,7 @@
       font-size: 20px !important;
       font-weight: 500;
       letter-spacing: 2px;
+      line-height: 28px;
     }
     
     ::ng-deep h6 {
@@ -53,6 +56,7 @@
           font-weight: 900;
           letter-spacing: 4px;
           margin-bottom: 25px;
+          line-height: 50px;
       }
     
       ::ng-deep h2 {

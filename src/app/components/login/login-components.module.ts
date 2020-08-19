@@ -12,11 +12,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslateModule } from '@ngx-translate/core';
 import { NameFormComponent } from './name-form/name-form.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RouterModule } from '@angular/router';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { MatPasswordStrengthModule } from '@angular-material-extensions/password-strength';
+import { RegisterFormComponent } from './register-form/register-form.component';
+import { LoginErrorComponent } from './error/error.component';
 
 @NgModule({
-  declarations: [GuestFormComponent,NameFormComponent],
+  declarations: [GuestFormComponent,
+                 NameFormComponent,
+                 ForgotPasswordComponent,
+                 ResetPasswordComponent,
+                 RegisterFormComponent,
+                 LoginErrorComponent],
   imports: [
     CommonModule,
+    RouterModule,
     MatCardModule,
     MatInputModule,
     MatIconModule,
@@ -26,9 +38,15 @@ import { NameFormComponent } from './name-form/name-form.component';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    MatPasswordStrengthModule
   ],
-  exports : [GuestFormComponent,NameFormComponent]
+  exports : [GuestFormComponent,
+             NameFormComponent,
+             ForgotPasswordComponent,
+             ResetPasswordComponent,
+             RegisterFormComponent,
+             LoginErrorComponent]
 })
 export class LoginComponentsModule {
 }

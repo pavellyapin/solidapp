@@ -18,12 +18,12 @@
                       selected
                       [removable]="true"
                       (removed)="removeFilterChip(filter)">{{filter.name}}
-                       <mat-icon matChipRemove>cancel</mat-icon>
+                       <mat-icon svgIcon = "doo-close" matChipRemove></mat-icon>
                     </mat-chip>
           </mat-chip-list>
         </div>
         <div fxFlex = "7" fxFlex.xs = "50" fxLayoutAlign = "center center" class = "mat-caption">
-            1-{{cards.value.length}} of {{productsLoaded?.length}} items
+            1-{{cards.value.length}} of {{productsDisplayed?.length}} items
           </div>
         <mat-form-field fxFlex = "7" fxFlex.xs = "50" appearance="outline" color = "primary" class = "doo-sort-select">
             <mat-label>SORT BY</mat-label>
@@ -38,68 +38,83 @@
         </mat-form-field>
     </div>
 </div>
-
-                       
-<mat-sidenav-container class = "doo-filters-nav">
-    <mat-sidenav [opened]="filtersOpen" 
-                  [mode]="navMode" 
-                  position = "start"
-                  [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters-mobile'">
-
-                  <mat-accordion [multi] = "true">
-                      <mat-expansion-panel [hideToggle] = "true" 
-                                           (opened)="colorPanelOpenState = true" 
-                                           (closed)="colorPanelOpenState = false"
-                                           [expanded] = "true"
-                                           class="mat-elevation-z0">
-                        <mat-expansion-panel-header>
-                          <mat-panel-title>
-                            {{'product.color' | translate}}
-                          </mat-panel-title>
-                          <mat-panel-description fxLayout= "row" fxLayoutAlign = "end center">
-                              <mat-icon>{{colorPanelOpenState ? 'remove' : 'add'}}</mat-icon>
-                          </mat-panel-description> 
-                        </mat-expansion-panel-header>
-                        <div fxLayout= "column">
-                            <div fxLayout= "column" fxFlex = "100" >
-                              <div fxLayout= "column" fxLayoutAlign = "start start">
-                                  <mat-checkbox *ngFor="let variant of productVariants.get('color')" 
-                                                [value]="variant.name"
-                                                [id] = "variant.name + '-color'"
-                                                #checkboxVariants
-                                                (change)="filterToggle($event , 'color')">{{variant.name}}</mat-checkbox>
-                              </div>
-                          </div>
-                        </div>
-                      </mat-expansion-panel>
-                      <mat-expansion-panel [hideToggle] = "true"
-                                           (opened)="sizePanelOpenState = true" 
-                                           (closed)="sizePanelOpenState = false"
-                                           [expanded] = "true" 
-                                           class="mat-elevation-z0">
-                        <mat-expansion-panel-header>
-                          <mat-panel-title>
-                              {{'product.size' | translate}}
-                          </mat-panel-title>
-                          <mat-panel-description fxLayout= "row" fxLayoutAlign = "end center">
-                              <mat-icon>{{sizePanelOpenState ? 'remove' : 'add'}}</mat-icon>
-                          </mat-panel-description> 
-                          </mat-expansion-panel-header>
-                          <div fxLayout= "column">
-                              <div fxLayout= "column" fxFlex = "100" >
-                                <div fxLayout= "column" fxLayoutAlign = "start start">
-                                    <mat-checkbox *ngFor="let variant of productVariants.get('size')" 
-                                    [value]="variant.name"
-                                    [id] = "variant.name + '-size'"
-                                    #checkboxVariants
-                                    (change)="filterToggle($event , 'size')">{{variant.name}}</mat-checkbox>
-                                </div>
-                            </div>
-                          </div>
-                      </mat-expansion-panel>
-                    </mat-accordion>                
-    </mat-sidenav>
-    <mat-sidenav-content>
+<div *ngIf = "productsLoaded.length==0" 
+      class = "doo-empty-cart" 
+      fxLayoutGap = "20px" 
+      fxLayout = "column" 
+      fxLayoutAlign="center center">
+      <span class = "mat-title">
+              Explore our store 
+      </span>
+      <span class = "mat-subheahing-1">
+          We didn't find any products for this category
+      </span>
+      <div fxLayout = "row" class = "full-width" fxLayoutAlign="center center">
+          <button color="primary" class = "doo-checkout-btn" mat-flat-button fxFlex = "40" [routerLink] = "'/'">
+              SHOP
+          </button>
+      </div>
+</div>
+<mat-drawer-container *ngIf = "productsLoaded.length > 0" class = "doo-category-products">
+    <mat-drawer [opened]="filtersOpen" 
+    [mode]="navMode" 
+    position = "start"
+    [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters mobile'">
+    
+    <mat-accordion [multi] = "true">
+        <mat-expansion-panel [hideToggle] = "true" 
+                             (opened)="colorPanelOpenState = true" 
+                             (closed)="colorPanelOpenState = false"
+                             [expanded] = "true"
+                             class="mat-elevation-z0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{'product.color' | translate}}
+            </mat-panel-title>
+            <mat-panel-description class = "doo-variant-desc" fxLayout= "row" fxLayoutAlign = "end center">
+                <mat-icon [svgIcon] = "colorPanelOpenState ? 'doo-minus' : 'doo-plus'"></mat-icon>
+            </mat-panel-description> 
+          </mat-expansion-panel-header>
+          <div fxLayout= "column">
+              <div fxLayout= "column" fxFlex = "100" >
+                <div fxLayout= "column" fxLayoutAlign = "start start">
+                    <mat-checkbox *ngFor="let variant of productVariants.get('color')" 
+                                  [value]="variant.name"
+                                  [id] = "variant.name + '-color'"
+                                  #checkboxVariants
+                                  (change)="filterToggle($event , 'color')">{{variant.name}}</mat-checkbox>
+                </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel [hideToggle] = "true"
+                             (opened)="sizePanelOpenState = true" 
+                             (closed)="sizePanelOpenState = false"
+                             [expanded] = "true" 
+                             class="mat-elevation-z0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{'product.size' | translate}}
+            </mat-panel-title>
+            <mat-panel-description class = "doo-variant-desc" fxLayout= "row" fxLayoutAlign = "end center">
+                <mat-icon [svgIcon] = "sizePanelOpenState ? 'doo-minus' : 'doo-plus'"></mat-icon>
+            </mat-panel-description> 
+            </mat-expansion-panel-header>
+            <div fxLayout= "column">
+                <div fxLayout= "column" fxFlex = "100" >
+                  <div fxLayout= "column" fxLayoutAlign = "start start">
+                      <mat-checkbox *ngFor="let variant of productVariants.get('size')" 
+                      [value]="variant.name"
+                      [id] = "variant.name + '-size'"
+                      #checkboxVariants
+                      (change)="filterToggle($event , 'size')">{{variant.name}}</mat-checkbox>
+                  </div>
+              </div>
+            </div>
+        </mat-expansion-panel>
+      </mat-accordion>                
+    </mat-drawer> 
+    <mat-drawer-content>
     <div #productsGrid fxLayout= "column" fxFlex = "100">
 
         <mat-grid-list  [cols]="cols | async">
@@ -113,5 +128,5 @@
             </mat-grid-tile>
           </mat-grid-list> 
     </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    </mat-drawer-content>
+  </mat-drawer-container>

@@ -12,7 +12,7 @@ export class TextBlockComponent implements OnInit {
   @Input() resolution;
   bigScreens = new Array('lg' , 'xl' , 'md')
 
-  constructor() {
+  constructor(public navService : NavigationService) {
     
   }
 

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import * as UserActions from 'src/app/services/store/user/user.action';
 import * as CartActions from 'src/app/services/store/cart/cart.action';
@@ -7,6 +7,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-profile-page',
@@ -15,24 +16,32 @@ import { map } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
 
-  settings$: Observable<String>;
+  settings$: Observable<SettingsState>;
   SettingsSubscription: Subscription;
+  userInfoUpdate$: Subscription;
+  
   resolution : any;
   navMode : any;
   bigScreens = new Array('lg' , 'xl' , 'md')
   filtersOpen : boolean;
+  showToggle : boolean = true;
+  loading : boolean = false;
   
   constructor(private router: Router,
               private store: Store<{settings : SettingsState}>,
-              private navService : NavigationService) {
-                this.settings$ = store.pipe(select('settings' ,'resolution'));
+              private _actions$: Actions,
+              private navService : NavigationService,
+              private changeDetectorRef: ChangeDetectorRef,) {
+                this.settings$ = store.pipe(select('settings'));
   }
 
   ngOnInit() {
     this.SettingsSubscription = this.settings$
     .pipe(
       map(x => {
-        this.resolution = x;
+        this.loading = x.loading;
+        this.changeDetectorRef.detectChanges();
+        this.resolution = x.resolution;
         if (this.bigScreens.includes(this.resolution)) {
           this.navMode = 'side';
           this.filtersOpen = true;
@@ -40,29 +49,74 @@ export class ProfileComponent implements OnInit {
           this.navMode = 'over';
           this.filtersOpen = false;
         }
+        
       })
     )
     .subscribe();
+
+    if (this.navService.getActivePage().title == 'Profile Overview') {
+      this.showToggle = false;
+    }
+
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        if(val.url == '/account/overview') {
+          this.showToggle = false;
+        } else {
+          this.showToggle = true;
+        }
+        this.navService.finishLoading();
+      }
+  });
+
+    this.userInfoUpdate$ = this._actions$.pipe(ofType(
+      UserActions.SuccessGetUserInfoAction,
+      UserActions.SuccessGetUserAddressInfoAction)).subscribe(() => {
+        this.navService.finishLoading();    
+      });
 
     this.navService.resetStack(['account/overview']);
     this.store.dispatch(UserActions.BeginGetUserAddressInfoAction());
     this.store.dispatch(UserActions.BeginGetFavoritesAction());
     this.store.dispatch(UserActions.BeginGetOrdersAction());
-  }
-
-  ngAfterViewInit() {
     this.navService.finishLoading();
   }
-  
 
   public async logout() {
+    this.navService.startLoading();
     this.store.dispatch(UserActions.BeginUserLogoutAction());
     this.store.dispatch(CartActions.BeginResetCartAction());
     this.router.navigate(['']);
   }
 
-  public navigateTo(url?: string) {
-    url = url || 'nav';
-    this.router.navigate([url], { replaceUrl: true });
+  navigateToApp(type){
+    if (this.navMode == 'over') {
+      this.filtersOpen = false;
+    }
+    switch(type) {
+      case 'overview':
+        this.router.navigateByUrl('account/overview');
+        break;
+      case 'profile':
+        this.router.navigateByUrl('account/profile');
+        break;
+      case 'addressinfo':
+        this.router.navigateByUrl('account/addressinfo');
+        break;
+      case 'favorites':
+        this.router.navigateByUrl('account/favorites');
+        break;
+      case 'orders':
+        this.router.navigateByUrl('account/orders');
+        break;
+      default :
+      
+    }
   }
+
+  ngOnDestroy(): void {
+    this.SettingsSubscription.unsubscribe();
+    this.userInfoUpdate$.unsubscribe();
+  }
+
 }

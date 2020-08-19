@@ -1,29 +1,31 @@
 
 @import 'src/css/_variables.scss';
+@import 'src/css/contentful.scss';
 
 .doo-guest-form {
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
     padding: 1em 0 1em 0.5em;
   }
 
-  mat-icon {
-    padding-right: 10px;
-    height: 25px;
-    width: 25px;
-    
-    ::ng-deep .cls-1 {
-      stroke: $primary;
-    }
-    ::ng-deep .cls-2 {
-      stroke: $primary;
-    }
-  }
-
-  mat-divider {
-    margin-top: 10px;
-  }
-
   .doo-prefix-icon {
     padding-right: 5px;
+  }
+}
+
+.doo-login-form {
+  padding: 0px 10px;
+  .doo-checkout-btn{
+    border-radius: 25px !important;
+  }
+
+  .google-icon{
+    height: 35px;
+    width: 35px;
+    padding-bottom: 10px
+  }
+
+  .facebook-icon{
+    width: 35px;
+    padding: 12px 0px;
   }
 }

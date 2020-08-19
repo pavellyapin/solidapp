@@ -36,6 +36,11 @@ export class AppComponent {
                 );
 
                 this.matIconRegistry.addSvgIcon(
+                  'doo-profile-round',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/profile-round.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
                   'doo-favorite',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/favorite.svg")
                 );
@@ -83,6 +88,10 @@ export class AppComponent {
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/facebook.svg")
                 );
                 this.matIconRegistry.addSvgIcon(
+                  'doo-facebook-color',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/facebook-color.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
                   'doo-insta',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/insta.svg")
                 );
@@ -97,6 +106,11 @@ export class AppComponent {
                 this.matIconRegistry.addSvgIcon(
                   'doo-googleplus',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/googleplus.svg")
+                );
+
+                this.matIconRegistry.addSvgIcon(
+                  'doo-google-color',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/google-color.svg")
                 );
 
                 this.matIconRegistry.addSvgIcon(
@@ -165,6 +179,10 @@ export class AppComponent {
                 this.matIconRegistry.addSvgIcon(
                   'doo-hamburger',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/hamburger.svg")
+                );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-phone',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/phone.svg")
                 );
   }
 }

@@ -1,24 +1,25 @@
-<div fxLayoutGap="50px" fxLayout="column">
+<div class = "doo-account-profile" fxLayoutGap="50px" fxLayout="column">
         <div></div>
         <div fxLayout="column">
                 <div fxLayout = "row">
                         <h2 fxFlex = "50" class="mat-h2" >{{ 'profile.account.personalInfo' | translate }}</h2>
                         <div fxFlex = "50" 
                             fxLayoutAlign="end"
-                            (click) = "editMode = !editMode" 
+                            (click) = "toggleEditForm('personal')" 
                             class="mat-caption doo-pointer">
                             {{ editMode ? ('profile.buttons.close' | translate ) : ('profile.buttons.edit' | translate ) }}
                         </div>
                 </div>
               <div fxLayout = "row">
                 <div *ngIf = "!editMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon color = "accent">perm_identity</mat-icon>
+                    <mat-icon svgIcon = "doo-profile">y</mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
                     </div>
                 </div>
                 <form *ngIf = "editMode" [formGroup]="personalInfo" 
                     fxFlex = "50" 
+                    fxFlex.lt-md = "100"
                     (keyup.enter)="savePersonalInfo()">
                     <mat-form-field appearance="outline" class="full-width">
                         <input  formControlName="firstName" 
@@ -36,8 +37,8 @@
                                 placeholder="{{ 'profile.account.lastName' | translate }}"
                                 type="text"/>
                     </mat-form-field>
-                    <button (click)="savePersonalInfo()" class="full-width"
-                            color="primary" mat-raised-button type="submit">
+                    <button (click)="savePersonalInfo()" class="doo-checkout-btn full-width"
+                            color="primary" mat-flat-button type="submit">
                             {{ 'profile.buttons.save' | translate }}
                     </button>
                 </form>
@@ -48,20 +49,20 @@
                         <h2 fxFlex = "50" class="mat-h2" >{{ 'profile.account.contact' | translate }}</h2>
                         <div fxFlex = "50" 
                             fxLayoutAlign="end"
-                            (click) = "contactEditMode = !contactEditMode" 
+                            (click) = "toggleEditForm('contact')" 
                             class="mat-caption doo-pointer">
                             {{ contactEditMode ? ('profile.buttons.close' | translate ) : ('profile.buttons.edit' | translate ) }}
                         </div>
                 </div>
               <div fxLayout = "column" fxLayoutGap="20px">
                 <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon color = "accent">call</mat-icon>
+                    <mat-icon svgIcon = "doo-phone"></mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.phone.length > 0 ? userInfo.phone   : 'profile.account.addMobile' | translate }}
                     </div>
                 </div>
                 <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon color = "accent">email</mat-icon>
+                    <mat-icon svgIcon = "doo-email" color = "accent">email</mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.email}}
                     </div>
@@ -69,6 +70,7 @@
                 <div fxLayout = "row" >
                     <form *ngIf = "contactEditMode" [formGroup]="contactInfo" 
                         fxFlex = "50" 
+                        fxFlex.lt-md = "100"
                         (keyup.enter)="updateContactInfo()">
                         <mat-form-field appearance="outline" class="full-width phone-field">
                              <span matPrefix>CA (+1) &nbsp;</span>
@@ -87,8 +89,8 @@
                                     placeholder="{{ 'profile.account.email' | translate }}"
                                     type="text"/>
                         </mat-form-field>
-                        <button (click)="updateContactInfo()" class="full-width"
-                                color="primary" mat-raised-button type="submit">
+                        <button (click)="updateContactInfo()" class="doo-checkout-btn full-width"
+                                color="primary" mat-flat-button type="submit">
                                 {{ 'profile.buttons.save' | translate }}
                         </button>
                     </form>
@@ -107,7 +109,7 @@
                 </div>
               <div fxLayout = "row">
                 <div *ngIf = "!passwordEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon color = "accent">lock</mat-icon>
+                    <mat-icon svgIcon = "doo-lock"></mat-icon>
                     <div class="add-field-placeholder" >
                         <span>
                                 ••••••••••
@@ -116,6 +118,7 @@
                 </div>
                 <form *ngIf = "passwordEditMode" [formGroup]="passwordInfo" 
                     fxFlex = "50" 
+                    fxFlex.lt-md = "100"
                     (keyup.enter)="updatePassword()">
                     <mat-form-field appearance="outline" class="full-width">
                         <input  formControlName="oldPassword" 
@@ -133,8 +136,8 @@
                                 placeholder="{{ 'profile.account.newPassword' | translate }}"
                                 type="password"/>
                     </mat-form-field>
-                    <button (click)="updatePassword()" class="full-width"
-                            color="primary" mat-raised-button type="submit">
+                    <button (click)="updatePassword()" class="doo-checkout-btn full-width"
+                            color="primary" mat-flat-button type="submit">
                             {{ 'profile.buttons.save' | translate }}
                     </button>
                 </form>

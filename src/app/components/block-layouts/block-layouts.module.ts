@@ -9,12 +9,14 @@ import {LazyLoadImageModule} from 'ng-lazyload-image';
 import { BackgroundImageBlockComponent } from './background-img/background-img.component';
 import { TextBlockComponent } from './text/text.component';
 import { MatIconModule } from '@angular/material/icon';
+import { ActionsComponent } from './actions/actions.component';
 
 @NgModule({
     declarations: [BackgroundImageBlockComponent,
                    TextBlockComponent,
                    SplitScreenImagePostComponent,
-                   BlockLayoutComponent],
+                   BlockLayoutComponent,
+                   ActionsComponent],
     imports: [
         CommonModule,
         PipesModule,

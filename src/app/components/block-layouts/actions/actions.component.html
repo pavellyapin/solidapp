@@ -1,0 +1,33 @@
+<div *ngFor = "let cta of actions">
+        <div [ngSwitch]="cta.fields.appearence">
+                        <button *ngSwitchCase="'flat'" 
+                        [color] = "cta.fields.color" 
+                        (click) = "navService.ctaClick(cta.fields.action)"
+                        mat-flat-button 
+                        class = "doo-cta-btn">
+                        {{cta.fields.name}}
+                        </button> 
+                        <button *ngSwitchCase="'stroked'" 
+                        [color] = "cta.fields.color"
+                        (click) = "navService.ctaClick(cta.fields.action)" 
+                        mat-stroked-button 
+                        class = "doo-cta-btn">
+                        {{cta.fields.name}}
+                        </button>
+                        <button *ngSwitchCase="'arrow'" 
+                        [color] = "cta.fields.color"
+                        (click) = "navService.ctaClick(cta.fields.action)" 
+                        mat-stroked-button 
+                        class = "doo-cta-btn">
+                        {{cta.fields.name}}
+                        <mat-icon  svgIcon="doo-arrow-right"></mat-icon>
+                        </button>    
+                        <button *ngSwitchCase="'raised'" 
+                        [color] = "cta.fields.color"
+                        (click) = "navService.ctaClick(cta.fields.action)" 
+                        mat-raised-button 
+                        class = "doo-cta-btn">
+                        {{cta.fields.name}}
+                        </button>                                               
+        </div>
+</div>

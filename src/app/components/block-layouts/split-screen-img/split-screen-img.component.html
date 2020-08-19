@@ -1,15 +1,19 @@
 <div fxLayout = "column" [fxLayoutGap] = "block.fields.bottomPadding">
-   <div fxLayout = "row" [fxLayoutAlign] = "block.fields.contentPosition">
+   <div fxLayout = "row" fxLayoutAlign = "center">
         <div fxLayout = "row" 
-             [fxFlex] = "block.fields.width" 
+             [fxFlex] = "block.fields.width"
+             fxFlex.lt-md 
              fxLayout.lt-md = "column" 
-             fxLayoutGap = "50px" 
              fxLayoutAlign = "center">
         <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
-             [fxLayoutAlign] = "block.fields.verticalContentPosition"
              fxLayout = "column" 
              [fxFlex] = "block.fields.textBoxWidth"
              fxFlex.lt-md = "100"
+             style = "padding:20px"
+             [class.primary-background] = "block.fields.textBackground == 'Primary'"
+             [class.accent-background] = "block.fields.textBackground == 'Accent'"
+             [class.white-background] = "block.fields.textBackground == 'White'"
+             [class.black-background] = "block.fields.textBackground == 'Black'"
              fxLayoutGap = "50px">
                         <div class = "doo-cta-content doo-contentful" 
                              [class.primary-color] = "block.fields.textColor == 'Primary'"
@@ -19,48 +23,15 @@
                              [style.text-align] = "block.fields.textAlign"
                         [innerHTML] = "block.fields.content | richTextPipe">
                         </div>
-                        <div [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px">
-                             <div *ngFor = "let cta of block.fields.actions">
-                                        <div [ngSwitch]="cta.fields.appearence">
-                                                        <button *ngSwitchCase="'flat'" 
-                                                        color = "primary" 
-                                                        (click) = "navService.ctaClick(cta.fields.action)"
-                                                        mat-flat-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        </button> 
-                                                        <button *ngSwitchCase="'stroked'" 
-                                                        color = "primary" 
-                                                        (click) = "navService.ctaClick(cta.fields.action)"
-                                                        mat-stroked-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        </button>
-                                                        <button *ngSwitchCase="'arrow'" 
-                                                        color = "primary" 
-                                                        (click) = "navService.ctaClick(cta.fields.action)"
-                                                        mat-stroked-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        <mat-icon  svgIcon="doo-arrow-right"></mat-icon>
-                                                        </button>    
-                                                        <button *ngSwitchCase="'rasied'" 
-                                                        color = "primary" 
-                                                        (click) = "navService.ctaClick(cta.fields.action)"
-                                                        mat-rasied-button 
-                                                        class = "doo-cta-btn">
-                                                        {{cta.fields.name}}
-                                                        </button>                                               
-                                        </div>
-                             </div>
-                        </div>
+                        <doo-actions [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px" fxLayout = "row" [actions] = "block.fields.actions"></doo-actions>
 
         </div>
         <div [fxFlex] = "100-block.fields.textBoxWidth" 
-             fxFlex.lt-md = "100"
+             fxFlex.lt-md
              [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 1 : 2">
         <img  *ngIf = "block.fields.media[0].fields.file.details.image"
               class = "full-width doo-pointer" 
+              style = "display: block"
               [src]="block.fields.media[0].fields.file.url">
         <video  #mainVid 
               *ngIf = "!block.fields.media[0].fields.file.details.image" 

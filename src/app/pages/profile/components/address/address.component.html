@@ -1,0 +1,34 @@
+<div *ngIf = "!editAddress" fxLayout = "column" class = "doo-shipping-box">
+    <div fxLayout = "row">
+            <mat-icon svgIcon="doo-location" color = "accent"></mat-icon>
+            <div fxLayout = "column" fxLayoutGap="5px">
+                    <div *ngIf = "!userAddressInfo" fxLayout = "row" fxFlex = "100">
+                      <div class="add-field-placeholder">
+                              {{ 'profile.address.noAddressSaved' | translate }}
+                      </div>
+                    </div>
+                    <div *ngIf = "userAddressInfo" fxLayout = "row" fxFlex = "100">
+                            <div class="add-field-placeholder" >
+                                    {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : 
+                                    userAddressInfo.addressLine2 }} 
+                                    {{userAddressInfo.addressLine1}}
+                            <br>
+                            {{userAddressInfo.city + ' ' + userAddressInfo.province + ' ' + userAddressInfo.postal}}
+                            </div>
+                    </div>
+            </div>
+            <div fxFlex fxLayout = "row" fxLayoutAlign="end">
+                            <div (click) = "editAddress = !editAddress" 
+                                 class="mat-caption doo-pointer doo-undeline">
+                                {{ 'profile.buttons.edit' | translate }}
+                            </div>
+                    </div>
+        </div>
+</div>
+<div *ngIf = "editAddress" fxLayout = "column">
+    <doo-address-form #addressForm 
+    [isWithName] = "false"
+    [userAddressInfo] = "userAddressInfo" 
+    (addressFormEmitter)="addressUpdate($event)"></doo-address-form>
+</div>
+

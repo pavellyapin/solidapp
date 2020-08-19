@@ -12,7 +12,7 @@
               class="doo-nav-toggle-button">
               <img  [src]="siteSettings?.fields.logo.fields.file.url">
       </button>
-      <form *ngIf = "bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled" fxFlex = "50" class="mat-caption doo-search-box">
+      <form *ngIf = "bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled" fxLayoutAlign="center center" fxFlex = "50" class="mat-caption doo-search-box">
         <mat-form-field appearance="outline" class = "full-width">
             <span matPrefix><mat-icon svgIcon = "doo-search"></mat-icon></span>
           <input #searchInput type="text"

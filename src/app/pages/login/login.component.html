@@ -1,40 +1,23 @@
-<div fxLayout="column" fxLayoutGap="50px">
-  <div></div>
-  <div class="login-page" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="50px">
-        <form fxFlex = "40" (keyup.enter)="login(username, password)">
-            <h1 class="mat-display-1">Log In</h1>
-            <h2 class="mat-h2">Welcome Back!</h2>
-          <mat-form-field appearance="outline" class="login-field">
-            <input [(ngModel)]="username" autocomplete="username" matInput name="username" placeholder="EMAIL"
-                  type="text"/>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="login-field">
-            <input [(ngModel)]="password" autocomplete="current-password" matInput name="password" placeholder="PASSWORD"
-                  type="password"/>
-          </mat-form-field>
-        <mat-error [textContent]="errorMessage"></mat-error>
-        <button (click)="login(username, password)" class="login-field"
-                color="primary" mat-raised-button type="submit">
-          SIGN IN
-        </button>
-        </form>
-        <form fxFlex = "40" (keyup.enter)="login(username, password)">
-            <h1 class="mat-display-1">New Here?</h1>
-            <h2 class="mat-h2">Create an Account</h2>
-          <mat-form-field appearance="outline" class="login-field">
-            <input [(ngModel)]="username" autocomplete="username" matInput name="username" placeholder="EMAIL"
-                  type="text"/>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="login-field">
-            <input [(ngModel)]="password" autocomplete="current-password" matInput name="password" placeholder="PASSWORD"
-                  type="password"/>
-          </mat-form-field>
-        <mat-error [textContent]="errorMessage"></mat-error>
-        <button (click)="register(username, password)" class="login-field"
-                color="primary" mat-stroked-button type="submit">
-          REGISTER
-        </button>
-        </form>
-        
-  </div>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
+<div fxLayout = "column" style = "height:100vh;">
+    <div fxLayout="row" 
+        style = "height: 100%"
+        fxLayout.lt-sm="column">
+      <div [fxFlex] = "bigScreens.includes(this.resolution) ? 65 : 100" fxLayout="column" fxLayoutGap = "30px">
+          <div></div>
+          <div fxLayout = "row" class = "doo-bottom-border">
+              <button [routerLink] = "'/'" mat-button
+                      class="doo-nav-toggle-button">
+                          <img  [src]="siteSettings?.fields.logo.fields.file.url">
+              </button>
+          </div>
+          <router-outlet></router-outlet>
+      </div>
+      <div *ngIf = "bigScreens.includes(this.resolution)" fxLayout="column" fxFlex = "35">
+              <div [ngSwitch]="block.sys.contentType?.sys.id" *ngFor = "let block of loginPageContent?.fields.blocks">
+                      <doo-block-layouts *ngSwitchCase="'block'" [block] = "block">
+                      </doo-block-layouts>
+              </div>
+      </div>
+    </div>
 </div>

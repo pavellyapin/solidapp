@@ -23,6 +23,15 @@ const routes: Routes = [
       )
   },
   {
+    data: {title: 'Login', isChild: true},
+    path: 'login',
+    canActivateChild: [NavGuard],
+    loadChildren: () =>
+      import('./pages/login/login.module').then(
+        m => m.LoginModule,
+      ),
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },
