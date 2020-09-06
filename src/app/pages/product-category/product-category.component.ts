@@ -98,7 +98,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
       /* Grid column map */
       const colsMap = new Map([
         ['xs', 24],
-        ['sm', 16],
+        ['sm', 24],
         ['md', 18],
         ['lg', 9],
         ['xl', 9],
@@ -114,8 +114,8 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
       /* Small card column span map */
       const rowsMapBig = new Map([
         ['xs', 21],
-        ['sm', 13],
-        ['md', 10],
+        ['sm', 15],
+        ['md', 11],
         ['lg', 5],
         ['xl', 5],
       ]);

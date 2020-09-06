@@ -12,18 +12,18 @@
               class="doo-nav-toggle-button">
               <img  [src]="siteSettings?.fields.logo.fields.file.url">
       </button>
-      <form *ngIf = "bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled" fxLayoutAlign="center center" fxFlex = "50" class="mat-caption doo-search-box">
+      <form *ngIf = "siteSettings && bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled" fxLayoutAlign="center center" fxFlex = "50" class="mat-caption doo-search-box">
         <mat-form-field appearance="outline" class = "full-width">
             <span matPrefix><mat-icon svgIcon = "doo-search"></mat-icon></span>
           <input #searchInput type="text"
                  placeholder="I'm looking for.."
                  aria-label="Number"
-                 (keydown.enter)="searchProducts($event);"
+                 (keydown.enter)="searchProducts($event)"
                  matInput
                  [formControl]="searchControl"
                  [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.fields.name">
+            <mat-option *ngFor="let option of filteredOptions | async" (click) = "navService.ctaClick(option)" [value]="option.fields.title">
               {{option.fields.title}}
             </mat-option>
             <mat-option>
@@ -33,7 +33,7 @@
         </mat-form-field>
       </form>
     <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
-    <div *ngIf = "siteSettings.fields.cartEnabled" fxLayout="row" fxLayoutAlign="center center">
+    <div *ngIf = "siteSettings && siteSettings.fields.cartEnabled" fxLayout="row" fxLayoutAlign="center center">
         <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToFavorites()">
             <mat-icon svgIcon="doo-favorite"></mat-icon>
           </button>

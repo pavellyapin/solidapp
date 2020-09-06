@@ -44,6 +44,7 @@
     "jquery": "^3.5.1",
     "ng-lazyload-image": "^7.1.0",
     "ngrx-store-localstorage": "^8.0.0",
+    "ngx-device-detector": "^1.4.6",
     "ngx-image-zoom": "^0.6.0",
     "rxjs": "~6.5.5",
     "slick-carousel": "^1.8.1",

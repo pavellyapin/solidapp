@@ -4,7 +4,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { from } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import User, { UserPerosnalInfo } from '../store/user/user.model';
 
 
 @Injectable({
@@ -14,9 +13,11 @@ export class AuthService {
 
   uid:any;
   idToken:any;
+  isAnonymous:any;
   authReady$ = new BehaviorSubject<boolean>(false);
 
-  constructor(public afAuth: AngularFireAuth, private firestore: AngularFirestore ,) {
+  constructor(public afAuth: AngularFireAuth, 
+              private firestore: AngularFirestore) {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     this.afAuth.authState.subscribe(
       (auth) => {
@@ -24,6 +25,7 @@ export class AuthService {
           if (auth != null) {
               this.uid = auth.uid;
               this.idToken = auth.getIdToken();
+              this.isAnonymous = auth.isAnonymous;
           } else {
               this.uid = null;
           }
@@ -39,6 +41,34 @@ export class AuthService {
     }));
   }
 
+  getRedirectResult() {
+    return from( new Promise<any>((resolve, reject) => {
+        firebase.auth().getRedirectResult()
+        .then(res => {
+          console.log(res);
+          if (res.user && res.additionalUserInfo.isNewUser) {
+               this.firestore
+                  .collection("customers")
+                  .doc("customers")
+                  .collection(res.user.uid)
+                  .doc("personalInfo")
+                  .set({email : res.additionalUserInfo.profile["email"],
+                        firstName : res.additionalUserInfo.providerId == 'facebook.com' ? res.additionalUserInfo.profile["first_name"] : res.additionalUserInfo.profile["given_name"],
+                        lastName : res.additionalUserInfo.providerId == 'facebook.com' ? res.additionalUserInfo.profile["last_name"] : res.additionalUserInfo.profile["family_name"],
+                        phone : '',
+                        provider : res.additionalUserInfo.providerId})
+          
+          }
+          resolve(res);
+        }, err => reject(err));
+    }));
+  }
+
+  signInWithRedirect(provider) {
+    return from( new Promise<any>((resolve, reject) => {
+    firebase.auth().signInWithRedirect(provider == 'google' ? new firebase.auth.GoogleAuthProvider() : new firebase.auth.FacebookAuthProvider());
+    }));
+  }
   
   doLoginWithGoogle() {
     return from( new Promise<any>((resolve, reject) => {

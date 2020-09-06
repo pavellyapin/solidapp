@@ -5,8 +5,10 @@
   .doo-bottom-border{
     padding-bottom: 10px;
   }
-
-    
+  
+ ::ng-deep .mat-select-value-text {
+   white-space: normal;
+ }
  ::ng-deep .mat-form-field-wrapper {
     padding-bottom: 0.2em !important;
   }

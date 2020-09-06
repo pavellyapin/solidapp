@@ -18,6 +18,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { MatPasswordStrengthModule } from '@angular-material-extensions/password-strength';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { LoginErrorComponent } from './error/error.component';
+import { BlockLayoutsModule } from '../block-layouts/block-layouts.module';
 
 @NgModule({
   declarations: [GuestFormComponent,
@@ -39,7 +40,8 @@ import { LoginErrorComponent } from './error/error.component';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    MatPasswordStrengthModule
+    MatPasswordStrengthModule,
+    BlockLayoutsModule
   ],
   exports : [GuestFormComponent,
              NameFormComponent,

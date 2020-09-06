@@ -9,6 +9,37 @@ $accent: mat-color($mat-pink ,200);
     mat-palette($mat-pink ,300)
 ));
 
+.doo-loading-overlay {
+  height: 100%; 
+  width: 100%;
+  background: white;
+  z-index: 100;
+  opacity: 1;
+  }
+
+.doo-loading-screen {
+background: $lighter-grey;
+padding-top: 200px;
+padding-bottom: 200px;
+width: 80%;
+text-align: center;
+margin:15px;
+animation-duration: .5s;
+animation-name: loading;
+animation-iteration-count: infinite;
+animation-direction: alternate;
+}
+
+@keyframes loading {
+from {
+  opacity: 0.4;
+}
+
+to {
+  opacity: 0.2;
+}
+}
+
 //Effect variables for crumb item
 $duration: .2s;
 $distance: 8px;
@@ -90,7 +121,7 @@ $easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
     letter-spacing: 4px;
   }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 850px) {
     .doo-cta-btn{
         padding: 5px 15px !important;
         font-size: 12px;

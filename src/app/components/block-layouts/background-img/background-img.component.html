@@ -1,52 +1,46 @@
-<div fxLayout = "column" [fxLayoutGap] = "block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
-    <div fxLayout = "row" style = "position:relative;" 
-        [fxLayoutAlign] = "block.fields.contentPosition + ' ' +  block.fields.verticalContentPosition">
-      <div  *ngIf = "imgLoaded"
-            fxLayout = "row"
-            [fxFlex] = "block.fields.width"
-            fxLayoutGap = "30px" 
-            class = "doo-overlay-box doo-contentful" 
-            [fxLayoutAlign] = "block.fields.contentPosition">
+<div fxLayout="column" [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
+    <div fxLayout="row" style="position:relative;"
+        [fxLayoutAlign]="'center' + ' ' +  (block.fields.verticalContentPosition ? block.fields.verticalContentPosition : 'start')">
+        <div *ngIf="imgLoaded" fxLayout="row" [fxFlex.gt-sm]="block.fields.width ? block.fields.width : 100"
+            fxFlex.lt-md class="doo-overlay-box doo-contentful"
+            [fxLayoutAlign]="block.fields.contentPosition ? block.fields.contentPosition : 'start'">
             <div></div>
-                <div fxFlexLayout = "column" 
-                    [fxFlex] = "block.fields.textBoxWidth"
-                    fxFlex.sm = "80"
-                    fxFlex.xs = "100"
-                    [class.primary-background] = "block.fields.textBackground == 'Primary'"
-                    [class.accent-background] = "block.fields.textBackground == 'Accent'"
-                    [class.white-background] = "block.fields.textBackground == 'White'"
-                    [class.black-background] = "block.fields.textBackground == 'Black'" 
-                    style = "padding:20px">
-                        <div [class.primary-color] = "block.fields.textColor == 'Primary'"
-                             [class.accent-color] = "block.fields.textColor == 'Accent'"
-                             [class.white-color] = "block.fields.textColor == 'White'"
-                             [class.black-color] = "block.fields.textColor == 'Black'"  
-                            [style.text-align] = "block.fields.textAlign" [innerHTML] = "block.fields.content | richTextPipe">
-                        </div>
-                        <doo-actions [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px" fxLayout = "row" [actions] = "block.fields.actions"></doo-actions>
-                         
+            <div fxFlexLayout="column" [fxFlex]="block.fields.textBoxWidth ? block.fields.textBoxWidth : 100"
+                fxFlex.lt-md [class.primary-background]="block.fields.textBackground == 'Primary'"
+                [class.accent-background]="block.fields.textBackground == 'Accent'"
+                [class.white-background]="block.fields.textBackground == 'White'"
+                [class.black-background]="block.fields.textBackground == 'Black'" style="padding:20px">
+                <div [class.primary-color]="block.fields.textColor == 'Primary'"
+                    [class.accent-color]="block.fields.textColor == 'Accent'"
+                    [class.white-color]="block.fields.textColor == 'White'"
+                    [class.black-color]="block.fields.textColor == 'Black'"
+                    [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
+                    [innerHTML]="block.fields.content | richTextPipe">
                 </div>
-                <div></div>
+                <div class="doo-cta-content doo-contentful"
+                    [class.primary-color]="block.fields.otherTextColor == 'Primary'"
+                    [class.accent-color]="block.fields.otherTextColor == 'Accent'"
+                    [class.white-color]="block.fields.otherTextColor == 'White'"
+                    [class.black-color]="block.fields.otherTextColor == 'Black'"
+                    [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
+                    [innerHTML]="block.fields.otherContent | richTextPipe">
+                </div>
+                <doo-actions [fxLayoutAlign]="block.fields.actionsPosition ? block.fields.actionsPosition : 'start'"
+                    fxLayoutGap="20px" fxLayout="row" [actions]="block.fields.actions"></doo-actions>
+
+            </div>
+            <div></div>
         </div>
-        <div fxLayout = "row" 
-            [fxFlex] = "block.fields.width" 
-            fxLayoutAlign = "center" 
-            [ngClass] = "bigScreens.includes(this.resolution) ? '' : 'crop'">
-                <img #postImg *ngIf = "block.fields.media[0].fields.file.details.image"   
-                    class = "full-width post-placeholder"
-                    style = "object-fit: cover;height: 100%;"
-                    [lazyLoad]="block.fields.media[0].fields.file.url"
-                    [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
-                    (onStateChange)="myCallbackFunction($event)">
-                <video  #mainVid *ngIf = "!block.fields.media[0].fields.file.details.image" 
-                       [src] = "block.fields.media[0].fields.file.url" 
-                       autoplay 
-                       muted 
-                       loop
-                       playsinline 
-                       class = "full-width"
-                       (loadeddata) = "loadComplete()">
-                </video>
+        <div fxLayout="row" [fxFlex]="block.fields.width" fxFlex.lt-md fxLayoutAlign="center"
+            [ngClass]="bigScreens.includes(this.resolution) ? '' : 'crop'">
+            <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="full-width post-placeholder"
+                style="object-fit: cover;height: 100%;" [lazyLoad]="block.fields.media[0].fields.file.url"
+                [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
+                (onStateChange)="myCallbackFunction($event)">
+            <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
+                [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline class="full-width"
+                (loadeddata)="loadComplete()">
+            </video>
         </div>
     </div>
     <div></div>

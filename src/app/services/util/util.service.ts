@@ -1,12 +1,14 @@
-import { Injectable, InjectionToken } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilitiesService {
     
+  bigScreens = new Array('lg' , 'xl' , 'md');
 
-  constructor() {
+  constructor(public deviceService: DeviceDetectorService) {
   }
 
   init() {

@@ -1,4 +1,4 @@
-<div *ngFor = "let cta of actions">
+<div style = "padding-top: 5%" *ngFor = "let cta of actions">
         <div [ngSwitch]="cta.fields.appearence">
                         <button *ngSwitchCase="'flat'" 
                         [color] = "cta.fields.color" 

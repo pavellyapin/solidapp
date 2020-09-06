@@ -10,6 +10,19 @@ export const BeginUserLoginAction = createAction(
   props<{ payload: any }>()
 );
 
+export const BeginLoginWithRedirectAction = createAction(
+  '[User] - Begin Redirect Login',
+  props<{ payload: any }>()
+);
+
+export const SuccessLoginWithRedirectAction = createAction(
+  '[User] - Success Redirect Login'
+);
+
+export const BeginGetRedirectResultAction = createAction(
+  '[User] - Begin Redirect result Login'
+);
+
 export const BeginGoogleUserLoginAction = createAction(
   '[User] - Begin Google Login'
 );

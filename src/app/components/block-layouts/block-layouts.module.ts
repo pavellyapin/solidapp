@@ -10,13 +10,17 @@ import { BackgroundImageBlockComponent } from './background-img/background-img.c
 import { TextBlockComponent } from './text/text.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ActionsComponent } from './actions/actions.component';
+import { CardPostComponent } from './card/card.component';
+import { RowOfTwoPostComponent } from './row-of-two/row-of-two.component';
 
 @NgModule({
     declarations: [BackgroundImageBlockComponent,
                    TextBlockComponent,
                    SplitScreenImagePostComponent,
                    BlockLayoutComponent,
-                   ActionsComponent],
+                   ActionsComponent,
+                   CardPostComponent,
+                   RowOfTwoPostComponent],
     imports: [
         CommonModule,
         PipesModule,

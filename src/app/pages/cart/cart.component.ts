@@ -17,6 +17,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
 import UserState from 'src/app/services/store/user/user.state';
 import { UserPerosnalInfo } from 'src/app/services/store/user/user.model';
 import { ImagePipe } from 'src/app/components/pipes/pipes';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'doo-cart',
@@ -28,6 +29,7 @@ export class CartComponent implements OnInit {
   //Subscription
   CartSubscription: Subscription;
   CartIdSubscription: Subscription;
+  ShippingMethodSubscription: Subscription;
   initOrderSubscription: Subscription;
   OrderSubscription : Subscription;
   StripeSuccessSubscription : Subscription;
@@ -44,7 +46,8 @@ export class CartComponent implements OnInit {
   user$: Observable<UserState>;
   userInfo: UserPerosnalInfo;
 
-  cart$: Observable<CartState>;
+  shippingMethod$: Observable<any>;
+  cartId$: Observable<any>;
   cartItems$: Observable<CartItem[]>;
   order$: Observable<any>;
   
@@ -69,18 +72,19 @@ export class CartComponent implements OnInit {
                   private cd: ChangeDetectorRef,
                   private imagePipe : ImagePipe,
                   public utilService: UtilitiesService,
-                  private contentfulService: ContentfulService)
+                  private contentfulService: ContentfulService,
+                  private authState: AuthService)
         {
 
           this.settings$ = store.pipe(select('settings'));
-          this.cart$ = store.pipe(select('cart'));
+          this.shippingMethod$ = store.pipe(select('cart','shippingMethod'));
+          this.cartId$ = store.pipe(select('cart','cartId'));
           this.user$ = store.pipe(select('user'));
           this.cartItems$ = store.pipe(select('cart' , 'items'));
           this.order$ = store.pipe(select('cart' , 'order'));
         }
 
   ngOnInit() {
-
     //Subscribe to settings state
     //Listen on loading state for loading screen
     //Get settings object from contentful to determine shipping options etc
@@ -97,22 +101,28 @@ export class CartComponent implements OnInit {
     this.UserSubscription = this.user$
     .pipe(
       map(x => {
+        if((this.authState.uid && !this.authState.isAnonymous) && !x.uid) {
+          this.store.dispatch(UserActions.BeginGetRedirectResultAction());
+      }
         this.userInfo = x.personalInfo;
       })
     )
     .subscribe();
 
-    switch(this.navService.getActivePage().title) {
-      case 'Checkout Shipping':
-          this.summaryOpen = true;
-          break;
-      case 'Checkout Payment':
-          this.summaryOpen = true;
-          break;
-      case 'Checkout Success':
-          this.summaryOpen = false;
-          break;
+    if(this.bigScreens.includes(this.resolution)) {
+      switch(this.navService.getActivePage().title) {
+        case 'Checkout Shipping':
+            this.summaryOpen = true;
+            break;
+        case 'Checkout Payment':
+            this.summaryOpen = true;
+            break;
+        case 'Checkout Success':
+            this.summaryOpen = false;
+            break;
+      }
     }
+
 
     this.initializeCartState();
 
@@ -131,11 +141,11 @@ export class CartComponent implements OnInit {
     this.initOrderSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe(() => {
       switch(this.navService.getActivePage().title) {
         case 'Checkout Shipping':
-          this.summaryOpen = true;
+          if(this.bigScreens.includes(this.resolution)) {this.summaryOpen = true}
           this.router.navigateByUrl('cart/checkout/' + this.cartId +'/payment');
             break;
         case 'Checkout':
-          this.summaryOpen = true;
+          if(this.bigScreens.includes(this.resolution)) {this.summaryOpen = true}
           this.router.navigateByUrl('cart/checkout/' + this.cartId +'/shipping');
             break;
         case 'Checkout Success':
@@ -229,15 +239,22 @@ export class CartComponent implements OnInit {
     )
     .subscribe();
 
-    this.CartIdSubscription = this.cart$
+    this.ShippingMethodSubscription = this.shippingMethod$
     .pipe(
       map(x => {
-        this.cartId = x.cartId;
-        if (x.shippingMethod) {
-          this.shippingCost = x.shippingMethod.fields.price;
+        if (x) {
+          this.shippingCost = x.price;
           this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;  
           this.cd.detectChanges();
         }
+      })
+    )
+    .subscribe();
+
+    this.CartIdSubscription = this.cartId$
+    .pipe(
+      map(x => {
+        this.cartId = x;
       })
     )
     .subscribe();
@@ -278,6 +295,7 @@ export class CartComponent implements OnInit {
 
   ngOnDestroy(){
     this.initOrderSubscription.unsubscribe();
+    this.ShippingMethodSubscription.unsubscribe();
     this.OrderSubscription.unsubscribe();
     this.StripeSuccessSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();

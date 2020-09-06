@@ -1,7 +1,8 @@
 <div fxLayout="row" fxLayoutAlign="center">
   <div fxLayout="row" 
-       fxLayout.lt-sm = "column" 
-       fxFlex 
+       fxLayout.lt-md = "column" 
+       [fxFlex] = "bigScreens.includes(this.resolution) ? 100 : 80"
+       [style.height] = "bigScreens.includes(this.resolution) ? '100vh' : '100%'" 
        fxLayoutAlign="center" 
        fxLayoutGap="50px">
         <form fxLayout = "column"
@@ -63,11 +64,11 @@
         </div>
 
         <div fxLayout = "row" class = "full-width" fxLayoutAlign="center">
-             <button class = "doo-letter-space" color = "accent" [routerLink] = "'forgotpassword'" mat-button type="button">
+             <button class = "doo-letter-space" color = "accent" [routerLink] = "'/login/forgotpassword'" mat-button type="button">
               Forgot password?
             </button>
             <span style = "line-height: 36px;opacity: 0.5;">|</span>
-            <button class = "doo-letter-space" color = "accent" [routerLink] = "'createuser'" mat-button type="button">
+            <button class = "doo-letter-space" color = "accent" [routerLink] = "'/login/createuser'" mat-button type="button">
               Create account
             </button>
         </div>
@@ -76,47 +77,50 @@
 
         </form>
         <form *ngIf = "!isFromLogin"
-              class="doo-guest-form"
+              class="doo-guest-form doo-contentful"
               [formGroup]="guestForm" 
               fxLayout = "column" 
               fxLayoutGap="20px" 
               fxFlex = "40" 
               fxFlex.lt-sm = "90" 
               (keyup.enter)="continueGuest()">
+              <div [ngSwitch]="block.sys.contentType?.sys.id" *ngFor = "let block of pageContent?.fields.blocks">
+                      <doo-block-layouts *ngSwitchCase="'block'" [block] = "block">
+                      </doo-block-layouts>
+              </div> 
             <div fxLayout = "column">
                         <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "space-between">
-                                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
-                                        <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
+                                        <mat-form-field fxFlex = "48" appearance="outline" class="login-field">
                                         <input  formControlName="firstName"
                                                 autocomplete="firstName"
                                                 matInput 
                                                 name="firstName" 
-                                                placeholder=""
+                                                [placeholder]="'profile.account.firstName' | translate"
                                                 type="text"/>
                                                 <mat-error *ngIf="guestForm.controls['firstName'].invalid">{{'errors.required' | translate}}</mat-error>
                                         </mat-form-field>
-                                        <mat-form-field fxFlex = "48" appearance="outline" class="full-width">
-                                        <mat-label>{{ 'profile.account.lastName' | translate }}</mat-label>
+                                        <mat-form-field fxFlex = "48" appearance="outline" class="login-field">
                                         <input  formControlName="lastName"
                                                 autocomplete="lastName"
                                                 matInput 
                                                 name="lastName" 
-                                                placeholder=""
+                                                [placeholder]="'profile.account.lastName' | translate"
                                                 type="text"/>
                                                 <mat-error *ngIf="guestForm.controls['lastName'].invalid">{{'errors.required' | translate}}</mat-error>
                                         </mat-form-field>
                         </div>
                 <mat-form-field appearance="outline" class="login-field">
-                    <span matPrefix class = "doo-prefix-icon"><mat-icon svgIcon="doo-email"></mat-icon></span>
+                    <span matPrefix class = "doo-prefix-icon"><mat-icon class = "doo-primary-icon" svgIcon="doo-email"></mat-icon></span>
                     <input matInput 
                            formControlName="email"
                            autocomplete="email" 
                            name="email" 
                            placeholder="Email"
                            type="text"/>
+                           <mat-error *ngIf="guestForm.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
                   </mat-form-field>
                 <button (click)="continueGuest()" class = "doo-checkout-btn"
-                        color="primary" mat-flat-button type="submit">
+                        color="accent" mat-flat-button type="submit">
                     CONTINUE AS A GUEST
                 </button>
               </div>

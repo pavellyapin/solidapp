@@ -58,7 +58,7 @@
                 <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
                     <mat-icon svgIcon = "doo-phone"></mat-icon>
                     <div class="add-field-placeholder" >
-                        {{userInfo.phone.length > 0 ? userInfo.phone   : 'profile.account.addMobile' | translate }}
+                        {{(userInfo.phone && userInfo.phone.length > 0) ? userInfo.phone   : 'profile.account.addMobile' | translate }}
                     </div>
                 </div>
                 <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">

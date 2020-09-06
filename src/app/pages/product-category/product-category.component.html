@@ -5,14 +5,14 @@
       {{activeCategory.fields.title}}
     </div>
     <div fxLayout = "row" fxLayoutAlign = "space-between" fxLayoutGap = "10px">
-      <div fxLayout = "row" fxFlex = "90" fxLayoutGap = "10px">
+      <div fxLayout = "row" fxLayoutGap = "10px">
         <button mat-button (click)="filtersOpen = !filtersOpen" class = "doo-filters-btn">
           <div fxLayout = "column" fxLayoutAlign = "center center">
               <span>HIDE FILTERS</span>
               <mat-icon svgIcon="doo-filters"></mat-icon>
           </div>
         </button>
-        <mat-chip-list fxShow fxHide.xs>
+        <mat-chip-list fxShow fxHide.lt-md>
             <mat-chip *ngFor = "let filter of filters"
                       color = "primary"
                       selected
@@ -22,10 +22,8 @@
                     </mat-chip>
           </mat-chip-list>
         </div>
-        <div fxFlex = "7" fxFlex.xs = "50" fxLayoutAlign = "center center" class = "mat-caption">
-            1-{{cards.value.length}} of {{productsDisplayed?.length}} items
-          </div>
-        <mat-form-field fxFlex = "7" fxFlex.xs = "50" appearance="outline" color = "primary" class = "doo-sort-select">
+
+        <mat-form-field appearance="outline" color = "primary" class = "doo-sort-select">
             <mat-label>SORT BY</mat-label>
             <mat-select #sortSelect (selectionChange) = "sortBy($event)">
                     <mat-option [value] = "'price-low-high'">
@@ -36,6 +34,9 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+    </div>
+    <div fxLayoutAlign = "end center" class = "doo-letter-space mat-caption">
+        Showing 1-{{cards.value.length}} of {{productsDisplayed?.length}} items
     </div>
 </div>
 <div *ngIf = "productsLoaded.length==0" 
@@ -60,7 +61,6 @@
     [mode]="navMode" 
     position = "start"
     [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters mobile'">
-    
     <mat-accordion [multi] = "true">
         <mat-expansion-panel [hideToggle] = "true" 
                              (opened)="colorPanelOpenState = true" 

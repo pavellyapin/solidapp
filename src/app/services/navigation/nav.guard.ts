@@ -34,7 +34,7 @@ export class NavGuard implements CanActivateChild {
         }
 
         if (childRoute.data.title == 'Login' && auth && !auth.isAnonymous) {
-          this.router.navigate(['account/profile']);
+          this.router.navigate(['account/overview']);
         }
         
         if (childRoute.data && childRoute.data.title) {

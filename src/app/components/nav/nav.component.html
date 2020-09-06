@@ -20,7 +20,7 @@
 <div fxLayout = "column" *ngIf = "false" fxLayoutAlign = "center center" class = "mat-caption bottom-news-feed-row">
     FREE DELIVERY FROM $50 AND EASY RETURNS - RETURNS EXTENDED TO 60 DAYS
   </div>
-<mat-drawer-container [ngClass] = "bigScreens.includes(this.resolution) ? 'main-nav-container' : 'main-nav-container-mobile'">
+<mat-drawer-container [ngClass] = "utilService.bigScreens.includes(this.resolution) ? 'main-nav-container' : 'main-nav-container-mobile'">
     <mat-drawer  [opened]="isMobileMenuOpen" 
                  (closedStart)="isMobileMenuOpen = false"
                  autoFocus = "false"
@@ -36,9 +36,9 @@
     <mat-drawer [opened]="isOpen" 
                  (closedStart)="isOpen = false"
                  mode="over"
-                 [ngClass] = "bigScreens.includes(this.resolution) ? 'doo-cart-side-nav' : 'doo-mobile-cart-side-nav'" 
+                 [ngClass] = "utilService.bigScreens.includes(this.resolution) ? 'doo-cart-side-nav' : 'doo-mobile-cart-side-nav'" 
                  position = "end">
-                 <doo-cart-side-nav #cartSideNav (expandCartNav) = "expandCartNav()"></doo-cart-side-nav>
+                 <doo-cart-side-nav #cartSideNav [resolution] = "resolution" (expandCartNav) = "expandCartNav()"></doo-cart-side-nav>
   </mat-drawer>
   <mat-drawer-content>
       <div *ngIf = "mainMenuOpen" fxLayout = "row" fxLayoutAlign="center start" (click) = "hideMainMenu()" class = "doo-overlay">

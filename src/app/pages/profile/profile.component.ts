@@ -8,6 +8,8 @@ import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Actions, ofType } from '@ngrx/effects';
+import UserState from 'src/app/services/store/user/user.state';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -19,6 +21,9 @@ export class ProfileComponent implements OnInit {
   settings$: Observable<SettingsState>;
   SettingsSubscription: Subscription;
   userInfoUpdate$: Subscription;
+
+  user$: Observable<UserState>;
+  UserSubscription: Subscription;
   
   resolution : any;
   navMode : any;
@@ -28,14 +33,29 @@ export class ProfileComponent implements OnInit {
   loading : boolean = false;
   
   constructor(private router: Router,
-              private store: Store<{settings : SettingsState}>,
+              private store: Store<{settings : SettingsState , user : UserState}>,
               private _actions$: Actions,
               private navService : NavigationService,
-              private changeDetectorRef: ChangeDetectorRef,) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private authState: AuthService) {
                 this.settings$ = store.pipe(select('settings'));
+                this.user$ = store.pipe(select('user'));
   }
 
   ngOnInit() {
+    //For mobile devices we are using redirect login, so need to see if
+    //user is already logged in but state has not been inisialized yet
+    this.UserSubscription = this.user$
+    .pipe(
+      map(x => {
+        if(this.authState.uid && !x.uid) {
+            this.store.dispatch(UserActions.BeginGetRedirectResultAction());
+        }
+      })
+    )
+    .subscribe();
+
+     
     this.SettingsSubscription = this.settings$
     .pipe(
       map(x => {
@@ -117,6 +137,7 @@ export class ProfileComponent implements OnInit {
   ngOnDestroy(): void {
     this.SettingsSubscription.unsubscribe();
     this.userInfoUpdate$.unsubscribe();
+    this.UserSubscription.unsubscribe();
   }
 
 }

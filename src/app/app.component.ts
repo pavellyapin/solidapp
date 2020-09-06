@@ -184,5 +184,9 @@ export class AppComponent {
                   'doo-phone',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/phone.svg")
                 );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-box',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/box.svg")
+                );
   }
 }

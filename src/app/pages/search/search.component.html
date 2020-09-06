@@ -1,20 +1,27 @@
 
-<div fxLayout = "column" class = "doo-search-summary">
-  <div fxLayout = "row" fxLayoutAlign = "center">
+<div fxLayout = "column" fxLayoutAlign = "center center" class = "doo-search-summary">
+  <div fxLayout = "row" class = "mat-subheading-2 doo-letter-space" fxLayoutAlign = "center">
     {{productsLoaded?.length}} SEARCH RESULTS FOR
   </div>
-  <div fxLayout = "row" class = "mat-display-1" fxLayoutAlign = "center">
+  <div fxLayout = "row" class = "mat-display-1 doo-letter-space" fxLayoutAlign = "center">
       "{{route.snapshot.params['key']}}"
     </div>
-    <div fxLayout = "row" fxLayoutAlign = "center">
-        <mat-chip-list fxShow fxHide.xs>
-            <mat-chip *ngFor = "let cayegory of relatedCategories"
-                      color = "primary"
-                      selected
-                      [removable]="false">{{cayegory.fields.title}}
-                    </mat-chip>
-          </mat-chip-list>
+    <div fxLayout = "row" class = "mat-subheading-1 doo-letter-space" fxLayoutAlign = "center">
+        We also found the following related categories:
+      </div>
+    <div fxLayout = "column">
+        <div fxLayout = "row" fxLayoutAlign = "center">
+            <mat-chip-list fxShow>
+                <mat-chip *ngFor = "let category of relatedCategories"
+                          color = "accent"
+                          (click) = "goToCategory(category)"
+                          selected
+                          [removable]="false">{{category.fields.title}}
+                        </mat-chip>
+              </mat-chip-list>
+        </div>
     </div>
+
 </div>
 
 
@@ -33,11 +40,10 @@
                       selected
                       [removable]="true"
                       (removed)="removeFilterChip(filter)">{{filter.name}}
-                       <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
           </mat-chip-list>
         </div>
-        <mat-form-field fxFlex = "7" fxFlex.xs = "50" appearance="outline" color = "primary" class = "doo-sort-select">
+        <mat-form-field  appearance="outline" color = "primary" class = "doo-sort-select">
             <mat-label>SORT BY</mat-label>
             <mat-select #sortSelect (selectionChange) = "sortBy($event)">
                     <mat-option [value] = "'price-low-high'">
@@ -49,11 +55,30 @@
             </mat-select>
         </mat-form-field>
     </div>
+    <div fxLayoutAlign = "end center" class = "doo-letter-space mat-caption">
+        Showing 1-{{cards.value.length}} of {{productsDisplayed?.length}} items
+    </div>
 </div>
 
-                       
-<mat-sidenav-container class = "doo-filters-nav">
-    <mat-sidenav [opened]="filtersOpen" 
+<div *ngIf = "!productsLoaded || productsLoaded.length==0" 
+      class = "doo-empty-cart" 
+      fxLayoutGap = "20px" 
+      fxLayout = "column" 
+      fxLayoutAlign="center center">
+      <span class = "mat-title">
+              Explore our store 
+      </span>
+      <span class = "mat-subheahing-1">
+          We didn't find any products for this category
+      </span>
+      <div fxLayout = "row" class = "full-width" fxLayoutAlign="center center">
+          <button color="primary" class = "doo-checkout-btn" mat-flat-button fxFlex = "40" [routerLink] = "'/'">
+              SHOP
+          </button>
+      </div>
+</div>                       
+<mat-drawer-container *ngIf = "productsLoaded && productsLoaded.length > 0" class = "doo-filters-nav">
+    <mat-drawer [opened]="filtersOpen" 
                   [mode]="navMode" 
                   position = "start"
                   [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters-mobile'">
@@ -68,8 +93,8 @@
                           <mat-panel-title>
                             {{'product.color' | translate}}
                           </mat-panel-title>
-                          <mat-panel-description fxLayout= "row" fxLayoutAlign = "end center">
-                              <mat-icon>{{colorPanelOpenState ? 'remove' : 'add'}}</mat-icon>
+                          <mat-panel-description class = "doo-variant-desc" fxLayout= "row" fxLayoutAlign = "end center">
+                              <mat-icon [svgIcon] = "colorPanelOpenState ? 'doo-minus' : 'doo-plus'"></mat-icon>
                           </mat-panel-description> 
                         </mat-expansion-panel-header>
                         <div fxLayout= "column">
@@ -93,8 +118,8 @@
                           <mat-panel-title>
                               {{'product.size' | translate}}
                           </mat-panel-title>
-                          <mat-panel-description fxLayout= "row" fxLayoutAlign = "end center">
-                              <mat-icon>{{sizePanelOpenState ? 'remove' : 'add'}}</mat-icon>
+                          <mat-panel-description class = "doo-variant-desc" fxLayout= "row" fxLayoutAlign = "end center">
+                              <mat-icon [svgIcon] = "sizePanelOpenState ? 'doo-minus' : 'doo-plus'"></mat-icon>
                           </mat-panel-description> 
                           </mat-expansion-panel-header>
                           <div fxLayout= "column">
@@ -110,9 +135,9 @@
                           </div>
                       </mat-expansion-panel>
                     </mat-accordion>                
-    </mat-sidenav>
-    <mat-sidenav-content>
-    <div fxLayout= "column" fxFlex = "100">
+    </mat-drawer>
+    <mat-drawer-content>
+    <div #productsGrid fxLayout= "column" fxFlex = "100">
 
         <mat-grid-list  [cols]="cols | async">
             <mat-grid-tile *ngFor="let card of productCards"
@@ -125,5 +150,13 @@
             </mat-grid-tile>
           </mat-grid-list> 
     </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    </mat-drawer-content>
+  </mat-drawer-container>
+  <div fxLayout="column">
+      <div [ngSwitch]="block.sys.contentType?.sys.id" *ngFor="let block of searchPageContent?.fields.blocks">
+          <doo-widgets *ngSwitchCase="'widget'" [widget]="block">
+          </doo-widgets>
+          <doo-block-layouts *ngSwitchCase="'block'" [block]="block">
+          </doo-block-layouts>
+      </div>
+  </div>

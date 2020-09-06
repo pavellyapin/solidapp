@@ -1,6 +1,6 @@
 @import 'src/css/_variables.scss';
 
-mat-sidenav-container {
+mat-drawer-container {
     background-color: white;
 }
 
@@ -14,11 +14,10 @@ mat-sidenav-container {
     .mat-title {
         letter-spacing: 4px;
     }
+}
 
-    mat-chip{
-        font-size: 12px;
-        color: white !important;
-    }
+.doo-empty-cart{
+    padding-bottom: 150px;
 }
 
 .doo-filters-btn {
@@ -31,6 +30,21 @@ mat-sidenav-container {
         height: 20px;
         width: 20px;
         opacity: 0.7;
+      }
+}
+
+.doo-variant-desc {
+    mat-icon {
+        height: 18px;
+        width: 18px;
+        opacity: 1 !important;
+        
+        ::ng-deep .cls-1 {
+          stroke: $accent;
+        }
+        ::ng-deep .cls-2 {
+          stroke: $accent;
+        }
       }
 }
 
@@ -91,4 +105,10 @@ mat-sidenav-container {
 
 .doo-search-summary {
     background: $lighter-grey;
+    padding: 20px 50px;
+    ::ng-deep .mat-standard-chip{
+        font-size: 12px;
+        color: white !important;
+        cursor: pointer !important;
+    }
 }

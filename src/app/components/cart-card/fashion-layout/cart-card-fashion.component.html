@@ -10,13 +10,14 @@
        fxLayout.xs="column"
        fxLayoutAlign="space-between">
        <div fxLayout="row" fxHide fxShow.xs fxLayoutAlign="space-between">
-          <span class = "doo-cart-action doo-pointer">
-              <mat-icon svgIcon = "doo-close" (click) = "removeFromCart()"></mat-icon>
-          </span>
+
             <span class = "doo-cart-action doo-pointer">
                 <mat-icon class = "fav-border" svgIcon = "doo-favorite" *ngIf = "!isFavorite" (click)="toggleFavorites(true)"></mat-icon>
                 <mat-icon class = "fav-fill" svgIcon = "doo-favorite" *ngIf = "isFavorite"  (click)="toggleFavorites(false)"></mat-icon>
             </span>
+            <span class = "doo-cart-action doo-pointer">
+              <mat-icon svgIcon = "doo-close" (click) = "removeFromCart()"></mat-icon>
+          </span>
       </div>
     <div fxLayout="row" 
          fxLayoutAlign="center"

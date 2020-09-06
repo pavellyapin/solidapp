@@ -4,6 +4,7 @@ import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as UserActions from './user.action';
+import * as CartActions from '../cart/cart.action';
 import { AuthService } from '../../auth/auth.service';
 import User from './user.model';
 import { FirestoreService } from '../../firestore/firestore.service';
@@ -52,7 +53,8 @@ export class UserEffects {
     ofType(UserActions.BeginUserLoginAction),
     switchMap(action =>
       this.authService.doLogin(action.payload.email,action.payload.password).pipe(
-        switchMap((x) => [UserActions.BeginGetUserInfoAction(),
+        switchMap((x) => [CartActions.BeginResetCartIdAction(),
+                          UserActions.BeginGetUserInfoAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
         ),
@@ -64,12 +66,47 @@ export class UserEffects {
   )
 );
 
+RedirectLogin$: Observable<Action> = createEffect(() =>
+this.action$.pipe(
+  ofType(UserActions.BeginLoginWithRedirectAction),
+  switchMap(action =>
+    this.authService.signInWithRedirect(action.payload).pipe(
+      switchMap((x) => [UserActions.SuccessLoginWithRedirectAction()]
+      ),
+      catchError((error: Error) => {
+        return of(UserActions.ErrorUserAction(error));
+      })
+    )
+  )
+)
+);
+
+GetRedirectResult$: Observable<Action> = createEffect(() =>
+this.action$.pipe(
+  ofType(UserActions.BeginGetRedirectResultAction),
+  switchMap(action =>
+    this.authService.getRedirectResult().pipe(
+      switchMap((x) => 
+       [CartActions.BeginResetCartIdAction(),
+        UserActions.BeginGetUserInfoAction(),
+        UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
+        UserActions.BeginGetUserAddressInfoAction()]
+      ),
+      catchError((error: Error) => {
+        return of(UserActions.ErrorUserAction(error));
+      })
+    )
+  )
+)
+);
+
   UserGoogleLogin$: Observable<Action> = createEffect(() =>
   this.action$.pipe(
     ofType(UserActions.BeginGoogleUserLoginAction),
     switchMap(action =>
       this.authService.doLoginWithGoogle().pipe(
-        switchMap((x) => [UserActions.BeginGetUserInfoAction(),
+        switchMap((x) => [CartActions.BeginResetCartIdAction(),
+                          UserActions.BeginGetUserInfoAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
         ),
@@ -86,7 +123,8 @@ export class UserEffects {
     ofType(UserActions.BeginFacebookUserLoginAction),
     switchMap(action =>
       this.authService.doLoginWithFacebook().pipe(
-        switchMap((x) => [UserActions.BeginGetUserInfoAction(),
+        switchMap((x) => [CartActions.BeginResetCartIdAction(),
+                          UserActions.BeginGetUserInfoAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
         ),
@@ -98,30 +136,17 @@ export class UserEffects {
   )
 );
 
-  UserLogout$: Observable<Action> = createEffect(() =>
-  this.action$.pipe(
-    ofType(UserActions.BeginUserLogoutAction),
-    switchMap(action =>
-      this.authService.doLogout().pipe(
-        map(() => {
-          return UserActions.SuccessUserLogoutAction();
-        }),
-        catchError((error: Error) => {
-          return of(UserActions.ErrorUserAction(error));
-        })
-      )
-    )
-  )
-);
 
   RegisterUser$: Observable<Action> = createEffect(() =>
   this.action$.pipe(
     ofType(UserActions.BeginRegisterUserAction),
     switchMap(action =>
       this.authService.doRegister(action.payload.email,action.payload.password).pipe(
-        map((data: any) => {
-          return UserActions.BeginGetUserInfoAction();
-        }),
+        switchMap((x) => [CartActions.BeginResetCartIdAction(),
+                          UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
+                          UserActions.BeginGetUserAddressInfoAction()]
+),
         catchError((error: Error) => {
           return of(UserActions.ErrorUserAction(error));
         })
@@ -291,6 +316,23 @@ this.action$.pipe(
         )
       )
     );
+
+
+  UserLogout$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(UserActions.BeginUserLogoutAction),
+    switchMap(action =>
+      this.authService.doLogout().pipe(
+        map(() => {
+          return UserActions.SuccessUserLogoutAction();
+        }),
+        catchError((error: Error) => {
+          return of(UserActions.ErrorUserAction(error));
+        })
+      )
+    )
+  )
+);
 
     //Favorites----------------------------------------------------
 

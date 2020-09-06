@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { Observable, Subscription, BehaviorSubject, forkJoin } from 'rxjs';
 import CartState from 'src/app/services/store/cart/cart.state';
 import { Store, select } from '@ngrx/store';
@@ -8,6 +8,7 @@ import { ContentfulService } from 'src/app/services/contentful/contentful.servic
 import { Card } from '../../cards/card';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Router } from '@angular/router';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-cart-side-nav',
@@ -21,7 +22,7 @@ export class CartSideNavComponent implements OnInit {
   cartItemCount:number = 0;
   cartItemsCards: Card[] = [];
   cartItems: Array<any>;
-
+  @Input() resolution:any;
   @Output() expandCartNav = new EventEmitter();
   cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
 
@@ -29,6 +30,7 @@ export class CartSideNavComponent implements OnInit {
     private contentfulService: ContentfulService,
     public navService: NavigationService,
     private router: Router,
+    private utilService : UtilitiesService,
     store: Store<{ cart: CartState}>) {
       this.cards.subscribe(cards => {
         this.cartItemsCards = cards;

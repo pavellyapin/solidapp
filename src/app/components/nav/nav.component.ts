@@ -36,7 +36,6 @@ export class NavComponent implements OnInit {
   categories: Entry<any>[];
   rootCategories: Entry<any>[];
   resolution : any;
-  bigScreens = new Array('lg' , 'xl' , 'md')
   loading : any;
   searchControl = new FormControl();
   filteredOptions: Observable<Entry<any>[]>;

@@ -1,75 +1,98 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ViewChild, ElementRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import ProductsState from 'src/app/services/store/product/product.state';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Card } from 'src/app/components/cards/card';
 import { MediaObserver } from '@angular/flex-layout';
-import { ProductCardsService } from './product-cards/product-cards.service';
 import { Entry } from 'contentful';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { ProductCardComponent } from 'src/app/components/cards/product-card/product-card.component';
 import { ActivatedRoute } from '@angular/router';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
-    selector: 'app-search-page',
-    templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss'],
-  })
-  export class SearchComponent implements OnInit , OnDestroy{
+  selector: 'app-search-page',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss'],
+})
+export class SearchComponent implements OnInit, OnDestroy {
 
-    product$: Observable<Entry<any>[]>;
-    settings$: Observable<SettingsState>;
-    ProductSubscription: Subscription;
-    SettingsSubscription: Subscription;
-    productsLoaded:Entry<any>[];
-    relatedCategories:Entry<any>[];
-    productCards: Card[] = [];
-    previousUrl:string = '';
-    cols: Observable<number>;
-    colsBig: Observable<number>;
-    rowsBig: Observable<number>;
-    resolution : any;
-    navMode : any;
-    bigScreens = new Array('lg' , 'xl')
-    productVariants: Map<string,[any]> = new Map();
-    filters = new Array<any>();
-    filtersOpen : boolean;
-    colorPanelOpenState : boolean = true;
-    sizePanelOpenState: boolean = true;
+  product$: Observable<Entry<any>[]>;
+  settings$: Observable<SettingsState>;
+  ProductSubscription: Subscription;
+  SettingsSubscription: Subscription;
+  searchPageContent: Entry<any>;
+  productsLoaded: Entry<any>[];
+  productsDisplayed: Entry<any>[];
+  relatedCategories: Entry<any>[];
+  productCards: Card[] = [];
+  previousUrl: string = '';
+  cols: Observable<number>;
+  colsBig: Observable<number>;
+  rowsBig: Observable<number>;
+  resolution: any;
+  navMode: any;
+  bigScreens = new Array('lg', 'xl')
+  productVariants: Map<string, [any]> = new Map();
+  filters = new Array<any>();
+  filtersOpen: boolean;
+  colorPanelOpenState: boolean = true;
+  sizePanelOpenState: boolean = true;
+  productsLoadedInt: number = 9;
+  cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
 
-    @ViewChildren("checkboxVariants") checkboxVariants!: QueryList<any>
-    @ViewChild('sortSelect',{static: false}) sortSelect: ElementRef;
-    
-    constructor(store: Store<{ products: ProductsState , settings : SettingsState }>,
-                private mediaObserver: MediaObserver,
-                private cardsService: ProductCardsService,
-                private navService : NavigationService,
-                public route: ActivatedRoute)
-    {
-      this.cardsService.cards.subscribe(cards => {
-        this.productCards = cards;
-      });
-      this.product$ = store.pipe(select('products' , 'searchResults'));
-      this.settings$ = store.pipe(select('settings'));
+  @ViewChildren("checkboxVariants") checkboxVariants!: QueryList<any>
+  @ViewChild('sortSelect', { static: false }) sortSelect: ElementRef;
+  @ViewChild('productsGrid', { static: false }) productsGrid: ElementRef;
 
-    }
- 
-    ngOnInit() {
-      this.ProductSubscription = this.product$
+  constructor(store: Store<{ products: ProductsState, settings: SettingsState }>,
+    private mediaObserver: MediaObserver,
+    private navService: NavigationService,
+    public route: ActivatedRoute,
+    private utilService: UtilitiesService) {
+    window.addEventListener('scroll', this.loadMore.bind(this), { passive: true });
+    this.cards.subscribe(cards => {
+      this.productCards = cards;
+    });
+    this.product$ = store.pipe(select('products', 'searchResults'));
+    this.settings$ = store.pipe(select('settings'));
+
+  }
+
+  ngOnInit() {
+    this.ProductSubscription = this.product$
       .pipe(
         map(x => {
           this.productsLoaded = x;
-          this.cardsService.resetCards();
+          this.resetCards();
           if (this.productsLoaded) {
             this.createCards();
           }
         })
       )
       .subscribe();
+    this.ProductSubscription = this.product$
+      .pipe(
+        map(x => {
+          this.resetCards();
+          this.productVariants = new Map();
+          this.productsLoaded = [];
+          this.productsDisplayed = [];
+          if (x && x.length > 0) {
+            this.productsLoaded = x;
+            this.productsDisplayed = this.utilService.
+              shuffleArray(this.productsLoaded.map(products => { return products }));
+            this.createCards();
+          } else {
+            this.navService.finishLoading();
+          }
+        })
+      )
+      .subscribe();
 
-      this.SettingsSubscription = this.settings$
+    this.SettingsSubscription = this.settings$
       .pipe(
         map(x => {
           this.resolution = x.resolution;
@@ -85,96 +108,106 @@ import { ActivatedRoute } from '@angular/router';
               return category;
             }
           })
+
+          this.searchPageContent = x.pages.filter(page => {
+            if (page.fields.type == 'search') {
+              return page;
+            }
+          }).pop();
         })
       )
       .subscribe();
+    /* Grid column map */
+    const colsMap = new Map([
+      ['xs', 24],
+      ['sm', 24],
+      ['md', 18],
+      ['lg', 9],
+      ['xl', 9],
+    ]);
+    /* Big card column span map */
+    const colsMapBig = new Map([
+      ['xs', 12],
+      ['sm', 8],
+      ['md', 6],
+      ['lg', 3],
+      ['xl', 3],
+    ]);
+    /* Small card column span map */
+    const rowsMapBig = new Map([
+      ['xs', 21],
+      ['sm', 15],
+      ['md', 11],
+      ['lg', 5],
+      ['xl', 5],
+    ]);
+    let startCols: number;
+    let startColsBig: number;
+    let startRowsBig: number;
+    colsMap.forEach((cols, mqAlias) => {
+      if (this.mediaObserver.isActive(mqAlias)) {
+        startCols = cols;
+      }
+    });
+    colsMapBig.forEach((cols, mqAlias) => {
+      if (this.mediaObserver.isActive(mqAlias)) {
+        startColsBig = cols;
+      }
+    });
+    rowsMapBig.forEach((rows, mqAliast) => {
+      if (this.mediaObserver.isActive(mqAliast)) {
+        startRowsBig = rows;
+      }
+    });
+    const media$ = this.mediaObserver.asObservable();
+    this.cols = media$.pipe(
+      map(change => {
+        return colsMap.get(change[0].mqAlias);
+      }),
+      startWith(startCols),
+    );
+    this.colsBig = media$.pipe(
+      map(change => {
+        return colsMapBig.get(change[0].mqAlias);
+      }),
+      startWith(startColsBig),
+    );
+    this.rowsBig = media$.pipe(
+      map(change => {
+        return rowsMapBig.get(change[0].mqAlias);
+      }),
+      startWith(startRowsBig),
+    );
 
-      /* Grid column map */
-      const colsMap = new Map([
-        ['xs', 12],
-        ['sm', 4],
-        ['md', 8],
-        ['lg', 9],
-        ['xl', 18],
-      ]);
-      /* Big card column span map */
-      const colsMapBig = new Map([
-        ['xs', 6],
-        ['sm', 2],
-        ['md', 4],
-        ['lg', 3],
-        ['xl', 3],
-      ]);
-      /* Small card column span map */
-      const rowsMapBig = new Map([
-        ['xs', 11],
-        ['sm', 3],
-        ['md', 5],
-        ['lg', 5],
-        ['xl', 2],
-      ]);
-      let startCols: number;
-      let startColsBig: number;
-      let startRowsBig: number;
-      colsMap.forEach((cols, mqAlias) => {
-        if (this.mediaObserver.isActive(mqAlias)) {
-          startCols = cols;
-        }
-      });
-      colsMapBig.forEach((cols, mqAlias) => {
-        if (this.mediaObserver.isActive(mqAlias)) {
-          startColsBig = cols;
-        }
-      });
-      rowsMapBig.forEach((rows, mqAliast) => {
-        if (this.mediaObserver.isActive(mqAliast)) {
-          startRowsBig = rows;
-        }
-      });
-      const media$ = this.mediaObserver.asObservable();
-      this.cols = media$.pipe(
-        map(change => {
-          return colsMap.get(change[0].mqAlias);
-        }),
-        startWith(startCols),
-      );
-      this.colsBig = media$.pipe(
-        map(change => {
-          return colsMapBig.get(change[0].mqAlias);
-        }),
-        startWith(startColsBig),
-      );
-      this.rowsBig = media$.pipe(
-        map(change => {
-          return rowsMapBig.get(change[0].mqAlias);
-        }),
-        startWith(startRowsBig),
-      );
-      
-    }
+  }
 
-    ngAfterViewInit() {
-      this.navService.finishLoading();
-    }
+  ngAfterViewInit() {
+    this.navService.finishLoading();
+  }
 
-    createCards(): void {
-      this.productsLoaded.forEach((v , index) => {
+  goToCategory(category) {
+    this.navService.ctaClick(category);
+  }
+
+  createCards(): void {
+    if (this.productsDisplayed) {
+      this.productsDisplayed.slice(this.cards.value.length, this.cards.value.length + this.productsLoadedInt).forEach((v, index) => {
         this.sortVariants(v);
         if (this.filters.length == 0 || this.filterProduct(v)) {
-          this.cardsService.addCard(
+          this.addCard(
             new Card(
               {
                 name: {
                   key: Card.metadata.NAME,
-                  value:  v.fields.title,
+                  value: v.fields.title,
                 },
                 index: {
                   key: Card.metadata.INDEX,
-                  value:  index,
+                  value: index,
                 },
                 object: {
                   key: Card.metadata.OBJECT,
-                  value:  v,
+                  value: v,
                 },
                 cols: {
                   key: Card.metadata.COLS,
@@ -192,105 +225,137 @@ import { ActivatedRoute } from '@angular/router';
             ),
           );
         }
-        },
+      },
       );
-      this.navService.finishLoading();
     }
 
-    filterProduct(v) : boolean {
-      let include = false;
-      this.filters.forEach(filter => {
-        v.fields.variants.forEach(element => {
-          if (element.fields.option == filter.type && element.fields.name == filter.name) {
-            include = true;
-          }
-        });
-      });
-      return include;
-    }
+    this.navService.finishLoading();
+  }
 
-    sortVariants(product) {
-      product.fields.variants.forEach(variant => {
-        let variantObject = {name:variant.fields.name,code:variant.fields.code};
-        if(this.productVariants.get(variant.fields.option)) {
-          if (!this.productVariants.get(variant.fields.option).
-              some(item => item.name == variantObject.name && item.code == variantObject.code)) {
-            this.productVariants.get(variant.fields.option).push(variantObject);
-          }
-        } else {
-          this.productVariants.set(variant.fields.option , 
-                                 [variantObject]);
-        }
-      });
-    }
-
-    filterToggle(checkbox , type) {
-      if (checkbox.checked) {
-        this.filters.push({name : checkbox.source.value , type : type })
-      } else {
-        this.filters = this.filters.filter(filter => {
-          if (!(filter.name == checkbox.source.value && filter.type == type)) {
-            return filter;
-          }
-        });
-      }
-      
-      this.cardsService.resetCards();
+  loadMore() {
+    if (this.productsLoaded.length > 0 && window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
       this.createCards();
     }
+  }
 
-    removeFilterChip(chip) {
+  addCard(card: Card): void {
+    this.cards.next(this.cards.getValue().concat(card));
+  }
+
+  resetCards(): void {
+    this.cards.getValue().splice(0, this.cards.getValue().length);
+  }
+
+
+  filterProduct(v): boolean {
+    let include = false;
+    this.filters.forEach(filter => {
+      v.fields.variants.forEach(element => {
+        if (element.fields.option == filter.type && element.fields.name == filter.name) {
+          include = true;
+        }
+      });
+    });
+    return include;
+  }
+
+  sortVariants(product) {
+    product.fields.variants.forEach(variant => {
+      let variantObject = { name: variant.fields.name, code: variant.fields.code };
+      if (this.productVariants.get(variant.fields.option)) {
+        if (!this.productVariants.get(variant.fields.option).
+          some(item => item.name == variantObject.name && item.code == variantObject.code)) {
+          this.productVariants.get(variant.fields.option).push(variantObject);
+        }
+      } else {
+        this.productVariants.set(variant.fields.option,
+          [variantObject]);
+      }
+    });
+  }
+
+  filterToggle(checkbox, type) {
+    if (checkbox.checked) {
+      this.filters.push({ name: checkbox.source.value, type: type })
+    } else {
       this.filters = this.filters.filter(filter => {
-        if (!(filter.name == chip.name && filter.type == chip.type)) {
+        if (!(filter.name == checkbox.source.value && filter.type == type)) {
           return filter;
         }
       });
-
-      this.checkboxVariants.forEach(filter=> {
-        if (filter.id == (chip.name + '-' + chip.type)) {
-          filter['checked'] = false;
-        }
-      })
-       
-      this.cardsService.resetCards();
-      this.createCards();
     }
 
-    sortBy(sortBy) {
-      let sortedCards = this.productCards.map(card=> {
-        return card;
-      });
-
-      if (sortBy.value == 'price-low-high') {
-        sortedCards.sort(this.priceLowHigh);
-      } else if (sortBy.value == 'price-high-low') {
-        sortedCards.sort(this.priceHighLow);
-      }
-      this.sortSelect['value'] = '';
-      this.cardsService.resetCards();
-      sortedCards.forEach(card => {
-        this.cardsService.addCard(card);
-      })
-    }
-
-    priceLowHigh (s1:Card , s2:Card) {
-      if(s1.input.object.value.fields.price > s2.input.object.value.fields.price) return 1
-      else if (s1.input.object.value.fields.price === s2.input.object.value.fields.price) return 0
-      else return -1
-    }
-
-    priceHighLow (s1:Card , s2:Card) {
-      if(s1.input.object.value.fields.price > s2.input.object.value.fields.price) return -1
-      else if (s1.input.object.value.fields.price === s2.input.object.value.fields.price) return 0
-      else return 1
-    }
-  
-
-    ngOnDestroy(): void {
-      this.ProductSubscription.unsubscribe();
-      this.SettingsSubscription.unsubscribe();
-      this.cardsService.resetCards();
+    if (this.filters.length != 0) {
+      this.productsDisplayed = this.productsLoaded.filter((product) => { if (this.filterProduct(product)) { return product } });
+    } else {
+      this.productsDisplayed = this.utilService.
+        shuffleArray(this.productsLoaded.map(products => { return products }));
     }
 
 
+    this.resetCards();
+    this.createCards();
   }
+
+  removeFilterChip(chip) {
+    this.filters = this.filters.filter(filter => {
+      if (!(filter.name == chip.name && filter.type == chip.type)) {
+        return filter;
+      }
+    });
+
+    this.checkboxVariants.forEach(filter => {
+      if (filter.id == (chip.name + '-' + chip.type)) {
+        filter['checked'] = false;
+      }
+    })
+
+    if (this.filters.length != 0) {
+      this.productsDisplayed = this.productsLoaded.filter((product) => { if (this.filterProduct(product)) { return product } });
+    } else {
+      this.productsDisplayed = this.utilService.
+        shuffleArray(this.productsLoaded.map(products => { return products }));
+    }
+    this.resetCards();
+    this.createCards();
+  }
+
+  sortBy(sortBy) {
+    let sortedCards = this.productCards.map(card => {
+      return card;
+    });
+
+    if (sortBy.value == 'price-low-high') {
+      sortedCards.sort(this.priceLowHigh);
+    } else if (sortBy.value == 'price-high-low') {
+      sortedCards.sort(this.priceHighLow);
+    }
+    this.sortSelect['value'] = '';
+    this.resetCards();
+    sortedCards.forEach(card => {
+      this.addCard(card);
+    })
+  }
+
+  priceLowHigh(s1: Card, s2: Card) {
+    if (s1.input.object.value.fields.price > s2.input.object.value.fields.price) return 1
+    else if (s1.input.object.value.fields.price === s2.input.object.value.fields.price) return 0
+    else return -1
+  }
+
+  priceHighLow(s1: Card, s2: Card) {
+    if (s1.input.object.value.fields.price > s2.input.object.value.fields.price) return -1
+    else if (s1.input.object.value.fields.price === s2.input.object.value.fields.price) return 0
+    else return 1
+  }
+
+
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.loadMore.bind(this));
+    this.ProductSubscription.unsubscribe();
+    this.SettingsSubscription.unsubscribe();
+    this.resetCards();
+  }
+
+
+}

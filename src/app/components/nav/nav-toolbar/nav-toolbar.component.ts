@@ -44,7 +44,7 @@ export class NavToolbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private navService: NavigationService) {
+    public navService: NavigationService) {
       window.addEventListener('scroll', () => {
         var st = window.pageYOffset || document.documentElement.scrollTop;
         if (st > this.lastScrollTop && !this.mainMenuOpen){
@@ -72,6 +72,7 @@ export class NavToolbarComponent implements OnInit {
     if (this.navService.getCurrentUrl().pop() != link) {
       this.navService.startLoading();
     }
+    
     this.navService.resetStack([link]);
     this.onExpandMainMenu();
     this.router.navigateByUrl('cat/' + link);

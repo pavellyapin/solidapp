@@ -38,8 +38,8 @@ $doo-typography: mat-typography-config(
   $font-family: 'Noto Sans',
   $display-4: mat-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
   $display-3: mat-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
-  $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
-  $display-1: mat-typography-level(34px, 40px, 400),
+  $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em,),
+  $display-1: mat-typography-level(34px, 40px, 600),
   $headline:  mat-typography-level(24px, 32px, 400),
   $title: mat-typography-level(28px, 32px, 700 , $letter-spacing: 2px),
   $subheading-2: mat-typography-level(16px, 28px, 700),
@@ -110,6 +110,10 @@ input {
   letter-spacing: 2px;
 }
 
+.doo-opacity {
+  opacity: 0.3;
+}
+
 .doo-stroked-price {
   text-decoration: line-through;
   opacity: 0.5;
@@ -127,6 +131,19 @@ input {
   }
    .cls-2 {
     stroke: $primary;
+  }
+}
+
+.doo-accent-icon {
+  padding-right: 10px;
+  height: 25px;
+  width: 25px;
+  
+   .cls-1 {
+    stroke: $accent;
+  }
+   .cls-2 {
+    stroke: $accent;
   }
 }
 

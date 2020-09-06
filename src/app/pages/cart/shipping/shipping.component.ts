@@ -17,168 +17,194 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-    selector: 'doo-checkout-shipping',
-    templateUrl: './shipping.component.html',
-    styleUrls: ['./shipping.component.scss','../cart.component.scss']
-  })
-  export class CheckoutShippingComponent  {
+  selector: 'doo-checkout-shipping',
+  templateUrl: './shipping.component.html',
+  styleUrls: ['./shipping.component.scss', '../cart.component.scss']
+})
+export class CheckoutShippingComponent {
 
-    //Subscription
-    CartSubscription: Subscription;
-    UserSubscription: Subscription;
-    cartTotalSubscription: Subscription;
-    SettingsSubscription: Subscription;
-    /////////////
+  //Subscription
+  CartSubscription: Subscription;
+  UserSubscription: Subscription;
+  cartTotalSubscription: Subscription;
+  SettingsSubscription: Subscription;
+  ShippingMethodSubscription: Subscription;
+  /////////////
 
-    cartTotal$: Observable<Number>;
-    cartId : string;
-    cartTotal : any;
+  cartTotal$: Observable<Number>;
+  cartId: string;
+  cartTotal: any;
 
-    user$: Observable<UserState>;
-    userInfo: UserPerosnalInfo;
-    userAddressInfo: UserAddressInfo;
-    shippingMethodForm : FormGroup;
-    shippingOptions : any;
-    matcher = new MyErrorStateMatcher();
+  user$: Observable<UserState>;
+  shippingMethod$: Observable<any>;
+  shippingMethodDetails: any;
+  userInfo: UserPerosnalInfo;
+  userAddressInfo: UserAddressInfo;
+  shippingMethodForm: FormGroup;
+  shippingOptions: any;
+  matcher = new MyErrorStateMatcher();
 
-    settings$: Observable<SettingsState>;
-    siteSettings: Entry<any>;
-    resolution:any;
-    bigScreens = new Array('lg' , 'xl' , 'md')
+  settings$: Observable<SettingsState>;
+  siteSettings: Entry<any>;
+  resolution: any;
+  bigScreens = new Array('lg', 'xl', 'md')
 
 
-    @ViewChild('addressForm',{static: false}) 
-    public addressFormComponent: AddressFormComponent;
-         
+  @ViewChild('addressForm', { static: false })
+  public addressFormComponent: AddressFormComponent;
 
-    constructor(private store: Store<{ cart: CartState , user: UserState , settings : SettingsState }>,
-                private navService: NavigationService,
-                private dialog: MatDialog,
-                private route : ActivatedRoute) {
-        this.cartTotal$ = store.pipe(select('cart' , 'total'));
-        this.user$ = store.pipe(select('user'));
-        this.settings$ = store.pipe(select('settings'));
 
-        this.shippingMethodForm = new FormGroup({        
-          shipping : new FormControl('' , Validators.required)
-      })
-    }
+  constructor(private store: Store<{ cart: CartState, user: UserState, settings: SettingsState }>,
+    private navService: NavigationService,
+    private dialog: MatDialog,
+    private route: ActivatedRoute) {
+    this.cartTotal$ = store.pipe(select('cart', 'total'));
+    this.user$ = store.pipe(select('user'));
+    this.settings$ = store.pipe(select('settings'));
+    this.shippingMethod$ = store.pipe(select('cart', 'shippingMethod'));
 
-    ngOnInit() {
-        this.CartSubscription = this.cartTotal$
-        .pipe(
-          map(x => {
-            this.cartTotal = x;
-            this.setShippingOptions();
-          })
-        )
-        .subscribe();
+    this.shippingMethodForm = new FormGroup({
+      shipping: new FormControl('', Validators.required)
+    })
+  }
 
-        this.UserSubscription = this.user$
-        .pipe(
-          map(x => {
-            this.userInfo = x.personalInfo;
-            if (x.addressInfo) {
-              this.userAddressInfo = x.addressInfo;
-            }
-          })
-        )
-        .subscribe();
+  ngOnInit() {
+    this.CartSubscription = this.cartTotal$
+      .pipe(
+        map(x => {
+          this.cartTotal = x;
+        })
+      )
+      .subscribe();
 
-        this.SettingsSubscription = this.settings$
-        .pipe(
-          map(x => {
-            //console.log(x);
-            this.siteSettings = x.siteConfig;
-            this.resolution = x.resolution;
-            this.setShippingOptions();
-          })
-        )
-        .subscribe();
-    }
-
-    setShippingOptions() {
-      if (this.siteSettings) {
-        this.shippingOptions = this.siteSettings.fields.shipping.filter((option)=> {
-          if (option.fields.minTotal <= this.cartTotal && (!option.fields.maxTotal || option.fields.maxTotal > this.cartTotal)) {
-            return option;
+    this.UserSubscription = this.user$
+      .pipe(
+        map(x => {
+          this.userInfo = x.personalInfo;
+          if (x.addressInfo) {
+            this.userAddressInfo = x.addressInfo;
           }
-        });
-        this.setShippingMethod(this.shippingOptions[0]);
-        this.shippingMethodForm.controls["shipping"].setValue(this.shippingOptions[0]);
+        })
+      )
+      .subscribe();
+
+    this.ShippingMethodSubscription = this.shippingMethod$
+      .pipe(
+        map(x => {
+          this.shippingMethodDetails = x;
+        })
+      )
+      .subscribe();
+
+    this.SettingsSubscription = this.settings$
+      .pipe(
+        map(x => {
+          //console.log(x);
+          this.siteSettings = x.siteConfig;
+          this.resolution = x.resolution;
+          this.setShippingOptions();
+        })
+      )
+      .subscribe();
+  }
+
+  setShippingOptions() {
+    if (this.siteSettings) {
+      this.shippingOptions = this.siteSettings.fields.shipping.filter((option) => {
+        if (option.fields.minTotal <= this.cartTotal && (!option.fields.maxTotal || option.fields.maxTotal > this.cartTotal)) {
+          return option;
+        }
+      });
+      if (this.shippingMethodDetails) {
+        this.setShippingMethod(this.shippingMethodDetails.name);
+        this.shippingMethodForm.controls["shipping"].setValue(this.shippingMethodDetails.name);
+      } else {
+        this.setShippingMethod(this.shippingOptions[0].fields.name);
+        this.shippingMethodForm.controls["shipping"].setValue(this.shippingOptions[0].fields.name);
       }
+
+    }
+  }
+
+  setShippingMethod(shippingMethod) {
+    const chosenMethod = this.siteSettings.fields.shipping.filter((option) => {
+      if (option.fields.name == shippingMethod) {
+        return option;
+      }
+    }).pop();
+    this.store.dispatch(CartActions.
+      BeginSetShippingMethodAction({ payload: chosenMethod.fields }));
+  }
+
+  openAddressModal() {
+    let config;
+    if (this.bigScreens.includes(this.resolution)) {
+      config = {
+        height: '80%',
+        width: '60vw',
+        data: { userAddressInfo: this.userAddressInfo, userInfo: this.userInfo }
+      };
+    } else {
+      config = {
+        position: {
+          top: '0px',
+          right: '0px'
+        },
+        height: '100%',
+        width: '100vw',
+        panelClass: 'full-screen-modal',
+        data: { userAddressInfo: this.userAddressInfo, userInfo: this.userInfo }
+      };
     }
 
-    setShippingMethod(shippingMethod) {
+    this.dialog.open(CartShippingModalComponent, config);
+  }
+
+  continueCheckout() {
+    if (this.userAddressInfo) {
+      this.navService.startLoading();
       this.store.dispatch(CartActions.
-        BeginSetShippingMethodAction({payload : shippingMethod}));
+        BeginSetOrderShippingAction({
+          payload: {
+            address: this.userAddressInfo,
+            personalInfo: this.userInfo,
+            shipping: this.shippingMethodDetails,
+            cartId: this.route.snapshot.params["cartId"]
+          }
+        }));
+    } else {
+      this.openAddressModal();
     }
-
-    openAddressModal() {
-      let config;
-      if (this.bigScreens.includes(this.resolution)) {
-        config = {
-          height: '80%',
-          width: '60vw',
-          data: {userAddressInfo : this.userAddressInfo , userInfo : this.userInfo }
-        };
-      } else {
-        config = {
-          position: {
-            top: '0px',
-            right: '0px'
-          },
-          height: '100%',
-          width: '100vw',
-          panelClass: 'full-screen-modal',
-          data: {userAddressInfo : this.userAddressInfo , userInfo : this.userInfo }
-        };
-      }
-
-      this.dialog.open(CartShippingModalComponent,config); 
-    }
-
-    continueCheckout() {
-      if (this.userAddressInfo) {
-        this.navService.startLoading();
-        this.store.dispatch(CartActions.
-          BeginSetOrderShippingAction({payload :{address : this.userAddressInfo , 
-                                                 personalInfo : this.userInfo ,
-                                                 shipping : this.shippingMethodForm.controls["shipping"].value.fields,
-                                                 cartId : this.route.snapshot.params["cartId"]}}));
-      } else {
-        this.openAddressModal();
-      }
-    }
-
-    ngOnDestroy(){
-        this.CartSubscription.unsubscribe();
-        this.UserSubscription.unsubscribe();
-        this.SettingsSubscription.unsubscribe();
-        
-      }
   }
 
-  @Component({
-    selector: 'doo-cart-shipping-address-modal',
-    templateUrl: './address-modal/address-modal.component.html'
-  })
-  export class CartShippingModalComponent {
-  
-    
-    constructor(
-      private store: Store<{}>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public dialogRef: MatDialogRef<CartShippingModalComponent>) {
-      }
-    
-    addressUpdate($event) {
-      this.store.dispatch(UserActions.SuccessGetUserAddressInfoAction({ payload: $event }));
-      this.dialogRef.close();
-    }
+  ngOnDestroy() {
+    this.CartSubscription.unsubscribe();
+    this.UserSubscription.unsubscribe();
+    this.SettingsSubscription.unsubscribe();
 
-    personalInfoUpdate($event) {
-      this.store.dispatch(UserActions.SuccessSetCartUserAction({ payload: $event }));
-    }
-  
   }
+}
+
+@Component({
+  selector: 'doo-cart-shipping-address-modal',
+  templateUrl: './address-modal/address-modal.component.html'
+})
+export class CartShippingModalComponent {
+
+
+  constructor(
+    private store: Store<{}>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<CartShippingModalComponent>) {
+  }
+
+  addressUpdate($event) {
+    this.store.dispatch(UserActions.SuccessGetUserAddressInfoAction({ payload: $event }));
+    this.dialogRef.close();
+  }
+
+  personalInfoUpdate($event) {
+    this.store.dispatch(UserActions.SuccessSetCartUserAction({ payload: $event }));
+  }
+
+}

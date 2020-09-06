@@ -27,6 +27,7 @@ import { ProductsReducer } from './services/store/product/product.reducer';
 import { ProductsEffects } from './services/store/product/product.effects';
 import { CartEffects } from './services/store/cart/cart.effects';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({keys: ['user','cart'],rehydrate: true})(reducer);
@@ -39,6 +40,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    DeviceDetectorModule,
     NavModule,
     PipesModule,
     FlexLayoutModule,

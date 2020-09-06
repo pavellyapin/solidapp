@@ -12,6 +12,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
+import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
 
 @NgModule({
   declarations: [CheckoutSuccessComponent],
@@ -26,7 +28,9 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     FlexLayoutModule,
     FormsModule,
     TranslateModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    BlockLayoutsModule,
+    WidgetsModule
   ],
 })
 export class OrderModule {

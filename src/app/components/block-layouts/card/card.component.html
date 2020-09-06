@@ -1,11 +1,8 @@
-<div fxLayout="column" [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
+<div fxLayout="column" [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px' ">
      <div fxLayout="row" fxLayoutAlign="center">
-          <div fxLayout="row" fxLayout.lt-sm="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100"
-               fxFlex.lt-sm
-               [fxLayoutAlign]="'center' + ' ' +  (block.fields.verticalContentPosition ? block.fields.verticalContentPosition : 'start')">
-               <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 1 : 2"
-                    fxLayout="column" [fxFlex.gt-xs]="block.fields.textBoxWidth ? block.fields.textBoxWidth : 50"
-                    fxFlex.lt-sm="100" style="padding:20px"
+          <div fxLayout="column" [fxFlex]="block.fields.width" fxLayoutAlign="center">
+               <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
+                    fxLayout="column" [fxFlex]="block.fields.textBoxWidth" fxFlex.lt-md="100" style="padding:20px"
                     [class.primary-background]="block.fields.textBackground == 'Primary'"
                     [class.accent-background]="block.fields.textBackground == 'Accent'"
                     [class.white-background]="block.fields.textBackground == 'White'"
@@ -15,8 +12,7 @@
                          [class.accent-color]="block.fields.textColor == 'Accent'"
                          [class.white-color]="block.fields.textColor == 'White'"
                          [class.black-color]="block.fields.textColor == 'Black'"
-                         [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
-                         [innerHTML]="block.fields.content | richTextPipe">
+                         [style.text-align]="block.fields.textAlign" [innerHTML]="block.fields.content | richTextPipe">
                     </div>
                     <div class="doo-cta-content doo-contentful"
                          [class.primary-color]="block.fields.otherTextColor == 'Primary'"
@@ -26,12 +22,11 @@
                          [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                          [innerHTML]="block.fields.otherContent | richTextPipe">
                     </div>
-                    <doo-actions [fxLayoutAlign]="block.fields.actionsPosition ? block.fields.actionsPosition : 'start'"
-                         fxLayoutGap="20px" fxLayout="row" [actions]="block.fields.actions"></doo-actions>
+                    <doo-actions [fxLayoutAlign]="block.fields.actionsPosition" fxLayoutGap="20px" fxLayout="row"
+                         [actions]="block.fields.actions"></doo-actions>
 
                </div>
-               <div [fxFlex.gt-xs]="block.fields.textBoxWidth ? 100-block.fields.textBoxWidth : 50" fxFlex.lt-sm
-                    [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1">
+               <div>
                     <img *ngIf="block.fields.media[0].fields.file.details.image" class="full-width doo-pointer"
                          style="display: block" [src]="block.fields.media[0].fields.file.url">
                     <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"

@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { ProductCardsService } from './product-cards/product-cards.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { NavModule } from 'src/app/components/nav/nav.module';
@@ -19,6 +18,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { CardsModule } from 'src/app/components/cards/cards.module';
 import { SearchComponent } from './search.component';
 import { SearchRoutingModule } from './search-routing.module';
+import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
+import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
 
 
 @NgModule({
@@ -41,9 +42,11 @@ import { SearchRoutingModule } from './search-routing.module';
     MatExpansionModule,
     MatSelectModule,
     FlexLayoutModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    BlockLayoutsModule,
+    WidgetsModule
   ],
-  providers: [ProductCardsService],
+  providers: [],
   entryComponents: []
 })
 export class SearchModule {

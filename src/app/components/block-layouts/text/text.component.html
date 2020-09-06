@@ -1,14 +1,30 @@
-<div fxLayout = "column" [fxLayoutGap] = "block.fields.bottomPadding">
-        <div fxLayout = "column">
-          <div fxLayout = "row" 
-                class = "doo-contentful" 
-                [fxLayoutAlign] = "block.fields.contentPosition + ' ' +  block.fields.verticalContentPosition">
-                   <div [fxFlex] = "block.fields.width" [innerHTML] = "block.fields.content | richTextPipe">
-                   </div>
-           </div>
-           <div fxLayout = "row">
-                <doo-actions [fxFlex] = "block.fields.width" [fxLayoutAlign] = "block.fields.actionsPosition" fxLayoutGap = "20px" fxLayout = "row" [actions] = "block.fields.actions"></doo-actions>
-           </div>
+<div fxLayout="row" fxLayoutAlign="center">
+        <div fxLayout="column" [fxFlex]="block.fields.width" [fxLayoutGap]="block.fields.bottomPadding">
+                <div fxLayout="column" [fxFlex]="block.fields.textBoxWidth" fxFlex.lt-md="100" style="padding:20px"
+                        [class.primary-background]="block.fields.textBackground == 'Primary'"
+                        [class.accent-background]="block.fields.textBackground == 'Accent'"
+                        [class.white-background]="block.fields.textBackground == 'White'"
+                        [class.black-background]="block.fields.textBackground == 'Black'">
+                        <div class="doo-cta-content doo-contentful"
+                                [class.primary-color]="block.fields.textColor == 'Primary'"
+                                [class.accent-color]="block.fields.textColor == 'Accent'"
+                                [class.white-color]="block.fields.textColor == 'White'"
+                                [class.black-color]="block.fields.textColor == 'Black'"
+                                [style.text-align]="block.fields.textAlign"
+                                [innerHTML]="block.fields.content | richTextPipe">
+                        </div>
+                        <div class="doo-cta-content doo-contentful"
+                                [class.primary-color]="block.fields.otherTextColor == 'Primary'"
+                                [class.accent-color]="block.fields.otherTextColor == 'Accent'"
+                                [class.white-color]="block.fields.otherTextColor == 'White'"
+                                [class.black-color]="block.fields.otherTextColor == 'Black'"
+                                [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
+                                [innerHTML]="block.fields.otherContent | richTextPipe">
+                        </div>
+                        <doo-actions [fxLayoutAlign]="block.fields.actionsPosition" fxLayoutGap="20px" fxLayout="row"
+                                [actions]="block.fields.actions"></doo-actions>
+
+                </div>
+                <div></div>
         </div>
-        <div></div>
 </div>

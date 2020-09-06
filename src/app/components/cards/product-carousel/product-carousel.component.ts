@@ -21,7 +21,7 @@ export class ProductCarouselComponent implements OnInit {
     resolution$: Observable<string>;
     resolution : any;
     SettingsSubscription : Subscription;
-    public bigScreens = new Array('lg' , 'xl' , 'md')
+    public bigScreens = new Array('lg' , 'xl' , 'md', 'sm')
     
 
     constructor(@Inject(JQ_TOKEN) private $:any,

@@ -73,8 +73,7 @@ export class LoginComponent implements OnInit , OnDestroy{
           this.router.navigateByUrl('login/error');
         }
       });
-
-          
+         
     this.activatedRoute.queryParams
     .subscribe(params => {
       this.codeValid = true;

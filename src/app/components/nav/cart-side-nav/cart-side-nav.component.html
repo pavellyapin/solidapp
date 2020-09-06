@@ -1,35 +1,32 @@
-
-                  <div fxLayout = "column"
-                       fxLayoutGap = "20px"
-                       fxLayoutAlign="space-between">
-                       <div *ngIf = "cartItemCount == 0" 
-                            class = "doo-empty-cart" 
-                            fxLayoutGap = "20px" 
-                            fxLayout = "column" 
-                            fxLayoutAlign="center center">
-                            <span class = "mat-subheading-2">
-                                    Explore our store 
-                            </span>
-                            <span class = "mat-caption">
-                                You don't have any items in your cart
-                            </span>
-                           <div fxLayout = "row" class = "full-width" fxLayoutAlign="center center">
-                                <button color="primary" class = "doo-checkout-btn" mat-flat-button fxFlex = "80" (click) = "goToCart()">
-                                    SHOP
-                                </button>
-                            </div>
-                        </div>
-                                <div *ngIf = "cartItemCount > 0" fxLayout = "row" fxLayoutAlign="start center" class = "nav-cart-title">
-                                        <span class = "mat-caption doo-letter-space">
-                                            ({{cartItemCount}}) Items in your cart
-                                        </span>
-                                    </div>
-                                    <div style = "height: 400px;overflow: scroll;"  fxLayout = "column">
-                                            <doo-cart-items [cartItems] = "cartItems"></doo-cart-items>
-                                    </div>
-                                    <div  *ngIf = "cartItemCount > 0" fxLayout = "row" fxLayoutAlign="center center">
-                                        <button color="primary" class = "doo-checkout-btn" mat-flat-button fxFlex = "80" (click) = "goToCart()">
-                                            {{'cart.checkout' | translate}}
-                                        </button>
-                                    </div>
-                  </div>
+<div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="space-between">
+    <div *ngIf="cartItemCount == 0" class="doo-empty-cart" fxLayoutGap="20px" fxLayout="column"
+        fxLayoutAlign="center center">
+        <span class="mat-subheading-2">
+            Explore our store
+        </span>
+        <span class="mat-caption">
+            You don't have any items in your cart
+        </span>
+        <div fxLayout="row" class="full-width" fxLayoutAlign="center center">
+            <button color="primary" class="doo-checkout-btn" mat-flat-button fxFlex="80" (click)="goToCart()">
+                SHOP
+            </button>
+        </div>
+    </div>
+    <div *ngIf="cartItemCount > 0" fxLayout="column" fxLayoutAlign="start start" [ngClass] = "utilService.bigScreens.includes(this.resolution) ? 'nav-cart-title' : 'nav-mobile-cart-title'">
+        <span class="mat-headline doo-letter-space">
+            Your Cart
+        </span>
+        <span class="mat-caption doo-letter-space">
+            ({{cartItemCount}}) Items in your cart
+        </span>
+    </div>
+    <div style="height: 400px;overflow: scroll;" fxLayout="column">
+        <doo-cart-items [cartItems]="cartItems"></doo-cart-items>
+    </div>
+    <div *ngIf="cartItemCount > 0" fxLayout="row" fxLayoutAlign="center center">
+        <button color="primary" class="doo-checkout-btn" mat-flat-button fxFlex="80" (click)="goToCart()">
+            {{'cart.checkout' | translate}}
+        </button>
+    </div>
+</div>
