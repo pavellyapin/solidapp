@@ -44,7 +44,7 @@ export class CheckoutPaymentComponent {
   cardExpiry: any;
   cardCvc: any;
   cardHandler = this.onChange.bind(this);
-  error: string;
+  error: any;
 
   paymentMethodForm: FormGroup;
 
@@ -198,13 +198,16 @@ export class CheckoutPaymentComponent {
 
 
   async onSubmit() {
+    this.navService.startLoading();
+    this.cd.detectChanges();
     if (this.paymentMethodForm.controls['method'].value == 'cc') {
       const { source, error } = await stripe.createSource(this.cardNumber);
       if (error) {
+        this.navService.finishLoading();
         this.error = error;
         console.log('Something is wrong:', error);
       } else {
-        this.navService.startLoading();
+        this.utilService.scrollTop();
         this.store.dispatch(CartActions.BeginSetStripeTokenAction({ payload: { cartId: this.cartId, source: source } }));
       }
     } else {
@@ -261,6 +264,7 @@ export class PayPalModalComponent {
 
     this.actionSubscription = this.firebaseFunctions.payPalPay(this.data, this.cardId).pipe(
       map((data) => {
+        console.log('pasha' , data)
         if (data.code == 200) {
           window.open(data.redirect,"_self");
         }

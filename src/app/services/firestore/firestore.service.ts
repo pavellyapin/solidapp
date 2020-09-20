@@ -149,15 +149,17 @@ export class FirestoreService {
                         .snapshotChanges();
     }
 
+    setOrderStatus(cartId : any , status : any) : Observable<any>{
+        return from (this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
+                        .doc("orders").collection("orders").doc(cartId).update({status : status}));
+    }
+
     setOrderShippingInfo (cart : any) : Observable<any>{
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cart.cartId).update({shipping : cart.shipping ,address : cart.address, personalInfo : cart.personalInfo}));
-        } else {
-            var initOrder = this.firebaseFunctions.httpsCallable('initOrder');
-            return initOrder({"cart" : cart});
-        }
+        } 
     }
 
     //This method is a listener, mainly for payment section to listen on status changes
@@ -166,10 +168,7 @@ export class FirestoreService {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cartId).snapshotChanges());
-        } else {
-            var getCart = this.firebaseFunctions.httpsCallable('getCart');
-            return getCart({"cartId" : cartId});
-        }
+        } 
     }
 
     //This is a 1 time data fetch, for success
@@ -178,14 +177,11 @@ export class FirestoreService {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cartId).get());
-        } else {
-            var getCart = this.firebaseFunctions.httpsCallable('getCart');
-            return getCart({"cartId" : cartId});
-        }
+        } 
     }
 
     payPalPay (cart : CartData , cardId : string) : Observable<any>{
-        var payPalCheckout = this.firebaseFunctions.httpsCallable('pay');
+        var payPalCheckout = this.firebaseFunctions.httpsCallable('paypal/pay');
         return payPalCheckout({cart : cart, cartId : cardId , uid : this.authservice.uid});
     }
 
@@ -194,19 +190,6 @@ export class FirestoreService {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
                 .doc("orders").collection("orders").doc(cartId).collection('payment').add({payment : {token : token}}));
-        } else {
-            var setStripeCharge = this.firebaseFunctions.httpsCallable('setStripeCharge');
-            return setStripeCharge({token : token , cartId : cartId});
-        }
-    }
-
-    sendConfirmationEmail (cartId) : Observable<any>{
-            var sendConfirmationEmail = this.firebaseFunctions.httpsCallable('sendConfirmationEmail');
-            if (this.authservice.uid) {
-                return sendConfirmationEmail({uid : this.authservice.uid , cartId : cartId});
-            } else {
-                return sendConfirmationEmail({cartId : cartId});
-            }
-            
+        } 
     }
 }

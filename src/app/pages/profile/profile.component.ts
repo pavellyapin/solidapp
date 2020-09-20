@@ -10,6 +10,9 @@ import { map } from 'rxjs/operators';
 import { Actions, ofType } from '@ngrx/effects';
 import UserState from 'src/app/services/store/user/user.state';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { UtilitiesService } from 'src/app/services/util/util.service';
+import { SEOService } from 'src/app/services/seo/seo.service';
+import { Entry } from 'contentful';
 
 @Component({
   selector: 'app-profile-page',
@@ -19,6 +22,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class ProfileComponent implements OnInit {
 
   settings$: Observable<SettingsState>;
+  profilePageContent : Entry<any>;
   SettingsSubscription: Subscription;
   userInfoUpdate$: Subscription;
 
@@ -27,9 +31,7 @@ export class ProfileComponent implements OnInit {
   
   resolution : any;
   navMode : any;
-  bigScreens = new Array('lg' , 'xl' , 'md')
   filtersOpen : boolean;
-  showToggle : boolean = true;
   loading : boolean = false;
   
   constructor(private router: Router,
@@ -37,7 +39,9 @@ export class ProfileComponent implements OnInit {
               private _actions$: Actions,
               private navService : NavigationService,
               private changeDetectorRef: ChangeDetectorRef,
-              private authState: AuthService) {
+              private authState: AuthService,
+              public utils : UtilitiesService,
+              private seoService : SEOService) {
                 this.settings$ = store.pipe(select('settings'));
                 this.user$ = store.pipe(select('user'));
   }
@@ -62,7 +66,15 @@ export class ProfileComponent implements OnInit {
         this.loading = x.loading;
         this.changeDetectorRef.detectChanges();
         this.resolution = x.resolution;
-        if (this.bigScreens.includes(this.resolution)) {
+        this.profilePageContent = x.pages.filter(page=>{
+          if (page.fields.type == 'profile') {
+            this.seoService.updateTitle(page.fields.title);
+            this.seoService.updateDescription(page.fields.description);
+            this.seoService.updateOgUrl(window.location.href);
+            return page;
+          }
+        }).pop();
+        if (this.utils.bigScreens.includes(this.resolution)) {
           this.navMode = 'side';
           this.filtersOpen = true;
         } else {
@@ -74,20 +86,6 @@ export class ProfileComponent implements OnInit {
     )
     .subscribe();
 
-    if (this.navService.getActivePage().title == 'Profile Overview') {
-      this.showToggle = false;
-    }
-
-    this.router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
-        if(val.url == '/account/overview') {
-          this.showToggle = false;
-        } else {
-          this.showToggle = true;
-        }
-        this.navService.finishLoading();
-      }
-  });
 
     this.userInfoUpdate$ = this._actions$.pipe(ofType(
       UserActions.SuccessGetUserInfoAction,

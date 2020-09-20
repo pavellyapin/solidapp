@@ -229,3 +229,22 @@ doo-bread-crumbs {
     border-color: $light-grey;
   }
 }
+
+.doo-reviews-cont{
+  .mat-display-1{
+    margin : 0px;
+  }
+  mat-icon {
+    height: 35px;
+    width: 35px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $accent;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $accent;
+    }
+  }
+  background: white;
+  padding : 2%;
+}

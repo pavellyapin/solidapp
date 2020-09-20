@@ -51,7 +51,7 @@ export class NavComponent implements OnInit {
     private authService: AuthService,
     private store: Store<{ settings: SettingsState}>,
     private _actions$: Actions,
-    private utilService : UtilitiesService,
+    public utilService : UtilitiesService,
     public navService: NavigationService) {
 
     this.settings$ = store.pipe(select('settings'));

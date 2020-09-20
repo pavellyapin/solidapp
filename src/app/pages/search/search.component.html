@@ -81,7 +81,7 @@
     <mat-drawer [opened]="filtersOpen" 
                   [mode]="navMode" 
                   position = "start"
-                  [ngClass] = "this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters-mobile'">
+                  [ngClass] = "this.utilService.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters-mobile'">
 
                   <mat-accordion [multi] = "true">
                       <mat-expansion-panel [hideToggle] = "true" 

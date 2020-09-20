@@ -1,45 +1,31 @@
-<div fxLayoutGap="20px" fxLayout="column" class = "doo-profile-overview">
-        <div fxLayoutGap="20px" fxLayout="column" class = "overview-welcome">
-                        <div></div>
-                        <div fxLayout = "row" fxLayoutAlign = "center">
-                                <div fxFlex = "80" fxLayout = "column">
-                                   <div class= "mat-title">Welcome back Pavel!</div>
-                                   <div>Welcome back Pavel!</div>
-                                </div>
-                        </div> 
-                        <div></div>
-                </div>
-        <div fxLayout = "row" fxLayoutGap="20px">
-                <button class = "overview-btn" fxFlex = "50" color = "accent" 
-                        [routerLink] = "'/account/orders'"
+<div fxLayoutGap="20px" fxLayout="column" class="doo-profile-overview">
+        <div fxLayout="row" fxLayoutGap="20px">
+                <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/orders'"
                         mat-stroked-button>
-                        <div fxLayout = "row" fxLayoutAlign = "center center">
-                                        <mat-icon svgIcon="doo-basket"></mat-icon><span>ORDERS</span>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                                <mat-icon svgIcon="doo-basket"></mat-icon><span>ORDERS</span>
                         </div>
-                        
+
                 </button>
-                <button class = "overview-btn" fxFlex = "50" color = "accent"
-                        [routerLink] = "'/account/favorites'" 
+                <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/favorites'"
                         mat-stroked-button>
-                        <div fxLayout = "row" fxLayoutAlign = "center center">
-                                        <mat-icon svgIcon="doo-favorite"></mat-icon><span>WISH LIST</span>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                                <mat-icon svgIcon="doo-favorite"></mat-icon><span>WISH LIST</span>
                         </div>
                 </button>
         </div>
-        <div fxLayout = "row" fxLayoutGap="20px">
-                <button class = "overview-btn" fxFlex = "50" color = "accent" 
-                        [routerLink] = "'/account/profile'"
+        <div fxLayout="row" fxLayoutGap="20px">
+                <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/profile'"
                         mat-stroked-button>
-                        <div fxLayout = "row" fxLayoutAlign = "center center">
-                                        <mat-icon svgIcon="doo-profile"></mat-icon><span>PROFILE</span>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                                <mat-icon svgIcon="doo-profile"></mat-icon><span>PROFILE</span>
                         </div>
-                        
+
                 </button>
-                <button class = "overview-btn" fxFlex = "50" color = "accent" 
-                        [routerLink] = "'/account/addressinfo'"
+                <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/addressinfo'"
                         mat-stroked-button>
-                        <div fxLayout = "row" fxLayoutAlign = "center center">
-                                        <mat-icon svgIcon="doo-location"></mat-icon><span>ADDRESS</span>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                                <mat-icon svgIcon="doo-location"></mat-icon><span>ADDRESS</span>
                         </div>
                 </button>
         </div>

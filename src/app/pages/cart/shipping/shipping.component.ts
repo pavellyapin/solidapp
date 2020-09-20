@@ -15,6 +15,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-checkout-shipping',
@@ -47,7 +48,6 @@ export class CheckoutShippingComponent {
   settings$: Observable<SettingsState>;
   siteSettings: Entry<any>;
   resolution: any;
-  bigScreens = new Array('lg', 'xl', 'md')
 
 
   @ViewChild('addressForm', { static: false })
@@ -57,7 +57,8 @@ export class CheckoutShippingComponent {
   constructor(private store: Store<{ cart: CartState, user: UserState, settings: SettingsState }>,
     private navService: NavigationService,
     private dialog: MatDialog,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private utilService: UtilitiesService) {
     this.cartTotal$ = store.pipe(select('cart', 'total'));
     this.user$ = store.pipe(select('user'));
     this.settings$ = store.pipe(select('settings'));
@@ -138,7 +139,7 @@ export class CheckoutShippingComponent {
 
   openAddressModal() {
     let config;
-    if (this.bigScreens.includes(this.resolution)) {
+    if (this.utilService.bigScreens.includes(this.resolution)) {
       config = {
         height: '80%',
         width: '60vw',
@@ -162,6 +163,7 @@ export class CheckoutShippingComponent {
 
   continueCheckout() {
     if (this.userAddressInfo) {
+      this.utilService.scrollTop();
       this.navService.startLoading();
       this.store.dispatch(CartActions.
         BeginSetOrderShippingAction({

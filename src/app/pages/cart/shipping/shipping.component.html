@@ -1,29 +1,31 @@
 <div style="flex: 1 1 100%;min-height:100vh;" fxLayout="column" fxLayoutGap="20px">
         <div class="doo-cart-steps" fxLayout="row" fxLayoutAlign="center">
-                <div fxLayout="row" fxFlex="80" fxLayoutAlign="center">
+                <div fxLayout="row" fxFlex="80" fxFlex.xs fxLayoutAlign="center" fxLayoutGap="4px">
                         <button color="primary" mat-button [routerLink]="'/login'">
-                                Guest/Login
+                                <span class="crumb-item">Guest/Login</span>
                                 <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
 
                         </button>
-                        <button color="accent" mat-button (click)="continueCheckout()" class="accent-color">
-                                Shipping
+                        <button color="accent" mat-button class="accent-color">
+                                <span class="crumb-item">Shipping</span>
                                 <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
                         </button>
                         <button color="primary" mat-button (click)="continueCheckout()">
-                                Payment
+                                <span class="crumb-item">Payment</span>
                         </button>
                 </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center">
-                <div fxLayout="column" fxFlex="80" fxFlex.lt-sm="90" fxLayoutGap="30px" id="doo-shipping-form">
+                <div fxLayout="column" fxFlex="80" fxFlex.lt-sm fxLayoutGap="30px" id="doo-shipping-form">
                         <div></div>
-                        <span class="mat-headline doo-letter-space">
-                                Shipping Details
-                        </span>
+                        <div fxLayout="row" fxLayoutAlign="center" class="mat-headline doo-letter-space">
+                                <span fxFlex fxFlex.lt-md="95">
+                                        Shipping Details
+                                </span>
+                        </div>
 
                         <div fxLayout="column" class="doo-shipping-box" fxLayoutGap="10px">
-                                <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayoutAlign="space-between">
                                         <span class="mat-subheading-2 doo-letter-space">Contact Info & Address</span>
                                         <div (click)="openAddressModal()" class="mat-caption doo-pointer doo-undeline">
                                                 {{ 'profile.buttons.edit' | translate }}
@@ -84,7 +86,8 @@
                 </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center">
-                <div fxLayout="row" fxLayout.lt-md="column" fxFlex="80" fxLayoutAlign="space-between">
+                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="15px" fxFlex="80"
+                        fxLayoutAlign="space-between">
                         <button color="accent" mat-button class="doo-cta-btn" [routerLink]="'/'">
                                 <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
                                 STILL SHOPPING

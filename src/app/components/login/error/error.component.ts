@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-import { Actions, ofType } from '@ngrx/effects';
-import * as UserActions from 'src/app/services/store/user/user.action';
 import { Store, select } from '@ngrx/store';
 import UserState from 'src/app/services/store/user/user.state';
 import { map } from 'rxjs/operators';
@@ -17,7 +15,7 @@ export class LoginErrorComponent {
   errorSubscription :Subscription;
   error$: Observable<Error>;
   
-  constructor(private store: Store<{ user: UserState}>,) {
+  constructor(store: Store<{ user: UserState}>,) {
     this.error$ = store.pipe(select('user','UserError'));
   }
 

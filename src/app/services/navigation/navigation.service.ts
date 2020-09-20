@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {NavRoute, NavRouteService} from "./nav-routing";
 import * as SettingsActions from 'src/app/services/store/settings/settings.action';
 import { Store } from '@ngrx/store';
-import { Title } from '@angular/platform-browser';
 
 export class Page {
   title: string;
@@ -24,8 +23,7 @@ export class NavigationService {
   private navigationStack: Array<Array<string>> = [];
 
   constructor(private navRouteService: NavRouteService , 
-              private store: Store<{}>,
-              private titleService: Title) {
+              private store: Store<{}>) {
     this.navigationItems = navRouteService.getNavRoutes();
   }
 
@@ -91,7 +89,6 @@ export class NavigationService {
     if (url.length > 0) {
       isChild ? this.pushToStack(url) : this.resetStack(url);
     }
-    this.titleService.setTitle(title);
     this.activePage = new Page(title, isChild);
   }
 

@@ -7,3 +7,21 @@
     letter-spacing: 4px;
     color: white;
 }
+
+.post-placeholder {
+    margin:15px;
+    animation-duration: .5s;
+    animation-name: fade;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  
+  @keyframes fade {
+    from {
+      opacity: 0.8;
+    }
+  
+    to {
+      opacity: 0.3;
+    }
+  }

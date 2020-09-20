@@ -22,8 +22,7 @@ export class GuestFormComponent implements OnInit , OnDestroy{
   settings$: Observable<SettingsState>;
   SettingsSubscription: Subscription;
   resolution:any;
-  bigScreens = new Array('lg' , 'xl' , 'md')
-
+  
   pageContent : Entry<any>;
   
   errorMessage: string;
@@ -42,7 +41,7 @@ export class GuestFormComponent implements OnInit , OnDestroy{
   constructor(private _actions$: Actions,
               private store: Store<{ user: UserState , settings : SettingsState }>,
               private navService : NavigationService,
-              private utils : UtilitiesService) {
+              public utils : UtilitiesService) {
 
                 this.loginForm = new FormGroup({        
                     email: new FormControl('' ,Validators.required),

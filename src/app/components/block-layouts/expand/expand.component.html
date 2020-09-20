@@ -1,0 +1,43 @@
+<div fxLayout="row" fxLayoutAlign="center">
+        <div fxLayout="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100" fxFlex.lt-sm
+                [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
+                <mat-accordion>
+                        <mat-expansion-panel [hideToggle]="true" [expanded]="expandOpen"
+                                (opened)="expandOpen = true" (closed)="expandOpen = false"
+                                class="mat-elevation-z0">
+                                <mat-expansion-panel-header
+                                        [class.primary-background]="block.fields.textBackground == 'Primary'"
+                                        [class.accent-background]="block.fields.textBackground == 'Accent'"
+                                        [class.white-background]="block.fields.textBackground == 'White'"
+                                        [class.black-background]="block.fields.textBackground == 'Black'">
+                                        <mat-panel-title class="doo-cta-content doo-contentful"
+                                                [class.primary-color]="block.fields.textColor == 'Primary'"
+                                                [class.accent-color]="block.fields.textColor == 'Accent'"
+                                                [class.white-color]="block.fields.textColor == 'White'"
+                                                [class.black-color]="block.fields.textColor == 'Black'"
+                                                [style.text-align]="block.fields.textAlign"
+                                                [innerHTML]="block.fields.content | richTextPipe">
+                                        </mat-panel-title>
+                                        <mat-panel-description class="doo-expand-toggle" fxLayout="row"
+                                                fxLayoutAlign="end center">
+                                                <mat-icon [svgIcon]="expandOpen ? 'doo-minus' : 'doo-plus'">
+                                                </mat-icon>
+                                        </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <div fxLayout="column">
+                                        <div class="doo-cta-content doo-contentful"
+                                                [class.primary-color]="block.fields.otherTextColor == 'Primary'"
+                                                [class.accent-color]="block.fields.otherTextColor == 'Accent'"
+                                                [class.white-color]="block.fields.otherTextColor == 'White'"
+                                                [class.black-color]="block.fields.otherTextColor == 'Black'"
+                                                [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
+                                                [innerHTML]="block.fields.otherContent | richTextPipe">
+                                        </div>
+                                        <doo-actions [fxLayoutAlign]="block.fields.actionsPosition ? block.fields.actionsPosition : 'start'" fxLayoutGap="20px"
+                                                fxLayout="row" [actions]="block.fields.actions"></doo-actions>
+                                </div>
+                        </mat-expansion-panel>
+                </mat-accordion>
+                <div></div>
+        </div>
+</div>

@@ -30,7 +30,7 @@ export class CartSideNavComponent implements OnInit {
     private contentfulService: ContentfulService,
     public navService: NavigationService,
     private router: Router,
-    private utilService : UtilitiesService,
+    public utilService : UtilitiesService,
     store: Store<{ cart: CartState}>) {
       this.cards.subscribe(cards => {
         this.cartItemsCards = cards;

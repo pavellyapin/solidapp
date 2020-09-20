@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Renderer2, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { StateChange } from 'ng-lazyload-image';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-background-img-block',
@@ -11,24 +12,21 @@ export class BackgroundImageBlockComponent implements OnInit {
 
   @Input() block;
   @Input() resolution;
-  bigScreens = new Array('lg' , 'xl' , 'md')
   imgLoaded : boolean = false;
   @ViewChild('postImg',{static: false}) mediaElement: ElementRef;
   @ViewChild('content',{static: false}) contentElement: ElementRef;
+  @ViewChild('mainVid',{static: false}) mainVid: any;
 
   constructor(private renderer: Renderer2,
               private zone:NgZone,
               private changeDetectorRef: ChangeDetectorRef,
-              public navService : NavigationService) {
+              public navService : NavigationService,
+              public utils : UtilitiesService) {
     
   }
 
   ngOnInit() {
     //console.log('post',this.block);
-  }
-
-  loadComplete() {
-    this.imgLoaded = true;
   }
 
   myCallbackFunction(event: StateChange) {
@@ -62,6 +60,15 @@ export class BackgroundImageBlockComponent implements OnInit {
       case 'finally':
         // The last event before cleaning up
         break;
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.mainVid) {
+      this.mainVid.nativeElement.addEventListener('canplay', () => {
+        this.mainVid.nativeElement.muted = true;
+        this.mainVid.nativeElement.play()
+      } , {passive:true})
     }
   }
 

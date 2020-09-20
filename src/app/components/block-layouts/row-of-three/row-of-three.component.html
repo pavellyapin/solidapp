@@ -1,0 +1,10 @@
+<div fxLayout="row" fxLayoutAlign="center" [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px' ">
+        <div fxLayout="row" [fxFlex]="block.fields.width" fxLayout.lt-md="column">
+                <div fxFlex="33" fxFlex.lt-md [ngSwitch]="block.sys.contentType?.sys.id"
+                        *ngFor="let block of block?.fields.blocks">
+                        <doo-block-layouts *ngSwitchCase="'block'" [block]="block">
+                        </doo-block-layouts>
+                </div>
+        </div>
+        <div></div>
+</div>

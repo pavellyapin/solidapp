@@ -24,6 +24,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { AccountOverviewComponent } from './components/overview/account.component';
 import { CardsModule } from 'src/app/components/cards/cards.module';
 import { ProfileAddressComponent } from './components/address/address.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
+import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
 
 @NgModule({
   declarations: [ProfileComponent,
@@ -51,7 +54,10 @@ import { ProfileAddressComponent } from './components/address/address.component'
     FormsModule,
     ReactiveFormsModule,
     AddressComponentsModule,
-    TranslateModule
+    TranslateModule,
+    LazyLoadImageModule,
+    BlockLayoutsModule,
+    WidgetsModule
   ],
   providers : [],
   entryComponents: []

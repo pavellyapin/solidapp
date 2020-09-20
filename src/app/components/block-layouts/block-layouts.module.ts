@@ -12,6 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActionsComponent } from './actions/actions.component';
 import { CardPostComponent } from './card/card.component';
 import { RowOfTwoPostComponent } from './row-of-two/row-of-two.component';
+import { RowOfThreePostComponent } from './row-of-three/row-of-three.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ExpandBlockComponent } from './expand/expand.component';
 
 @NgModule({
     declarations: [BackgroundImageBlockComponent,
@@ -20,14 +23,17 @@ import { RowOfTwoPostComponent } from './row-of-two/row-of-two.component';
                    BlockLayoutComponent,
                    ActionsComponent,
                    CardPostComponent,
-                   RowOfTwoPostComponent],
+                   RowOfTwoPostComponent,
+                   RowOfThreePostComponent,
+                   ExpandBlockComponent],
     imports: [
         CommonModule,
         PipesModule,
         LazyLoadImageModule,
         FlexLayoutModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatExpansionModule
     ],
     exports: [BlockLayoutComponent]
   })

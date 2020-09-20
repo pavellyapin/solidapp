@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Observable, Subscription } from 'rxjs';
+import { SEOService } from 'src/app/services/seo/seo.service';
 
 @Component({
   selector: 'app-custom-page',
@@ -21,7 +22,8 @@ export class CustomComponent implements OnInit {
 
   constructor(store: Store<{ settings : SettingsState }> ,
               public route: ActivatedRoute, 
-              private navSerivce : NavigationService) {
+              private navSerivce : NavigationService,
+              private seoService : SEOService) {
                 
                 this.settings$ = store.pipe(select('settings','pages'));
   }
@@ -33,6 +35,9 @@ export class CustomComponent implements OnInit {
         if (x) {
           this.customPageContent = x.filter(page=>{
             if (page.fields.name == this.route.snapshot.params['page']) {
+              this.seoService.updateTitle(page.fields.title);
+              this.seoService.updateDescription(page.fields.description);
+              this.seoService.updateOgUrl(window.location.href);
               return page;
             }
           }).pop();

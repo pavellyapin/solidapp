@@ -1,0 +1,21 @@
+@import 'src/css/_variables.scss';
+@import 'src/css/contentful.scss';
+
+mat-expansion-panel-header {
+  height: 100% !important;
+}
+
+.doo-expand-toggle {
+  mat-icon {
+      height: 30px;
+      width: 30px;
+      opacity: 1 !important;
+      
+      ::ng-deep .cls-1 {
+        stroke: $accent;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $accent;
+      }
+    }
+}

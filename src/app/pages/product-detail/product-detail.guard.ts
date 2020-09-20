@@ -33,8 +33,8 @@ export class ProductDetailGuard implements CanActivate  {
   canActivate(route: ActivatedRouteSnapshot) : Observable<boolean> {
     return this.contentful.getProductDetails(route.params["product"]).pipe(
       map(x => {
-        this.store.dispatch(ProductsActions.BeginLoadProductReviewsAction({payload : x.sys.id}));
           if (x) {
+            this.store.dispatch(ProductsActions.BeginLoadProductReviewsAction({payload : x.sys.id}));
             if(x.fields.categories) {
               this.categories.forEach(function(category) {
                 if(category.fields.name == x.fields.categories[0].fields.name) {

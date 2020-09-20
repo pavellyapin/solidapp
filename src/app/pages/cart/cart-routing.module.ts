@@ -9,6 +9,7 @@ import { CheckoutPaymentGuard } from './payment/payment.guard';
 import { CheckoutPaymentComponent } from './payment/payment.component';
 import { GuestCheckoutComponent } from './guest/guest.component';
 import { GuestCheckoutGuard } from './guest/guest.guard';
+import { CartErrorComponent } from './error/error.component';
 
 export const cartRoutes: NavRoute[] = [
   {data: {title: 'Cart' , isChild: true},
@@ -24,7 +25,10 @@ export const cartRoutes: NavRoute[] = [
       {data: {title: 'Checkout Payment' , isChild: true},
       path: 'checkout/:cartId/payment', 
       canActivate: [CheckoutPaymentGuard],
-      component: CheckoutPaymentComponent}
+      component: CheckoutPaymentComponent},
+      {data: {title: 'Checkout Error' , isChild: true},
+      path: 'checkout/:cartId/error', 
+      component: CartErrorComponent},
    ],
    component: CartComponent}
 ];

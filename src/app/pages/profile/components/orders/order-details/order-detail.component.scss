@@ -1,21 +1,41 @@
 @import 'src/css/_variables.scss';
 
-.mat-subheading-2{
-    color:$accent;
-}
+.doo-order-success{
+    padding-bottom: 5%;
+    .doo-shipping-box {
+        background: white;
+        padding:20px;
+        border-radius: 5px;
+        letter-spacing: 2px;
+        mat-icon {
+        padding-right: 10px;
+        height: 25px;
+        width: 25px;
+        
+        ::ng-deep .cls-1 {
+            stroke: $primary;
+        }
+        ::ng-deep .cls-2 {
+            stroke: $primary;
+        }
+        }
+    }
 
-.paid-label { 
-    font-size: 18px;
-    font-weight: 700;
-    color: $success;
-}
+    .doo-cart-summary {
+        background: white;
+        padding:20px;
+        border-radius: 5px;
+    }
 
-.doo-order-number {
-    color : $accent;
-}
+    .doo-order-number{
+        font-weight: 900;
+    }
 
-.doo-order-summary {
-    max-width: 800px;
-    background-color: $light-grey;
-    padding: 20px;
+    .mat-display-1{
+        margin : 0 0 14px;
+    }
+
+    .add-field-placeholder {
+        opacity: 0.5;
+    }
 }

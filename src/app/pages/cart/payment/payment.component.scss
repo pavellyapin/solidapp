@@ -34,53 +34,32 @@
       color: $accent;
     }
   }
+
+  .doo-checkout-form{
+    padding : 10px 10px;
+  }
+
+}
+
+.doo-pay-paypal{
+  padding : 10px 10px;
 }
 ::ng-deep .mat-button-wrapper {
     display: inline !important;
 }
 
-.mat-expansion-panel-spacing {
-  margin: 0px 0px;
-}
 
-.mat-accordion .mat-expansion-panel:first-of-type {
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-}
-
-.mat-accordion .mat-expansion-panel:last-of-type {
-  border-top-right-radius: 0px;
-  border-top-left-radius: 0px;
-}
-
-::ng-deep .mat-expansion-panel-body{
-  padding: 5% 2% 5% !important;
-}
-
-mat-expansion-panel {
-    margin-bottom: 0px;
-    background-color: $lighter-grey;
-    border : solid 2px ;
-    border-color: $light-grey;
-    ::ng-deep .mat-content{
-      overflow: visible !important;
-    }
-}
-
-mat-expansion-panel-header {
-  background: white !important;
-  border-radius: 0px;
-  height: 60px !important;
+.doo-payment-caption{
   mat-icon {
-    height: 35px;
-    width: 35px;
+    padding-right: 5px;
+    height: 20px;
+    width: 20px;
     
     ::ng-deep .cls-1 {
       stroke: $primary;
     }
     ::ng-deep .cls-2 {
       stroke: $primary;
-      fill: $primary;
     }
   }
 }
@@ -99,17 +78,6 @@ mat-expansion-panel-header {
     width: 35px;
   }
 }
-
-.selected-method {
-  //border-style: solid;
-  border-width: 2px;
-  //border-color: $accent;
-}
-
-doo-checked-icon {
-    margin-right: 15px;
-}
-
   
   .example.example2 * {
     font-size: 16px;

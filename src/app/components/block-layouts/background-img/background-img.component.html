@@ -31,15 +31,15 @@
             </div>
             <div></div>
         </div>
-        <div fxLayout="row" [fxFlex]="block.fields.width" fxFlex.lt-md fxLayoutAlign="center"
-            [ngClass]="bigScreens.includes(this.resolution) ? '' : 'crop'">
+        <div fxLayout="row" [fxFlex]="block.fields.width ? block.fields.width : 100" fxFlex.lt-md fxLayoutAlign="center"
+            [ngClass]="utils.bigScreens.includes(this.resolution) ? '' : 'crop'">
             <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="full-width post-placeholder"
                 style="object-fit: cover;height: 100%;" [lazyLoad]="block.fields.media[0].fields.file.url"
+                [alt] = "block.fields.media[0].fields.description"
                 [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
                 (onStateChange)="myCallbackFunction($event)">
             <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
-                [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline class="full-width"
-                (loadeddata)="loadComplete()">
+                [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline class="full-width">
             </video>
         </div>
     </div>

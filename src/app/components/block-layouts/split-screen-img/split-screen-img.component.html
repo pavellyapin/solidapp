@@ -32,10 +32,14 @@
                </div>
                <div [fxFlex.gt-xs]="block.fields.textBoxWidth ? 100-block.fields.textBoxWidth : 50" fxFlex.lt-sm
                     [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1">
-                    <img *ngIf="block.fields.media[0].fields.file.details.image" class="full-width doo-pointer"
-                         style="display: block" [src]="block.fields.media[0].fields.file.url">
+                    <img #postImg *ngIf="block.fields.media[0].fields.file.details.image"
+                         class="full-width post-placeholder" style="object-fit: cover;height: 100%;"
+                         [lazyLoad]="block.fields.media[0].fields.file.url"
+                         [alt] = "block.fields.media[0].fields.description"
+                         [defaultImage]="'assets/placeholders/placeholder-1.svg'"
+                         (onStateChange)="myCallbackFunction($event)">
                     <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
-                         [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline
+                         [src]="block.fields.media[0].fields.file.url" autoplay muted="muted" loop playsinline
                          style="width: 100%;display: block;">
                     </video>
                </div>

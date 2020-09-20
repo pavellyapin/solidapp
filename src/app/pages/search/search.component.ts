@@ -11,6 +11,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { ProductCardComponent } from 'src/app/components/cards/product-card/product-card.component';
 import { ActivatedRoute } from '@angular/router';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { SEOService } from 'src/app/services/seo/seo.service';
 
 @Component({
   selector: 'app-search-page',
@@ -34,7 +35,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   rowsBig: Observable<number>;
   resolution: any;
   navMode: any;
-  bigScreens = new Array('lg', 'xl')
   productVariants: Map<string, [any]> = new Map();
   filters = new Array<any>();
   filtersOpen: boolean;
@@ -51,7 +51,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private mediaObserver: MediaObserver,
     private navService: NavigationService,
     public route: ActivatedRoute,
-    private utilService: UtilitiesService) {
+    public utilService: UtilitiesService,
+    private seoService : SEOService) {
     window.addEventListener('scroll', this.loadMore.bind(this), { passive: true });
     this.cards.subscribe(cards => {
       this.productCards = cards;
@@ -96,7 +97,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       .pipe(
         map(x => {
           this.resolution = x.resolution;
-          if (this.bigScreens.includes(this.resolution)) {
+          if (this.utilService.bigScreens.includes(this.resolution)) {
             this.navMode = 'side';
             this.filtersOpen = true;
           } else {
@@ -111,6 +112,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
           this.searchPageContent = x.pages.filter(page => {
             if (page.fields.type == 'search') {
+              this.seoService.updateTitle(page.fields.title);
+              this.seoService.updateDescription(page.fields.description);
+              this.seoService.updateOgUrl(window.location.href);
               return page;
             }
           }).pop();
@@ -233,7 +237,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   loadMore() {
-    if (this.productsLoaded.length > 0 && window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.bigScreens.includes(this.resolution) ? 500 : 800)) {
+    if (this.productsLoaded.length > 0 && window.scrollY > this.productsGrid.nativeElement.offsetHeight - (this.utilService.bigScreens.includes(this.resolution) ? 500 : 800)) {
       this.createCards();
     }
   }

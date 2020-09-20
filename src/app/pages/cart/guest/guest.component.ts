@@ -14,8 +14,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
     }
 
     continueGuest($event) {
-      console.log($event);
-        this.store.dispatch(UserActions.SuccessGetUserInfoAction({ payload: $event }));
+      this.store.dispatch(UserActions.SuccessGetUserInfoAction({ payload: $event }));
     }
 
   }

@@ -10,6 +10,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { map } from 'rxjs/operators';
 import { Entry } from 'contentful';
+import { SEOService } from 'src/app/services/seo/seo.service';
 ;
 
 @Component({
@@ -42,7 +43,8 @@ export class LoginComponent implements OnInit , OnDestroy{
               private activatedRoute: ActivatedRoute,
               private store: Store<{ user: UserState , settings : SettingsState}>,
               private navService : NavigationService,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private seoService : SEOService) {
 
             this.settings$ = store.pipe(select('settings'));
         
@@ -57,6 +59,9 @@ export class LoginComponent implements OnInit , OnDestroy{
         if (x.pages) {
           this.loginPageContent = x.pages.filter(page=>{
             if (page.fields.type == 'login') {
+              this.seoService.updateTitle(page.fields.title);
+              this.seoService.updateDescription(page.fields.description);
+              this.seoService.updateOgUrl(window.location.href);
               return page;
             }
           }).pop();

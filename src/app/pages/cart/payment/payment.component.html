@@ -1,25 +1,28 @@
-<div [formGroup]="paymentMethodForm" fxLayout="row" fxLayoutAlign="center"
-  class="doo-cart-payment">
+<div [formGroup]="paymentMethodForm" fxLayout="row" fxLayoutAlign="center" class="doo-cart-payment">
   <div fxLayout="column" fxFlex="80" fxFlex.lt-md fxLayoutGap="20px">
     <div></div>
     <div class="doo-cart-steps" fxLayout="row" fxLayoutAlign="center">
-      <div fxLayout="row" fxFlex="80" fxLayoutAlign="center">
+      <div fxLayout="row" fxFlex="80" fxFlex.xs fxLayoutAlign="center" fxLayoutGap="4px">
         <button color="primary" mat-button [routerLink]="'/login'">
-          Guest/Login
+          <span class="crumb-item">Guest/Login</span>
           <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
-
         </button>
         <button color="primary" mat-button (click)="backToAddress()" class="accent-color">
-          Shipping
+          <span class="crumb-item">Shipping</span>
           <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
         </button>
         <button color="accent" mat-button>
-          Payment
+          <span class="crumb-item">Payment</span>
         </button>
       </div>
     </div>
+    <div fxLayout="row" fxLayoutAlign="center" class="mat-headline doo-letter-space">
+      <span fxFlex fxFlex.lt-md="95">
+        Payment
+      </span>
+    </div>
     <div fxLayout="column" class="doo-shipping-box" fxLayoutGap="10px">
-      <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="row" fxLayoutAlign="space-between">
         <span class="mat-subheading-2 doo-letter-space">Contact Info & Address</span>
         <div (click)="backToAddress()" class="mat-caption doo-pointer doo-undeline">
           {{ 'profile.buttons.edit' | translate }}
@@ -71,108 +74,54 @@
         </div>
       </div>
     </div>
-    <span fxLayoutAlign="start center" fxLayoutAlign.lt-md="center center" class="mat-headline doo-letter-space">Payment Options</span>
-    <mat-radio-group fxLayout="row" formControlName="method">
-      <mat-accordion>
-        <mat-expansion-panel [hideToggle]="true" [disabled]="true"
-          [expanded]="paymentMethodForm.controls['method'].value == 'cc'"
-          [ngClass]="paymentMethodForm.controls['method'].value == 'cc' ? 'selected-method mat-elevation-z0' : 'mat-elevation-z0'">
-          <mat-expansion-panel-header class="doo-pointer" (click)="paymentMethodForm.controls['method'].setValue('cc')">
-            <mat-panel-title>
-              <div fxLayout="row" fxFlex fxLayoutAlign="start center" fxLayoutGap="10px">
-                <mat-radio-button [value]="'cc'">
-                </mat-radio-button>
-                <div fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start center" class="doo-letter-space">
-                  <div fxShow fxHide.lt-md>Credit or Debit Card</div>
-                  <div fxFlex fxLayoutAlign="end">
-                    <div fxLayout="row" class="accepted-cards" fxLayoutGap="10px">
-                      <mat-icon svgIcon="doo-visa"></mat-icon>
-                      <mat-icon svgIcon="doo-mastercard"></mat-icon>
-                      <mat-icon svgIcon="doo-amex"></mat-icon>
-                      <mat-icon svgIcon="doo-discover"></mat-icon>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <form fxLayout="row" fxLayoutAlign="center" #checkout="ngForm" class="checkout">
-            <div fxLayout="column" fxLayoutGap="10px" fxFlex>
-              <div class="cell example example2" id="example-2">
-                <div class="row">
-                  <div class="field">
-                    <div id="example2-card-number" class="input empty"></div>
-                    <label for="example2-card-number" data-tid="elements_examples.form.card_number_label">Card
-                      number</label>
-                    <div class="baseline"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="field half-width">
-                    <div id="example2-card-expiry" class="input empty"></div>
-                    <label for="example2-card-expiry"
-                      data-tid="elements_examples.form.card_expiry_label">Expiration</label>
-                    <div class="baseline"></div>
-                  </div>
-                  <div class="field half-width">
-                    <div id="example2-card-cvc" class="input empty"></div>
-                    <label for="example2-card-cvc" data-tid="elements_examples.form.card_cvc_label">CVC</label>
-                    <div class="baseline"></div>
-                  </div>
-                </div>
-                <mat-error *ngIf="error" [textContent]="error.message"></mat-error>
-              </div>
-            </div>
-
-          </form>
-        </mat-expansion-panel>
-        <mat-expansion-panel [hideToggle]="true" [disabled]="true"
-          [expanded]="paymentMethodForm.controls['method'].value == 'paypal'"
-          [ngClass]="paymentMethodForm.controls['method'].value == 'paypal' ? 'selected-method mat-elevation-z0' : 'mat-elevation-z0'">
-          <mat-expansion-panel-header class="doo-pointer"
-            (click)="paymentMethodForm.controls['method'].setValue('paypal')">
-            <mat-panel-title>
-              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-                <mat-radio-button [value]="'paypal'">
-                </mat-radio-button>
-                <span style="font-weight: 700" class="doo-letter-space"></span>
-              </div>
-              <div fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start center" class="doo-letter-space">
-                <div fxShow fxHide.lt-md>PayPal</div>
-                <div fxFlex fxLayoutAlign="end">
-                  <div fxLayout="row" class="paypal-icon">
-                    <mat-icon svgIcon="paypal"></mat-icon>
-                  </div>
-                </div>
-              </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div fxLayout="column" fxLayoutGap="20px">
-            <div></div>
-            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
-              <div fxLayout="column" fxFlex="50">
-                <span class="mat-subheading-2">
-                  Pay with PayPal no problem
-                </span>
-                <span class="mat-caption">
-                  You can add the items you want and pay using your paypal account, it will be super smooth and you will
-                  land back here.
-                </span>
-
-              </div>
-              <div fxLayout="column" fxLayoutAlign="center center">
-                <button (click)="payPalPay()" color="accent" style="padding-top: 5px;" mat-stroked-button>
-                  <mat-icon fxFlex="25" svgIcon="paypal" inline="true"></mat-icon>
-                </button>
-              </div>
+    <form fxLayout="row" fxLayoutAlign="center" class="doo-checkout-form">
+      <div fxLayout="column" fxLayoutGap="30px" fxFlex>
+        <div class="cell example example2" id="example-2">
+          <div class="row">
+            <div class="field">
+              <div id="example2-card-number" class="input empty"></div>
+              <label for="example2-card-number" data-tid="elements_examples.form.card_number_label">Card
+                number</label>
+              <div class="baseline"></div>
             </div>
           </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </mat-radio-group>
+          <div class="row">
+            <div class="field half-width">
+              <div id="example2-card-expiry" class="input empty"></div>
+              <label for="example2-card-expiry" data-tid="elements_examples.form.card_expiry_label">Expiration</label>
+              <div class="baseline"></div>
+            </div>
+            <div class="field half-width">
+              <div id="example2-card-cvc" class="input empty"></div>
+              <label for="example2-card-cvc" data-tid="elements_examples.form.card_cvc_label">CVC</label>
+              <div class="baseline"></div>
+            </div>
+          </div>
+          <mat-error *ngIf="error" [textContent]="error.message"></mat-error>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="start center"
+            class="doo-letter-space">
+            <div fxLayoutAlign="start center" class="doo-payment-caption mat-caption accent-color">
+              <mat-icon svgIcon="doo-lock"></mat-icon>
+              Pay with credit or debit card, using our secure payment system.
+            </div>
+            <div fxFlex fxLayoutAlign="end">
+              <div fxLayout="row" class="accepted-cards" fxLayoutGap="10px">
+                <mat-icon svgIcon="doo-visa"></mat-icon>
+                <mat-icon svgIcon="doo-mastercard"></mat-icon>
+                <mat-icon svgIcon="doo-amex"></mat-icon>
+                <mat-icon svgIcon="doo-discover"></mat-icon>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </form>
     <div fxLayout="row" fxLayoutAlign="center">
-      <div fxLayout="row" fxLayout.lt-md="column" fxFlex.lt-md = "80" fxFlex fxLayoutAlign="space-between">
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="15px" fxFlex.lt-md="80" fxFlex
+        fxLayoutAlign="space-between">
         <button color="accent" mat-button class="doo-cta-btn" (click)="backToAddress()">
           <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
           BACK TO SHIPPING
@@ -180,6 +129,26 @@
         <button color="primary" mat-flat-button class="doo-cta-btn" (click)="onSubmit()">
           PLACE ORDER
         </button>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
+      <mat-divider fxFlex></mat-divider>
+      <div class="doo-letter-space primary-color">OR</div>
+      <mat-divider fxFlex></mat-divider>
+    </div>
+    <div fxLayout="column" fxLayoutGap="30px" class="doo-pay-paypal">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <button (click)="payPalPay()" color="accent" style="padding-top: 5px;" mat-stroked-button>
+          <mat-icon fxFlex="45" svgIcon="paypal" inline="true"></mat-icon>
+        </button>
+      </div>
+      <div fxLayout="row" fxFlex fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start center" class="doo-letter-space">
+          <div fxLayoutAlign="start center" class="doo-payment-caption mat-caption accent-color">
+            <mat-icon svgIcon="doo-lock"></mat-icon>
+            Pay with PayPal, you will be redirected to paypal terminal.
+          </div>
+        </div>
       </div>
     </div>
   </div>

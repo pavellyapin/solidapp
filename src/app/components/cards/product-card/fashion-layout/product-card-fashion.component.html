@@ -14,6 +14,7 @@
               style = "position: absolute"
               #cardImg
               [lazyLoad]="object?.fields.media[1].fields.file.url"
+              [alt] = "object?.fields.media[1].fields.description"
               [defaultImage]="'assets/placeholders/placeholder-1.svg'">
               <img  *ngIf = "object?.fields.media.length > 1" 
               class = "full-width first-image card-placeholder"
@@ -21,6 +22,7 @@
               #cardImg
               (onStateChange)="myCallbackFunction($event)"
               [lazyLoad]="object?.fields.media[0].fields.file.url"
+              [alt] = "object?.fields.media[0].fields.description"
               [defaultImage]="'assets/placeholders/placeholder-1.svg'">
       </div>
     </div>

@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
-import { Card } from 'src/app/components/cards/card';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Store, select } from '@ngrx/store';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Entry } from 'contentful';
+import { SEOService } from 'src/app/services/seo/seo.service';
 
 
 @Component({
@@ -23,15 +23,12 @@ export class CheckoutSuccessComponent {
   siteSettings: Entry<any>;
   successPageContent : Entry<any>;
   cart: any;
-  cartItemsCards: Card[] = [];
-  cols: Observable<number>;
-  colsBig: Observable<number>;
-  rowsBig: Observable<number>;
 
   constructor(private firestore: FirestoreService,
     store: Store<{ settings : SettingsState}>,
     private navService: NavigationService,
-    public route: ActivatedRoute) {
+    public route: ActivatedRoute,
+    private seoService : SEOService) {
     this.settings$ = store.pipe(select('settings'));
   }
 
@@ -42,6 +39,9 @@ export class CheckoutSuccessComponent {
         this.siteSettings = x.siteConfig;
         this.successPageContent = x.pages.filter(page=>{
           if (page.fields.type == 'success') {
+            this.seoService.updateTitle(page.fields.title);
+            this.seoService.updateDescription(page.fields.description);
+            this.seoService.updateOgUrl(window.location.href);
             return page;
           }
         }).pop();

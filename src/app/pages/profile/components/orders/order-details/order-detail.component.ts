@@ -1,43 +1,57 @@
-import {Component , OnInit} from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import UserState from 'src/app/services/store/user/user.state';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { OrderItem } from 'src/app/services/store/user/user.model';
+import { FirestoreService } from 'src/app/services/firestore/firestore.service';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { SEOService } from 'src/app/services/seo/seo.service';
+import SettingsState from 'src/app/services/store/settings/settings.state';
+import { Entry } from 'contentful';
+import { Store, select } from '@ngrx/store';
 
 @Component({
-    selector: 'doo-order-detail',
-    templateUrl: './order-detail.component.html',
-    styleUrls: ['./order-detail.component.scss']
-  })
-  export class OrderDeatilComponent implements OnInit {
+  selector: 'doo-order-detail',
+  templateUrl: './order-detail.component.html',
+  styleUrls: ['./order-detail.component.scss']
+})
+export class OrderDeatilComponent implements OnInit {
 
-    orders$: Observable<Array<OrderItem>>;
-    UserSubscription: Subscription;
-    orderdetail: any;
+  cartSubscription: Subscription;
+  SettingsSubscription: Subscription;
+  settings$: Observable<SettingsState>;
+  siteSettings: Entry<any>;
   
-  
-    constructor(store: Store<{ user: UserState }>,public route:ActivatedRoute)
-    {
-      this.orders$ = store.pipe(select('user','orders'));
-    }
+  cart: any;
 
-    ngOnInit() {
-        this.UserSubscription = this.orders$
-        .pipe(
-          map(x => {
-            this.orderdetail = x.filter((order) => {
-                if (order.id == this.route.snapshot.params["orderId"]) {
-                    return order;
-                }
-            }).pop();
-          })
-        )
-        .subscribe();
-    }
-
-    ngOndestory() {
-        this.UserSubscription.unsubscribe();
-    }
+  constructor(private firestore: FirestoreService,
+    store: Store<{ settings : SettingsState}>,
+    private navService: NavigationService,
+    public route: ActivatedRoute,
+    private seoService: SEOService) {
+    this.settings$ = store.pipe(select('settings'));
   }
+
+  ngOnInit() {
+
+    this.SettingsSubscription = this.settings$
+    .pipe(
+      map(x => {
+        this.siteSettings = x.siteConfig;
+      })
+    )
+    .subscribe();
+
+    this.cartSubscription = this.firestore.getCartData(this.route.snapshot.params["orderId"]).pipe(
+      map((data) => {
+        this.navService.finishLoading();
+        this.seoService.updateTitle("Order Details");
+        this.seoService.updateOgUrl(window.location.href);
+        this.cart = data.data();
+      })
+    ).subscribe();
+  }
+
+  ngOnDestory() {
+    this.cartSubscription.unsubscribe();
+  }
+}

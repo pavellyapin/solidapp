@@ -1,10 +1,10 @@
 <mat-sidenav-container>
     <mat-sidenav [opened]="summaryOpen" (closedStart)="summaryOpen = false"
-        [mode]="bigScreens.includes(this.resolution) ? 'side' : 'over'"
-        [ngClass]="bigScreens.includes(this.resolution) ? 'doo-cart-summary-box' : 'doo-mobile-cart-summary-box'"
+        [mode]="utilService.bigScreens.includes(this.resolution) ? 'side' : 'over'"
+        [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-cart-summary-box' : 'doo-mobile-cart-summary-box'"
         position="end">
         <div fxLayout="column">
-            <div *ngIf="!this.bigScreens.includes(this.resolution)" fxLayout="row" fxLayoutAlign="start end"
+            <div *ngIf="!this.utilService.bigScreens.includes(this.resolution)" fxLayout="row" fxLayoutAlign="start end"
                 class="doo-filters-btn">
                 <button mat-button fxLayout="row" (click)="utilService.scrollTop() ; summaryOpen = false;">
                     <mat-icon svgIcon="doo-arrow-left"></mat-icon>
@@ -89,20 +89,26 @@
                     </button>
                 </div>
             </div>
-            <div *ngIf="cartTotal" fxLayout="column">
-                <div *ngIf="loading" fxLayout="row" style="flex: 1 1 100%;min-height:100vh;"
+            <div *ngIf="cartTotal" fxLayout="column" style="position: relative" fxLayoutGap="20px">
+                <div *ngIf="loading" fxLayout="row" style="flex: 1 1 100%;min-height:100vh;position: absolute;"
                     fxLayoutAlign="center start" class="doo-loading-overlay">
                     <div class="doo-loading-screen">
                         <img src="assets/icons/logo.png">
+                        <br>
+                        <br>
+                        <span class="mat-subheading-1">Secure Transaction in Progress</span>
+                        <br>
+                        <span class="mat-subheading-1">Please do not refresh page</span>
                     </div>
                 </div>
-                <div *ngIf="!loading" fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end end" class="doo-filters-btn">
+                <div *ngIf="!loading" fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end end"
+                    class="doo-filters-btn">
                     <button mat-button fxLayout="row" (click)="utilService.scrollTop() ; summaryOpen = true;">
-                        <span class="white-color" [innerHTML]="cartTotal | pricePipe"></span>
+                        <span class="white-color" [innerHTML]="grandTotal | pricePipe"></span>
                         <mat-icon svgIcon="doo-basket"></mat-icon>
                     </button>
                 </div>
-                <router-outlet *ngIf="!loading"></router-outlet>
+                <router-outlet></router-outlet>
 
                 <doo-footer *ngIf="!loading"></doo-footer>
             </div>

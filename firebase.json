@@ -16,6 +16,10 @@
     ],
     "rewrites": [
       {
+        "source": "/my-doo-7c70c/us-central1/feed",
+        "function": "feed"
+      },
+      {
         "source": "/my-doo-7c70c/us-central1/updateEmail",
         "function": "updateEmail"
       },
@@ -24,28 +28,16 @@
         "function": "subscribeEmail"
       },
       {
-        "source": "/my-doo-7c70c/us-central1/pay",
-        "function": "pay"
+        "source": "/my-doo-7c70c/us-central1/paypal/pay",
+        "function": "paypal"
+      },
+      {
+        "source": "/my-doo-7c70c/us-central1/paypal/process",
+        "function": "paypal"
       },
       {
         "source": "/my-doo-7c70c/us-central1/process",
         "function": "process"
-      },
-      {
-        "source": "/my-doo-7c70c/us-central1/initOrder",
-        "function": "initOrder"
-      },
-      {
-        "source": "/my-doo-7c70c/us-central1/sendConfirmationEmail",
-        "function": "sendConfirmationEmail"
-      },
-      {
-        "source": "/my-doo-7c70c/us-central1/getCart",
-        "function": "getCart"
-      },
-      {
-        "source": "/my-doo-7c70c/us-central1/setStripeCharge",
-        "function": "setStripeCharge"
       },
       {
         "source": "**",

@@ -14,7 +14,7 @@
                 {{'cart.successContent' | translate : {'email':cart.personalInfo.email} }}
             </div>
             <div fxLayout="row" fxLayoutAlign="space-between">
-                <button color="primary" mat-flat-button style="padding:10px 30px;" class="doo-checkout-btn">
+                <button color="primary" [routerLink] = "'/account/orders/' + route.snapshot.params['order']" mat-flat-button style="padding:10px 30px;" class="doo-checkout-btn">
                     Track Your Order
                 </button>
             </div>

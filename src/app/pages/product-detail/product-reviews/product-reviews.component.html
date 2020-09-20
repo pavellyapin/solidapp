@@ -1,86 +1,80 @@
-<div *ngIf = "_productReviews" fxLayout = "column" fxLayoutGap = "20px" class = "doo-product-reviews">
-    <div></div>
-    <div fxLayout = "row" fxLayoutAlign = "center">
-        <button (click) = "writeReviewPopUp()" class="doo-checkout-btn"
-            color="primary" mat-stroked-button type="submit">
+<div *ngIf="_productReviews && _productReviews.length == 0 " fxLayout="column" fxLayoutGap="40px"
+    class="doo-product-reviews">
+    <div fxLayoutAlign="center" class="mat-subheading-1 doo-letter-space">There are no reviews for this product yet</div>
+    <div fxLayoutAlign="center" class="mat-title doo-letter-space primary-color">Be the first to write a review!</div>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <button (click)="writeReviewPopUp()" class="doo-checkout-btn" color="primary" mat-stroked-button type="submit">
             WRITE REVIEW
-        </button>        
+        </button>
     </div>
-    <div fxLayout = "row" fxLayout.xs = "column" fxLayoutGap.xs = "30px"  fxLayoutAlign = "space-between">
-        <div fxLayout = "column" fxFlex = "30" fxLayoutGap = "20px">
-            <div fxLayout = "row" fxLayoutAlign.xs = "center"  fxLayoutGap = "10px">
-                <span class = "mat-display-3">{{getOverallRate() | ratePipe}}</span>
-                <div fxLayout = "column" class = "doo-rate-uneditable mat-caption">
-                        <doo-review-stars [rate] = "getOverallRate()" [editable] = "false"></doo-review-stars>
-                        {{_productReviews?.length}} Reviews
+</div>
+
+<div *ngIf="_productReviews && _productReviews.length > 0 " fxLayout="column" fxLayoutGap="20px"
+    class="doo-product-reviews">
+    <div></div>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <button (click)="writeReviewPopUp()" class="doo-checkout-btn" color="primary" mat-stroked-button type="submit">
+            WRITE REVIEW
+        </button>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.xs="30px" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxFlex="30" fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutAlign.xs="center" fxLayoutGap="10px">
+                <span class="mat-display-3">{{getOverallRate() | ratePipe}}</span>
+                <div fxLayout="column" class="doo-rate-uneditable mat-caption">
+                    <doo-review-stars [rate]="getOverallRate()" [editable]="false"></doo-review-stars>
+                    {{_productReviews?.length}} Reviews
                 </div>
             </div>
-            <div fxLayout = "row"  fxLayoutGap = "10px">
-                    <div style = "position: relative">
-                            <mat-progress-spinner style = "position: absolute"
-                            color="accent"
-                            mode="determinate"
-                            value="100">
-                            </mat-progress-spinner>
-                            <mat-progress-spinner style = "position: absolute"
-                            color="primary"
-                            mode="determinate"
-                            [value]="50">
-                            </mat-progress-spinner>
-                            <span style = "position: absolute;font-size: 28px;padding-left:25px;padding-top: 40px;">72%</span>
-                    </div>
-                    <div fxLayout = "column" style = "padding-left:100px;padding-top: 40px;">
-                        <span style = "font-size: 16px;font-weight: bold;">Would Recommend</span>
-                        <span class = "mat-caption">92 Recommendations</span>
-                    </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div style="position: relative">
+                    <mat-progress-spinner style="position: absolute" color="accent" mode="determinate" value="100">
+                    </mat-progress-spinner>
+                    <mat-progress-spinner style="position: absolute" color="primary" mode="determinate" [value]="50">
+                    </mat-progress-spinner>
+                    <span style="position: absolute;font-size: 24px;padding-left:25px;padding-top: 40px;">{{getRecommendPresent()}}%</span>
+                </div>
+                <div fxLayout="column" style="padding-left:100px;padding-top: 40px;">
+                    <span style="font-size: 16px;font-weight: bold;">Would Recommend</span>
+                    <span class="mat-caption">{{getRecommendCount()}} Recommendations</span>
+                </div>
             </div>
 
 
         </div>
-        <div fxLayout = "column" fxFlex = "50" fxFlex.xs = "100">
-            <div fxLayout = "row" 
-                 fxLayoutGap = "5px" 
-                 fxLayoutAlign = "center center" 
-                 *ngFor = "let star of stars"
-                 (click) = "filterToggle(star)" 
-                 class = "doo-rate-bar doo-pointer">
-                 <span>{{star}}</span>
-                 <mat-icon class = "doo-rate-icon" svgIcon="doo-star-outline"></mat-icon>
-                 <mat-progress-bar #starCount 
-                                  [value] = "getStarCount(star) * 100 /this._productReviews.length"
-                                  color = "accent"
-                                  mode="determinate">
+        <div fxLayout="column" fxFlex="50" fxFlex.xs="100">
+            <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center" *ngFor="let star of stars"
+                (click)="filterToggle(star)" class="doo-rate-bar doo-pointer">
+                <span>{{star}}</span>
+                <mat-icon class="doo-rate-icon" svgIcon="doo-star-outline"></mat-icon>
+                <mat-progress-bar #starCount [value]="getStarCount(star) * 100 /this._productReviews.length"
+                    color="accent" mode="determinate">
                 </mat-progress-bar>
                 <span>{{getStarCount(star)}}</span>
             </div>
         </div>
     </div>
-    <div fxLayout = "row">
-            <mat-chip-list fxShow fxHide.xs>
-                    <mat-chip *ngFor = "let filter of filters"
-                              color = "primary"
-                              class = "rate-filter"
-                              selected
-                              [removable]="true"
-                              (removed)="removeFilterChip(filter)">
-                              <span>{{filter}}</span>
-                              <mat-icon class = "doo-rate-icon" svgIcon="doo-star-outline"></mat-icon>
-                               <mat-icon matChipRemove>cancel</mat-icon>
-                            </mat-chip>
-            </mat-chip-list>
+    <div fxLayout="row">
+        <mat-chip-list fxShow fxHide.xs>
+            <mat-chip *ngFor="let filter of filters" color="primary" class="rate-filter" selected [removable]="true"
+                (removed)="removeFilterChip(filter)">
+                <span>{{filter}}</span>
+                <mat-icon class="doo-rate-icon" svgIcon="doo-star-outline"></mat-icon>
+                <mat-icon svgIcon = "doo-close" matChipRemove></mat-icon>
+            </mat-chip>
+        </mat-chip-list>
     </div>
-    <div *ngFor = "let review of filteredReviews" fxLayout = "row" class = "doo-rate-uneditable doo-bottom-border">
-        <div fxLayout = "column">
-            <span class = "mat-subheading-1">{{review.headline}}</span>
-            <span class = "mat-caption">{{review.name}} · {{review.date | timeAgo}}</span>
-            <doo-review-stars [rate] = "review.rate" [editable] = "false"></doo-review-stars>
+    <div *ngFor="let review of filteredReviews" fxLayout="row" class="doo-rate-uneditable doo-bottom-border">
+        <div fxLayout="column">
+            <span class="mat-subheading-1">{{review.headline}}</span>
+            <span class="mat-caption">{{review.name}} · {{review.date | timeAgo}}</span>
+            <doo-review-stars [rate]="review.rate" [editable]="false"></doo-review-stars>
             <span>{{review.review}}</span>
         </div>
     </div>
-    <div fxLayout = "row" fxLayoutAlign = "center">
-            <button (click) = "loadMoreReviews()" class="doo-checkout-btn"
-            color="primary" mat-stroked-button>
+    <div fxLayout="row" *ngIf = "filteredReviews.length != _productReviews.length" fxLayoutAlign="center">
+        <button (click)="loadMoreReviews()" class="doo-checkout-btn" color="primary" mat-stroked-button>
             LOAD MORE REVIEWS
-            </button> 
+        </button>
     </div>
 </div>

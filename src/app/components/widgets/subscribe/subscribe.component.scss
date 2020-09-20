@@ -2,8 +2,7 @@
 @import 'src/css/contentful.scss';
 
 .doo-subscribe-form {
-    padding-bottom: 40px;
-    padding-top: 40px;
+    padding : 40px 20px;
     background: $lighter-grey;
     .doo-contentful {
         opacity: 0.7;

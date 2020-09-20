@@ -8,7 +8,6 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 export class ActionsComponent implements OnInit {
 
   @Input() actions;
-  bigScreens = new Array('lg' , 'xl' , 'md')
 
   constructor(public navService : NavigationService) {
     

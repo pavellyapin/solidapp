@@ -1,7 +1,18 @@
-<div>
-  <div fxLayout = "row" *ngIf = "favItemsCards.length == 0" class = "no-favorites-placeholder">
-    {{'profile.favorites.empty' | translate}}
+<div fxLayout= "column">
+  <div *ngIf = "favItemsCards.length == 0" class="doo-empty-cart" fxLayoutGap="20px" fxLayout="column"
+  fxLayoutAlign="center center">
+  <span class="mat-subheading-2">
+      Explore our store
+  </span>
+  <span class="mat-caption">
+      {{'profile.favorites.empty' | translate}}
+  </span>
+  <div fxLayout="row" class="full-width" fxLayoutAlign="center center">
+      <button color="primary" class="doo-checkout-btn" mat-flat-button fxFlex="40" [routerLink]="'/'">
+          SHOP
+      </button>
   </div>
+</div>
   <div #productsGrid fxLayout= "column" fxFlex = "100">
 
       <mat-grid-list  [cols]="cols | async">

@@ -3,14 +3,14 @@
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let element"> 
-        <mat-icon color = "accent">keyboard_arrow_right</mat-icon>
+        
       </mat-cell>
     </ng-container>
   
     <!-- Name Column -->
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.date | datePipe}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.cart.date | datePipe}} </mat-cell>
     </ng-container>
   
     <!-- Weight Column -->
@@ -22,7 +22,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="total">
       <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.cart.total | pricePipe}} </mat-cell>
+      <mat-cell *matCellDef="let element" [innerHTML] = "element.cart.total | pricePipe"></mat-cell>
     </ng-container>
   
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

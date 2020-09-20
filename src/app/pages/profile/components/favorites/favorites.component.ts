@@ -1,4 +1,4 @@
-import {Component , OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { map, startWith } from 'rxjs/operators';
@@ -25,101 +25,99 @@ export class FavoritesComponent implements OnInit {
   cols: Observable<number>;
   colsBig: Observable<number>;
   rowsBig: Observable<number>;
-  previousUrl : string = '';
+  previousUrl: string = '';
   cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
 
-      constructor(store: Store<{ user: UserState }>,
-                  private mediaObserver: MediaObserver,
-                  private contentfulService: ContentfulService,
-                  private navService: NavigationService,
-                  private router: Router)
-        {
-          this.cards.subscribe(cards => {
-            this.favItemsCards = cards;
-          });
-          this.favorites$ = store.pipe(select('user','favorites'));
-        }
+  constructor(store: Store<{ user: UserState }>,
+    private mediaObserver: MediaObserver,
+    private contentfulService: ContentfulService,
+    private navService: NavigationService,
+    private router: Router) {
+    this.cards.subscribe(cards => {
+      this.favItemsCards = cards;
+    });
+    this.favorites$ = store.pipe(select('user', 'favorites'));
+  }
 
   ngOnInit() {
     this.navService.getPreviousUrl().forEach((segment) => {
-      this.previousUrl = this.previousUrl + '/' + segment 
+      this.previousUrl = this.previousUrl + '/' + segment
     });
-    
-    this.UserSubscription = this.favorites$
-    .pipe(
-      map(x => {
-        console.log(x);
-        if (x) {
-          this.favoritesItems = x;
-          this.resetCards();
-          this.createCards();
-          this.navService.finishLoading();
-        }
-      })
-    )
-    .subscribe();
 
-          /* Grid column map */
-          const colsMap = new Map([
-            ['xs', 24],
-            ['sm', 16],
-            ['md', 18],
-            ['lg', 9],
-            ['xl', 9],
-          ]);
-          /* Big card column span map */
-          const colsMapBig = new Map([
-            ['xs', 12],
-            ['sm', 8],
-            ['md', 6],
-            ['lg', 3],
-            ['xl', 3],
-          ]);
-          /* Small card column span map */
-          const rowsMapBig = new Map([
-            ['xs', 23],
-            ['sm', 13],
-            ['md', 11],
-            ['lg', 5],
-            ['xl', 5],
-          ]);
-          let startCols: number;
-          let startColsBig: number;
-          let startRowsBig: number;
-          colsMap.forEach((cols, mqAlias) => {
-            if (this.mediaObserver.isActive(mqAlias)) {
-              startCols = cols;
-            }
-          });
-          colsMapBig.forEach((cols, mqAlias) => {
-            if (this.mediaObserver.isActive(mqAlias)) {
-              startColsBig = cols;
-            }
-          });
-          rowsMapBig.forEach((rows, mqAliast) => {
-            if (this.mediaObserver.isActive(mqAliast)) {
-              startRowsBig = rows;
-            }
-          });
-          const media$ = this.mediaObserver.asObservable();
-          this.cols = media$.pipe(
-            map(change => {
-              return colsMap.get(change[0].mqAlias);
-            }),
-            startWith(startCols),
-          );
-          this.colsBig = media$.pipe(
-            map(change => {
-              return colsMapBig.get(change[0].mqAlias);
-            }),
-            startWith(startColsBig),
-          );
-          this.rowsBig = media$.pipe(
-            map(change => {
-              return rowsMapBig.get(change[0].mqAlias);
-            }),
-            startWith(startRowsBig),
-          );
+    this.UserSubscription = this.favorites$
+      .pipe(
+        map(x => {
+          if (x) {
+            this.favoritesItems = x;
+            this.resetCards();
+            this.createCards();
+            this.navService.finishLoading();
+          }
+        })
+      )
+      .subscribe();
+
+    /* Grid column map */
+    const colsMap = new Map([
+      ['xs', 24],
+      ['sm', 16],
+      ['md', 18],
+      ['lg', 9],
+      ['xl', 9],
+    ]);
+    /* Big card column span map */
+    const colsMapBig = new Map([
+      ['xs', 12],
+      ['sm', 8],
+      ['md', 6],
+      ['lg', 3],
+      ['xl', 3],
+    ]);
+    /* Small card column span map */
+    const rowsMapBig = new Map([
+      ['xs', 23],
+      ['sm', 13],
+      ['md', 11],
+      ['lg', 5],
+      ['xl', 5],
+    ]);
+    let startCols: number;
+    let startColsBig: number;
+    let startRowsBig: number;
+    colsMap.forEach((cols, mqAlias) => {
+      if (this.mediaObserver.isActive(mqAlias)) {
+        startCols = cols;
+      }
+    });
+    colsMapBig.forEach((cols, mqAlias) => {
+      if (this.mediaObserver.isActive(mqAlias)) {
+        startColsBig = cols;
+      }
+    });
+    rowsMapBig.forEach((rows, mqAliast) => {
+      if (this.mediaObserver.isActive(mqAliast)) {
+        startRowsBig = rows;
+      }
+    });
+    const media$ = this.mediaObserver.asObservable();
+    this.cols = media$.pipe(
+      map(change => {
+        return colsMap.get(change[0].mqAlias);
+      }),
+      startWith(startCols),
+    );
+    this.colsBig = media$.pipe(
+      map(change => {
+        return colsMapBig.get(change[0].mqAlias);
+      }),
+      startWith(startColsBig),
+    );
+    this.rowsBig = media$.pipe(
+      map(change => {
+        return rowsMapBig.get(change[0].mqAlias);
+      }),
+      startWith(startRowsBig),
+    );
   }
 
   addCard(card: Card): void {
@@ -127,49 +125,49 @@ export class FavoritesComponent implements OnInit {
   }
 
   resetCards(): void {
-    this.cards.getValue().splice(0,this.cards.getValue().length);
+    this.cards.getValue().splice(0, this.cards.getValue().length);
   }
 
   createCards(): void {
-    this.favoritesItems.forEach((v,index) => {
-        this.contentfulService.getProductDetails(v.product.productId).forEach(
-          x => {
-            if (x) {
-              this.addCard(
-                new Card(
-                  {
-                    name: {
-                      key: Card.metadata.NAME,
-                      value:  x.fields.title,
-                    },
-                    index: {
-                      key: Card.metadata.INDEX,
-                      value:  v.docId,
-                    },
-                    object: {
-                      key: Card.metadata.OBJECT,
-                      value:  x,
-                    },
-                    cols: {
-                      key: Card.metadata.COLS,
-                      value: this['colsBig'],
-                    },
-                    rows: {
-                      key: Card.metadata.ROWS,
-                      value: this['rowsBig'],
-                    },
-                    style: {
-                      key: Card.metadata.STYLE,
-                      value: 'full',
-                    }
-                  }, ProductCardComponent, /* Reference to the component we'd like to spawn */
-                ),
-              );
-            }
+    this.favoritesItems.forEach((v, index) => {
+      this.contentfulService.getProductDetails(v.product.productId).forEach(
+        x => {
+          if (x) {
+            this.addCard(
+              new Card(
+                {
+                  name: {
+                    key: Card.metadata.NAME,
+                    value: x.fields.title,
+                  },
+                  index: {
+                    key: Card.metadata.INDEX,
+                    value: v.docId,
+                  },
+                  object: {
+                    key: Card.metadata.OBJECT,
+                    value: x,
+                  },
+                  cols: {
+                    key: Card.metadata.COLS,
+                    value: this['colsBig'],
+                  },
+                  rows: {
+                    key: Card.metadata.ROWS,
+                    value: this['rowsBig'],
+                  },
+                  style: {
+                    key: Card.metadata.STYLE,
+                    value: 'full',
+                  }
+                }, ProductCardComponent, /* Reference to the component we'd like to spawn */
+              ),
+            );
           }
-        )
+        }
+      )
 
-      }
+    }
     );
   }
 
@@ -178,7 +176,7 @@ export class FavoritesComponent implements OnInit {
     this.router.navigateByUrl(this.previousUrl);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.UserSubscription.unsubscribe();
     this.resetCards();
   }

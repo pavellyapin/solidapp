@@ -1,0 +1,25 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
+<div style="flex: 1 1 100%;min-height:100vh;" fxLayout="row" fxLayoutAlign="center">
+  <div fxLayout="row" 
+       fxLayout.lt-sm = "column" 
+       fxFlex = "60" 
+       fxFlex.lt-md = "100"
+       class="doo-error-form doo-contentful"
+       fxLayoutAlign="center" 
+       fxLayoutGap="50px">
+        <div fxLayout = "column"
+             fxLayoutGap="20px" 
+             fxLayoutAlign = "start center">
+             <h2>Error</h2>
+             <span class = "doo-letter-space accent-color">There was an error while trying to process your transaction</span>
+             <mat-icon class = "doo-primary-icon">error</mat-icon>
+             <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+                <button fxFlex (click)="refreshCart()" class = "doo-checkout-btn"
+                        color="primary" mat-flat-button type="submit">
+                  BACK TO CHECKOUT
+                </button>
+              </div>
+        </div>
+  </div>
+
+</div>

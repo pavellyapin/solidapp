@@ -14,6 +14,7 @@ import SettingsState from 'src/app/services/store/settings/settings.state';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import CartState from 'src/app/services/store/cart/cart.state';
+import { SEOService } from 'src/app/services/seo/seo.service';
 
 @Component({
   selector: 'doo-product-detail',
@@ -57,6 +58,7 @@ export class ProductDeatilComponent implements OnInit {
 
       constructor(private navService: NavigationService,
                   private utilService : UtilitiesService,
+                  private seoService : SEOService,
                   private store: Store<{ products: ProductsState , 
                                          user:UserState , 
                                          cart:CartState ,
@@ -97,6 +99,9 @@ export class ProductDeatilComponent implements OnInit {
     .pipe(
       map(x => {
         this.productDetails = x;
+        this.seoService.updateTitle(this.productDetails.fields.title);
+        this.seoService.updateDescription(this.productDetails.fields.title);
+        this.seoService.updateOgUrl(window.location.href);
         if (this.productDetails && this.productDetails.fields.variants) {
           this.sortVariants();
         }

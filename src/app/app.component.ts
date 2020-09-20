@@ -188,5 +188,9 @@ export class AppComponent {
                   'doo-box',
                   this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/box.svg")
                 );
+                this.matIconRegistry.addSvgIcon(
+                  'doo-chat',
+                  this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/chat.svg")
+                );
   }
 }

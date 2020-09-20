@@ -48,7 +48,8 @@ export class ContentfulService {
   getProductDetails(query?: any): Observable<Entry<any>> {
     return from(this.client.getEntries(Object.assign({
       content_type: 'product',
-      'sys.id' : query
+      'sys.id' : query,
+      include : 3
     }))
       .then(res => res.items.pop()));
   }

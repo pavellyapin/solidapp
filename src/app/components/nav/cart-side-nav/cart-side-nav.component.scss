@@ -3,6 +3,17 @@
     padding-top: 40%;
 }
 
+.doo-cart-items-cont {
+  height: 400px;
+  overflow: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+.doo-cart-items-cont::-webkit-scrollbar {
+  display: none;
+}
+
 
 .nav-cart-title{
     margin-bottom: 50px;

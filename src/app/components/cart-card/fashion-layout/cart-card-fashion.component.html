@@ -28,6 +28,7 @@
 
           <img class = "full-width doo-pointer" 
                [lazyLoad]="object?.fields.media[0].fields.file.url" 
+               [alt] = "object?.fields.media[0].fields.description"
                [defaultImage]="'assets/placeholders/placeholder-1.svg'">
         </div>
     </div>

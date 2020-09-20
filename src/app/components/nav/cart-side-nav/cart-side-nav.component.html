@@ -21,7 +21,7 @@
             ({{cartItemCount}}) Items in your cart
         </span>
     </div>
-    <div style="height: 400px;overflow: scroll;" fxLayout="column">
+    <div class = "doo-cart-items-cont" fxLayout="column">
         <doo-cart-items [cartItems]="cartItems"></doo-cart-items>
     </div>
     <div *ngIf="cartItemCount > 0" fxLayout="row" fxLayoutAlign="center center">

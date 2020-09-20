@@ -14,6 +14,7 @@ const reducer = createReducer(
             cartId: null, 
             total: null,
             order:null,
+            shippingMethod : null,
             CartError: null };
   }),
 

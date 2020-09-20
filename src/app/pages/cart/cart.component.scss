@@ -9,14 +9,14 @@
 .doo-cart-steps{
   padding-top: 20px;
   button {
-    font-size: 12px;
-    line-height:12px;
+    font-size: 18px;
+    line-height:18px;
     min-width: 50px;
     padding: 0 2px;
   }
   mat-icon {
-    height: 10px;
-    width: 10px;
+    height: 15px;
+    width: 15px;
   }
 }
 
@@ -49,9 +49,16 @@
   }
 }
 
+
 .cart-items-cont {
+  height: 400px;
   overflow: scroll;
-  max-height : 400px;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+.cart-items-cont::-webkit-scrollbar {
+  display: none;
 }
 
 .doo-nav-toggle-button {

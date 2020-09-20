@@ -10,6 +10,7 @@ import SettingsState from 'src/app/services/store/settings/settings.state';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { ProductCardComponent } from 'src/app/components/cards/product-card/product-card.component';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { SEOService } from 'src/app/services/seo/seo.service';
 
 @Component({
     selector: 'app-product-category-page',
@@ -48,7 +49,8 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
     constructor(store: Store<{ products: ProductsState , settings : SettingsState }>,
                 private mediaObserver: MediaObserver,
                 private navService : NavigationService,
-                private utilService : UtilitiesService)
+                private utilService : UtilitiesService,
+                private seoService : SEOService)
     {
       window.addEventListener('scroll', this.loadMore.bind(this), {passive:true});
       this.cards.subscribe(cards => {
@@ -64,6 +66,9 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
       .pipe(
         map(x => {
           this.activeCategory = x.activeCategory;
+          this.seoService.updateTitle(this.activeCategory.fields.title);
+          this.seoService.updateDescription(this.activeCategory.fields.description);
+          this.seoService.updateOgUrl(window.location.href);
           this.resetCards();
           this.productVariants = new Map();
           this.productsLoaded = [];

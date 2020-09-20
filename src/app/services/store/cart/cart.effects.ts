@@ -21,7 +21,7 @@ export class CartEffects {
         this.firestoreService.
           initOrder(action.payload).pipe(
             switchMap((result) => [
-              CartActions.SuccessSetOrderTotalAction({ payload: action.payload.cart.total }),
+              CartActions.SuccessSetOrderTotalAction({ payload: action.payload.cart.grandTotal }),
               CartActions.SuccessInitializeOrderAction({ payload: result.id }),
               CartActions.BeginGetCartAction({ payload: result.id })
             ])
@@ -68,6 +68,23 @@ export class CartEffects {
       )
     )
   );
+
+  SetOrderStatus$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(CartActions.BeginSetCartStatusAction),
+    switchMap(action =>
+      this.firestoreService.
+        setOrderStatus(action.payload.cartId , action.payload.status).pipe(
+          map((result) => {
+            return CartActions.SuccessSetCartStatusAction();
+          }),
+          catchError((error: Error) => {
+            return of(CartActions.ErrorCartAction(error));
+          })
+        )
+    )
+  )
+);
 
   SetStripeToken$: Observable<Action> = createEffect(() =>
     this.action$.pipe(

@@ -12,7 +12,12 @@
     padding-left: 10px;
     padding-top: 10px;
     -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+.doo-crumbs::-webkit-scrollbar {
+    display: none;
+  }
 
 
 

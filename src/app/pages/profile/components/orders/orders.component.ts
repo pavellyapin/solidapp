@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { OrderItem } from 'src/app/services/store/user/user.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { sortOrders } from 'src/app/components/pipes/pipes';
 
 @Component({
   selector: 'doo-user-orers',
@@ -32,7 +33,8 @@ export class OrdersComponent implements OnInit {
     this.UserSubscription = this.orders$
     .pipe(
       map(x => {
-        this.orderItems = x;
+        this.orderItems = x.slice(0);
+        this.orderItems.sort(sortOrders);
         this.dataSource = new MatTableDataSource<any>(this.orderItems);
       })
     )

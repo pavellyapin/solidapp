@@ -1,5 +1,6 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-text-block',
@@ -10,9 +11,8 @@ export class TextBlockComponent implements OnInit {
 
   @Input() block;
   @Input() resolution;
-  bigScreens = new Array('lg' , 'xl' , 'md')
-
-  constructor(public navService : NavigationService) {
+  
+  constructor(public navService : NavigationService,public utils : UtilitiesService) {
     
   }
 

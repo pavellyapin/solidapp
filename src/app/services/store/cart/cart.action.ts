@@ -13,6 +13,12 @@ export const BeginGetCartAction = createAction('[Cart] - Begin Get cart',props<{
 export const SuccessGetCartAction = createAction('[Cart] - Success get cart',props<{ payload: any }>());
 //////
 
+//Set Status
+export const BeginSetCartStatusAction = createAction('[Cart] - Begin Set status',props<{ payload: any }>());
+
+export const SuccessSetCartStatusAction = createAction('[Cart] - Success set status');
+//////
+
 
 //Add/Remove product to cart
 export const BeginAddProductToCartAction = createAction('[Cart] - Add product to cart',props<{ payload: any }>());

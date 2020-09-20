@@ -24,6 +24,8 @@ import { GuestCheckoutComponent } from './guest/guest.component';
 import { FooterModule } from 'src/app/components/footer/footer.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ImagePipe } from 'src/app/components/pipes/pipes';
+import { CartErrorComponent } from './error/error.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { ImagePipe } from 'src/app/components/pipes/pipes';
                  PayPalModalComponent,
                  CartShippingModalComponent,
                  CheckoutShippingComponent,
-                 CheckoutPaymentComponent],
+                 CheckoutPaymentComponent,
+                 CartErrorComponent],
   imports: [
     CommonModule,
     CartRoutingModule,
@@ -47,6 +50,7 @@ import { ImagePipe } from 'src/app/components/pipes/pipes';
     MatSelectModule,
     MatSidenavModule,
     MatButtonModule,
+    MatDividerModule,
     MatIconModule,
     MatRadioModule,
     MatInputModule,

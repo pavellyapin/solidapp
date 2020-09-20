@@ -1,5 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center">
-        <div fxLayout="column" [fxFlex]="block.fields.width" [fxLayoutGap]="block.fields.bottomPadding">
+        <div fxLayout="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100"
+        fxFlex.lt-sm [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
                 <div fxLayout="column" [fxFlex]="block.fields.textBoxWidth" fxFlex.lt-md="100" style="padding:20px"
                         [class.primary-background]="block.fields.textBackground == 'Primary'"
                         [class.accent-background]="block.fields.textBackground == 'Accent'"
@@ -21,7 +22,7 @@
                                 [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                                 [innerHTML]="block.fields.otherContent | richTextPipe">
                         </div>
-                        <doo-actions [fxLayoutAlign]="block.fields.actionsPosition" fxLayoutGap="20px" fxLayout="row"
+                        <doo-actions [fxLayoutAlign]="block.fields.actionsPosition ? block.fields.actionsPosition : 'start'" fxLayoutGap="20px" fxLayout="row"
                                 [actions]="block.fields.actions"></doo-actions>
 
                 </div>

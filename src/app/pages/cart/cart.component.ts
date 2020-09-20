@@ -1,4 +1,4 @@
-import {Component , OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -18,6 +18,7 @@ import UserState from 'src/app/services/store/user/user.state';
 import { UserPerosnalInfo } from 'src/app/services/store/user/user.model';
 import { ImagePipe } from 'src/app/components/pipes/pipes';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SEOService } from 'src/app/services/seo/seo.service';
 
 @Component({
   selector: 'doo-cart',
@@ -31,14 +32,15 @@ export class CartComponent implements OnInit {
   CartIdSubscription: Subscription;
   ShippingMethodSubscription: Subscription;
   initOrderSubscription: Subscription;
-  OrderSubscription : Subscription;
-  StripeSuccessSubscription : Subscription;
+  OrderSubscription: Subscription;
+  StripeSuccessSubscription: Subscription;
   SettingsSubscription: Subscription;
-  UserInfoSubscription : Subscription;
+  UserInfoSubscription: Subscription;
   UserSubscription: Subscription;
-    
+  CartStatusSubscription : Subscription;
+
   //////////////////////////////////////
-  cartId : string;
+  cartId: string;
   cartItems: Array<any>;
   cartItemsCards: Card[] = [];
   cartItemCount: number;
@@ -50,81 +52,93 @@ export class CartComponent implements OnInit {
   cartId$: Observable<any>;
   cartItems$: Observable<CartItem[]>;
   order$: Observable<any>;
-  
-  cartTotal: number;
-  primaryTax : number;
-  secondaryTax : number;
-  shippingCost : number = 0;
-  grandTotal : Number;
 
-  summaryOpen : boolean = false;
-  previousUrl : string = '';
-  loading:boolean = false;
-  resolution:any;
-  bigScreens = new Array('lg' , 'xl' , 'md')
+  cartTotal: number;
+  primaryTax: number;
+  secondaryTax: number;
+  shippingCost: number = 0;
+  grandTotal: Number;
+
+  summaryOpen: boolean = false;
+  previousUrl: string = '';
+  loading: boolean = false;
+  resolution: any;
   settings$: Observable<SettingsState>;
   siteSettings: Entry<any>;
 
-      constructor(private store: Store<{ cart: CartState , settings : SettingsState , user: UserState }>,
-                  private _actions$: Actions,
-                  public navService: NavigationService,
-                  private router: Router,
-                  private cd: ChangeDetectorRef,
-                  private imagePipe : ImagePipe,
-                  public utilService: UtilitiesService,
-                  private contentfulService: ContentfulService,
-                  private authState: AuthService)
-        {
+  constructor(private store: Store<{ cart: CartState, settings: SettingsState, user: UserState }>,
+    private _actions$: Actions,
+    public navService: NavigationService,
+    private router: Router,
+    private cd: ChangeDetectorRef,
+    private imagePipe: ImagePipe,
+    public utilService: UtilitiesService,
+    private contentfulService: ContentfulService,
+    private authState: AuthService,
+    private seoService: SEOService) {
 
-          this.settings$ = store.pipe(select('settings'));
-          this.shippingMethod$ = store.pipe(select('cart','shippingMethod'));
-          this.cartId$ = store.pipe(select('cart','cartId'));
-          this.user$ = store.pipe(select('user'));
-          this.cartItems$ = store.pipe(select('cart' , 'items'));
-          this.order$ = store.pipe(select('cart' , 'order'));
-        }
+    this.settings$ = store.pipe(select('settings'));
+    this.shippingMethod$ = store.pipe(select('cart', 'shippingMethod'));
+    this.cartId$ = store.pipe(select('cart', 'cartId'));
+    this.user$ = store.pipe(select('user'));
+    this.cartItems$ = store.pipe(select('cart', 'items'));
+    this.order$ = store.pipe(select('cart', 'order'));
+  }
 
   ngOnInit() {
     //Subscribe to settings state
     //Listen on loading state for loading screen
     //Get settings object from contentful to determine shipping options etc
     this.SettingsSubscription = this.settings$
-    .pipe(
-      map(x => {
-        this.siteSettings = x.siteConfig;
-        this.loading = x.loading;
-        this.resolution = x.resolution;
-      })
-    )
-    .subscribe();
+      .pipe(
+        map(x => {
+          this.siteSettings = x.siteConfig;
+          this.loading = x.loading;
+          this.resolution = x.resolution;
+          x.pages.filter(page => {
+            if (page.fields.type == 'cart') {
+              this.seoService.updateTitle(page.fields.title);
+              this.seoService.updateDescription(page.fields.description);
+              this.seoService.updateOgUrl(window.location.href);
+              return page;
+            }
+          });
+        })
+      )
+      .subscribe();
 
     this.UserSubscription = this.user$
-    .pipe(
-      map(x => {
-        if((this.authState.uid && !this.authState.isAnonymous) && !x.uid) {
-          this.store.dispatch(UserActions.BeginGetRedirectResultAction());
-      }
-        this.userInfo = x.personalInfo;
-      })
-    )
-    .subscribe();
+      .pipe(
+        map(x => {
+          if ((this.authState.uid && !this.authState.isAnonymous) && !x.uid) {
+            this.store.dispatch(UserActions.BeginGetRedirectResultAction());
+          }
+          this.userInfo = x.personalInfo;
+        })
+      )
+      .subscribe();
 
-    if(this.bigScreens.includes(this.resolution)) {
-      switch(this.navService.getActivePage().title) {
+    if (this.utilService.bigScreens.includes(this.resolution)) {
+      switch (this.navService.getActivePage().title) {
         case 'Checkout Shipping':
-            this.summaryOpen = true;
-            break;
+          this.summaryOpen = true;
+          break;
         case 'Checkout Payment':
-            this.summaryOpen = true;
-            break;
-        case 'Checkout Success':
-            this.summaryOpen = false;
-            break;
+          this.summaryOpen = true;
+          break;
       }
     }
 
 
     this.initializeCartState();
+    /*
+    //On Set Status
+    */
+    this.CartStatusSubscription = this._actions$.pipe(ofType(
+      CartActions.SuccessSetCartStatusAction)).subscribe(() => {
+        this.initializeOrder(this.cartId);
+        this.router.navigateByUrl('cart/checkout/' + this.cartId + '/shipping');
+      });
 
     /*
     //Everytime user updates address or personal info we want to initialize the order
@@ -133,49 +147,52 @@ export class CartComponent implements OnInit {
     this.UserInfoSubscription = this._actions$.pipe(ofType(
       UserActions.SuccessGetUserInfoAction,
       CartActions.SuccessSetOrderShippingAction)).subscribe(() => {
-      this.initializeOrder(this.cartId);
-    });
+        this.initializeOrder(this.cartId);
+      });
 
     //After every time init of order is successful we want to navigate to the next checkout step
     //First step is guest page, or if user logged in first is shipping
     this.initOrderSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe(() => {
-      switch(this.navService.getActivePage().title) {
+      switch (this.navService.getActivePage().title) {
         case 'Checkout Shipping':
-          if(this.bigScreens.includes(this.resolution)) {this.summaryOpen = true}
-          this.router.navigateByUrl('cart/checkout/' + this.cartId +'/payment');
-            break;
+          if (this.utilService.bigScreens.includes(this.resolution)) { this.summaryOpen = true }
+          this.router.navigateByUrl('cart/checkout/' + this.cartId + '/payment');
+          break;
         case 'Checkout':
-          if(this.bigScreens.includes(this.resolution)) {this.summaryOpen = true}
-          this.router.navigateByUrl('cart/checkout/' + this.cartId +'/shipping');
-            break;
+          if (this.utilService.bigScreens.includes(this.resolution)) { this.summaryOpen = true }
+          this.router.navigateByUrl('cart/checkout/' + this.cartId + '/shipping');
+          break;
         case 'Checkout Success':
-            this.summaryOpen = false;
-            break;
+          this.summaryOpen = false;
+          break;
       }
       this.utilService.scrollTop();
       this.navService.finishLoading();
-      });
+    });
 
-      //This is for LOGGED IN users, we have a function triggered on insert to {payment}
-      //This observable will be updated everytime cart firestore obejct is updated
-      this.OrderSubscription = this.order$
+    //This is for LOGGED IN users, we have a function triggered on insert to {payment}
+    //This observable will be updated everytime cart firestore obejct is updated
+    this.OrderSubscription = this.order$
       .pipe(
         map(x => {
-          if (x) {
-            if (x.status =="paid") {
+          if (x && x.status) {
+            if (x.status == "paid") {
               this.store.dispatch(CartActions.BeginResetCartAction());
               this.router.navigateByUrl('order/success/' + this.cartId);
-            }
+            } else if (x.status == "failed") {
+              this.navService.finishLoading();
+              this.router.navigateByUrl('cart/checkout/' + this.cartId + '/error');
+            } 
           }
         })
       )
       .subscribe();
 
-      //This is for GUEST users, we are waiting for a function return when stripe is successful
-      this.StripeSuccessSubscription = this._actions$.pipe(ofType(CartActions.SuccessStripePaymentAction)).subscribe(() => {
-            this.store.dispatch(CartActions.BeginResetCartAction());
-            this.router.navigateByUrl('order/success/' + this.cartId);
-      });
+    //This is for GUEST users, we are waiting for a function return when stripe is successful
+    this.StripeSuccessSubscription = this._actions$.pipe(ofType(CartActions.SuccessStripePaymentAction)).subscribe(() => {
+      this.store.dispatch(CartActions.BeginResetCartAction());
+      this.router.navigateByUrl('order/success/' + this.cartId);
+    });
   }
 
   /* Connecting to cart state to fetch all current cart item, using a forkJoin we call contentful seperatly for each product
@@ -185,115 +202,125 @@ export class CartComponent implements OnInit {
   */
   initializeCartState() {
     this.CartSubscription = this.cartItems$
-    .pipe(
-      map(_cartItems => {
-        if (!_cartItems || _cartItems.length == 0) {
-          this.cartTotal = 0;
-          this.grandTotal = 0;
-          this.primaryTax = 0;
-          this.secondaryTax = 0;
-          this.cartItemCount = 0;
-          this.store.dispatch(CartActions.SuccessSetOrderTotalAction({ payload: this.cartTotal }));
-          this.cartItems = [];
-        }
-        const requestArray = [];
-        _cartItems.forEach((item) => {
-          requestArray.push(this.contentfulService.getProductDetails(item.productId));
-          }
-        )
-        forkJoin(requestArray).pipe(
-          map((results : any) => {
-            this.cartItems = results.map((item)=>({
-              ...item,
-              cartItem: (
-                 _cartItems.filter(cartItem=>{
-                  if (item.sys.id == cartItem.productId) {
-                    return cartItem;
-                  }
-                }).pop()
-              )
-            }));
+      .pipe(
+        map(_cartItems => {
+          if (!_cartItems || _cartItems.length == 0) {
             this.cartTotal = 0;
             this.grandTotal = 0;
+            this.primaryTax = 0;
+            this.secondaryTax = 0;
             this.cartItemCount = 0;
+            this.store.dispatch(CartActions.SuccessSetOrderTotalAction({ payload: this.grandTotal }));
+            this.cartItems = [];
+          }
+          const requestArray = [];
+          _cartItems.forEach((item) => {
+            requestArray.push(this.contentfulService.getProductDetails(item.productId));
+          }
+          )
+          forkJoin(requestArray).pipe(
+            map((results: any) => {
+              this.cartItems = results.map((item) => ({
+                ...item,
+                cartItem: (
+                  _cartItems.filter(cartItem => {
+                    if (item.sys.id == cartItem.productId) {
+                      return cartItem;
+                    }
+                  }).pop()
+                )
+              }));
+              this.cartTotal = 0;
+              this.grandTotal = 0;
+              this.cartItemCount = 0;
 
-            this.cartItems.forEach(item=> {
-              this.cartTotal = this.cartTotal + (item.cartItem.qty*(item.fields.discount ? item.fields.discount : item.fields.price));
-              
-            });
-            this.primaryTax = this.siteSettings.fields.primaryTax? 
-                                  parseFloat(((this.siteSettings.fields.primaryTaxValue *  this.cartTotal)/100).toFixed(2))
-                                      : undefined;
-            this.secondaryTax = this.siteSettings.fields.secondaryTax? 
-                                  parseFloat(((this.siteSettings.fields.secondaryTaxValue *  this.cartTotal)/100).toFixed(2))
-                                      : undefined;   
-            this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;  
-            this.store.dispatch(CartActions.SuccessSetOrderTotalAction({ payload: this.grandTotal.toFixed(2) }));
-            this.cartItems.forEach(item=> {
-              this.cartItemCount = this.cartItemCount + item.cartItem.qty;
-            });   
-          })
-        ).subscribe();
-        
-      })
-    )
-    .subscribe();
+              this.cartItems.forEach(item => {
+                this.cartTotal = this.cartTotal + (item.cartItem.qty * (item.fields.discount ? item.fields.discount : item.fields.price));
+
+              });
+              this.primaryTax = this.siteSettings.fields.primaryTax ?
+                parseFloat(((this.siteSettings.fields.primaryTaxValue * this.cartTotal) / 100).toFixed(2))
+                : undefined;
+              this.secondaryTax = this.siteSettings.fields.secondaryTax ?
+                parseFloat(((this.siteSettings.fields.secondaryTaxValue * this.cartTotal) / 100).toFixed(2))
+                : undefined;
+              this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;
+              this.store.dispatch(CartActions.SuccessSetOrderTotalAction({ payload: this.grandTotal.toFixed(2) }));
+              this.cartItems.forEach(item => {
+                this.cartItemCount = this.cartItemCount + item.cartItem.qty;
+              });
+            })
+          ).subscribe();
+
+        })
+      )
+      .subscribe();
 
     this.ShippingMethodSubscription = this.shippingMethod$
-    .pipe(
-      map(x => {
-        if (x) {
-          this.shippingCost = x.price;
-          this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;  
-          this.cd.detectChanges();
-        }
-      })
-    )
-    .subscribe();
+      .pipe(
+        map(x => {
+          if (x) {
+            this.shippingCost = x.price;
+            this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;
+            this.cd.detectChanges();
+          }
+        })
+      )
+      .subscribe();
 
     this.CartIdSubscription = this.cartId$
-    .pipe(
-      map(x => {
-        this.cartId = x;
-      })
-    )
-    .subscribe();
+      .pipe(
+        map(x => {
+          if (x) {
+            this.cartId = x;
+            this.store.dispatch(CartActions.BeginGetCartAction({ payload: x }));
+          }
+        })
+      )
+      .subscribe();
   }
 
   ngAfterViewInit() {
-    
+
     this.navService.finishLoading();
   }
 
   initializeOrder(cartId) {
     let reqCart = [];
-    this.cartItems.forEach(function(item){
-          reqCart.push(
-            {product_id : item.cartItem.productId,
-            thumbnail : this.imagePipe.transform(item.fields.media[0].fields.file.url),
-            name : item.fields.title,
-            variants : item.cartItem.variants,
-            qty : item.cartItem.qty,
-            price : item.fields.discount ? 
-                    item.fields.discount : 
-                    item.fields.price }
-          )
-        }.bind(this));
-         this.store.dispatch(CartActions.
-              BeginInitializeOrderAction({payload :{cartId : cartId, 
-                                                    personalInfo : this.userInfo ,
-                                                    cart : {cart : reqCart ,
-                                                            date : (new Date).getTime(),
-                                                            shippingCost : this.shippingCost,
-                                                            primaryTax : this.primaryTax, 
-                                                            secondaryTax : this.secondaryTax,
-                                                            total : this.cartTotal.toFixed(2),
-                                                            grandTotal : this.grandTotal.toFixed(2)}
-                                                  }}));
-    
+    this.cartItems.forEach(function (item) {
+      reqCart.push(
+        {
+          product_id: item.cartItem.productId,
+          thumbnail: this.imagePipe.transform(item.fields.media[0].fields.file.url),
+          name: item.fields.title,
+          variants: item.cartItem.variants,
+          qty: item.cartItem.qty,
+          price: item.fields.discount ?
+            item.fields.discount :
+            item.fields.price
+        }
+      )
+    }.bind(this));
+    this.store.dispatch(CartActions.
+      BeginInitializeOrderAction({
+        payload: {
+          cartId: cartId,
+          personalInfo: this.userInfo,
+          cart: {
+            cart: reqCart,
+            date: (new Date).getTime(),
+            shippingCost: this.shippingCost,
+            primaryTax: this.primaryTax,
+            secondaryTax: this.secondaryTax,
+            total: this.cartTotal.toFixed(2),
+            grandTotal: this.grandTotal.toFixed(2)
+          }
+        }
+      }));
+
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.initOrderSubscription.unsubscribe();
     this.ShippingMethodSubscription.unsubscribe();
     this.OrderSubscription.unsubscribe();
@@ -303,6 +330,7 @@ export class CartComponent implements OnInit {
     this.CartIdSubscription.unsubscribe();
     this.UserInfoSubscription.unsubscribe();
     this.UserSubscription.unsubscribe();
+    this.CartStatusSubscription.unsubscribe();
   }
 
 }

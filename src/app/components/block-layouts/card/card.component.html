@@ -27,10 +27,14 @@
 
                </div>
                <div>
-                    <img *ngIf="block.fields.media[0].fields.file.details.image" class="full-width doo-pointer"
-                         style="display: block" [src]="block.fields.media[0].fields.file.url">
+                    <img #postImg *ngIf="block.fields.media[0].fields.file.details.image"
+                         class="full-width post-placeholder" style="object-fit: cover;height: 100%;"
+                         [lazyLoad]="block.fields.media[0].fields.file.url"
+                         [alt] = "block.fields.media[0].fields.description"
+                         [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
+                         (onStateChange)="myCallbackFunction($event)">
                     <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
-                         [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline
+                         [src]="block.fields.media[0].fields.file.url" autoplay muted="muted" loop playsinline
                          style="width: 100%;display: block;">
                     </video>
                </div>
