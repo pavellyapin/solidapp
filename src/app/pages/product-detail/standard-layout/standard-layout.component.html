@@ -1,0 +1,100 @@
+<doo-bread-crumbs [productTitle]="productDetails.fields.title"></doo-bread-crumbs>
+
+<div class="doo-standard-product-detail" fxLayoutAlign="center" fxLayoutGap="10px" fxLayout="row" fxLayout.xs="column">
+
+  <div fxLayout="column" fxFlex="55" fxLayoutGap="20px">
+    <div fxLayout="column" class="selected-image-full">
+      <img class="full-width doo-pointer" [src]="productDetails.fields.media[displayedMediaIndex].fields.file.url">
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex = "25" *ngFor="let image of productDetails.fields.media; let i = index"
+        [ngClass]="i == displayedMediaIndex ? 'selected-image' : ''">
+        <img class="full-width doo-pointer" style = "display: block" (click)="changeImage(i)" [src]="image?.fields.file.url">
+      </div>
+    </div>
+  </div>
+  <div fxLayout="column" fxFlex="40" fxLayoutGap="50px" fxLayoutAlign="start start">
+    <form [formGroup]="cartItemForm" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start start"
+      class="full-width" style = "padding : 0px 20px;" >
+      <div fxLayout="row" class="mat-title">
+        {{productDetails.fields.title}}
+      </div>
+      <div fxLayout="row" fxLayoutGap="5px" *ngIf="productReviews" class="doo-rate-uneditable">
+        <doo-review-stars [rate]="reviewsComponent.getOverallRate()" [editable]="false"></doo-review-stars>
+        <span class="mat-subeheading-1">{{productReviews.length}}</span>
+        <span class="mat-subeheading-1">Reviews</span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <span [innerHTML]="productDetails.fields.price | pricePipe"
+          [ngClass]="productDetails.fields.discount ? 'doo-stroked-price mat-headline' : 'mat-headline'">
+        </span>
+        <span class = "mat-headline" [innerHTML]="productDetails.fields.discount | pricePipe" *ngIf="productDetails.fields.discount">
+        </span>
+      </div>
+      <div fxLayout="row" class="mat-body" fxLayoutAlign="start"
+        [innerHTML]="productDetails.fields.description | richTextPipe">
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="30px" class="mat-body full-width">
+        <div fxLayout="column" fxFlex="50" fxLayoutGap="10px" *ngIf="productVariants.get('size')">
+          <mat-form-field appearance="outline" class="full-width doo-tight-wrapper" color="primary">
+            <mat-label>{{ 'product.size' | translate }}</mat-label>
+            <mat-select formControlName="size" name="size" placeholder="{{ 'product.size' | translate }}">
+              <mat-option *ngFor="let variant of productVariants.get('size')" [value]="variant.name">
+                {{variant.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign.xs="center" class="mat-caption doo-qty-input">
+          <div (click)="addQty.emit()" fxLayout="column" fxLayoutAlign="center center" class="minus-icon doo-pointer">
+            <mat-icon svgIcon="doo-plus"></mat-icon>
+          </div>
+
+          <mat-form-field class="qty-input">
+            <input formControlName="qty" autocomplete="qty" matInput name="qty" type="text" />
+
+          </mat-form-field>
+          <div (click)="removeQty.emit()" fxLayout="column" fxLayoutAlign="center center" class="plus-icon doo-pointer">
+            <mat-icon svgIcon="doo-minus"></mat-icon>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="column" fxLayoutGap="10px" class="mat-body full-width doo-bottom-border"
+        *ngIf="productVariants.get('color')">
+        <div fxLayout="row">
+          {{'product.color' | translate}}: {{cartItemForm.controls["color"].value}}
+        </div>
+        <mat-radio-group fxLayout="row" formControlName="color">
+          <mat-radio-button *ngFor="let variant of productVariants.get('color')" [value]="variant.name"
+            [checked]="variant.checked">
+            <div [ngStyle]="{'background-color': variant.code}" class="doo-color-box">
+            </div>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px" class="full-width">
+        <button (click)="addProductToCart()" class="full-width doo-add-btn" color="primary" mat-flat-button
+          type="submit">
+          {{ 'cart.addToCart' | translate }}
+        </button>
+        <div fxLayout="column" class="fav-icon doo-pointer" fxLayoutAlign="center center">
+          <mat-icon [ngClass]="isFavorite ? 'fav-fill' : 'fav-border'" svgIcon="doo-favorite"
+            (click)="toggleFavorites(isFavorite)"></mat-icon>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="column" class="doo-reviews-cont" fxFlex.gt-xs="90" fxLayoutGap="50px" fxFlex.xs
+      fxLayoutAlign="center">
+      <div fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <mat-icon svgIcon="doo-chat">
+        </mat-icon>
+        <span style="font-weight: 700" class="mat-display-1 doo-letter-space">Product Reviews</span>
+      </div>
+      <doo-product-reviews #reviewsComponent [productReviews]="productReviews" [productDetails]="productDetails">
+      </doo-product-reviews>
+    </div>
+  </div>

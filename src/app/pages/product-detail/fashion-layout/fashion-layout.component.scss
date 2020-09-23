@@ -71,35 +71,6 @@ doo-bread-crumbs {
   opacity: 0.5;
 }
 
-
-.fav-icon {
-  padding : 0 10px;
-  background: $primary;
-  mat-icon {
-    height: 20px;
-    width: 20px;
-  }
-
-  .fav-border {
-    ::ng-deep .cls-1 {
-      stroke: white;
-    }
-    ::ng-deep .cls-2 {
-      stroke: white;
-    }
-  }
-
-  .fav-fill {
-    ::ng-deep .cls-1 {
-      stroke: white;
-      fill: white;
-    }
-    ::ng-deep .cls-2 {
-      stroke: white;
-      fill: white;
-    }
-  }
-}
 .doo-add-btn{
   text-transform: uppercase;
   padding: 5px 10px;
@@ -184,51 +155,6 @@ doo-bread-crumbs {
   }
 }
 
-.plus-icon {
-  mat-icon {
-    height: 15px;
-    width: 15px;
-    
-    ::ng-deep .cls-1 {
-      stroke: $black;
-    }
-    ::ng-deep .cls-2 {
-      stroke: $black;
-    }
-  }
-
-  padding-left: 10px;
-}
-
-.minus-icon {
-  mat-icon {
-    height: 15px;
-    width: 15px;
-    
-    ::ng-deep .cls-1 {
-      stroke: $black;
-    }
-    ::ng-deep .cls-2 {
-      stroke: $black;
-    }
-  }
-
-  padding-right: 10px;
-  opacity: 0.5;
-}
-
-.qty-input {
-  text-align: center;
-  padding-top: 15px;
-  width:50px;
-  font-weight: bold;
-  ::ng-deep .mat-form-field-infix{
-    background-color: $lighter-grey;
-    border-style: solid;
-    border-width: 1px;
-    border-color: $light-grey;
-  }
-}
 
 .doo-reviews-cont{
   .mat-display-1{

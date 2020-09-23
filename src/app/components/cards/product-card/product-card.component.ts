@@ -20,7 +20,7 @@ import SettingsState from 'src/app/services/store/settings/settings.state';
 })
 export class ProductCardComponent extends AbstractCardComponent implements OnInit {
 
-  layout : string = 'fashion';
+  layout : string = 'standard';
   favorites$:Observable<FavoriteItem[]>;
   productReviews : any;
   UserSubscription: Subscription;

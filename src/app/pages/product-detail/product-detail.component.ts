@@ -39,7 +39,7 @@ export class ProductDeatilComponent implements OnInit {
   user$:Observable<UserState>;
   userId:any;
   
-  layout : string = 'fashion';
+  layout : string = 'standard';
   product$: Observable<Entry<any>>;
   
   pages$: Observable<Entry<any>[]>;

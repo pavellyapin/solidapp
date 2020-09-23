@@ -13,6 +13,20 @@
     (removeQty) = "removeQty()"
     *ngSwitchCase="'fashion'">
     </doo-product-detail-fashion-layout>
+    <doo-product-detail-standard-layout 
+    [productDetails] = "productDetails" 
+    [productReviews] = "productReviews"
+    [cartItemForm] = "cartItemForm"
+    [productVariants] = "productVariants"
+    [isFavorite] = "isFavorite"
+    [formSubmit] = "formSubmit"
+    [resolution] = "resolution"
+    (favoriteToggle) = "favoriteToggle($event)"
+    (addToCart) = "addProductToCart()"
+    (addQty) = "addQty()"
+    (removeQty) = "removeQty()"
+    *ngSwitchCase="'standard'">
+    </doo-product-detail-standard-layout>
 </div>
 <div [ngSwitch]="block.sys.contentType.sys.id" *ngFor = "let block of pageLayout?.fields.blocks">
                 <doo-widgets *ngSwitchCase="'widget'" [widget] = "block">

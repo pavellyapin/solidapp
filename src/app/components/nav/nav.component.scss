@@ -78,7 +78,6 @@ mat-drawer-container {
 
   .doo-loading-overlay {
     position: absolute;
-    height: 100%; 
     width: 100%;
     background: white;
     z-index: 100;
@@ -87,7 +86,6 @@ mat-drawer-container {
 
 .doo-loading-screen {
   background: $lighter-grey;
-  padding-top: 200px;
   padding-bottom: 200px;
   width: 80%;
   text-align: center;

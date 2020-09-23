@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {NavRoute, NavRouteService} from "./nav-routing";
+import { Injectable } from '@angular/core';
+import { NavRoute, NavRouteService } from "./nav-routing";
 import * as SettingsActions from 'src/app/services/store/settings/settings.action';
 import { Store } from '@ngrx/store';
 
@@ -22,8 +22,8 @@ export class NavigationService {
   private activePage: Page;
   private navigationStack: Array<Array<string>> = [];
 
-  constructor(private navRouteService: NavRouteService , 
-              private store: Store<{}>) {
+  constructor(private navRouteService: NavRouteService,
+    private store: Store<{}>) {
     this.navigationItems = navRouteService.getNavRoutes();
   }
 
@@ -109,16 +109,22 @@ export class NavigationService {
           this.navRouteService.router.navigateByUrl('cat/' + cta.fields.name)
           break;
         case 'page':
-            this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.navRouteService.router.navigateByUrl('page/' + cta.fields.name)
           });
-         break;
+          break;
+        case 'product':
+          this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.navRouteService.router.navigateByUrl('product/' + cta.sys.id)
+          });
+          break;
       }
+
     } else {
       this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.navRouteService.router.navigateByUrl(cta);
       });
-      
+
     }
 
   }

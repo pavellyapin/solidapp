@@ -11,4 +11,16 @@
   (navigateToProduct) = "goToProduct()"
   *ngSwitchCase="'fashion'">
   </doo-product-card-fashion-layout>
+  <doo-product-card-standard-layout
+  [productReviews] = "productReviews"
+  [productVariants] = "productVariants"
+  [object] = "object"
+  [isFavorite] = "isFavorite"
+  [rate] = "getOverallRate()"
+  [showReviews] = "cardStyle != 'simple'"
+  [showVariants] = "cardStyle != 'simple'"
+  (favoriteToggle) = "favoriteToggle($event)"
+  (navigateToProduct) = "goToProduct()"
+  *ngSwitchCase="'standard'">
+  </doo-product-card-standard-layout>
 </span>

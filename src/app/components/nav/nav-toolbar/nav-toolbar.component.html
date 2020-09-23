@@ -1,85 +1,74 @@
-<div fxLayout = "column" fxLayoutAlign = "center center" class = "mat-caption top-news-feed-row">
-    An Update to COVID–19
-</div>
-<div fxLayout="row" fxLayoutAlign="center" class="doo-primary-toolbar">
-    <mat-toolbar fxLayout = "column" fxLayoutAlign="center center">
-    <div fxLayout="row" fxLayoutAlign="space-between" class = "doo-menu-actions full-width">
-      <button (click)= "onToggleMobileSideMenu()" *ngIf = "!bigScreens.includes(resolution)" mat-button>
-        <mat-icon svgIcon = "doo-hamburger">
+<div fxLayout="column" fxLayoutAlign="center" class="doo-primary-toolbar">
+  <div fxLayout="row" fxLayoutAlign="center" class="accent-background full-width" style = "padding: 0px 10px">
+    <doo-actions fxLayout="row" [actions]="siteSettings.fields.actions"></doo-actions>
+  </div>
+
+  <mat-toolbar fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="space-between" class="doo-menu-actions full-width">
+      <button (click)="onToggleMobileSideMenu()" *ngIf="!bigScreens.includes(resolution)" mat-button>
+        <mat-icon svgIcon="doo-hamburger">
         </mat-icon>
       </button>
-      <button (click)="navigateHome()" mat-button
-              class="doo-nav-toggle-button">
-              <img  [src]="siteSettings?.fields.logo.fields.file.url">
+      <button (click)="navigateHome()" mat-button class="doo-nav-toggle-button">
+        <img [src]="siteSettings?.fields.logo.fields.file.url">
       </button>
-      <form *ngIf = "siteSettings && bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled" fxLayoutAlign="center center" fxFlex = "50" class="mat-caption doo-search-box">
-        <mat-form-field appearance="outline" class = "full-width">
-            <span matPrefix><mat-icon svgIcon = "doo-search"></mat-icon></span>
-          <input #searchInput type="text"
-                 placeholder="I'm looking for.."
-                 aria-label="Number"
-                 (keydown.enter)="searchProducts($event)"
-                 matInput
-                 [formControl]="searchControl"
-                 [matAutocomplete]="auto">
+      <form *ngIf="siteSettings && bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled"
+        fxLayoutAlign="center center" fxFlex="50" class="mat-caption doo-search-box">
+        <mat-form-field appearance="outline" class="full-width">
+          <span matPrefix>
+            <mat-icon svgIcon="doo-search"></mat-icon>
+          </span>
+          <input #searchInput type="text" placeholder="I'm looking for.." aria-label="Number"
+            (keydown.enter)="searchProducts($event)" matInput [formControl]="searchControl" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" (click) = "navService.ctaClick(option)" [value]="option.fields.title">
+            <mat-option *ngFor="let option of filteredOptions | async" (click)="navService.ctaClick(option)"
+              [value]="option.fields.title">
               {{option.fields.title}}
             </mat-option>
             <mat-option>
-                Searching...
-              </mat-option>
+              Searching...
+            </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </form>
-    <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
-    <div *ngIf = "siteSettings && siteSettings.fields.cartEnabled" fxLayout="row" fxLayoutAlign="center center">
-        <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToFavorites()">
-            <mat-icon svgIcon="doo-favorite"></mat-icon>
-          </button>
-          <button *ngIf = "bigScreens.includes(resolution)" mat-button (click)="goToProfile()">
-            <mat-icon svgIcon="doo-profile"></mat-icon>
-          </button>
-          <button (click)= "goToCart()" mat-button>
-              <mat-icon svgIcon="doo-basket" 
-              [matBadge]="cartItemCount" 
-                      [matBadgeHidden]="!cartItemCount || cartItemCount == 0"></mat-icon>
-           
-          </button>
-    </div>
+      <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
+      <div *ngIf="siteSettings && siteSettings.fields.cartEnabled" fxLayout="row" fxLayoutAlign="center center">
+        <button *ngIf="bigScreens.includes(resolution)" mat-button (click)="goToFavorites()">
+          <mat-icon svgIcon="doo-favorite"></mat-icon>
+        </button>
+        <button *ngIf="bigScreens.includes(resolution)" mat-button (click)="goToProfile()">
+          <mat-icon svgIcon="doo-profile"></mat-icon>
+        </button>
+        <button (click)="goToCart()" mat-button>
+          <mat-icon svgIcon="doo-cart" [matBadge]="cartItemCount"
+            [matBadgeHidden]="!cartItemCount || cartItemCount == 0"></mat-icon>
 
-    </div>  
-    <div *ngIf = "bigScreens.includes(resolution)" 
-         [@navbarAnimation]="state" 
-         fxLayout="row" 
-         class = "doo-menu-items full-width" 
-         fxLayoutAlign = "start">
-            <div fxLayout="row" fxLayoutAlign = "center center" *ngFor = "let category of rootCategories"
-                 class = "doo-root-category doo-pointer" 
-                 (click) = "expandMenu(category)">
-                 {{category.fields.title}}
-                 <mat-icon *ngIf = "!category.fields.redirect" svgIcon="doo-arrow-down"></mat-icon>
-            </div>
+        </button>
+      </div>
+
     </div>
-    </mat-toolbar>
-  <div *ngIf = "mainMenuOpen" fxFlex = "100" class = "doo-expand-menu mat-elevation-z1">
-          <div fxLayout="row" fxFlex = "75">
-            <div fxLayout= "column" 
-                 fxLayoutGap="10px"
-                 class = "sub-category-column" 
-                 *ngFor = "let category of subCategories">
-                <span class = "mat-subheading-1">{{category.fields.title}}</span>
-                <div *ngFor = "let link of category.links"
-                    (click) = "navigateCategory(link.fields.name)">
-                    <span class = "doo-pointer crumb-item">{{link.fields.title}}</span>
-                    
-                </div>
-            </div>
-          </div>
-          <div fxFlex = "25">
-              <img  class = "full-width" 
-                    [lazyLoad]="activeCategory?.fields.media.fields.file.url" 
-                    [defaultImage]="'assets/placeholders/placeholder-1.svg'">
-          </div>
+    <div *ngIf="bigScreens.includes(resolution)" [@navbarAnimation]="state" fxLayout="row"
+      class="doo-menu-items full-width" fxLayoutAlign="end">
+      <div fxLayout="row" fxLayoutAlign="center center" *ngFor="let category of rootCategories"
+        class="doo-root-category doo-pointer" [class.accent-color] = "category.fields.redirect" (click)="expandMenu(category)">
+        {{category.fields.title}}
+        <mat-icon *ngIf="!category.fields.redirect" svgIcon="doo-arrow-down"></mat-icon>
+      </div>
+    </div>
+  </mat-toolbar>
+  <div *ngIf="mainMenuOpen" fxFlex="100" class="doo-expand-menu mat-elevation-z1">
+    <div fxLayout="row" fxFlex="75">
+      <div fxLayout="column" fxLayoutGap="10px" class="sub-category-column" *ngFor="let category of subCategories">
+        <span class="mat-headline accent-color">{{category.fields.title}}</span>
+        <div *ngFor="let link of category.links" (click)="navigateCategory(link.fields.name)">
+          <span class="doo-pointer crumb-item mat-headline">{{link.fields.title}}</span>
+
+        </div>
+      </div>
+    </div>
+    <div fxFlex="25">
+      <img *ngIf = "activeCategory?.fields.media" class="full-width" [lazyLoad]="activeCategory?.fields.media.fields.file.url"
+        [defaultImage]="'assets/placeholders/placeholder-1.svg'">
+    </div>
   </div>
 </div>

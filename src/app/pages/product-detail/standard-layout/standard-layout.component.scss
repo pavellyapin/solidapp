@@ -1,0 +1,131 @@
+@import 'src/css/_variables.scss';
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+
+::ng-deep .doo-tight-wrapper .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.doo-color-box {
+  min-width:23px;
+  min-height:23px;
+}
+
+.selected-image-full {
+  
+}
+
+.selected-image{
+  border : solid 2px;
+  border-color: $accent !important;
+}
+
+.standard {
+mat-radio-button {
+  margin-right: 20px;
+}
+
+::ng-deep .mat-radio-container{
+  display: none !important;
+}
+
+::ng-deep .mat-radio-checked {
+  border-color: $primary !important;
+  font-weight: bold;
+}
+
+::ng-deep .mat-radio-label-content {
+  padding-left: 0px !important;
+  width: 100%;
+  text-align: center;
+}
+
+::ng-deep .mat-radio-button {
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+}
+
+
+  ::ng-deep .mat-radio-button:hover {
+    border-color: $primary !important;
+  }
+}
+.doo-add-btn{
+  text-transform: uppercase;
+  padding: 5px 10px;
+}
+
+
+.plus-icon {
+  mat-icon {
+    height: 15px;
+    width: 15px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $black;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $black;
+    }
+  }
+
+  padding-left: 10px;
+}
+
+.minus-icon {
+  mat-icon {
+    height: 15px;
+    width: 15px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $black;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $black;
+    }
+  }
+
+  padding-right: 10px;
+  opacity: 0.5;
+}
+
+.qty-input {
+  text-align: center;
+  padding-top: 15px;
+  width:50px;
+  font-weight: bold;
+  ::ng-deep .mat-form-field-infix{
+    background-color: $lighter-grey;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $light-grey;
+  }
+}
+
+.doo-reviews-cont{
+  .mat-display-1{
+    margin : 0px;
+  }
+  mat-icon {
+    height: 35px;
+    width: 35px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $accent;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $accent;
+    }
+  }
+  background: white;
+  padding : 2%;
+}
+
+.doo-standard-product-detail{
+  padding-bottom: 50px;
+}

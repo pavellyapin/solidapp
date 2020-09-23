@@ -24,6 +24,7 @@ import { FooterModule } from '../footer/footer.module';
 import { MobileSideNavComponent } from './mobile-side-nav/mobile-side-nav.component';
 import { CartSideNavComponent } from './cart-side-nav/cart-side-nav.component';
 import { CartCardsModule } from '../cart-card/cards.module';
+import { BlockLayoutsModule } from '../block-layouts/block-layouts.module';
 
 @NgModule({
   declarations: [NavComponent, 
@@ -52,7 +53,8 @@ import { CartCardsModule } from '../cart-card/cards.module';
     MatBadgeModule,
     PipesModule,
     LazyLoadImageModule,
-    CartCardsModule
+    CartCardsModule,
+    BlockLayoutsModule
   ],
   providers : [],
   exports:[BreadCrumbsComponent],

@@ -92,13 +92,8 @@
             <div *ngIf="cartTotal" fxLayout="column" style="position: relative" fxLayoutGap="20px">
                 <div *ngIf="loading" fxLayout="row" style="flex: 1 1 100%;min-height:100vh;position: absolute;"
                     fxLayoutAlign="center start" class="doo-loading-overlay">
-                    <div class="doo-loading-screen">
-                        <img src="assets/icons/logo.png">
-                        <br>
-                        <br>
-                        <span class="mat-subheading-1">Secure Transaction in Progress</span>
-                        <br>
-                        <span class="mat-subheading-1">Please do not refresh page</span>
+                    <div class="doo-loading-screen" fxLayout="row" fxLayoutAlign="center start">
+                        <img fxFlex="30" src="assets/icons/logo.png">
                     </div>
                 </div>
                 <div *ngIf="!loading" fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end end"
