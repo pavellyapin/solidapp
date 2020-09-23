@@ -1,33 +1,29 @@
-<div style = "padding-top: 5%" *ngFor = "let cta of actions">
+<div style="padding-top: 2%" *ngFor="let cta of actions">
         <div [ngSwitch]="cta.fields.appearence">
-                        <button *ngSwitchCase="'flat'" 
-                        [color] = "cta.fields.color" 
-                        (click) = "navService.ctaClick(cta.fields.action)"
-                        mat-flat-button 
-                        class = "doo-cta-btn">
+                <button *ngSwitchCase="'flat'" [color]="cta.fields.color"
+                        (click)="navService.ctaClick(cta.fields.action)" mat-flat-button class="doo-cta-btn">
                         {{cta.fields.name}}
-                        </button> 
-                        <button *ngSwitchCase="'stroked'" 
-                        [color] = "cta.fields.color"
-                        (click) = "navService.ctaClick(cta.fields.action)" 
-                        mat-stroked-button 
-                        class = "doo-cta-btn">
+                </button>
+                <button *ngSwitchCase="'stroked'" [color]="cta.fields.color"
+                        (click)="navService.ctaClick(cta.fields.action)" mat-stroked-button class="doo-cta-btn">
                         {{cta.fields.name}}
-                        </button>
-                        <button *ngSwitchCase="'arrow'" 
-                        [color] = "cta.fields.color"
-                        (click) = "navService.ctaClick(cta.fields.action)" 
-                        mat-stroked-button 
-                        class = "doo-cta-btn">
+                </button>
+                <button *ngSwitchCase="'arrow'" [color]="cta.fields.color"
+                        (click)="navService.ctaClick(cta.fields.action)" mat-stroked-button class="doo-cta-btn">
                         {{cta.fields.name}}
-                        <mat-icon  svgIcon="doo-arrow-right"></mat-icon>
-                        </button>    
-                        <button *ngSwitchCase="'raised'" 
-                        [color] = "cta.fields.color"
-                        (click) = "navService.ctaClick(cta.fields.action)" 
-                        mat-raised-button 
-                        class = "doo-cta-btn">
+                        <mat-icon svgIcon="doo-arrow-right"></mat-icon>
+                </button>
+                <button *ngSwitchCase="'raised'" [color]="cta.fields.color"
+                        (click)="navService.ctaClick(cta.fields.action)" mat-raised-button class="doo-cta-btn">
                         {{cta.fields.name}}
-                        </button>                                               
+                </button>
+                <div *ngSwitchCase="'text'" (click)="navService.ctaClick(cta.fields.action)"
+                        class = "crumb-item doo-letter-space"
+                        [class.primary-color]="cta.fields.color == 'primary'"
+                        [class.accent-color]="cta.fields.color == 'accent'"
+                        [class.white-color]="cta.fields.color == 'white'"
+                        [class.black-color]="cta.fields.color == 'black'">
+                        {{cta.fields.name}}
+                </div>
         </div>
 </div>

@@ -120,7 +120,7 @@ import { SEOService } from 'src/app/services/seo/seo.service';
       const rowsMapBig = new Map([
         ['xs', 21],
         ['sm', 15],
-        ['md', 11],
+        ['md', 9],
         ['lg', 5],
         ['xl', 5],
       ]);

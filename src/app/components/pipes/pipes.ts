@@ -37,7 +37,7 @@ export class RichTextPipe {
 })
 export class PricePipe {
   transform(price: any): any {
-    return '<span class = "currency-label"> CAD$ </span>' + parseFloat(price).toFixed(2);
+    return '<span class = "currency-label"> GBP£ </span>' + parseFloat(price).toFixed(2);
   }
 }
 
@@ -46,7 +46,7 @@ export class PricePipe {
 })
 export class PricePipeSimple {
   transform(price: any): any {
-    return 'CAD$' + parseFloat(price).toFixed(2);
+    return 'GBP£' + parseFloat(price).toFixed(2);
   }
 }
 

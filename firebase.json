@@ -16,28 +16,20 @@
     ],
     "rewrites": [
       {
-        "source": "/my-doo-7c70c/us-central1/feed",
+        "source": "/the-bed-shop-ldn/us-central1/feed",
         "function": "feed"
       },
       {
-        "source": "/my-doo-7c70c/us-central1/updateEmail",
+        "source": "/the-bed-shop-ldn/us-central1/updateEmail",
         "function": "updateEmail"
       },
       {
-        "source": "/my-doo-7c70c/us-central1/subscribeEmail",
-        "function": "subscribeEmail"
-      },
-      {
-        "source": "/my-doo-7c70c/us-central1/paypal/pay",
+        "source": "/the-bed-shop-ldn/us-central1/paypal/pay",
         "function": "paypal"
       },
       {
-        "source": "/my-doo-7c70c/us-central1/paypal/process",
+        "source": "/the-bed-shop-ldn/us-central1/paypal/process",
         "function": "paypal"
-      },
-      {
-        "source": "/my-doo-7c70c/us-central1/process",
-        "function": "process"
       },
       {
         "source": "**",

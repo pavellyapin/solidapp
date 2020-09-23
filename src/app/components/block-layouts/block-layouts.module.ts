@@ -35,7 +35,7 @@ import { ExpandBlockComponent } from './expand/expand.component';
         MatIconModule,
         MatExpansionModule
     ],
-    exports: [BlockLayoutComponent]
+    exports: [BlockLayoutComponent,ActionsComponent]
   })
   export class BlockLayoutsModule {
   }

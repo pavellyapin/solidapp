@@ -10,7 +10,10 @@
   </div>
 
   <div *ngFor="let image of productDetails.fields.media; let i = index">
-    <img class="full-width" [src]="image?.fields.file.url">
+    <img class="full-width" 
+    [lazyLoad]="image?.fields.file.url"
+    [alt] = "image?.fields.description"
+    [defaultImage]="'assets/placeholders/placeholder-1.svg'">
   </div>
 
 </div>
@@ -22,7 +25,9 @@
     <div #mediaEnd fxLayout="column" fxFlex="60">
       <div *ngFor="let image of productDetails.fields.media; let i = index">
         <img class="full-width doo-pointer-zoom" style="display: block" (click)="mediaZoom(true)"
-          [src]="image?.fields.file.url">
+        [lazyLoad]="image?.fields.file.url"
+        [alt] = "image?.fields.description"
+        [defaultImage]="'assets/placeholders/placeholder-1.svg'">
       </div>
     </div>
     <div fxLayout="column" fxFlex="35">
@@ -47,10 +52,6 @@
                 </span>
                 <span [innerHTML]="productDetails.fields.discount | pricePipe" *ngIf="productDetails.fields.discount">
                 </span>
-              </div>
-              <div fxLayout="row" class="doo-line-promo mat-caption" fxLayoutAlign="start">
-                25% Off Your Purchase with code LONGWEEKEND See Details <br>
-                Free Shipping and Free Returns See Details
               </div>
               <div fxLayout="row" fxLayoutAlign.xs="center" class="mat-caption doo-qty-input">
                 <div (click)="addQty.emit()" fxLayout="column" fxLayoutAlign="center center"
@@ -86,7 +87,7 @@
                   {{'product.size' | translate}}:
                 </div>
                 <mat-radio-group fxLayout="row" formControlName="size">
-                  <mat-radio-button fxFlex="10" *ngFor="let variant of productVariants.get('size')"
+                  <mat-radio-button fxFlex="30" *ngFor="let variant of productVariants.get('size')"
                     [value]="variant.name">
                     {{variant.name}}
                   </mat-radio-button>

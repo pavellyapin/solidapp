@@ -5,3 +5,32 @@
   width: 100%;
 }
 
+.fav-icon {
+  padding : 0 10px;
+  background: $primary;
+  mat-icon {
+    height: 20px;
+    width: 20px;
+  }
+
+  .fav-border {
+    ::ng-deep .cls-1 {
+      stroke: white;
+    }
+    ::ng-deep .cls-2 {
+      stroke: white;
+    }
+  }
+
+  .fav-fill {
+    ::ng-deep .cls-1 {
+      stroke: white;
+      fill: white;
+    }
+    ::ng-deep .cls-2 {
+      stroke: white;
+      fill: white;
+    }
+  }
+}
+

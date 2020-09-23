@@ -7,7 +7,7 @@
                        <button (click) = "navService.ctaClick(link.fields.action)" mat-button>{{link.fields.name}}</button>
                      </div>
                </div>
-            <div fxLayout = "column" class = "doo-subscribe-form" fxLayoutGap = "10px">
+            <div *ngIf = "false" fxLayout = "column" class = "doo-subscribe-form" fxLayoutGap = "10px">
                     <span class = "mat-caption subscribe-header">Join our mailing list:</span>
                     <div [formGroup]="subscribeForm" 
                     fxLayout = "row" 
@@ -38,7 +38,7 @@
             </div>
     </div>
     <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "center center" class = "bottom-links">
-        <div>© Powered By Splidoo Creative Agency. 2019.</div>
+        <div>© Powered By Solidap. 2020.</div>
         <div fxLayout = "row"> 
                 <button *ngFor = "let link of footerLinks" (click) = "navService.ctaClick(link.fields.action)" mat-button>{{link.fields.name}}</button>
         </div>   

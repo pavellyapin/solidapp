@@ -13,7 +13,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { ProductDeatilFashionLayoutComponent } from './fashion-layout/fashion-layout.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
-import { ProductDeatilStandardLayoutComponent } from './standard-layout/fashion-layout.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ProductReviewsComponent, WriteReviewModalComponent } from './product-reviews/product-reviews.component';
 import { CardsModule } from 'src/app/components/cards/cards.module';
@@ -23,6 +22,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
 import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
+import {LazyLoadImageModule} from 'ng-lazyload-image';
+import { ProductDeatilStandardLayoutComponent } from './standard-layout/standard-layout.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -52,7 +54,9 @@ import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layou
     FlexLayoutModule,
     ProductDetailRoutingModule,
     NgxImageZoomModule,
-    BlockLayoutsModule
+    BlockLayoutsModule,
+    LazyLoadImageModule,
+    MatSelectModule
   ],
   providers: [],
   entryComponents: [WriteReviewModalComponent]
