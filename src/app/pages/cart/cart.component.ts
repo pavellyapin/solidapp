@@ -37,7 +37,7 @@ export class CartComponent implements OnInit {
   SettingsSubscription: Subscription;
   UserInfoSubscription: Subscription;
   UserSubscription: Subscription;
-  CartStatusSubscription : Subscription;
+  CartStatusSubscription: Subscription;
 
   //////////////////////////////////////
   cartId: string;
@@ -182,7 +182,7 @@ export class CartComponent implements OnInit {
             } else if (x.status == "failed") {
               this.navService.finishLoading();
               this.router.navigateByUrl('cart/checkout/' + this.cartId + '/error');
-            } 
+            }
           }
         })
       )
@@ -220,12 +220,12 @@ export class CartComponent implements OnInit {
           )
           forkJoin(requestArray).pipe(
             map((results: any) => {
-              this.cartItems = results.map((item) => ({
+              this.cartItems = _cartItems.map((item) => ({
                 ...item,
-                cartItem: (
-                  _cartItems.filter(cartItem => {
-                    if (item.sys.id == cartItem.productId) {
-                      return cartItem;
+                product: (
+                  results.filter(product => {
+                    if (product.sys.id == item.productId) {
+                      return product;
                     }
                   }).pop()
                 )
@@ -235,19 +235,19 @@ export class CartComponent implements OnInit {
               this.cartItemCount = 0;
 
               this.cartItems.forEach(item => {
-                this.cartTotal = this.cartTotal + (item.cartItem.qty * (item.fields.discount ? item.fields.discount : item.fields.price));
+                this.cartTotal = this.cartTotal + (item.qty * (item.variantPrice ? item.variantPrice : (item.product.fields.discount ? item.product.fields.discount : item.product.fields.price)));
 
               });
               this.primaryTax = this.siteSettings.fields.primaryTax ?
                 parseFloat(((this.siteSettings.fields.primaryTaxValue * this.cartTotal) / 100).toFixed(2))
-                : undefined;
+                : 0;
               this.secondaryTax = this.siteSettings.fields.secondaryTax ?
                 parseFloat(((this.siteSettings.fields.secondaryTaxValue * this.cartTotal) / 100).toFixed(2))
-                : undefined;
+                : 0;
               this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;
               this.store.dispatch(CartActions.SuccessSetOrderTotalAction({ payload: this.grandTotal.toFixed(2) }));
               this.cartItems.forEach(item => {
-                this.cartItemCount = this.cartItemCount + item.cartItem.qty;
+                this.cartItemCount = this.cartItemCount + item.qty;
               });
             })
           ).subscribe();
@@ -271,8 +271,8 @@ export class CartComponent implements OnInit {
     this.CartIdSubscription = this.cartId$
       .pipe(
         map(x => {
-          if (x) {
-            this.cartId = x;
+          this.cartId = x;
+          if (this.cartId) {
             this.store.dispatch(CartActions.BeginGetCartAction({ payload: x }));
           }
         })
@@ -290,14 +290,14 @@ export class CartComponent implements OnInit {
     this.cartItems.forEach(function (item) {
       reqCart.push(
         {
-          product_id: item.cartItem.productId,
-          thumbnail: this.imagePipe.transform(item.fields.media[0].fields.file.url),
-          name: item.fields.title,
-          variants: item.cartItem.variants,
-          qty: item.cartItem.qty,
-          price: item.fields.discount ?
-            item.fields.discount :
-            item.fields.price
+          product_id: item.productId,
+          thumbnail: this.imagePipe.transform(item.product.fields.media[0].fields.file.url),
+          name: item.product.fields.title,
+          variants: item.variants,
+          qty: item.qty,
+          price: item.variantPrice ? item.variantPrice : (item.product.fields.discount ?
+            item.product.fields.discount :
+            item.product.fields.price)
         }
       )
     }.bind(this));

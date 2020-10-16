@@ -3,6 +3,7 @@
 .doo-menu-link {
     padding: 10px 30px;
     letter-spacing: 2px;
+    color : $accent;
 }
 
 .doo-sub-item {
@@ -28,7 +29,7 @@
                 padding: 0 0 0;
     }
     .mat-expansion-panel-header[aria-disabled=true] {
-    color: rgba(0, 0, 0, 1);
+    color:$accent;
     }
 
     mat-panel-title {

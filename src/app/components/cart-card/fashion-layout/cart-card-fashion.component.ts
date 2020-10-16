@@ -13,7 +13,6 @@ export class FashionCartCardComponent implements OnInit {
   imageIndex:number = 0;
   @Input() isFavorite:FavoriteItem;
   @Input() object:any;
-  @Input() cartItemForm:FormGroup;
  
   @Output() favoritesEmmitter =  new EventEmitter();
   @Output() cartEmmitter =  new EventEmitter();
@@ -22,7 +21,6 @@ export class FashionCartCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    //console.log('fashion');
   }
 
   toggleFavorites(isFavorite) {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as firebase from 'firebase/app'
 
 @Component({
   selector: 'app-root',
@@ -197,4 +198,8 @@ export class AppComponent {
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/cart.svg")
     );
   }
+
+  ngOnInit() {
+    firebase.analytics();
+   }
 }

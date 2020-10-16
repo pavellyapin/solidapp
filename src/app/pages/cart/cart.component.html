@@ -42,12 +42,12 @@
                         <span [innerHTML]="shippingCost ? (shippingCost | pricePipe) : 'FREE'">
                         </span>
                     </div>
-                    <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
+                    <div fxLayout="row" *ngIf = "siteSettings.fields.primaryTax" class="mat-caption" fxLayoutAlign="space-between">
                         <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
                         <span [innerHTML]="primaryTax ? (primaryTax | pricePipe) : 'FREE'">
                         </span>
                     </div>
-                    <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
+                    <div fxLayout="row" *ngIf = "siteSettings.fields.secondaryTax" class="mat-caption" fxLayoutAlign="space-between">
                         <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
                         <span [innerHTML]="secondaryTax ? (secondaryTax | pricePipe) : 'FREE'">
                         </span>

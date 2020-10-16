@@ -46,9 +46,9 @@
           </div>
     </div> 
       <div fxLayout="row" fxLayoutAlign="star" fxLayoutAlign.xs="start">
-          <span *ngIf = "object.fields.discount" [innerHTML] = "object.fields.discount | pricePipe">
+          <span *ngIf = "object.fields.discount && !variantPrice" [innerHTML] = "object.fields.discount | pricePipe">
           </span>
-        <span [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''" [innerHTML] = "object.fields.price | pricePipe">
+        <span [ngClass] = "object.fields.discount ? 'doo-stroked-price' : ''" [innerHTML] = "(variantPrice ? variantPrice :object.fields.price) | pricePipe">
             
         </span>
 

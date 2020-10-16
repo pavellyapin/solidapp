@@ -120,7 +120,7 @@ export class CartItemsComponent implements OnInit {
                   {
                     name: {
                       key: Card.metadata.NAME,
-                      value:  v.fields.title,
+                      value:  v.product.fields.title,
                     },
                     index: {
                       key: Card.metadata.INDEX,

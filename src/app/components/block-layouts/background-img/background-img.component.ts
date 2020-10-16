@@ -68,6 +68,7 @@ export class BackgroundImageBlockComponent implements OnInit {
       this.mainVid.nativeElement.addEventListener('canplay', () => {
         this.mainVid.nativeElement.muted = true;
         this.mainVid.nativeElement.play()
+        this.imgLoaded = true;
       } , {passive:true})
     }
   }

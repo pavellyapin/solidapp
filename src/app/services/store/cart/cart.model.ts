@@ -9,6 +9,7 @@ export default class Cart {
 export class CartItem {
     productId:string;
     variants?: any;
+    variantPrice : any;
     qty?: number;
     price : number;
 }

@@ -17,6 +17,9 @@
 .selected-image-full {
   position: relative;
   mat-icon {
+    background: white;
+    border-radius: 25px;
+    padding: 4px;
     position: absolute;
     right: 10px;
     top: 10px;
@@ -104,7 +107,7 @@
 }
 
 .product-name-label {
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 2px;
 }
 

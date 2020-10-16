@@ -20,6 +20,7 @@ export class FashionProductCardComponent implements OnInit {
   @Input() resolution :any;
   bigScreens = new Array('lg' , 'xl' , 'md');
   @Input() productVariants: Map<string,[any]> = new Map();
+  @Input() variantPrice: any;
 
   @Output() favoriteToggle =  new EventEmitter();
   @Output() navigateToProduct =  new EventEmitter();
@@ -30,7 +31,6 @@ export class FashionProductCardComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 
   myCallbackFunction(event: StateChange) {

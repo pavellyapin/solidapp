@@ -35,7 +35,7 @@ export class CheckoutPaymentComponent {
   cartId: string;
   scriptLoaded: boolean = false;
   stripeURL: any = "https://js.stripe.com/v3/";
-  stripeScriptText: any = "var stripe = Stripe('pk_test_qFVmFuri91DwZ8Y0DDAN5u0t00mNjGH4bc'); var elements = stripe.elements();";
+  stripeScriptText: any = "var stripe = Stripe('pk_test_51HUYqdB1rNoemtxQERmp7TXX4hVaWVwzZK1j9ySke7EFEJ0dDttU6ky2SfnFdk9LqJf56Nokyfd3TBz2gr9NDevM00FPAqh2gI'); var elements = stripe.elements();";
 
   //@ViewChild('cardInfo') cardInfo: ElementRef;
   payType: any = "credit";
@@ -191,7 +191,7 @@ export class CheckoutPaymentComponent {
       panelClass: 'full-screen-modal',
       data: { total: this.cartTotal }
     };
-    this.dialog.open(PayPalModalComponent,config);
+    this.dialog.open(PayPalModalComponent, config);
 
   }
 
@@ -264,9 +264,9 @@ export class PayPalModalComponent {
 
     this.actionSubscription = this.firebaseFunctions.payPalPay(this.data, this.cardId).pipe(
       map((data) => {
-        console.log('pasha' , data)
+        console.log('pasha', data)
         if (data.code == 200) {
-          window.open(data.redirect,"_self");
+          window.open(data.redirect, "_self");
         }
       }
       )

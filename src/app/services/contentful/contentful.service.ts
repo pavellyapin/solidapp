@@ -57,7 +57,8 @@ export class ContentfulService {
   getPage(query?: any): Observable<Entry<any>> {
     return from(this.client.getEntries(Object.assign({
       content_type: 'page',
-      'fields.name' : query
+      'fields.name' : query,
+      include : 4
     }))
       .then(res => res.items.pop()));
   }
@@ -65,7 +66,7 @@ export class ContentfulService {
   getAllPages(): Observable<Entry<any>[]> {
     return from(this.client.getEntries(Object.assign({
       content_type: 'page',
-      include : 3
+      include : 4
     }))
       .then(res => res.items));
   }

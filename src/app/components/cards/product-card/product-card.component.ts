@@ -31,6 +31,7 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   isFavorite:FavoriteItem;
   cardStyle : any;
   productVariants: Map<string,[any]> = new Map();
+  variantPrice : any;
 
   constructor(public injector: Injector, 
               private navService: NavigationService,
@@ -105,6 +106,9 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       if(this.productVariants.get(variant.fields.option)) {
         this.productVariants.get(variant.fields.option).push({name:variant.fields.name,code:variant.fields.code});
       } else {
+        if (variant.fields.price) {
+          this.variantPrice = variant.fields.price;
+        }
         this.productVariants.set(variant.fields.option , 
                                [{name:variant.fields.name,code:variant.fields.code,checked:true}]);
       }

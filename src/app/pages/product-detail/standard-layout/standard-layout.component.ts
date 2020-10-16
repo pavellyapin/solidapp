@@ -14,6 +14,7 @@ export class ProductDeatilStandardLayoutComponent implements OnInit {
 
   @Output() favoriteToggle =  new EventEmitter();
   @Output() addToCart =  new EventEmitter();
+  @Output() variantPriceChange =  new EventEmitter();
   @Output() public addQty =  new EventEmitter();
   @Output() public removeQty =  new EventEmitter();
 
@@ -21,6 +22,7 @@ export class ProductDeatilStandardLayoutComponent implements OnInit {
   @Input() productReviews : any;
   @Input() cartItemForm:FormGroup;
   @Input() productVariants: Map<string,[any]>;
+  @Input() variantPrice: any;
   @Input() isFavorite:FavoriteItem;
   @Input() formSubmit;
   @Input() resolution;
@@ -38,6 +40,10 @@ export class ProductDeatilStandardLayoutComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  getProductPrice($event) {
+    this.variantPriceChange.emit($event);
   }
 
   addProductToCart() {

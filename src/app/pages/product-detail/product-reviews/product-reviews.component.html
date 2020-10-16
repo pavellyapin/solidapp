@@ -28,9 +28,9 @@
             </div>
             <div fxLayout="row" fxLayoutGap="10px">
                 <div style="position: relative">
-                    <mat-progress-spinner style="position: absolute" color="accent" mode="determinate" value="100">
+                    <mat-progress-spinner style="position: absolute" color="primary" mode="determinate" value="100">
                     </mat-progress-spinner>
-                    <mat-progress-spinner style="position: absolute" color="primary" mode="determinate" [value]="50">
+                    <mat-progress-spinner style="position: absolute" color="accent" mode="determinate" [value]="getRecommendPresent()">
                     </mat-progress-spinner>
                     <span style="position: absolute;font-size: 24px;padding-left:25px;padding-top: 40px;">{{getRecommendPresent()}}%</span>
                 </div>

@@ -54,18 +54,19 @@ export class CartSideNavComponent implements OnInit {
         )
         forkJoin(requestArray).pipe(
           map((results : any) => {
-            this.cartItems = results.map((item)=>({
+
+            this.cartItems = _cartItems.map((item)=>({
               ...item,
-              cartItem: (
-                 _cartItems.filter(cartItem=>{
-                  if (item.sys.id == cartItem.productId) {
-                    return cartItem;
+              product : (
+                results.filter(product=>{
+                  if (product.sys.id == item.productId) {
+                    return product;
                   }
                 }).pop()
               )
-            }));  
+            }));
             this.cartItems.forEach(item=> {
-                this.cartItemCount = this.cartItemCount + item.cartItem.qty;
+                this.cartItemCount = this.cartItemCount + item.qty;
               });  
           })
         ).subscribe();

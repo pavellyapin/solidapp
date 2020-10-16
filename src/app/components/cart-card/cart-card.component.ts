@@ -18,7 +18,6 @@ import { AbstractCartCardComponent } from './abstract-cart-card-component';
 export class CartCardComponent extends AbstractCartCardComponent implements OnInit {
 
   layout : string = 'fashion';
-  cartItemForm:FormGroup;
   favorites$:Observable<FavoriteItem[]>;
   UserSubscription: Subscription;
   isFavorite:FavoriteItem;
@@ -50,10 +49,6 @@ export class CartCardComponent extends AbstractCartCardComponent implements OnIn
       })
     )
     .subscribe();
-    
-    this.cartItemForm = new FormGroup({        
-      qty: new FormControl(this.object.fields.qty)
-    })
   }
 
   favoriteToggle(isFavorite) {

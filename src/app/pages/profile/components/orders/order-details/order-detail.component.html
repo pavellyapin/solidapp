@@ -64,16 +64,22 @@
                             <span class="mat-subheading-2 doo-letter-space">
                                 {{item.name}}
                             </span>
-                            <span class="add-field-placeholder">
-                                <span>{{'product.qty' | translate}}: </span> {{item.qty}}
+                            <span>
+                                <span class="add-field-placeholder">{{'product.qty' | translate}}: </span> {{item.qty}}
                             </span>
-                            <span class="add-field-placeholder">
-                                <span>{{'product.color' | translate}}:</span> {{item.variants.color}}
+                            <span *ngIf="item.variants.support">
+                                <span class="add-field-placeholder">{{'product.support' | translate}}:</span>
+                                {{item.variants.support}}
                             </span>
-                            <span class="add-field-placeholder">
-                                <span>{{'product.size' | translate}}: </span> {{item.variants.size}}
+                            <span *ngIf="item.variants.color">
+                                <span class="add-field-placeholder">{{'product.color' | translate}}:</span>
+                                {{item.variants.color}}
                             </span>
-                            <span class="mat-subheading-1" [innerHTML]="item.price * item.qty | pricePipe">
+                            <span *ngIf="item.variants.size">
+                                <span class="add-field-placeholder">{{'product.size' | translate}}: </span>
+                                {{item.variants.size}}
+                            </span>
+                            <span class="mat-headline" [innerHTML]="item.price * item.qty | pricePipe">
                             </span>
 
                         </div>
@@ -83,37 +89,37 @@
 
         </div>
         <div class="mat-subheading-1">
-                Order # <span class="doo-order-number">{{route.snapshot.params["orderId"]}}</span>
-            </div>
-            <div fxLayout="column" class="doo-cart-summary">
-                    <div fxLayout="column" class="doo-bottom-border">
-                        <div fxLayout="row" class="mat-subheading-1" fxLayoutAlign="space-between">
-                            <span class="doo-letter-space">{{'cart.subtotal' | translate}}</span>
-                            <span [innerHTML]="cart.cart.total | pricePipe">
-                            </span>
-                        </div>
-                        <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
-                            <span class="doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
-                            <span [innerHTML]="cart.cart.shippingCost ? (cart.cart.shippingCost | pricePipe) : 'FREE'">
-                            </span>
-                        </div>
-                        <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
-                            <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
-                            <span [innerHTML]="cart.cart.primaryTax ? (cart.cart.primaryTax | pricePipe) : 'FREE'">
-                            </span>
-                        </div>
-                        <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
-                            <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
-                            <span [innerHTML]="cart.cart.secondaryTax ? (cart.cart.secondaryTax | pricePipe) : 'FREE'">
-                            </span>
-                        </div>
-                    </div>
-                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 15px 0px;">
-                        <span class="mat-subheading-1 doo-letter-space">TOTAL</span>
-                        <span class="mat-title" [innerHTML]="cart.cart.grandTotal | pricePipe">
-                        </span>
-                    </div>
+            Order # <span class="doo-order-number">{{route.snapshot.params["orderId"]}}</span>
+        </div>
+        <div fxLayout="column" class="doo-cart-summary">
+            <div fxLayout="column" class="doo-bottom-border">
+                <div fxLayout="row" class="mat-subheading-1" fxLayoutAlign="space-between">
+                    <span class="doo-letter-space">{{'cart.subtotal' | translate}}</span>
+                    <span [innerHTML]="cart.cart.total | pricePipe">
+                    </span>
                 </div>
+                <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
+                    <span class="doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
+                    <span [innerHTML]="cart.cart.shippingCost ? (cart.cart.shippingCost | pricePipe) : 'FREE'">
+                    </span>
+                </div>
+                <div fxLayout="row" *ngIf="cart.cart.primaryTax" class="mat-caption" fxLayoutAlign="space-between">
+                    <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
+                    <span [innerHTML]="cart.cart.primaryTax ? (cart.cart.primaryTax | pricePipe) : 'FREE'">
+                    </span>
+                </div>
+                <div fxLayout="row" *ngIf="cart.cart.secondaryTax" class="mat-caption" fxLayoutAlign="space-between">
+                    <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
+                    <span [innerHTML]="cart.cart.secondaryTax ? (cart.cart.secondaryTax | pricePipe) : 'FREE'">
+                    </span>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 15px 0px;">
+                <span class="mat-subheading-1 doo-letter-space">TOTAL</span>
+                <span class="mat-title" [innerHTML]="cart.cart.grandTotal | pricePipe">
+                </span>
+            </div>
+        </div>
         <span></span>
     </div>
 </div>

@@ -3,7 +3,7 @@
                 <mat-expansion-panel *ngFor = "let category of menuTree"
                                      [hideToggle] = "false"
                                      [disabled] = "category.fields.redirect"
-                                     (click) = "navigateTo(category,true)" 
+                                     (click) = "navigateTo(category,true)"
                                      class="mat-elevation-z0 doo-root-item">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -22,7 +22,7 @@
                                       </mat-expansion-panel-header>
                                        <div *ngFor = "let link of subCategory.links"
                                             (click) = "navigateTo(link,false)"
-                                            class = "doo-pointer doo-menu-link">
+                                            class = "doo-pointer mat-headline doo-menu-link">
                                             {{link.fields.title}}
                                         </div>
 
