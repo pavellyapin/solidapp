@@ -26,7 +26,8 @@
                     [innerHTML]="block.fields.otherContent | richTextPipe">
                 </div>
                 <doo-actions [fxLayoutAlign]="block.fields.actionsPosition ? block.fields.actionsPosition : 'start'"
-                    fxLayoutGap="20px" fxLayout="row" [actions]="block.fields.actions"></doo-actions>
+                    [actions]="block.fields.actions" [resolution]="resolution"
+                    [stacked]="block.fields.mobileStackActions"></doo-actions>
 
             </div>
             <div></div>
@@ -34,11 +35,16 @@
         <div fxLayout="row" [fxFlex]="block.fields.width ? block.fields.width : 100" fxFlex.lt-sm fxLayoutAlign="center"
             [ngClass]="utils.bigScreens.includes(this.resolution) ? '' : 'crop'">
             <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="full-width post-placeholder"
-                style="object-fit: cover;height: 100%;" [lazyLoad]="block.fields.media[0].fields.file.url"
-                [alt] = "block.fields.media[0].fields.description"
+                [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
+                [style.padding-left]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaLeftPadding ? block.fields.mobileMediaLeftPadding : '0px')"
+                [style.padding-right]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaRightPadding ? block.fields.mobileMediaRightPadding : '0px')"
+                [lazyLoad]="block.fields.media[0].fields.file.url" [alt]="block.fields.media[0].fields.description"
                 [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
                 (onStateChange)="myCallbackFunction($event)">
             <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
+                [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
+                [style.padding-left]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaLeftPadding ? block.fields.mobileMediaLeftPadding : '0px')"
+                [style.padding-right]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaRightPadding ? block.fields.mobileMediaRightPadding : '0px')"
                 [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline class="full-width">
             </video>
         </div>

@@ -25,17 +25,15 @@ export class CheckoutPaymentComponent {
   CartSubscription: Subscription;
   cartServiceSubscription: Subscription;
   UserSubscription: Subscription;
+  OrderSubscription: Subscription;
   //////////////
-
+  order$: Observable<any>;
 
   cart$: Observable<CartState>;
   shippingAddress: any;
   shippingMethod: any;
   cartTotal: number;
   cartId: string;
-  scriptLoaded: boolean = false;
-  stripeURL: any = "https://js.stripe.com/v3/";
-  stripeScriptText: any = "var stripe = Stripe('pk_test_51HUYqdB1rNoemtxQERmp7TXX4hVaWVwzZK1j9ySke7EFEJ0dDttU6ky2SfnFdk9LqJf56Nokyfd3TBz2gr9NDevM00FPAqh2gI'); var elements = stripe.elements();";
 
   //@ViewChild('cardInfo') cardInfo: ElementRef;
   payType: any = "credit";
@@ -51,6 +49,7 @@ export class CheckoutPaymentComponent {
   user$: Observable<UserState>;
   userInfo: UserPerosnalInfo;
   userAddressInfo: UserAddressInfo;
+  
 
 
   constructor(private store: Store<{ cart: CartState, user: UserState }>,
@@ -61,6 +60,7 @@ export class CheckoutPaymentComponent {
     private utilService: UtilitiesService) {
     this.cart$ = store.pipe(select('cart'));
     this.user$ = store.pipe(select('user'));
+    this.order$ = store.pipe(select('cart', 'order'));
 
     this.paymentMethodForm = new FormGroup({
       method: new FormControl('cc', Validators.required)
@@ -91,19 +91,7 @@ export class CheckoutPaymentComponent {
       )
       .subscribe();
 
-    this.utilService.isScriptLoaded(this.stripeURL).then((loaded) => {
-      if (!loaded) {
-        this.utilService.loadScript(this.stripeURL).then(() => {
-          this.utilService.loadScript(this.stripeURL, this.stripeScriptText).then(() => {
-            this.initStripe();
-            this.scriptLoaded = true;
-          })
-        });
-      } else {
-        this.initStripe();
-        this.scriptLoaded = true;
-      }
-    });
+   this.initStripe();
   }
 
   backToAddress() {
@@ -175,7 +163,7 @@ export class CheckoutPaymentComponent {
       classes: elementClasses,
     });
     this.cardCvc.mount('#example2-card-cvc');
-
+    this.navService.finishLoading();
   }
 
   payPalPay() {
@@ -264,7 +252,6 @@ export class PayPalModalComponent {
 
     this.actionSubscription = this.firebaseFunctions.payPalPay(this.data, this.cardId).pipe(
       map((data) => {
-        console.log('pasha', data)
         if (data.code == 200) {
           window.open(data.redirect, "_self");
         }

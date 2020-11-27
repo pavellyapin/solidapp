@@ -59,11 +59,11 @@ export class CartItemsComponent implements OnInit {
           ]);
           /* Small card column span map */
           const rowsMapBig = new Map([
-            ['xs', 15],
-            ['sm', 7],
-            ['md', 7],
-            ['lg', 7],
-            ['xl', 7],
+            ['xs', 9],
+            ['sm', 5],
+            ['md', 5],
+            ['lg', 5],
+            ['xl', 5],
           ]);
           let startCols: number;
           let startColsBig: number;

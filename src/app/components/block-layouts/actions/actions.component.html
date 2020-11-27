@@ -1,5 +1,6 @@
-<div style="padding-top: 2%" *ngFor="let cta of actions">
-        <div [ngSwitch]="cta.fields.appearence">
+<div [fxLayout] = "stacked && !utils.bigScreens.includes(this.resolution)? 'column' : 'row'" 
+     fxLayoutGap = "30px">
+        <div *ngFor="let cta of actions" [ngSwitch]="cta.fields.appearence">
                 <button *ngSwitchCase="'flat'" [color]="cta.fields.color"
                         (click)="navService.ctaClick(cta.fields.action)" mat-flat-button class="doo-cta-btn">
                         {{cta.fields.name}}

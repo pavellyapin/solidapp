@@ -1,6 +1,8 @@
 <div [ngSwitch]="widget.fields.type">
        <doo-more-from-cat-carousel [widget] = "widget" *ngSwitchCase="'More From Category'">
         </doo-more-from-cat-carousel>
+        <doo-block-carousel [widget] = "widget" *ngSwitchCase="'Block Carousel'">
+        </doo-block-carousel>
         <doo-featured-products [widget] = "widget" *ngSwitchCase="'Featured Products'">
         </doo-featured-products>
         <doo-subscribe [widget] = "widget" *ngSwitchCase="'Subscribe'">

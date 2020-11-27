@@ -9,6 +9,42 @@ export interface NavRoute extends Route {
 }
 
 export const sideNavPath = '';
+export const dashboardNavPath = 'store';
+
+export const dashboardRoutes: NavRoute[] = [
+  {
+    data: {title: 'Dashboard Home'},
+    path: '',
+    loadChildren: () =>
+      import('../../pages/dashboard-home/dashboard-home.module').then(
+        m => m.DashboardHomeModule,
+      )
+  },
+  {
+    data: {title: 'Dashboard Settings'},
+    path: 'settings',
+    loadChildren: () =>
+      import('../../pages/dashboard-settings/dashboard-settings.module').then(
+        m => m.DashboardSettingsModule,
+      )
+  },
+  {
+    data: {title: 'Dashboard Orders'},
+    path: 'orders',
+    loadChildren: () =>
+      import('../../pages/dashboard-orders/dashboard-orders.module').then(
+        m => m.DashboardOrdersModule,
+      )
+  },
+  {
+    data: {title: 'Dashboard Customers'},
+    path: 'customers',
+    loadChildren: () =>
+      import('../../pages/dashboard-customers/dashboard-customers.module').then(
+        m => m.DashboardCustomersModule,
+      )
+  }
+]
 
 export const navRoutes: NavRoute[] = [
   {

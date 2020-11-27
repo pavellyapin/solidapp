@@ -32,6 +32,10 @@
         "function": "paypal"
       },
       {
+        "source": "/the-bed-shop-ldn/us-central1/admin/getCustomers",
+        "function": "admin"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

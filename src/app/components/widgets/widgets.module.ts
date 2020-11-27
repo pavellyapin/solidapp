@@ -11,21 +11,27 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 import { FeaturedProductsComponent } from './featured-products/featured-products.component';
+import { BlockLayoutsModule } from '../block-layouts/block-layouts.module';
+import { BlockCarouselComponent } from './block-carousel/block-carousel.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
     declarations: [MoreFromCatCarouselComponent,
                    SubscribeComponent,
                    WidgetsComponent,
-                   FeaturedProductsComponent],
+                   FeaturedProductsComponent,
+                   BlockCarouselComponent],
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         PipesModule,
         CardsModule,
+        BlockLayoutsModule,
         FlexLayoutModule,
         MatButtonModule,
         MatInputModule,
+        MatIconModule,
         TranslateModule
     ],
     providers: [],

@@ -32,6 +32,7 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   cardStyle : any;
   productVariants: Map<string,[any]> = new Map();
   variantPrice : any;
+  variantDiscount : any;
 
   constructor(public injector: Injector, 
               private navService: NavigationService,
@@ -87,7 +88,9 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
     )
     .subscribe();
     
-    this.sortVariants();
+    if (this.object.fields.variants) {
+      this.sortVariants();
+    }
   }
 
   getOverallRate() {
@@ -108,6 +111,9 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       } else {
         if (variant.fields.price) {
           this.variantPrice = variant.fields.price;
+        }
+        if (variant.fields.discount || variant.fields.discount  == 0) {
+          this.variantDiscount = variant.fields.discount;
         }
         this.productVariants.set(variant.fields.option , 
                                [{name:variant.fields.name,code:variant.fields.code,checked:true}]);

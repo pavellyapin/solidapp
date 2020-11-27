@@ -1,5 +1,6 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-actions',
@@ -8,8 +9,10 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 export class ActionsComponent implements OnInit {
 
   @Input() actions;
+  @Input() stacked;
+  @Input() resolution;
 
-  constructor(public navService : NavigationService) {
+  constructor(public navService : NavigationService,public utils : UtilitiesService) {
     
   }
 

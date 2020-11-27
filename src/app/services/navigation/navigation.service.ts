@@ -106,7 +106,9 @@ export class NavigationService {
     if (cta.sys) {
       switch (cta.sys.contentType.sys.id) {
         case 'category':
-          this.navRouteService.router.navigateByUrl('cat/' + cta.fields.name)
+          this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.navRouteService.router.navigateByUrl('cat/' + cta.fields.name)
+          });
           break;
         case 'page':
           this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

@@ -53,7 +53,7 @@
   <mat-drawer [opened]="filtersOpen" [mode]="navMode" position="start"
     [ngClass]="this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters mobile'">
     <mat-accordion [multi]="true">
-      <mat-expansion-panel [hideToggle]="true" (opened)="colorPanelOpenState = true"
+      <mat-expansion-panel *ngIf = "productVariants.get('color')" [hideToggle]="true" (opened)="colorPanelOpenState = true"
         (closed)="colorPanelOpenState = false" [expanded]="true" class="mat-elevation-z0">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -73,7 +73,7 @@
           </div>
         </div>
       </mat-expansion-panel>
-      <mat-expansion-panel [hideToggle]="true" (opened)="sizePanelOpenState = true"
+      <mat-expansion-panel *ngIf = "productVariants.get('size')" [hideToggle]="true" (opened)="sizePanelOpenState = true"
         (closed)="sizePanelOpenState = false" [expanded]="true" class="mat-elevation-z0">
         <mat-expansion-panel-header>
           <mat-panel-title>

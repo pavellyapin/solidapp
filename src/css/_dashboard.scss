@@ -1,0 +1,97 @@
+@import 'src/css/_variables.scss';
+
+
+.doo-dashboard-filters{
+  background: white;
+  //margin-top: 50px;
+  padding : 10px 24px;
+  button {
+    font-size: 20px;
+    line-height: 35px;
+    &.chosenFilter {
+      border-bottom: solid 4px $primary;
+    }
+  }
+}
+
+.doo-dashboard-overview {
+  .mat-cell {
+    font-size: 16px !important;
+  }
+  mat-header-row {
+    min-height: 0px;
+  }
+
+  mat-row {
+    padding : 10px 0px;
+  }
+
+  mat-row:hover {
+    background: $lighter-grey;
+  }
+}
+
+.doo-dashboard-actions{
+  background: white;
+  padding : 10px 24px;
+  .doo-actions-btn{
+    //border : solid 1px $light-grey;
+    font-size: 16px;
+  }
+  .doo-selected-label {
+    font-size: 16px;
+    padding : 10px;
+    border-right : solid 1px $light-grey;
+  }
+  mat-icon {
+    height: 25px;
+    width: 15px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $black;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $black;
+    }
+  }
+}
+
+.doo-search-box {
+  background: white;
+  padding : 10px 20px;
+    mat-icon {
+      padding-right: 10px;
+      height: 20px;
+      width: 20px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $primary;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $primary;
+      }
+    }
+    ::ng-deep .mat-form-field-outline-start {
+      min-width: 25px !important;
+      background: white;
+    }
+  
+    ::ng-deep .mat-form-field-outline-end {
+      background: white;
+    }
+  
+    ::ng-deep .mat-form-field-flex {
+      padding-left: 25px !important;
+    }
+  
+    ::ng-deep .mat-form-field-infix {
+      padding-top: 5px !important;
+      padding-bottom: 10px !important;
+      padding-left: 10px !important;
+    }
+  
+    ::ng-deep .mat-form-field-wrapper {
+      padding-bottom : 0px !important;
+      //margin : 0px !important;
+    }
+  }

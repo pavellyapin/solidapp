@@ -2,7 +2,7 @@
   <span class = "doo-pointer crumb-item" [routerLink] = "'/'" style = "opacity: 0.5">
     {{'nav.home' | translate}}
   </span>
-  <span *ngFor = "let crumb of breadCrumbs" [routerLink] = "crumb.link" style = "opacity: 0.5">
+  <span *ngFor = "let crumb of breadCrumbs" (click) = "navigate(crumb)" style = "opacity: 0.5">
    <span style = "padding:0 10px">/</span> <span class = "doo-pointer crumb-item">{{crumb.title}} </span>
   </span>
   <span *ngIf="productTitle" style = "font-weight: bold">

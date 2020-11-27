@@ -15,6 +15,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import CartState from 'src/app/services/store/cart/cart.state';
 import { SEOService } from 'src/app/services/seo/seo.service';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'doo-product-detail',
@@ -30,6 +31,7 @@ export class ProductDeatilComponent implements OnInit {
   UserSubscription: Subscription;
   SettingsSubscription: Subscription;
   CartIdSubscription: Subscription;
+  CartItemsSubscription: Subscription;
   ///////////////
 
   cart$: Observable<CartState>;
@@ -41,6 +43,7 @@ export class ProductDeatilComponent implements OnInit {
 
   layout: string = 'standard';
   product$: Observable<Entry<any>>;
+  item: any;
 
   pages$: Observable<Entry<any>[]>;
   productReviews$: Observable<any[]>;
@@ -53,6 +56,7 @@ export class ProductDeatilComponent implements OnInit {
   formSubmit = false;
   productVariants: Map<string, [any]> = new Map();
   variantPrice: any;
+  variantDiscount: any;
   displayedMediaIndex: number = 0;
   resolution: any;
 
@@ -60,6 +64,7 @@ export class ProductDeatilComponent implements OnInit {
   constructor(private navService: NavigationService,
     private utilService: UtilitiesService,
     private seoService: SEOService,
+    private _actions$: Actions,
     private store: Store<{
       products: ProductsState,
       user: UserState,
@@ -86,7 +91,10 @@ export class ProductDeatilComponent implements OnInit {
 
   ngOnInit() {
 
-
+    this.CartItemsSubscription = this._actions$.pipe(ofType(
+      CartActions.SuccessBackGroundInitializeOrderAction)).subscribe((result) => {
+        this.store.dispatch(CartActions.BeginAddProductToCartAction({ payload: this.item }));
+      });
 
 
     this.CartIdSubscription = this.cart$
@@ -108,7 +116,6 @@ export class ProductDeatilComponent implements OnInit {
           if (this.productDetails && this.productDetails.fields.variants) {
             this.sortVariants();
           }
-          this.navService.finishLoading();
         })
       )
       .subscribe();
@@ -171,6 +178,7 @@ export class ProductDeatilComponent implements OnInit {
       variantGroup.forEach((variant) => {
         if ($event.value == variant["name"]) {
           this.variantPrice = variant["price"];
+          this.variantDiscount = variant["discount"];
         }
       })
     });
@@ -181,53 +189,57 @@ export class ProductDeatilComponent implements OnInit {
   addProductToCart() {
     this.utilService.scrollTop();
     if (this.cartItemForm.valid) {
-      let item = new CartItem();
-      item.variants = {}
-      item.productId = this.productDetails.sys.id;
-      item.qty = Number(this.cartItemForm.controls["qty"].value);
+      this.item = new CartItem();
+      this.item.variants = {}
+      this.item.productId = this.productDetails.sys.id;
+      this.item.qty = Number(this.cartItemForm.controls["qty"].value);
 
       if (this.cartItemForm.controls["size"].value != '') {
-        item.variants.size = this.cartItemForm.controls["size"].value;
+        this.item.variants.size = this.cartItemForm.controls["size"].value;
       }
       if (this.cartItemForm.controls["support"].value != '') {
-        item.variants.support = this.cartItemForm.controls["support"].value;
+        this.item.variants.support = this.cartItemForm.controls["support"].value;
       }
 
       if (this.cartItemForm.controls["color"].value != '') {
-        item.variants.color = this.cartItemForm.controls["color"].value;
+        this.item.variants.color = this.cartItemForm.controls["color"].value;
       }
 
-      if (this.variantPrice) {
-        item.variantPrice = this.variantPrice;
+      if (this.variantPrice || this.variantPrice == 0) {
+        this.item.variantPrice = this.variantPrice;
       }
 
-      console.log('item' , item);
-      
-      this.store.dispatch(CartActions.BeginAddProductToCartAction({ payload: item }));
-      this.initializeOrder();
+      if (this.variantDiscount || this.variantDiscount == 0) {
+        this.item.variantDiscount = this.variantDiscount;
+      }
+
+      let reqCart = [];
+      this.cartItems.forEach(function (item) {
+        reqCart.push(
+          {
+            product_id: item.productId,
+            qty: item.qty
+          }
+        )
+      }.bind(this));
+
+      reqCart.push(
+        {
+          product_id: this.item.productId,
+          qty: this.item.qty
+        }
+      );
+
+      this.store.dispatch(CartActions.
+        BeginBackGroundInitializeOrderAction({
+          payload: {
+            cartId: this.cartId,
+            cart: { cart: reqCart }
+          }
+        }));
     } else {
       this.formSubmit = true;
     }
-  }
-
-  initializeOrder() {
-    let reqCart = [];
-    this.cartItems.forEach(function (item) {
-      reqCart.push(
-        {
-          product_id: item.productId,
-          qty: item.qty
-        }
-      )
-    }.bind(this));
-    this.store.dispatch(CartActions.
-      BeginBackGroundInitializeOrderAction({
-        payload: {
-          cartId: this.cartId,
-          cart: { cart: reqCart }
-        }
-      }));
-
   }
 
   sortVariants() {
@@ -237,14 +249,17 @@ export class ProductDeatilComponent implements OnInit {
       }
       if (this.productVariants.get(variant.fields.option)) {
         this.productVariants.get(variant.fields.option)
-          .push({ name: variant.fields.name, code: variant.fields.name, price: variant.fields.price, type: variant.fields.option });
+          .push({ name: variant.fields.name, code: variant.fields.code, price: variant.fields.price, discount: variant.fields.discount, type: variant.fields.option });
       } else {
-        if (variant.fields.price) {
+        if (variant.fields.price || variant.fields.price  == 0) {
           this.variantPrice = variant.fields.price;
         }
+        if (variant.fields.discount || variant.fields.discount  == 0) {
+          this.variantDiscount = variant.fields.discount;
+        }
         this.productVariants.set(variant.fields.option,
-          [{ name: variant.fields.name, code: variant.fields.code, price: variant.fields.price, type: variant.fields.option, checked: true }]);
-        if(this.cartItemForm.controls[variant.fields.option]) {
+          [{ name: variant.fields.name, code: variant.fields.code, price: variant.fields.price,discount: variant.fields.discount, type: variant.fields.option, checked: true }]);
+        if (this.cartItemForm.controls[variant.fields.option]) {
           this.cartItemForm.controls[variant.fields.option].setValue(variant.fields.name);
         }
       }
@@ -281,6 +296,7 @@ export class ProductDeatilComponent implements OnInit {
     this.UserSubscription.unsubscribe();
     this.PagesSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
+    this.CartItemsSubscription.unsubscribe();
   }
 
 }

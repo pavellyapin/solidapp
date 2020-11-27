@@ -1,0 +1,37 @@
+
+<div fxLayout="row" fxLayoutAlign="center" class="doo-dashboard-toolbar">
+    <mat-toolbar fxLayout = "column" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="space-between" class = "doo-menu-actions full-width">
+      <button (click)= "onToggleMobileSideMenu()" *ngIf = "!bigScreens.includes(resolution)" mat-button>
+        <mat-icon svgIcon = "doo-hamburger">
+        </mat-icon>
+      </button>
+      <button (click)="navigateHome()" mat-button
+              class="doo-nav-toggle-button">
+              <img  [src]="siteSettings?.fields.logo?.fields.file.url">
+      </button>
+      <form *ngIf = "bigScreens.includes(resolution)" fxLayoutAlign="center center" fxFlex = "50" class="mat-caption doo-search-box">
+        <mat-form-field appearance="outline" class = "full-width">
+            <span matPrefix><mat-icon svgIcon = "doo-search"></mat-icon></span>
+          <input #searchInput type="text"
+                 placeholder="I'm looking for.."
+                 aria-label="Number"
+                 (keydown.enter)="searchProducts($event);"
+                 matInput
+                 [formControl]="searchControl"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            
+            <mat-option>
+                Searching...
+              </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    <!--  <div fxFlex="100%">{{activePage?.title}}</div>-->
+    <div fxLayout="row" fxLayoutAlign="center center">
+          
+    </div>
+    </div>  
+    </mat-toolbar>
+</div>

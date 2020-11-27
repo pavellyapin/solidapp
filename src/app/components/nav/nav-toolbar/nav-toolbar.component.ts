@@ -69,13 +69,14 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public navigateCategory(link) {
-    if (this.navService.getCurrentUrl().pop() != link) {
-      this.navService.startLoading();
+    if (link.fields.redirect) {
+      this.onExpandMainMenu();
+      this.navService.ctaClick(link.fields.redirect);
+      return;
     }
     
-    this.navService.resetStack([link]);
     this.onExpandMainMenu();
-    this.router.navigateByUrl('cat/' + link);
+    this.router.navigateByUrl('cat/' + link.fields.name);
   }
 
   public expandMenu(categoryObject:any) {
@@ -141,6 +142,9 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public goToProfile() {
+    if (this.mainMenuOpen) {
+      this.onExpandMainMenu();
+    }
     if (this.navService.getCurrentUrl().pop() && !this.navService.getCurrentUrl().pop().match('account')) {
       this.navService.startLoading();
     }
@@ -156,6 +160,9 @@ export class NavToolbarComponent implements OnInit {
   }
 
   public goToFavorites() {
+    if (this.mainMenuOpen) {
+      this.onExpandMainMenu();
+    }
     if (this.navService.getCurrentUrl().pop() != 'account/overview') {
       this.navService.startLoading();
     }

@@ -1,0 +1,14 @@
+<div class="carousel-cont" [style.padding-bottom]="widget.fields.bottomPadding ? widget.fields.bottomPadding : '0px'">
+        <div fxFlexLayout="row" fxLayoutAlign="space-between" class="doo-arrow-cont full-width">
+                <mat-icon *ngIf="bigScreens.includes(this.resolution)" svgIcon="doo-arrow-left"
+                        (click)="flipCarousel('left')" class="doo-carousel-arrow doo-pointer"></mat-icon>
+                <mat-icon *ngIf="bigScreens.includes(this.resolution)" svgIcon="doo-arrow-right"
+                        (click)="flipCarousel('right')" class="doo-carousel-arrow doo-pointer"></mat-icon>
+        </div>
+                <div [ngClass]="widget.fields.id" class="doo-carousel">
+                        <div *ngFor="let block of widget?.fields.blocks">
+                                <doo-block-layouts [block]="block">
+                                </doo-block-layouts>
+                        </div>
+                </div>
+</div>

@@ -1,0 +1,86 @@
+<span class="mat-display-1">Customers</span>
+
+<div fxLayout="column" class="mat-elevation-z2">
+  <div fxFlexLayout="row" class="doo-dashboard-filters">
+    <button mat-button (click)="filterCustomer('all')" [class.chosenFilter]="customerFilter =='all'"
+      class="primary-color">
+      All
+    </button>
+    <button mat-button (click)="filterCustomer('registered')" [class.chosenFilter]="customerFilter =='registered'"
+      class="primary-color">
+      Registered
+    </button>
+    <button mat-button (click)="filterCustomer('guest')" [class.chosenFilter]="customerFilter =='guest'"
+      class="primary-color">
+      Guest Users
+    </button>
+  </div>
+  <div class="doo-search-box">
+    <mat-form-field appearance="outline" class="full-width">
+      <span matPrefix>
+        <mat-icon svgIcon="doo-search"></mat-icon>
+      </span>
+      <input type="text" placeholder="Filter customers" aria-label="Number" (keyup)="applyFilter($event)" matInput>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="start center" class="doo-dashboard-actions">
+    <mat-checkbox fxFlex="5" (change)="$event ? toggleAll($event) : null" [indeterminate]="selection.hasValue()">
+    </mat-checkbox>
+    <div *ngIf="selection.selected.length" fxLayout="row" class="mat-elevation-z1 doo-round-corners">
+      <div  class="doo-selected-label accent-color" fxLayoutGap="10px">
+        <span>{{selection.selected.length}}</span> <span>Selected</span> 
+      </div>
+      <button mat-button [matMenuTriggerFor]="menu" class="doo-actions-btn">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <span>Actions</span>
+          <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+        </div>
+      </button>
+    </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click) = "confirmDeletePopUp()">Delete selected customers</button>
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+  </div>
+  <mat-table *ngIf="dataSource" [dataSource]="dataSource" class="doo-dashboard-overview mat-elevation-z0">
+    <ng-container matColumnDef="select">
+      <mat-header-cell fxFlex="10" *matHeaderCellDef>
+
+      </mat-header-cell>
+      <mat-cell fxFlex="10" *matCellDef="let element">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="checkboxSelected($event,element)"
+          [checked]="isSelected(element)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+    <!-- Position Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div fxLayout="column">
+          <span>{{element.name}}</span>
+          <span>{{element.email}}</span>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="orders">
+      <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.orders}} orders</mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="total">
+      <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+      <mat-cell fxLayout="row" fxLayoutGap="10px" *matCellDef="let element">
+        <span [innerHTML]="element.total | pricePipe"></span>
+        <span>spent</span></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row (click)="goToCustomer(row.id)" class="doo-pointer" *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

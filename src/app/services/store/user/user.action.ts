@@ -37,12 +37,21 @@ export const BeginGetUserInfoAction = createAction(
 
 export const SuccessGetUserInfoAction = createAction(
   '[User] - Success Login & Get User Info',
-  props<{ payload: any}>()
+  props<{ payload: any }>()
+);
+
+export const BeginGetSiteInfoAction = createAction(
+  '[User] - Begin Get Site Info'
+);
+
+export const SuccessGetSiteInfoAction = createAction(
+  '[User] - Success Login & Get Site Info',
+  props<{ payload: any }>()
 );
 
 export const SuccessSetCartUserAction = createAction(
   '[User] - Success Set Cart User',
-  props<{ payload: any}>()
+  props<{ payload: any }>()
 );
 
 //User Logout
@@ -150,7 +159,7 @@ export const BeginGetUserAddressInfoAction = createAction(
 
 export const SuccessGetUserAddressInfoAction = createAction(
   '[User] - Success Get Address Info',
-  props<{ payload: any}>()
+  props<{ payload: any }>()
 );
 
 // Favorites
@@ -179,7 +188,7 @@ export const BeginGetFavoritesAction = createAction(
 
 export const SuccessGetFavoritesAction = createAction(
   '[User] - Success Get Favorites',
-  props<{ payload: any}>()
+  props<{ payload: any }>()
 );
 
 //Orders
@@ -190,14 +199,14 @@ export const BeginGetOrdersAction = createAction(
 
 export const SuccessGetOrdersAction = createAction(
   '[User] - Success Get Orders',
-  props<{ payload: any}>()
+  props<{ payload: any }>()
 );
 
 //Subscribe 
 
 export const BeginSubscribeEmailAction = createAction(
   '[User] - Begin Subscribe Email',
-  props<{ payload: any}>()
+  props<{ payload: any }>()
 );
 
 export const SuccessSubscribeEmailAction = createAction(

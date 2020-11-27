@@ -22,7 +22,7 @@ export class CustomComponent implements OnInit {
 
   constructor(store: Store<{ settings : SettingsState }> ,
               public route: ActivatedRoute, 
-              private navSerivce : NavigationService,
+              private navService : NavigationService,
               private seoService : SEOService) {
                 
                 this.settings$ = store.pipe(select('settings','pages'));
@@ -42,10 +42,13 @@ export class CustomComponent implements OnInit {
             }
           }).pop();
         }
-        this.navSerivce.finishLoading();
       })
     )
     .subscribe();
+  }
+
+  ngAfterViewInit() {
+    this.navService.finishLoading();
   }
 
   ngOnDestroy(): void {

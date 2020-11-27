@@ -60,6 +60,17 @@ mat-radio-button {
   padding: 5px 10px;
 }
 
+.doo-price-tag{
+  height: 15px;
+  width: 15px;
+  
+  ::ng-deep .cls-1 {
+    stroke: $accent;
+  }
+  ::ng-deep .cls-2 {
+    stroke: $accent;
+  }
+}
 
 .plus-icon {
   mat-icon {
@@ -128,4 +139,21 @@ mat-radio-button {
 
 .doo-standard-product-detail{
   padding-bottom: 50px;
+}
+
+.button-loading {
+  animation-duration: .5s;
+  animation-name: fade;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.8;
+  }
+
+  to {
+    opacity: 0.3;
+  }
 }

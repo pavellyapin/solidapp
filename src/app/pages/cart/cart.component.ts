@@ -35,6 +35,9 @@ export class CartComponent implements OnInit {
   OrderSubscription: Subscription;
   StripeSuccessSubscription: Subscription;
   SettingsSubscription: Subscription;
+  SettingsSubscription2: Subscription;
+  SettingsSubscription3: Subscription;
+  SettingsSubscription4: Subscription;
   UserInfoSubscription: Subscription;
   UserSubscription: Subscription;
   CartStatusSubscription: Subscription;
@@ -61,9 +64,12 @@ export class CartComponent implements OnInit {
 
   summaryOpen: boolean = false;
   previousUrl: string = '';
-  loading: boolean = false;
+  loading: boolean = true;
   resolution: any;
-  settings$: Observable<SettingsState>;
+  settings$: Observable<any>;
+  settings2$: Observable<any>;
+  settings3$: Observable<any>;
+  settings4$: Observable<any>;
   siteSettings: Entry<any>;
 
   constructor(private store: Store<{ cart: CartState, settings: SettingsState, user: UserState }>,
@@ -77,7 +83,10 @@ export class CartComponent implements OnInit {
     private authState: AuthService,
     private seoService: SEOService) {
 
-    this.settings$ = store.pipe(select('settings'));
+    this.settings$ = store.pipe(select('settings', 'resolution'));
+    this.settings2$ = store.pipe(select('settings', 'siteConfig'));
+    this.settings3$ = store.pipe(select('settings', 'pages'));
+    this.settings4$ = store.pipe(select('settings', 'loading'));
     this.shippingMethod$ = store.pipe(select('cart', 'shippingMethod'));
     this.cartId$ = store.pipe(select('cart', 'cartId'));
     this.user$ = store.pipe(select('user'));
@@ -92,10 +101,34 @@ export class CartComponent implements OnInit {
     this.SettingsSubscription = this.settings$
       .pipe(
         map(x => {
-          this.siteSettings = x.siteConfig;
-          this.loading = x.loading;
-          this.resolution = x.resolution;
-          x.pages.filter(page => {
+          this.resolution = x;
+
+          if (this.utilService.bigScreens.includes(this.resolution)) {
+            switch (this.navService.getActivePage().title) {
+              case 'Checkout Shipping':
+                this.summaryOpen = true;
+                break;
+              case 'Checkout Payment':
+                this.summaryOpen = true;
+                break;
+            }
+          }
+        })
+      )
+      .subscribe();
+
+    this.SettingsSubscription2 = this.settings2$
+      .pipe(
+        map(x => {
+          this.siteSettings = x;
+        })
+      )
+      .subscribe();
+
+    this.SettingsSubscription3 = this.settings3$
+      .pipe(
+        map(x => {
+          x.filter(page => {
             if (page.fields.type == 'cart') {
               this.seoService.updateTitle(page.fields.title);
               this.seoService.updateDescription(page.fields.description);
@@ -103,6 +136,15 @@ export class CartComponent implements OnInit {
               return page;
             }
           });
+        })
+      )
+      .subscribe();
+
+    this.SettingsSubscription4 = this.settings4$
+      .pipe(
+        map(x => {
+          this.loading = x;
+          this.cd.detectChanges();
         })
       )
       .subscribe();
@@ -118,16 +160,6 @@ export class CartComponent implements OnInit {
       )
       .subscribe();
 
-    if (this.utilService.bigScreens.includes(this.resolution)) {
-      switch (this.navService.getActivePage().title) {
-        case 'Checkout Shipping':
-          this.summaryOpen = true;
-          break;
-        case 'Checkout Payment':
-          this.summaryOpen = true;
-          break;
-      }
-    }
 
 
     this.initializeCartState();
@@ -167,7 +199,7 @@ export class CartComponent implements OnInit {
           break;
       }
       this.utilService.scrollTop();
-      this.navService.finishLoading();
+
     });
 
     //This is for LOGGED IN users, we have a function triggered on insert to {payment}
@@ -180,18 +212,31 @@ export class CartComponent implements OnInit {
               this.store.dispatch(CartActions.BeginResetCartAction());
               this.router.navigateByUrl('order/success/' + this.cartId);
             } else if (x.status == "failed") {
-              this.navService.finishLoading();
               this.router.navigateByUrl('cart/checkout/' + this.cartId + '/error');
+            } else if(x.status != "created" && x.status != "retry") {
+              this.handleStripeAction(x);
             }
           }
         })
       )
-      .subscribe();
+      .subscribe(); 
 
     //This is for GUEST users, we are waiting for a function return when stripe is successful
     this.StripeSuccessSubscription = this._actions$.pipe(ofType(CartActions.SuccessStripePaymentAction)).subscribe(() => {
       this.store.dispatch(CartActions.BeginResetCartAction());
       this.router.navigateByUrl('order/success/' + this.cartId);
+    });
+  }
+
+  async handleStripeAction(x) {
+    await stripe.handleCardAction(
+      x.status
+    ).then((result)=>{
+      if (result.error) {
+        this.store.dispatch(CartActions.BeginSetCartStatusAction({ payload: {cartId :this.cartId , status : "failed" } }));
+      } else {
+        this.store.dispatch(CartActions.BeginSetStripeTokenAction({ payload: { cartId: this.cartId, source: {paymentIntent: result.paymentIntent.id} } }));
+      }
     });
   }
 
@@ -235,7 +280,7 @@ export class CartComponent implements OnInit {
               this.cartItemCount = 0;
 
               this.cartItems.forEach(item => {
-                this.cartTotal = this.cartTotal + (item.qty * (item.variantPrice ? item.variantPrice : (item.product.fields.discount ? item.product.fields.discount : item.product.fields.price)));
+                this.cartTotal = this.cartTotal + (item.qty * ((item.variantPrice || item.variantPrice == 0) ? (item.variantDiscount ? item.variantDiscount : item.variantPrice) : (item.product.fields.discount ? item.product.fields.discount : item.product.fields.price)));
 
               });
               this.primaryTax = this.siteSettings.fields.primaryTax ?
@@ -280,11 +325,6 @@ export class CartComponent implements OnInit {
       .subscribe();
   }
 
-  ngAfterViewInit() {
-
-    this.navService.finishLoading();
-  }
-
   initializeOrder(cartId) {
     let reqCart = [];
     this.cartItems.forEach(function (item) {
@@ -295,7 +335,7 @@ export class CartComponent implements OnInit {
           name: item.product.fields.title,
           variants: item.variants,
           qty: item.qty,
-          price: item.variantPrice ? item.variantPrice : (item.product.fields.discount ?
+          price: item.variantPrice ? (item.variantDiscount ? item.variantDiscount : item.variantPrice) : (item.product.fields.discount ?
             item.product.fields.discount :
             item.product.fields.price)
         }
@@ -326,6 +366,9 @@ export class CartComponent implements OnInit {
     this.OrderSubscription.unsubscribe();
     this.StripeSuccessSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
+    this.SettingsSubscription2.unsubscribe();
+    this.SettingsSubscription3.unsubscribe();
+    this.SettingsSubscription4.unsubscribe();
     this.CartSubscription.unsubscribe();
     this.CartIdSubscription.unsubscribe();
     this.UserInfoSubscription.unsubscribe();

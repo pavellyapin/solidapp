@@ -77,9 +77,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
             this.productsDisplayed = this.utilService.
               shuffleArray(this.productsLoaded.map(products => { return products }));
             this.createCards();
-          } else {
-            this.navService.finishLoading();
-          }
+          } 
         })
       )
       .subscribe();
@@ -104,24 +102,24 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
       ['xs', 24],
       ['sm', 24],
       ['md', 18],
-      ['lg', 9],
-      ['xl', 9],
+      ['lg', 18],
+      ['xl', 18],
     ]);
     /* Big card column span map */
     const colsMapBig = new Map([
       ['xs', 12],
       ['sm', 8],
       ['md', 6],
-      ['lg', 3],
-      ['xl', 3],
+      ['lg', 6],
+      ['xl', 6],
     ]);
     /* Small card column span map */
     const rowsMapBig = new Map([
-      ['xs', 21],
-      ['sm', 15],
-      ['md', 9],
-      ['lg', 3],
-      ['xl', 3],
+      ['xs', 17],
+      ['sm', 10],
+      ['md', 8],
+      ['lg', 7],
+      ['xl', 7],
     ]);
     let startCols: number;
     let startColsBig: number;
@@ -184,7 +182,9 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
   createCards(): void {
     if (this.productsDisplayed) {
       this.productsDisplayed.slice(this.cards.value.length, this.cards.value.length + this.productsLoadedInt).forEach((v, index) => {
-        this.sortVariants(v);
+        if(v.fields.variants) {
+          this.sortVariants(v);
+        }
         if (this.filters.length == 0 || this.filterProduct(v)) {
           this.addCard(
             new Card(
@@ -220,8 +220,6 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
       },
       );
     }
-
-    this.navService.finishLoading();
   }
 
   filterProduct(v): boolean {

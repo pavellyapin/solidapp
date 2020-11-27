@@ -22,15 +22,18 @@ import { CartReducer } from './services/store/cart/cart.reducer';
 import { PipesModule } from './components/pipes/pipes.module';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireFunctionsModule ,FUNCTIONS_ORIGIN } from '@angular/fire/functions';
+import { AngularFireFunctionsModule, FUNCTIONS_ORIGIN } from '@angular/fire/functions';
 import { ProductsReducer } from './services/store/product/product.reducer';
 import { ProductsEffects } from './services/store/product/product.effects';
 import { CartEffects } from './services/store/cart/cart.effects';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { AdminReducer } from './services/store/admin/admin.reducer';
+import { AdminEffects } from './services/store/admin/admin.effects';
+import { DashboardModule } from './components/dashboard/dashboard.module';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: ['user','cart'],rehydrate: true})(reducer);
+  return localStorageSync({ keys: ['user', 'cart'], rehydrate: true })(reducer);
 }
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
@@ -42,6 +45,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AppRoutingModule,
     DeviceDetectorModule,
     NavModule,
+    DashboardModule,
     PipesModule,
     FlexLayoutModule,
     HttpClientModule,
@@ -49,26 +53,29 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AngularFireFunctionsModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
-    StoreModule.forRoot({ user: UserReducer ,
-                          settings: SettingsReducer,
-                          products : ProductsReducer,
-                          cart : CartReducer},{metaReducers}),
-    EffectsModule.forRoot([UserEffects,
-                           SettingsEffects,
-                           ProductsEffects,
-                           CartEffects]),
-   /* !environment.production ? StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
-    }) : [], */
+    StoreModule.forRoot({
+      user: UserReducer,
+      admin: AdminReducer,
+      settings: SettingsReducer,
+      products: ProductsReducer,
+      cart: CartReducer
+    }, { metaReducers }),
+    EffectsModule.forRoot([UserEffects, AdminEffects,
+      SettingsEffects,
+      ProductsEffects,
+      CartEffects]),
+    /* !environment.production ? StoreDevtoolsModule.instrument({
+       maxAge: 25, // Retains last 25 states
+       logOnly: environment.production, // Restrict extension to log-only mode
+     }) : [], */
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (http: HttpClient) => new TranslateHttpLoader(http,'./assets/i18n/', '.json'),
+        useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json'),
         deps: [HttpClient],
       },
     })
-   ],
+  ],
   providers: [
     {
       provide: APP_INITIALIZER,

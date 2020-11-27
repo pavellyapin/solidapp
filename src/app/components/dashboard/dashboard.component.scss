@@ -1,0 +1,34 @@
+
+@import 'src/css/_variables.scss';
+.dashboard-container{
+    app-dashboard-toolbar {
+        position: sticky !important;
+        top: 0px;
+        z-index: 10;
+        background: $dark-blue;
+        ::ng-deep .mat-toolbar {
+          background-color: inherit !important;
+        }
+      }
+    
+    .doo-dashboard-apps {
+        background-color: $lighter-grey;
+        width:  15%;
+        position: fixed;
+        padding-top:70px;
+        .dash-app-link{
+            span{
+                padding-left: 10px;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+        }
+      }
+
+      .doo-loading-screen {
+        padding-left: 15%;
+      }
+}
+
+  

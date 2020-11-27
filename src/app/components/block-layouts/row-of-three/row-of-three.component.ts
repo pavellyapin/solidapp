@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-row-of-three',
@@ -8,8 +9,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RowOfThreePostComponent implements OnInit {
 
   @Input() block;
+  @Input() resolution;
 
-  constructor() {
+  constructor(public utils : UtilitiesService) {
     
   }
 

@@ -1,5 +1,5 @@
 <div *ngIf = "siteSettings" fxLayout="column" fxLayoutAlign="center" class="doo-primary-toolbar">
-  <div fxLayout="row" fxLayoutAlign="center" class="accent-background full-width" style = "padding: 0px 10px">
+  <div fxLayout="row" fxLayoutAlign="center" class="accent-background full-width" style = "padding: 5px 20px">
     <doo-actions fxLayout="row" [actions]="siteSettings.fields.actions"></doo-actions>
   </div>
 
@@ -60,7 +60,7 @@
     <div fxLayout="row" fxFlex="75">
       <div fxLayout="column" fxLayoutGap="10px" class="sub-category-column" *ngFor="let category of subCategories">
         <span class="mat-subheading-2 accent-color">{{category.fields.title}}</span>
-        <div *ngFor="let link of category.links" (click)="navigateCategory(link.fields.name)">
+        <div *ngFor="let link of category.links" (click)="navigateCategory(link)">
           <span class="doo-pointer crumb-item mat-subheading-1">{{link.fields.title}}</span>
 
         </div>

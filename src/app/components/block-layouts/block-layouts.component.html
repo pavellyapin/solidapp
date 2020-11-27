@@ -3,13 +3,13 @@
         </doo-background-img-block>
         <doo-text-block [block]="block" [resolution]="resolution" *ngSwitchCase="'Text'">
         </doo-text-block>
-        <doo-split-screen-img [block]="block" *ngSwitchCase="'Split'">
+        <doo-split-screen-img [block]="block" [resolution]="resolution" *ngSwitchCase="'Split'">
         </doo-split-screen-img>
         <doo-card-post [block]="block" *ngSwitchCase="'Card'">
         </doo-card-post>
         <doo-row-of-two [block]="block" *ngSwitchCase="'Row of 2'">
         </doo-row-of-two>
-        <doo-row-of-three [block]="block" *ngSwitchCase="'Row of 3'">
+        <doo-row-of-three [block]="block" [resolution]="resolution" *ngSwitchCase="'Row of 3'">
         </doo-row-of-three>
         <doo-expand-block [block]="block" *ngSwitchCase="'Accordion'">
         </doo-expand-block>

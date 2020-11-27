@@ -16,6 +16,15 @@ const reducer = createReducer(
       }
     }),
 
+    on(UserActions.SuccessGetSiteInfoAction, 
+      (state: UserState, { payload}) => {
+        return {
+          ...state,
+          site: payload,
+          UserError: null
+        }
+      }),
+
     on(UserActions.SuccessSetCartUserAction, 
       (state: UserState, { payload}) => {
         return {
@@ -66,6 +75,7 @@ const reducer = createReducer(
                 ...state,
                 uid : '',
                 personalInfo : null,
+                site : null ,
                 addressInfo : null,
                 orders: [],
                 favorites : [],

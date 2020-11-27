@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   SettingsSubscription: Subscription;
 
   constructor(store: Store<{ settings : SettingsState }> ,
-              private navSerivce : NavigationService,
+              private navService : NavigationService,
               private seoService : SEOService) {
                 
                 this.settings$ = store.pipe(select('settings','pages'));
@@ -41,10 +41,13 @@ export class HomeComponent implements OnInit {
             }
           }).pop();
         }
-        this.navSerivce.finishLoading();
       })
     )
     .subscribe();
+  }
+
+  ngAfterViewInit() {
+    this.navService.finishLoading();
   }
 
   ngOnDestroy(): void {

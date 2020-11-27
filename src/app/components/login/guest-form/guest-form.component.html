@@ -23,13 +23,14 @@
           <mat-error *ngIf="loginForm.controls['password'].invalid">{{'errors.required' | translate}}</mat-error>
         </mat-form-field>
       </div>
-      <mat-error [textContent]="errorMessage"></mat-error>
+      
 
-      <div fxLayout="row" class="full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+      <div fxLayout="row" class="full-width">
         <button fxFlex (click)="login()" class="doo-checkout-btn" color="primary" mat-flat-button type="submit">
           SIGN IN
         </button>
       </div>
+      <mat-error [textContent]="errorMessage"></mat-error>
       <div fxLayout="row" class="full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
         <button fxFlex (click)="googleLogin()" class="doo-checkout-btn" color="primary" mat-stroked-button
           type="button">
@@ -62,12 +63,11 @@
 
 
     </form>
+    <mat-divider [vertical]="true"></mat-divider>
     <form *ngIf="!isFromLogin" class="doo-guest-form doo-contentful" [formGroup]="guestForm" fxLayout="column"
-      fxLayoutGap="20px" fxFlex="40" fxFlex.lt-sm="90" (keyup.enter)="continueGuest()">
-      <div [ngSwitch]="block.sys.contentType?.sys.id" *ngFor="let block of pageContent?.fields.blocks">
-        <doo-block-layouts *ngSwitchCase="'block'" [block]="block">
-        </doo-block-layouts>
-      </div>
+      fxLayoutGap="20px" fxFlex="40" fxFlex.lt-sm="100" (keyup.enter)="continueGuest()">
+      <h2>Continue as Guest</h2>
+      <span class="doo-letter-space accent-color">Guest enjoy the same deals</span>
       <div fxLayout="column">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
           <mat-form-field fxFlex="48" appearance="outline" class="login-field">
@@ -88,10 +88,14 @@
           <input matInput formControlName="email" autocomplete="email" name="email" placeholder="Email" type="text" />
           <mat-error *ngIf="guestForm.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
         </mat-form-field>
-        <button (click)="continueGuest()" class="doo-checkout-btn" color="accent" mat-flat-button type="submit">
+      </div>
+
+      <div fxLayout="row" class="full-width">
+        <button fxFlex (click)="continueGuest()" class="doo-checkout-btn" color="accent" mat-flat-button type="submit">
           CONTINUE AS A GUEST
         </button>
       </div>
+      <div></div>
     </form>
   </div>
 

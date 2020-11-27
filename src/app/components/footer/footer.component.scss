@@ -25,6 +25,7 @@
     }   
     background: $primary;
     .section-header {
+        font-size: 16px;
         padding: 0 16px;
         text-transform: uppercase;
         letter-spacing: 2px;
@@ -38,6 +39,8 @@
     //background: $lighter-grey;
     .social-row {
         .social-icon {
+            height: 30px;
+            width: 30px;
             fill :$primary;
             ::ng-deep .cls-1 {
                 fill : white;

@@ -6,6 +6,8 @@ import { UserAddressInfo, UserPerosnalInfo } from 'src/app/services/store/user/u
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import { MatSelect } from '@angular/material/select';
 import { NameFormComponent } from '../../login/name-form/name-form.component';
+import { map } from 'rxjs/operators';
+import { ScriptService } from 'src/app/services/util/script.service';
 
 @Component({
     selector: 'doo-address-form',
@@ -44,7 +46,7 @@ import { NameFormComponent } from '../../login/name-form/name-form.component';
 
 
     constructor (private changeDetectorRef: ChangeDetectorRef,
-                 private utilService: UtilitiesService) {
+                 private scriptService: ScriptService) {
 
         this.addressForm = new FormGroup({        
             addressLine1: new FormControl('' , Validators.required),
@@ -57,15 +59,10 @@ import { NameFormComponent } from '../../login/name-form/name-form.component';
 
     ngOnInit(): void {
 
-        this.utilService.isScriptLoaded(this.googleMapsURL).then((loaded) =>{
-            if (!loaded) {
-                this.utilService.loadScript(this.googleMapsURL).then(()=>{
-                    this.scriptLoaded = true;
-                });
-            } else {
-                this.scriptLoaded = true;
-            }
+        this.scriptService.loadScript('google').then((data)=>{
+           this.scriptLoaded = true;
         });
+
         if (this.userAddressInfo) {
             this.addressForm.controls["addressLine1"].setValue(this.userAddressInfo.addressLine1);
             this.addressForm.controls["addressLine2"].setValue(this.userAddressInfo.addressLine2);
@@ -118,7 +115,7 @@ import { NameFormComponent } from '../../login/name-form/name-form.component';
                     this.addressForm.controls["postal"].setValue(component.short_name);
                     continue;
                 }
-                if (component.types.indexOf("locality") != -1) {
+                if (component.types.indexOf("locality") != -1 || component.types.indexOf("postal_town") != -1) {
                     this.city.nativeElement.focus();
                     this.addressForm.controls["city"].setValue(component.short_name);
                     continue;

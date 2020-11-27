@@ -139,11 +139,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     ]);
     /* Small card column span map */
     const rowsMapBig = new Map([
-      ['xs', 21],
-      ['sm', 15],
-      ['md', 11],
-      ['lg', 5],
-      ['xl', 5],
+      ['xs', 17],
+      ['sm', 10],
+      ['md', 7],
+      ['lg', 3],
+      ['xl', 3],
     ]);
     let startCols: number;
     let startColsBig: number;

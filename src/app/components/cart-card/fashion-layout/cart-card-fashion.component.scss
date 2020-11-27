@@ -10,8 +10,16 @@
     margin : 0px;
   }
 
-  .doo-stroked-price {
-    font-size: 14px;
+  .doo-price-tag{
+    height: 15px;
+    width: 15px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $accent;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $accent;
+    }
   }
 
   .doo-cart-action {

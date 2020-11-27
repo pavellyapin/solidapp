@@ -1,6 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
-import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -16,15 +15,21 @@ export class FashionCartCardComponent implements OnInit {
  
   @Output() favoritesEmmitter =  new EventEmitter();
   @Output() cartEmmitter =  new EventEmitter();
+  @Output() navigateToProduct =  new EventEmitter();
 
   constructor() {
   }
 
   ngOnInit() {
+    
   }
 
   toggleFavorites(isFavorite) {
     this.favoritesEmmitter.emit(isFavorite);
+  }
+
+  goToProduct() {
+    this.navigateToProduct.emit();
   }
 
   removeFromCart(){

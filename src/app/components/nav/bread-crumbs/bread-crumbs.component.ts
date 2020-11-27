@@ -4,6 +4,8 @@ import ProductsState from 'src/app/services/store/product/product.state';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Entry } from 'contentful';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'doo-bread-crumbs',
@@ -17,7 +19,7 @@ export class BreadCrumbsComponent implements OnInit {
   ProductSubscription: Subscription;
   breadCrumbs = [];
 
-  constructor(store: Store<{ products: ProductsState }>) {
+  constructor(store: Store<{ products: ProductsState }>,public navService: NavigationService,private router: Router) {
     this.activeCategory$ = store.pipe(select('products' , 'activeCategory'));
   }
 
@@ -34,6 +36,15 @@ export class BreadCrumbsComponent implements OnInit {
 
   }
 
+  navigate(link) {
+    if (link.object.fields.redirect) {
+      this.navService.ctaClick(link.object.fields.redirect);
+      return;
+    } else {
+      this.router.navigateByUrl(link.link)
+    }
+  }
+
   buildBreadCrumbs(activeCategory) {
     this.breadCrumbs = [];
     let parentExists = true;
@@ -42,7 +53,7 @@ export class BreadCrumbsComponent implements OnInit {
     while (parentExists) {
       let title = category.fields.title;
       let router = category.fields.redirect ? category.fields.redirect.fields.name : category.fields.name;
-      this.breadCrumbs.unshift({title:title,link:'/cat/' + router})
+      this.breadCrumbs.unshift({title:title,link:'/cat/' + router , object : category})
       if(!category.fields.parent || category.fields.parent.root) {
          parentExists = false;
       } else {

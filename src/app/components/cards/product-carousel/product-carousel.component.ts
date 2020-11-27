@@ -17,6 +17,7 @@ export class ProductCarouselComponent implements OnInit {
         this._productCards = cards;
     };
     @Input() width : number;
+    @Input() id: any;
     _productCards : Card[];
     resolution$: Observable<string>;
     resolution : any;
@@ -42,7 +43,7 @@ export class ProductCarouselComponent implements OnInit {
     
 
     ngAfterViewInit() {
-        this.$('.doo-carousel').slick({
+        this.$('.' + this.id).slick({
             infinite: false,
             slidesToShow: !this.bigScreens.includes(this.resolution)  ? 2 : 4,
             slidesToScroll: !this.bigScreens.includes(this.resolution) ? 2 : 3,
@@ -50,21 +51,20 @@ export class ProductCarouselComponent implements OnInit {
             dots : !this.bigScreens.includes(this.resolution),
             adaptiveHeight: true
           });
-          this.$('.doo-carousel').slick('slickPrev');
       }
 
       flipCarousel(direction:any) {
         if (direction == 'right') {
-          this.$('.doo-carousel').slick('slickNext');
+          this.$('.' + this.id).slick('slickNext');
         } else {
-          this.$('.doo-carousel').slick('slickPrev');
+          this.$('.' + this.id).slick('slickPrev');
         }
         
       }
       
 
       ngOnDestroy(){
-        this.$('.doo-carousel').slick('unslick');
+        this.$('.' + this.id).slick('unslick');
         this.SettingsSubscription.unsubscribe();
       }
 

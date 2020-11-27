@@ -117,15 +117,15 @@ $easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
   }
   
  .doo-cta-btn{
-    padding: 10px 25px !important;
-    font-size: 14px;
+    padding: 15px 35px !important;
+    font-size: 18px;
     letter-spacing: 4px;
   }
 
   @media only screen and (max-width: 850px) {
     .doo-cta-btn{
         padding: 5px 15px !important;
-        font-size: 12px;
+        font-size: 16px;
         letter-spacing: 1px;
       }
   }

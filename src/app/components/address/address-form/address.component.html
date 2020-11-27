@@ -68,7 +68,7 @@
                          </mat-form-field>
                     </div>
                     <div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign="space-between">
-                            <mat-form-field fxFlex = "48" appearance="outline" class="full-width" color = "primary">
+                            <mat-form-field *ngIf = "false" fxFlex = "48" appearance="outline" class="full-width" color = "primary">
                                     <mat-label>{{ 'profile.address.province' | translate }}</mat-label>
                                     <mat-select #province formControlName="province" 
                                             name="province" 

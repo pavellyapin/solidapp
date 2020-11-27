@@ -4,6 +4,7 @@ export default class UserState {
   uid: any;
   personalInfo? : UserPerosnalInfo;
   addressInfo? : UserAddressInfo;
+  site? : any;
   favorites? : Array<FavoriteItem>;
   orders? : Array<OrderItem>;
   UserError: Error;

@@ -197,6 +197,18 @@ export class AppComponent {
       'doo-cart',
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/cart.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      'doo-home',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/home.svg")
+    );
+    this.matIconRegistry.addSvgIcon(
+      'doo-download',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/download.svg")
+    );
+    this.matIconRegistry.addSvgIcon(
+      'doo-tag',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/tag.svg")
+    );
   }
 
   ngOnInit() {

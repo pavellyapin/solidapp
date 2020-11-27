@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, NgZone, ChangeDetectorRef } from '@angular/core';
 import { StateChange } from 'ng-lazyload-image';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'doo-split-screen-img',
@@ -9,6 +10,7 @@ import { StateChange } from 'ng-lazyload-image';
 export class SplitScreenImagePostComponent implements OnInit {
 
   @Input() block;
+  @Input() resolution;
   imgLoaded: boolean = false;
   @ViewChild('postImg', { static: false }) mediaElement: ElementRef;
   @ViewChild('content', { static: false }) contentElement: ElementRef;
@@ -17,6 +19,7 @@ export class SplitScreenImagePostComponent implements OnInit {
 
   constructor(private renderer: Renderer2,
     private zone: NgZone,
+    public utils : UtilitiesService,
     private changeDetectorRef: ChangeDetectorRef, ) {
   }
   ngOnInit() {

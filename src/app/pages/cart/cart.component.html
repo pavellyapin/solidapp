@@ -19,7 +19,7 @@
             <div class="cart-items-cont">
                 <doo-cart-items [cartItems]="cartItems"></doo-cart-items>
             </div>
-            <div fxLayout="column" fxLayoutGap="5px" class="promo-form">
+            <div *ngIf = "false" fxLayout="column" fxLayoutGap="5px" class="promo-form">
                 <div fxLayout.gt-xs="row" fxLayout.xs="row" fxLayoutAlign="center">
                     <mat-form-field fxFlex.gt-xs="75" color="primary" appearance="outline" class="full-width">
                         <mat-label>PROMO CODE</mat-label>
@@ -75,8 +75,8 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="!cartTotal" class="doo-empty-cart" fxLayoutGap="20px" fxLayout="column"
-                fxLayoutAlign="center center">
+            <div *ngIf="!cartItems || !cartItems.length " class="doo-empty-cart" fxLayoutGap="20px" fxLayout="column"
+                fxLayoutAlign="start center" style="flex: 1 1 100%;min-height:100vh;">
                 <span class="mat-subheading-2">
                     Explore our store
                 </span>
@@ -89,11 +89,15 @@
                     </button>
                 </div>
             </div>
-            <div *ngIf="cartTotal" fxLayout="column" style="position: relative" fxLayoutGap="20px">
-                <div *ngIf="loading" fxLayout="row" style="flex: 1 1 100%;min-height:100vh;position: absolute;"
-                    fxLayoutAlign="center start" class="doo-loading-overlay">
-                    <div class="doo-loading-screen" fxLayout="row" fxLayoutAlign="center start">
-                        <img fxFlex="30" src="assets/icons/logo.png">
+            <div *ngIf="cartItems && cartItems.length" fxLayout="column" style="position: relative">
+                <div *ngIf="loading" fxLayout="column" style="flex: 1 1 100%;min-height:100vh;position: absolute;"
+                    fxLayoutAlign="start center" class="doo-loading-overlay">
+                    <div fxLayout="column" class="doo-loading-screen">
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                    <img fxFlex="30" src="assets/icons/logo.png">
+                            </div>
+    
+                            <span class = "mat-headline doo-letter-space">Secure Transaction in Progress</span>
                     </div>
                 </div>
                 <div *ngIf="!loading" fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end end"

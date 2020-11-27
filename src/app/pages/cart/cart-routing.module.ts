@@ -10,9 +10,11 @@ import { CheckoutPaymentComponent } from './payment/payment.component';
 import { GuestCheckoutComponent } from './guest/guest.component';
 import { GuestCheckoutGuard } from './guest/guest.guard';
 import { CartErrorComponent } from './error/error.component';
+import { CheckoutCartGuard } from './cart.guard';
 
 export const cartRoutes: NavRoute[] = [
   {data: {title: 'Cart' , isChild: true},
+   canActivate : [CheckoutCartGuard],
    path: '', 
    children : [
       {data: {title: 'Checkout' , isChild: true},

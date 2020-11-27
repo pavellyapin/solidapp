@@ -19,7 +19,7 @@
     <div fxLayout="row" fxLayoutAlign="center" fxFlex="30">
       <div fxLayout="column" fxFlex.xs="45" fxFlex.lg="100">
 
-        <img class="full-width doo-pointer" [lazyLoad]="object?.product.fields.media[0].fields.file.url"
+        <img class="full-width doo-pointer" (click)="goToProduct()" [lazyLoad]="object?.product.fields.media[0].fields.file.url"
           [alt]="object?.product.fields.media[0].fields.description" [defaultImage]="'assets/placeholders/placeholder-1.svg'">
       </div>
     </div>
@@ -40,21 +40,22 @@
         <span class="mat-caption cart-item-variant">
           <span>{{'product.qty' | translate}}: </span> {{object.qty}}
         </span>
-      </div>
-
-
-      <div fxLayout="column" class="mat-subheading-1">
-        <div fxLayout="column" fxLayoutAlign="start start"
-          [ngClass]="object.product.fields.discount ? 'doo-stroked-price' : ''">
-          <span
-            [innerHTML]="(object.variantPrice ? object.variantPrice : object.product.fields.price) | pricePipe">
-          </span>
+      </div>  
+      <div fxLayout="column">
+          <div *ngIf="(object.product.fields.discount && !object.variantPrice) || object.variantDiscount" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <mat-icon class = "doo-price-tag" svgIcon="doo-tag"></mat-icon>
+              <span class="mat-caption accent-color">Low Price</span>
+          </div>
+          
+          <div fxLayout="row" fxLayoutAlign="start">
+            <span [innerHTML]="(object.variantPrice ? object.variantPrice  : object.product.fields.price) | pricePipe"
+              [ngClass]="((object.product.fields.discount  && !object.variantPrice) || object.variantDiscount) ? 'doo-stroked-price mat-subheading-2' : 'mat-subheading-2'">
+            </span>
+            <span *ngIf="(object.product.fields.discount && !object.variantPrice) || object.variantDiscount" class="mat-subheading-2"
+              [innerHTML]="(object.variantDiscount ? object.variantDiscount : object.product.fields.discount) | pricePipe">
+            </span>
+          </div>
         </div>
-        <span *ngIf="object.product.fields.discount && !object.variantPrice"
-          [innerHTML]="object.product.fields.discount | pricePipe">
-        </span>
-      </div>
-
     </div>
     <div fxLayout="column" fxFlex="10" fxHide fxShow.gt-xs fxLayoutAlign="space-between">
       <span class="doo-cart-action doo-pointer">

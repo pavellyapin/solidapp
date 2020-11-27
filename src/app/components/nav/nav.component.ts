@@ -134,6 +134,9 @@ export class NavComponent implements OnInit {
   }
 
   expandCartNav() {
+    if (this.mainMenuOpen) {
+      this.mainMenuOpen = false;
+    }
     this.utilService.scrollTop();
     if (!this.isOpen || !this.cartSideNavComponent.cartItemCount) {
       this.toggleSideNav(false);

@@ -25,14 +25,22 @@
         <span class="mat-subeheading-1">{{productReviews.length}}</span>
         <span class="mat-subeheading-1">Reviews</span>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <span [innerHTML]="(variantPrice ? variantPrice  : productDetails.fields.price) | pricePipe"
-          [ngClass]="productDetails.fields.discount && !variantPrice ? 'doo-stroked-price mat-headline' : 'mat-headline'">
-        </span>
-        <span class="mat-headline" [innerHTML]="productDetails.fields.discount | pricePipe"
-          *ngIf="productDetails.fields.discount && !variantPrice">
-        </span>
+      <div fxLayout="column">
+        <div *ngIf="(productDetails.fields.discount && !variantPrice) || variantDiscount" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <mat-icon class = "doo-price-tag" svgIcon="doo-tag"></mat-icon>
+            <span class="mat-caption accent-color">Low Price</span>
+        </div>
+        
+        <div fxLayout="row" fxLayoutAlign="center">
+          <span [innerHTML]="(variantPrice ? variantPrice  : productDetails.fields.price) | pricePipe"
+            [ngClass]="((productDetails.fields.discount  && !variantPrice) || variantDiscount) ? 'doo-stroked-price mat-headline' : 'mat-headline'">
+          </span>
+          <span *ngIf="(productDetails.fields.discount && !variantPrice) || variantDiscount" class="mat-headline"
+            [innerHTML]="(variantDiscount ? variantDiscount : productDetails.fields.discount) | pricePipe">
+          </span>
+        </div>
       </div>
+
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start" fxLayoutGap="30px" class="mat-body full-width">
         <div fxLayout="column" fxFlex="50" fxLayoutGap="10px" *ngIf="productVariants.get('size')">
           <mat-form-field appearance="outline" class="full-width doo-tight-wrapper" color="primary">
@@ -57,7 +65,7 @@
         </div>
       </div>
       <div fxLayout="column">
-          <span class = "mat-subheading-2" style = "margin: 0px" fxLayoutAlign="center">QTY</span>
+        <span class="mat-subheading-2" style="margin: 0px" fxLayoutAlign="center">QTY</span>
         <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="30px" class="mat-body full-width">
           <div fxLayout="row" fxLayoutAlign.xs="center" class="mat-caption doo-qty-input">
             <div (click)="addQty.emit()" fxLayout="column" fxLayoutAlign="center center" class="minus-icon doo-pointer">
@@ -75,10 +83,10 @@
           </div>
         </div>
       </div>
-      <div fxLayout="column" fxLayoutGap="10px" class="mat-body full-width doo-bottom-border"
+      <div fxLayout="column" fxLayoutGap="10px" class="mat-body full-width color-variant doo-bottom-border"
         *ngIf="productVariants.get('color')">
-        <div fxLayout="row">
-          {{'product.color' | translate}}: {{cartItemForm.controls["color"].value}}
+        <div fxLayout="row" class="mat-subheading-2">
+          {{'product.color' | translate}}: <span style="color:gray">{{cartItemForm.controls["color"].value}}</span>
         </div>
         <mat-radio-group fxLayout="row" formControlName="color">
           <mat-radio-button *ngFor="let variant of productVariants.get('color')" [value]="variant.name"
@@ -89,7 +97,7 @@
         </mat-radio-group>
       </div>
       <div fxLayout="row" fxLayoutGap="10px" class="full-width">
-        <button (click)="addProductToCart()" class="full-width doo-add-btn" color="primary" mat-flat-button
+        <button #addProductBtn (click)="addProductToCart()" class="full-width doo-add-btn" color="primary" mat-flat-button
           type="submit">
           {{ 'cart.addToCart' | translate }}
         </button>

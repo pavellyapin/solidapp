@@ -85,40 +85,6 @@ doo-bread-crumbs {
     } 
 }
 
-.color-variant {
-  ::ng-deep .mat-radio-container{
-    display: none !important;
-  }
-
-  padding-bottom: 20px;
-  .color-label{
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .doo-color-box {
-    min-width:23px;
-    min-height:23px;
-    margin:2px;
-    border-radius: 25px;
-    box-shadow: 0.5px 0.5px 5px;
-    border-style: solid;
-    border-color: $lighter-grey;
-    padding: 3px;
-  }
-
-  .doo-color-box:hover {
-    box-shadow: 0.5px 0.5px 10px;
-    transition: 300ms;
-  }
-
-  ::ng-deep .mat-radio-checked {
-    .doo-color-box {
-      box-shadow: 1px 1px 15px;
-    }
-  }
-}
-
 .size-variant {
   ::ng-deep .mat-radio-container{
     display: none !important;

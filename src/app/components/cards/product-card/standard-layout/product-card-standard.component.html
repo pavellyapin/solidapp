@@ -35,15 +35,21 @@
           </div>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="star" fxLayoutAlign.xs="start" class = "mat-subheading-2">
-        <span *ngIf="object.fields.discount && !variantPrice" [innerHTML]="object.fields.discount | pricePipe">
-        </span>
-        <span [ngClass]="object.fields.discount ? 'doo-stroked-price' : ''"
-          [innerHTML]="(variantPrice ? variantPrice :object.fields.price) | pricePipe">
-
-        </span>
-
-      </div>
+      <div fxLayout="column">
+          <div *ngIf="(object.fields.discount && !variantPrice) || variantDiscount" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <mat-icon class = "doo-price-tag" svgIcon="doo-tag"></mat-icon>
+              <span class="mat-caption accent-color">Low Price</span>
+          </div>
+          
+          <div fxLayout="row" fxLayoutAlign="start">
+            <span [innerHTML]="(variantPrice ? variantPrice  : object.fields.price) | pricePipe"
+              [ngClass]="((object.fields.discount  && !variantPrice) || variantDiscount) ? 'doo-stroked-price mat-subheading-2' : 'mat-subheading-2'">
+            </span>
+            <span *ngIf="(object.fields.discount && !variantPrice) || variantDiscount" class="mat-subheading-2"
+              [innerHTML]="(variantDiscount ? variantDiscount : object.fields.discount) | pricePipe">
+            </span>
+          </div>
+        </div>
     </div>
   </div>
 </div>

@@ -65,6 +65,18 @@
   }
 }
 
+.doo-price-tag{
+  height: 15px;
+  width: 15px;
+  
+  ::ng-deep .cls-1 {
+    stroke: $accent;
+  }
+  ::ng-deep .cls-2 {
+    stroke: $accent;
+  }
+}
+
 .first-image:hover {
   opacity: 0;
   transition: 300ms;
@@ -107,7 +119,8 @@
 }
 
 .product-name-label {
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 22px;
   letter-spacing: 2px;
 }
 

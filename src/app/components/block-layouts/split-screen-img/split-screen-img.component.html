@@ -1,5 +1,5 @@
 <div fxLayout="column" [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
-     <div fxLayout="row" fxLayoutAlign="center">
+     <div fxLayout="row" fxLayoutAlign="center" [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.width? block.fields.width + '%': '100%')">
           <div fxLayout="row" fxLayout.lt-sm="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100"
                fxFlex.lt-sm
                [fxLayoutAlign]="'center' + ' ' +  (block.fields.verticalContentPosition ? block.fields.verticalContentPosition : 'start')">
@@ -30,10 +30,11 @@
                          fxLayoutGap="20px" fxLayout="row" [actions]="block.fields.actions"></doo-actions>
 
                </div>
-               <div [fxFlex.gt-xs]="block.fields.textBoxWidth ? 100-block.fields.textBoxWidth : 50" fxFlex.lt-sm
-                    [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1">
+               <div [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.textBoxWidth ? 100-block.fields.textBoxWidth + '%' : '50%')"
+                    [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1" fxLayoutAlign = "center">
                     <img #postImg *ngIf="block.fields.media[0].fields.file.details.image"
-                         class="full-width post-placeholder" style="object-fit: cover;height: 100%;display: block"
+                         [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
+                         class="full-width post-placeholder" 
                          [lazyLoad]="block.fields.media[0].fields.file.url"
                          [alt] = "block.fields.media[0].fields.description"
                          [defaultImage]="'assets/placeholders/placeholder-1.svg'"

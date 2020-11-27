@@ -5,6 +5,7 @@ import { AngularFireFunctions } from '@angular/fire/functions';
 import { AuthService } from '../auth/auth.service';
 import { CartData } from 'src/app/pages/cart/payment/payment.component';
 import * as firebase from 'firebase';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +13,26 @@ import * as firebase from 'firebase';
 export class FirestoreService {
 
 
+    ordersCollection: string = "orders";
 
     constructor(private firestore: AngularFirestore , 
                 public authservice: AuthService,
                 private firebaseFunctions: AngularFireFunctions) {
+                    console.log('environment.production',environment.production);
+                    if (!environment.production) {
+                        this.ordersCollection = "testOrders"
+                    }
     }
 
     getUserPersonalInfo() {
         return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
                         .doc("personalInfo")
+                        .snapshotChanges();
+    }
+
+    getUserSiteInfo() {
+        return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
+                        .doc("site")
                         .snapshotChanges();
     }
 
@@ -97,7 +109,7 @@ export class FirestoreService {
 
     getOrders() : Observable<any> {
         return from (this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
-                        .doc("orders").collection("orders").ref.where("status" , "==" , "paid").get());
+                        .doc(this.ordersCollection).collection("orders").ref.where("status" , "==" , "paid").get());
     }
 
     //Subscribe-----------------------------------------------------------------------
@@ -115,7 +127,7 @@ export class FirestoreService {
             if (cart.cartId) {
                 return from (this.firestore
                     .collection("customers").doc("customers").collection(this.authservice.uid)
-                    .doc("orders").collection("orders").doc(cart.cartId).update({cart : cart.cart}).then(()=> {
+                    .doc(this.ordersCollection).collection("orders").doc(cart.cartId).update({cart : cart.cart}).then(()=> {
                             return {id : cart.cartId};
                          }
                     ).catch((error)=> {
@@ -124,7 +136,7 @@ export class FirestoreService {
             } else {
                 return from (this.firestore
                     .collection("customers").doc("customers").collection(this.authservice.uid)
-                    .doc("orders").collection("orders").add({cart : cart.cart , status : "created"}).catch((error)=> {
+                    .doc(this.ordersCollection).collection("orders").add({cart : cart.cart , status : "created"}).catch((error)=> {
                         console.error(error);
                     }));
             }
@@ -133,7 +145,7 @@ export class FirestoreService {
             return from (firebase.auth().signInAnonymously().then((creds)=>{
                 return this.firestore
                     .collection("customers").doc("customers").collection(creds.user.uid)
-                    .doc("orders").collection("orders").add({cart : cart.cart , status : "created"}).catch((error)=> {
+                    .doc(this.ordersCollection).collection("orders").add({cart : cart.cart , status : "created"}).catch((error)=> {
                         console.error(error);
                     });
             }).catch(function(error) {
@@ -145,20 +157,20 @@ export class FirestoreService {
 
     getOrderStatus(cart : any) {
         return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
-                        .doc("orders").collection("orders").doc(cart.cartId)
+                        .doc(this.ordersCollection).collection("orders").doc(cart.cartId)
                         .snapshotChanges();
     }
 
     setOrderStatus(cartId : any , status : any) : Observable<any>{
         return from (this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
-                        .doc("orders").collection("orders").doc(cartId).update({status : status}));
+                        .doc(this.ordersCollection).collection("orders").doc(cartId).update({status : status}));
     }
 
     setOrderShippingInfo (cart : any) : Observable<any>{
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
-                .doc("orders").collection("orders").doc(cart.cartId).update({shipping : cart.shipping ,address : cart.address, personalInfo : cart.personalInfo}));
+                .doc(this.ordersCollection).collection("orders").doc(cart.cartId).update({shipping : cart.shipping ,address : cart.address, personalInfo : cart.personalInfo}));
         } 
     }
 
@@ -167,7 +179,7 @@ export class FirestoreService {
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
-                .doc("orders").collection("orders").doc(cartId).snapshotChanges());
+                .doc(this.ordersCollection).collection("orders").doc(cartId).snapshotChanges());
         } 
     }
 
@@ -176,7 +188,7 @@ export class FirestoreService {
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
-                .doc("orders").collection("orders").doc(cartId).get());
+                .doc(this.ordersCollection).collection("orders").doc(cartId).get());
         } 
     }
 
@@ -189,7 +201,7 @@ export class FirestoreService {
         if (this.authservice.uid) {
             return from (this.firestore
                 .collection("customers").doc("customers").collection(this.authservice.uid)
-                .doc("orders").collection("orders").doc(cartId).collection('payment').add({payment : {token : token}}));
+                .doc(this.ordersCollection).collection("orders").doc(cartId).collection('payment').add({payment : {token : token}}));
         } 
     }
 }

@@ -32,6 +32,22 @@ export class UserEffects {
     )
   );
 
+  GetSiteInfo$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(UserActions.BeginGetSiteInfoAction),
+    switchMap(action =>
+      this.firestoreService.getUserSiteInfo().pipe(
+        map((data: any) => {
+          return UserActions.SuccessGetSiteInfoAction({ payload: data.payload.data()});
+        }),
+        catchError((error: Error) => {
+          return of(UserActions.ErrorUserAction(error));
+        })
+      )
+    )
+  )
+);
+
   GetUserAddressInfo$: Observable<Action> = createEffect(() =>
   this.action$.pipe(
     ofType(UserActions.BeginGetUserAddressInfoAction),
@@ -107,6 +123,7 @@ this.action$.pipe(
       this.authService.doLoginWithGoogle().pipe(
         switchMap((x) => [CartActions.BeginResetCartIdAction(),
                           UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginGetSiteInfoAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
         ),

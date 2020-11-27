@@ -1,0 +1,128 @@
+@import '~@angular/material/theming';
+@import 'src/css/_variables.scss';
+
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.doo-dashboard-toolbar {
+  mat-toolbar {
+    @include mat-elevation(0);
+    background-color: $dark-blue;
+    padding: 0% 1% !important;
+    //height: 110px;
+    position: relative;
+    z-index: 12;
+  }
+  .doo-menu-items{
+    padding: 0% 5% !important;
+    position: absolute !important;
+    background-color: $dark-blue;
+    top: 0px;
+    z-index: 1;
+  }
+  .doo-menu-actions {
+    z-index: 15;
+    background :$dark-blue;
+  }
+}
+
+.doo-nav-toggle-button {
+  width: 125px;
+  padding: 5px 20px;
+  margin: 0;
+  border: 0;
+}
+
+mat-icon {
+  height: 20px;
+  width: 20px;
+  opacity: 0.7;
+}
+
+.doo-expand-menu {
+  min-height: 400px; 
+  background: white;
+  z-index: 10;
+  position: absolute;
+  top:125px;
+  width:100%;
+  padding: 20px 10%;
+  letter-spacing: 2px;
+  font-size: 12px;
+  .mat-subheading-1 {
+    letter-spacing: 2px;
+    font-size: 14px;
+  }
+}
+
+.doo-root-category {
+  padding : 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  mat-icon {
+    padding-left: 5px;
+    padding-bottom: 15px;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.sub-category-column {
+  padding : 0 30px;
+}
+
+.doo-search-box {
+
+  mat-icon {
+    padding-right: 10px;
+    height: 20px;
+    width: 20px;
+    
+    ::ng-deep .cls-1 {
+      stroke: $primary;
+    }
+    ::ng-deep .cls-2 {
+      stroke: $primary;
+    }
+  }
+  ::ng-deep .mat-form-field-outline-start {
+    border-top-left-radius: 35px !important;
+    border-bottom-left-radius: 35px !important;
+    min-width: 25px !important;
+    background: $lighter-grey;
+  }
+
+  ::ng-deep .mat-form-field-outline-end {
+    border-top-right-radius: 35px !important;
+    border-bottom-right-radius: 35px !important;
+    background: $lighter-grey;
+  }
+
+  ::ng-deep .mat-form-field-flex {
+    padding-left: 25px !important;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    padding-top: 5px !important;
+    padding-bottom: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom : 0px !important;
+    //margin : 0px !important;
+  }
+}
+
+.top-news-feed-row {
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: $light-grey;
+  min-height: 30px;
+  opacity: 0.7;
+}

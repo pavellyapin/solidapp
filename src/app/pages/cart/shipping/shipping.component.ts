@@ -1,4 +1,4 @@
-import { Component, ViewChild, Inject } from '@angular/core';
+import { Component, ViewChild, Inject, ChangeDetectorRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import CartState from 'src/app/services/store/cart/cart.state';
 import { Observable, Subscription } from 'rxjs';
@@ -58,7 +58,8 @@ export class CheckoutShippingComponent {
     private navService: NavigationService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-    private utilService: UtilitiesService) {
+    private utilService: UtilitiesService,
+    private cd: ChangeDetectorRef) {
     this.cartTotal$ = store.pipe(select('cart', 'total'));
     this.user$ = store.pipe(select('user'));
     this.settings$ = store.pipe(select('settings'));
@@ -100,13 +101,17 @@ export class CheckoutShippingComponent {
     this.SettingsSubscription = this.settings$
       .pipe(
         map(x => {
-          //console.log(x);
           this.siteSettings = x.siteConfig;
           this.resolution = x.resolution;
           this.setShippingOptions();
+          this.cd.detectChanges();
         })
       )
       .subscribe();
+  }
+
+  ngAfterViewInit() {
+    this.navService.finishLoading();
   }
 
   setShippingOptions() {

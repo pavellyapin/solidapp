@@ -37,7 +37,11 @@ export class RichTextPipe {
 })
 export class PricePipe {
   transform(price: any): any {
-    return '<span class = "currency-label"> GBP£ </span>' + parseFloat(price).toFixed(2);
+    if (price) {
+      return '<span class = "currency-label"> GBP£ </span>' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    } else {
+      return 'FREE';
+    }
   }
 }
 
@@ -46,7 +50,11 @@ export class PricePipe {
 })
 export class PricePipeSimple {
   transform(price: any): any {
-    return 'GBP£' + parseFloat(price).toFixed(2);
+    if (price) {
+      return 'GBP£' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    } else {
+      return 'FREE';
+    }
   }
 }
 
