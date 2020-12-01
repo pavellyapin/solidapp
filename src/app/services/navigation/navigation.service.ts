@@ -102,8 +102,7 @@ export class NavigationService {
   }
 
   public navigateExternalURL(url:string) {
-    console.log(url);
-    window.location.href = url;
+    window.open(url, '_blank');
   }
 
   public ctaClick(cta) {

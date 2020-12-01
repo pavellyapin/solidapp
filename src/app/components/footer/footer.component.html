@@ -25,7 +25,7 @@
                                         </button>
                                 </div>
                         </div>
-                        <div class="social-row" fxLayout="row" fxLayoutGap="15px">
+                        <div *ngIf = "settings" class="social-row" fxLayout="row" fxLayoutGap="15px">
                                 <mat-icon *ngIf="settings.fields.twitterLink" class="social-icon doo-pointer"
                                         (click)="navService.navigateExternalURL(settings.fields.twitterLink)"
                                         svgIcon="doo-twitter">

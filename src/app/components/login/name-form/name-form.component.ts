@@ -40,7 +40,7 @@ export class NameFormComponent implements OnInit , OnDestroy {
       this.userInfo.firstName = this.userForm.controls["firstName"].value;
       this.userInfo.lastName = this.userForm.controls["lastName"].value;
       this.userInfo.email = this.userForm.controls["email"].value;
-      this.userInfo.email = this.userForm.controls["phone"].value;
+      this.userInfo.phone = this.userForm.controls["phone"].value;
       this.personalFormEmitter.emit(this.userInfo);
     }
   }

@@ -19,7 +19,7 @@ import { ScriptService } from 'src/app/services/util/script.service';
     @Input() userAddressInfo:UserAddressInfo;
     @Input() userInfo: UserPerosnalInfo;
     @Input() isWithName : boolean;
-    @Input() addressRequired : boolean;
+    @Input() addressRequired : boolean = true;
     @Output() addressFormEmitter = new EventEmitter<any>();
     @Output() personalFormEmitter = new EventEmitter<any>();
 
@@ -137,7 +137,6 @@ import { ScriptService } from 'src/app/services/util/script.service';
                   this.nameFormComponent.userForm.markAllAsTouched();
                   return;
               }
-            
           }
           if (this.addressForm.valid) {
             this.addressFormEmitter.emit(this.addressForm.value);
@@ -160,6 +159,7 @@ import { ScriptService } from 'src/app/services/util/script.service';
           this.userInfo.firstName = this.nameFormComponent.userForm.controls["firstName"].value;
           this.userInfo.lastName = this.nameFormComponent.userForm.controls["lastName"].value;
           this.userInfo.email = this.nameFormComponent.userForm.controls["email"].value;
+          this.userInfo.phone = this.nameFormComponent.userForm.controls["phone"].value ? this.nameFormComponent.userForm.controls["phone"].value : 'n/a';
           this.personalFormEmitter.emit( this.nameFormComponent.userForm.value);
       }
 

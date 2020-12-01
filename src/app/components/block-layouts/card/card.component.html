@@ -2,7 +2,7 @@
      <div fxLayout="row" fxLayoutAlign="center">
           <div fxLayout="column" [fxFlex]="block.fields.width" fxLayoutAlign="center">
                <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
-                    fxLayout="column" [fxFlex]="block.fields.textBoxWidth" fxFlex.lt-md="100" style="padding:20px"
+                    fxLayout="column" fxFlex.lt-md="100" style="padding:20px"
                     [class.primary-background]="block.fields.textBackground == 'Primary'"
                     [class.accent-background]="block.fields.textBackground == 'Accent'"
                     [class.white-background]="block.fields.textBackground == 'White'"
@@ -26,9 +26,9 @@
                          [actions]="block.fields.actions"></doo-actions>
 
                </div>
-               <div>
-                    <img #postImg *ngIf="block.fields.media[0].fields.file.details.image"
-                         class="full-width post-placeholder" style="object-fit: cover;height: 100%;"
+               <div fxLayout = "column" fxLayoutAlign = "center center">
+                    <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="post-placeholder"
+                         [style.width]="block.fields.textBoxWidth ? block.fields.textBoxWidth : '100%'"
                          [lazyLoad]="block.fields.media[0].fields.file.url"
                          [alt] = "block.fields.media[0].fields.description"
                          [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"

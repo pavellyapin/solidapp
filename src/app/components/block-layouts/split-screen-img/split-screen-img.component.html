@@ -30,8 +30,8 @@
                          fxLayoutGap="20px" fxLayout="row" [actions]="block.fields.actions"></doo-actions>
 
                </div>
-               <div [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.textBoxWidth ? 100-block.fields.textBoxWidth + '%' : '50%')"
-                    [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1" fxLayoutAlign = "center">
+               <div fxLayout = "column" [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.textBoxWidth ? 100-block.fields.textBoxWidth + '%' : '50%')"
+                    [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1" fxLayoutAlign = "center center">
                     <img #postImg *ngIf="block.fields.media[0].fields.file.details.image"
                          [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
                          class="full-width post-placeholder" 
