@@ -264,18 +264,20 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   sortVariants(product) {
-    product.fields.variants.forEach(variant => {
-      let variantObject = { name: variant.fields.name, code: variant.fields.code };
-      if (this.productVariants.get(variant.fields.option)) {
-        if (!this.productVariants.get(variant.fields.option).
-          some(item => item.name == variantObject.name && item.code == variantObject.code)) {
-          this.productVariants.get(variant.fields.option).push(variantObject);
+    if (product.fields.variants) {
+      product.fields.variants.forEach(variant => {
+        let variantObject = { name: variant.fields.name, code: variant.fields.code };
+        if (this.productVariants.get(variant.fields.option)) {
+          if (!this.productVariants.get(variant.fields.option).
+            some(item => item.name == variantObject.name && item.code == variantObject.code)) {
+            this.productVariants.get(variant.fields.option).push(variantObject);
+          }
+        } else {
+          this.productVariants.set(variant.fields.option,
+            [variantObject]);
         }
-      } else {
-        this.productVariants.set(variant.fields.option,
-          [variantObject]);
-      }
-    });
+      });
+    }
   }
 
   filterToggle(checkbox, type) {

@@ -32,7 +32,7 @@
             </div>
             <div></div>
         </div>
-        <div fxLayout="row" [fxFlex]="block.fields.width ? block.fields.width : 100" fxFlex.lt-sm fxLayoutAlign="center"
+        <div fxLayout="column" [fxFlex]="block.fields.width ? block.fields.width : 100" fxFlex.lt-sm fxLayoutAlign="center"
             [ngClass]="utils.bigScreens.includes(this.resolution) ? '' : 'crop'">
             <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="full-width post-placeholder"
                 [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"

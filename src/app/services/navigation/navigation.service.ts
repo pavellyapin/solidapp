@@ -101,6 +101,11 @@ export class NavigationService {
     this.store.dispatch(SettingsActions.SuccessLoadingAction());
   }
 
+  public navigateExternalURL(url:string) {
+    console.log(url);
+    window.location.href = url;
+  }
+
   public ctaClick(cta) {
     this.store.dispatch(SettingsActions.BeginLoadingAction());
     if (cta.sys) {

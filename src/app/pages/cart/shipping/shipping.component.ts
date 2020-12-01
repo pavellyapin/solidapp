@@ -115,7 +115,7 @@ export class CheckoutShippingComponent {
   }
 
   setShippingOptions() {
-    if (this.siteSettings) {
+    if (this.siteSettings.fields.shipping) {
       this.shippingOptions = this.siteSettings.fields.shipping.filter((option) => {
         if (option.fields.minTotal <= this.cartTotal && (!option.fields.maxTotal || option.fields.maxTotal > this.cartTotal)) {
           return option;
@@ -175,7 +175,7 @@ export class CheckoutShippingComponent {
           payload: {
             address: this.userAddressInfo,
             personalInfo: this.userInfo,
-            shipping: this.shippingMethodDetails,
+            shipping: this.shippingMethodDetails?this.shippingMethodDetails:{},
             cartId: this.route.snapshot.params["cartId"]
           }
         }));

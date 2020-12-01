@@ -6,7 +6,7 @@
                         <div *ngFor="let link of section.fields.actions">
                                 <button (click)="navService.ctaClick(link.fields.action)" mat-button>
                                         <span class="doo-letter-space">
-                                           {{link.fields.name}}
+                                                {{link.fields.name}}
                                         </span>
                                 </button>
                         </div>
@@ -26,12 +26,30 @@
                                 </div>
                         </div>
                         <div class="social-row" fxLayout="row" fxLayoutGap="15px">
-                                <mat-icon class="social-icon" svgIcon="doo-twitter"></mat-icon>
-                                <mat-icon class="social-icon" svgIcon="doo-facebook"></mat-icon>
-                                <mat-icon class="social-icon" svgIcon="doo-insta"></mat-icon>
-                                <mat-icon class="social-icon" svgIcon="doo-youtube"></mat-icon>
-                                <mat-icon class="social-icon" svgIcon="doo-googleplus"></mat-icon>
-                                <mat-icon class="social-icon" svgIcon="doo-linkedin"></mat-icon>
+                                <mat-icon *ngIf="settings.fields.twitterLink" class="social-icon doo-pointer"
+                                        (click)="navService.navigateExternalURL(settings.fields.twitterLink)"
+                                        svgIcon="doo-twitter">
+                                </mat-icon>
+                                <mat-icon *ngIf="settings.fields.facebookLink" class="social-icon doo-pointer"
+                                        (click)="navService.navigateExternalURL(settings.fields.facebookLink)"
+                                        svgIcon="doo-facebook">
+                                </mat-icon>
+                                <mat-icon *ngIf="settings.fields.instaLink"
+                                        (click)="navService.navigateExternalURL(settings.fields.instaLink)"
+                                        class="social-icon doo-pointer" svgIcon="doo-insta">
+                                </mat-icon>
+                                <mat-icon *ngIf="settings.fields.youtubeLink"
+                                        (click)="navService.navigateExternalURL(settings.fields.youtubeLink)"
+                                        class="social-icon doo-pointer" svgIcon="doo-youtube">
+                                </mat-icon>
+                                <mat-icon *ngIf="settings.fields.googleplusLink"
+                                        (click)="navService.navigateExternalURL(settings.fields.googleplusLink)"
+                                        class="social-icon doo-pointer" svgIcon="doo-googleplus">
+                                </mat-icon>
+                                <mat-icon *ngIf="settings.fields.linkedinLink"
+                                        (click)="navService.navigateExternalURL(settings.fields.linkedinLink)"
+                                        class="social-icon doo-pointer" svgIcon="doo-linkedin">
+                                </mat-icon>
                         </div>
                 </div>
         </div>

@@ -7,7 +7,7 @@
 
                         </button>
                         <button color="accent" mat-button class="accent-color">
-                                <span class="crumb-item">Shipping</span>
+                                <span class="crumb-item">Intake</span>
                                 <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
                         </button>
                         <button color="primary" mat-button (click)="continueCheckout()">
@@ -20,7 +20,7 @@
                         <div></div>
                         <div fxLayout="row" fxLayoutAlign="center" class="mat-headline doo-letter-space">
                                 <span fxFlex fxFlex.lt-md="95">
-                                        Shipping Details
+                                        Intake Form
                                 </span>
                         </div>
 
@@ -46,13 +46,13 @@
                                 <div fxLayout="row">
                                         <mat-icon svgIcon="doo-location" color="accent"></mat-icon>
                                         <div fxLayout="column" fxLayoutGap="5px">
-                                                <div *ngIf="!userAddressInfo" fxLayout="row" fxFlex="100">
+                                                <div *ngIf="!userAddressInfo || !userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
 
                                                         <div class="add-field-placeholder">
                                                                 {{ 'profile.address.noAddressSaved' | translate }}
                                                         </div>
                                                 </div>
-                                                <div *ngIf="userAddressInfo" fxLayout="row" fxFlex="100">
+                                                <div *ngIf="userAddressInfo && userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
                                                         <div class="add-field-placeholder">
                                                                 {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : 
                                                                 userAddressInfo.addressLine2 }}
@@ -64,7 +64,8 @@
                                         </div>
                                 </div>
                         </div>
-                        <div [formGroup]="shippingMethodForm" fxLayout="column" class="doo-shipping-box">
+                        <div *ngIf="shippingOptions" [formGroup]="shippingMethodForm" fxLayout="column"
+                                class="doo-shipping-box">
                                 <span class="mat-subheading-2 doo-letter-space">
                                         Choose delivery method
                                 </span>
@@ -85,15 +86,16 @@
                 </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center">
-                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.lt-md="15px" fxFlex="80"
+                <div fxLayout="column" fxLayout.lt-md="column" fxLayoutGap.lt-md="15px" fxFlex="80"
                         fxLayoutAlign="space-between">
+                        <button color="primary" mat-flat-button class="doo-cta-btn" (click)="continueCheckout()">
+                                CONTINUE TO PAYMENT
+                        </button>
                         <button color="accent" mat-button class="doo-cta-btn" [routerLink]="'/'">
                                 <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
                                 STILL SHOPPING
                         </button>
-                        <button color="primary" mat-flat-button class="doo-cta-btn" (click)="continueCheckout()">
-                                CONTINUE TO PAYMENT
-                        </button>
+
                 </div>
         </div>
         <div></div>

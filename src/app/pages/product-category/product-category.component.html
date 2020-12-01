@@ -5,7 +5,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
     <div fxLayout="row" fxLayoutGap="10px">
-      <button mat-button (click)="filtersOpen = !filtersOpen" class="doo-filters-btn">
+      <button *ngIf = "showFilters" mat-button (click)="filtersOpen = !filtersOpen" class="doo-filters-btn">
         <div fxLayout="column" fxLayoutAlign="center center">
           <span>FILTERS</span>
           <mat-icon svgIcon="doo-filters"></mat-icon>
@@ -50,7 +50,7 @@
   </div>
 </div>
 <mat-drawer-container *ngIf="productsLoaded.length > 0" class="doo-category-products">
-  <mat-drawer [opened]="filtersOpen" [mode]="navMode" position="start"
+  <mat-drawer [opened]="showFilters && filtersOpen" [mode]="navMode" position="start"
     [ngClass]="this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters mobile'">
     <mat-accordion [multi]="true">
       <mat-expansion-panel *ngIf = "productVariants.get('color')" [hideToggle]="true" (opened)="colorPanelOpenState = true"

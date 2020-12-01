@@ -19,6 +19,7 @@ import { ScriptService } from 'src/app/services/util/script.service';
     @Input() userAddressInfo:UserAddressInfo;
     @Input() userInfo: UserPerosnalInfo;
     @Input() isWithName : boolean;
+    @Input() addressRequired : boolean;
     @Output() addressFormEmitter = new EventEmitter<any>();
     @Output() personalFormEmitter = new EventEmitter<any>();
 
@@ -48,13 +49,7 @@ import { ScriptService } from 'src/app/services/util/script.service';
     constructor (private changeDetectorRef: ChangeDetectorRef,
                  private scriptService: ScriptService) {
 
-        this.addressForm = new FormGroup({        
-            addressLine1: new FormControl('' , Validators.required),
-            addressLine2: new FormControl(''),
-            city: new FormControl('' , Validators.required),
-            province: new FormControl('' , Validators.required),
-            postal: new FormControl('' , Validators.required)
-        })
+        this.resetForm();
     }
 
     ngOnInit(): void {
@@ -77,11 +72,11 @@ import { ScriptService } from 'src/app/services/util/script.service';
 
     resetForm() {
         this.addressForm = new FormGroup({        
-            addressLine1: new FormControl('' , Validators.required),
+            addressLine1: new FormControl('' , this.addressRequired? Validators.required: null),
             addressLine2: new FormControl(''),
-            city: new FormControl('' , Validators.required),
-            province: new FormControl('' , Validators.required),
-            postal: new FormControl('' , Validators.required)
+            city: new FormControl('' , this.addressRequired? Validators.required: null),
+            province: new FormControl('' , this.addressRequired? Validators.required: null),
+            postal: new FormControl('' , this.addressRequired? Validators.required: null)
         });
     }
 

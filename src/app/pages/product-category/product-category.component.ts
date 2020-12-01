@@ -33,6 +33,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
   rowsBig: Observable<number>;
   resolution: any;
   navMode: any;
+  showFilters: boolean = false;
   bigScreens = new Array('lg', 'xl', 'md')
   productVariants: Map<string, [any]> = new Map();
   filters = new Array<any>();

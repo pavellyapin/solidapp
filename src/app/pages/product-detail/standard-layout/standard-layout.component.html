@@ -28,7 +28,7 @@
       <div fxLayout="column">
         <div *ngIf="(productDetails.fields.discount && !variantPrice) || variantDiscount" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
             <mat-icon class = "doo-price-tag" svgIcon="doo-tag"></mat-icon>
-            <span class="mat-caption accent-color">Low Price</span>
+            <span class="mat-caption accent-color">Divine Deal</span>
         </div>
         
         <div fxLayout="row" fxLayoutAlign="center">
@@ -64,7 +64,43 @@
           </mat-form-field>
         </div>
       </div>
-      <div fxLayout="column">
+      <div fxLayout="column" fxLayout.lt-md="column" fxLayoutAlign="start" fxLayoutGap="30px"
+        class="mat-body full-width">
+        <div fxLayout="column" fxFlex fxLayoutGap="10px" *ngIf="productVariants.get('duration')">
+          <mat-form-field appearance="outline" class="full-width doo-tight-wrapper" color="primary">
+            <mat-label>Duration</mat-label>
+            <mat-select formControlName="duration" (selectionChange)="getProductPrice($event)" name="duration"
+              placeholder="Duration">
+              <mat-option *ngFor="let variant of productVariants.get('duration')" [value]="variant.name">
+                {{variant.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex fxLayoutGap="10px" *ngIf="productVariants.get('occupancy')">
+          <mat-form-field appearance="outline" class="full-width doo-tight-wrapper" color="primary">
+            <mat-label>Occupancy</mat-label>
+            <mat-select formControlName="occupancy" (selectionChange)="getProductPrice($event)" name="occupancy"
+              placeholder="Occupancy">
+              <mat-option *ngFor="let variant of productVariants.get('occupancy')" [value]="variant.name">
+                {{variant.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex fxLayoutGap="10px" *ngIf="productVariants.get('facilitation')">
+          <mat-form-field appearance="outline" class="full-width doo-tight-wrapper" color="primary">
+            <mat-label>Facilitation</mat-label>
+            <mat-select formControlName="facilitation" (selectionChange)="getProductPrice($event)" name="facilitation"
+              placeholder="Facilitation">
+              <mat-option *ngFor="let variant of productVariants.get('facilitation')" [value]="variant.name">
+                {{variant.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div *ngIf = "false" fxLayout="column">
         <span class="mat-subheading-2" style="margin: 0px" fxLayoutAlign="center">QTY</span>
         <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="30px" class="mat-body full-width">
           <div fxLayout="row" fxLayoutAlign.xs="center" class="mat-caption doo-qty-input">

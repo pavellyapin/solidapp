@@ -17,6 +17,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
 
     settings$: Observable<Entry<any>>;
     SettingsSubscription: Subscription;
+    settings : Entry<any>;
     footerSections : Entry<any>[];
     footerLinks : Entry<any>[];
     subscribeForm: FormGroup;
@@ -36,6 +37,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
       this.SettingsSubscription = this.settings$
       .pipe(
         map(x => {
+          this.settings = x;
           if (x.fields.footer) {
             this.footerSections = x.fields.footer.filter(section => {if (section.sys.contentType.sys.id == 'block') {return section}});
             this.footerLinks = x.fields.footer.filter(section => {if (section.sys.contentType.sys.id == 'cta') {return section}});

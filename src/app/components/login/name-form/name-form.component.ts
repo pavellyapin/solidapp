@@ -20,7 +20,8 @@ export class NameFormComponent implements OnInit , OnDestroy {
     this.userForm = new FormGroup({        
       firstName : new FormControl('' , Validators.required),
       lastName : new FormControl('' , Validators.required),
-      email : new FormControl('' , Validators.required)
+      email : new FormControl('' , Validators.required),
+      phone : new FormControl('' , null)
   })
   }
 
@@ -29,6 +30,7 @@ export class NameFormComponent implements OnInit , OnDestroy {
       this.userForm.controls["firstName"].setValue(this.userInfo.firstName);
       this.userForm.controls["lastName"].setValue(this.userInfo.lastName);
       this.userForm.controls["email"].setValue(this.userInfo.email);
+      this.userForm.controls["phone"].setValue(this.userInfo.phone);
     }
   }
 
@@ -38,6 +40,7 @@ export class NameFormComponent implements OnInit , OnDestroy {
       this.userInfo.firstName = this.userForm.controls["firstName"].value;
       this.userInfo.lastName = this.userForm.controls["lastName"].value;
       this.userInfo.email = this.userForm.controls["email"].value;
+      this.userInfo.email = this.userForm.controls["phone"].value;
       this.personalFormEmitter.emit(this.userInfo);
     }
   }

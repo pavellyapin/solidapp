@@ -304,7 +304,7 @@ export class CartComponent implements OnInit {
     this.ShippingMethodSubscription = this.shippingMethod$
       .pipe(
         map(x => {
-          if (x) {
+          if (x && x.price) {
             this.shippingCost = x.price;
             this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;
             this.cd.detectChanges();
@@ -335,7 +335,7 @@ export class CartComponent implements OnInit {
           name: item.product.fields.title,
           variants: item.variants,
           qty: item.qty,
-          price: item.variantPrice ? (item.variantDiscount ? item.variantDiscount : item.variantPrice) : (item.product.fields.discount ?
+          price: item.variantPrice || item.variantPrice == 0 ? (item.variantDiscount ? item.variantDiscount : item.variantPrice) : (item.product.fields.discount ?
             item.product.fields.discount :
             item.product.fields.price)
         }

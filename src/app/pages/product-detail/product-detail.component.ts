@@ -75,6 +75,9 @@ export class ProductDeatilComponent implements OnInit {
       size: new FormControl(''),
       color: new FormControl(''),
       support: new FormControl(''),
+      duration: new FormControl(''),
+      occupancy : new FormControl(''),
+      facilitation : new FormControl(''),
       qty: new FormControl(1, Validators.required)
     });
 
@@ -194,6 +197,7 @@ export class ProductDeatilComponent implements OnInit {
       this.item.productId = this.productDetails.sys.id;
       this.item.qty = Number(this.cartItemForm.controls["qty"].value);
 
+    
       if (this.cartItemForm.controls["size"].value != '') {
         this.item.variants.size = this.cartItemForm.controls["size"].value;
       }
@@ -203,6 +207,18 @@ export class ProductDeatilComponent implements OnInit {
 
       if (this.cartItemForm.controls["color"].value != '') {
         this.item.variants.color = this.cartItemForm.controls["color"].value;
+      }
+
+      if (this.cartItemForm.controls["duration"].value != '') {
+        this.item.variants.duration = this.cartItemForm.controls["duration"].value;
+      }
+
+      if (this.cartItemForm.controls["occupancy"].value != '') {
+        this.item.variants.occupancy = this.cartItemForm.controls["occupancy"].value;
+      }
+
+      if (this.cartItemForm.controls["facilitation"].value != '') {
+        this.item.variants.facilitation = this.cartItemForm.controls["facilitation"].value;
       }
 
       if (this.variantPrice || this.variantPrice == 0) {

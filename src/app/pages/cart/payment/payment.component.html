@@ -8,7 +8,7 @@
           <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
         </button>
         <button color="primary" mat-button (click)="backToAddress()" class="accent-color">
-          <span class="crumb-item">Shipping</span>
+          <span class="crumb-item">Intake</span>
           <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
         </button>
         <button color="accent" mat-button>
@@ -43,13 +43,13 @@
       <div fxLayout="row">
         <mat-icon svgIcon="doo-location" color="accent"></mat-icon>
         <div fxLayout="column" fxFlex fxLayoutGap="5px">
-          <div *ngIf="!userAddressInfo" fxLayout="row" fxFlex="100">
+          <div *ngIf="!userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
 
             <div class="add-field-placeholder">
               {{ 'profile.address.noAddressSaved' | translate }}
             </div>
           </div>
-          <div *ngIf="userAddressInfo" fxLayout="row" fxFlex="100">
+          <div *ngIf="userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
             <div class="add-field-placeholder doo-bottom-border full-width">
               {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : 
                                               userAddressInfo.addressLine2 }}
@@ -60,10 +60,10 @@
           </div>
         </div>
       </div>
-      <div fxLayout="row">
+      <div *ngIf="shippingMethod" fxLayout="row">
         <mat-icon svgIcon="doo-box" color="accent"></mat-icon>
         <div fxLayout="column" fxLayoutGap="5px">
-          <div *ngIf="shippingMethod" fxLayout="row" fxFlex="100">
+          <div fxLayout="row" fxFlex="100">
             <div class="add-field-placeholder">
               {{shippingMethod.name}}
               <br>
@@ -124,7 +124,7 @@
         fxLayoutAlign="space-between">
         <button color="accent" mat-button class="doo-cta-btn" (click)="backToAddress()">
           <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
-          BACK TO SHIPPING
+          BACK TO INTAKE
         </button>
         <button color="primary" mat-flat-button class="doo-cta-btn" (click)="onSubmit()">
           PLACE ORDER
