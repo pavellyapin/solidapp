@@ -160,7 +160,7 @@ import { ScriptService } from 'src/app/services/util/script.service';
           this.userInfo.lastName = this.nameFormComponent.userForm.controls["lastName"].value;
           this.userInfo.email = this.nameFormComponent.userForm.controls["email"].value;
           this.userInfo.phone = this.nameFormComponent.userForm.controls["phone"].value ? this.nameFormComponent.userForm.controls["phone"].value : 'n/a';
-          this.personalFormEmitter.emit( this.nameFormComponent.userForm.value);
+          this.personalFormEmitter.emit(JSON.parse(JSON.stringify(this.userInfo)));
       }
 
       provinces: SelectValue[] = [

@@ -18,7 +18,6 @@ export class AdminEffects {
           mergeMap(action =>
             this.adminService.getCustomers().pipe(
               map((data: any) => {
-                console.log('data',data);
                 return AdminActions.SuccessLoadCustomersAction({ payload: data });
               }),
               catchError((error: Error) => {
@@ -35,7 +34,6 @@ export class AdminEffects {
         mergeMap(action =>
           this.adminService.getCarts().pipe(
             map((data: any) => {
-              console.log('data',data);
               return AdminActions.SuccessLoadCartsAction({ payload: data });
             }),
             catchError((error: Error) => {

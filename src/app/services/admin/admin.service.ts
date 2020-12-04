@@ -36,17 +36,10 @@ export class AdminService {
 
     getCustomers() : Observable<any>{
         var getCustomers = this.firebaseFunctions.httpsCallable('admin/getCustomers');
-        console.log(getCustomers({}));
         return getCustomers({});
-
-        console.log('this.root',this.root);
-        if (this.root) {
-            return this.http.get(this.root + 'admin/getCustomers');
-        }
     }
 
     getCarts() : Observable<any>{
-        console.log('%%%%%%%%%%%%%%%%%%%%%%')
         var getCarts = this.firebaseFunctions.httpsCallable('admin/getCarts');
         return getCarts({});
     }
