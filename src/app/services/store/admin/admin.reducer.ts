@@ -11,6 +11,10 @@ const reducer = createReducer(
     return { ...state, customers: payload, AdminError: null };
   }),
 
+  on(AdminActions.SuccessLoadCartsAction, (state: AdminState, { payload }) => {
+    return { ...state, carts: payload, AdminError: null };
+  }),
+
   on(AdminActions.SuccessLoadOrdersAction, (state: AdminState, { payload }) => {
     return { ...state, orders: payload, AdminError: null };
   }),

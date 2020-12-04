@@ -1,0 +1,22 @@
+<div fxLayout="column" class="doo-contentful">
+    <div class="full-width" fxLayoutAlign="end">
+        <mat-icon class="doo-pointer" svgIcon="doo-close" (click)="dialogRef.close()"></mat-icon>
+    </div>
+    <span class="mat-headline doo-letter-space doo-bottom-border">
+        Delete {{data.count}} customer?
+    </span>
+    <span class="mat-subheading-1 doo-letter-space doo-bottom-border">
+        Confirm you wish to delete {{data.count}} customer.
+    </span>
+    <div fxLayout="row" fxLayoutAlign="end">
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" fxLayoutGap.lt-md="15px" fxFlex="80"
+                fxLayoutAlign="end">
+                <button color="accent" mat-stroked-button class="doo-cta-btn" (click)="onNoClick()">
+                        CANCEL
+                </button>
+                <button color="primary" mat-flat-button class="doo-cta-btn" [mat-dialog-close]="'delete'" cdkFocusInitial>
+                        DELETE
+                </button>
+        </div>
+</div>
+</div>

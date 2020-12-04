@@ -45,10 +45,15 @@ export class AdminService {
         }
     }
 
+    getCarts() : Observable<any>{
+        console.log('%%%%%%%%%%%%%%%%%%%%%%')
+        var getCarts = this.firebaseFunctions.httpsCallable('admin/getCarts');
+        return getCarts({});
+    }
+
     deleteCustomers(customers : [any]) {
-        if (this.root) {
-            return this.http.post(this.root + 'admin/deleteCustomers',customers);
-        }
+        var deleteCustomers = this.firebaseFunctions.httpsCallable('admin/deleteCustomers');
+        return deleteCustomers(customers);
     }
 
     getCustomerDetails(uid) {

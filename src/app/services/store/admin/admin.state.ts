@@ -1,6 +1,7 @@
 
 export default class AdminState {
   customers?: Array<any>;
+  carts?: Array<any>;
   orders?: Array<any>;
   AdminError: Error;
 }

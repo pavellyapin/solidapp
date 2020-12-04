@@ -43,6 +43,14 @@ export const dashboardRoutes: NavRoute[] = [
       import('../../pages/dashboard-customers/dashboard-customers.module').then(
         m => m.DashboardCustomersModule,
       )
+  },
+  {
+    data: {title: 'Dashboard Carts'},
+    path: 'carts',
+    loadChildren: () =>
+      import('../../pages/dashboard-carts/dashboard-carts.module').then(
+        m => m.DashboardCartsModule,
+      )
   }
 ]
 

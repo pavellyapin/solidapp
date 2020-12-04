@@ -3,6 +3,9 @@ import { createAction, props } from '@ngrx/store';
 export const BeginLoadCustomersAction = createAction('[admin] - Begin LOAD customers');
 export const SuccessLoadCustomersAction = createAction('[admin] - Success LOAD customers',props<{ payload: any }>());
 
+export const BeginLoadCartsAction = createAction('[admin] - Begin LOAD carts');
+export const SuccessLoadCartsAction = createAction('[admin] - Success LOAD carts',props<{ payload: any }>());
+
 export const BeginDeleteCustomersAction = createAction('[admin] - Begin DELETE customers',props<{ payload: any }>());
 export const SuccessDeleteCustomersAction = createAction('[admin] - Success DELETE customers');
 

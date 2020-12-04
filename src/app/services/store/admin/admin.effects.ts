@@ -29,6 +29,23 @@ export class AdminEffects {
         )
       );
 
+      GetCarts$: Observable<Action> = createEffect(() =>
+      this.action$.pipe(
+        ofType(AdminActions.BeginLoadCartsAction),
+        mergeMap(action =>
+          this.adminService.getCarts().pipe(
+            map((data: any) => {
+              console.log('data',data);
+              return AdminActions.SuccessLoadCartsAction({ payload: data });
+            }),
+            catchError((error: Error) => {
+              return of(AdminActions.ErrorAdminAction(error));
+            })
+          )
+        )
+      )
+    );
+
       DeleteCustomers$: Observable<Action> = createEffect(() =>
       this.action$.pipe(
         ofType(AdminActions.BeginDeleteCustomersAction),
