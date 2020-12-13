@@ -1,4 +1,4 @@
-<div *ngIf = "customPageContent" fxLayout="column" fxLayoutGap="50px">
+<div *ngIf = "customPageContent" fxLayout="column">
         <div [ngSwitch]="block.sys.contentType.sys.id" *ngFor = "let block of customPageContent.fields.blocks">
                 <doo-widgets *ngSwitchCase="'widget'" [widget] = "block">
                 </doo-widgets>

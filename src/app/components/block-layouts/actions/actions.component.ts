@@ -19,4 +19,11 @@ export class ActionsComponent implements OnInit {
   ngOnInit() {
   }
 
+  navigate(cta) {
+    if (cta.fields.action) {
+      this.navService.ctaClick(cta.fields.action)
+    } else {
+      this.navService.navigateExternalURL(cta.fields.externalUrl);
+    }
+  }
 }

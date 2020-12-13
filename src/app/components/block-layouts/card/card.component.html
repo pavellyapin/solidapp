@@ -28,7 +28,7 @@
                </div>
                <div fxLayout = "column" fxLayoutAlign = "center center">
                     <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="post-placeholder"
-                         [style.width]="block.fields.textBoxWidth ? block.fields.textBoxWidth : '100%'"
+                         [style.width]="block.fields.textBoxWidth ? block.fields.textBoxWidth + '%' : '100%'"
                          [lazyLoad]="block.fields.media[0].fields.file.url"
                          [alt] = "block.fields.media[0].fields.description"
                          [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"

@@ -7,7 +7,7 @@
         </doo-split-screen-img>
         <doo-card-post [block]="block" *ngSwitchCase="'Card'">
         </doo-card-post>
-        <doo-row-of-two [block]="block" *ngSwitchCase="'Row of 2'">
+        <doo-row-of-two [block]="block" [resolution]="resolution" *ngSwitchCase="'Row of 2'">
         </doo-row-of-two>
         <doo-row-of-three [block]="block" [resolution]="resolution" *ngSwitchCase="'Row of 3'">
         </doo-row-of-three>
