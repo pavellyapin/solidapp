@@ -1,8 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Card } from 'src/app/components/cards/card';
 import { Store, select } from '@ngrx/store';
 import * as CartActions from 'src/app/services/store/cart/cart.action';
-import { FormGroup, FormControl } from '@angular/forms';
 import * as UserActions from 'src/app/services/store/user/user.action';
 import { Observable, Subscription } from 'rxjs';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
@@ -12,6 +10,7 @@ import { AbstractCartCardComponent } from './abstract-cart-card-component';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Router } from '@angular/router';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { CartCard } from './cart-card';
 
 @Component({
   selector: 'doo-cart-card',
@@ -31,11 +30,11 @@ export class CartCardComponent extends AbstractCartCardComponent implements OnIn
               private navService: NavigationService,
               private router: Router,
               private utilService: UtilitiesService) {
-    super(injector.get(Card.metadata.NAME),
-      injector.get(Card.metadata.INDEX),
-      injector.get(Card.metadata.OBJECT),
-      injector.get(Card.metadata.COLS),
-      injector.get(Card.metadata.ROWS));
+    super(injector.get(CartCard.metadata.NAME),
+      injector.get(CartCard.metadata.INDEX),
+      injector.get(CartCard.metadata.OBJECT),
+      injector.get(CartCard.metadata.COLS),
+      injector.get(CartCard.metadata.ROWS));
 
     this.favorites$ = store.pipe(select('user', 'favorites'));
   }

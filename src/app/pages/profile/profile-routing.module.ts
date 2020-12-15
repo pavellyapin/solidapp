@@ -8,8 +8,9 @@ import { OrderDeatilComponent } from './components/orders/order-details/order-de
 import { AccountOverviewComponent } from './components/overview/account.component';
 import { AccountComponent } from './components/account/account.component';
 import { ProfileAddressComponent } from './components/address/address.component';
+import { ProfileGuard } from './profile.guard';
 
-const routes: Routes = [{path: '', component: ProfileComponent,
+const routes: Routes = [{path: '',canActivate : [ProfileGuard], component: ProfileComponent,
                         children:[{path: 'overview', data: {title: 'Profile Overview' , isChild: true} ,component: AccountOverviewComponent},
                                   {path: 'profile', component: AccountComponent},
                                   {path: 'addressinfo', component: ProfileAddressComponent},

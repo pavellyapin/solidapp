@@ -1,4 +1,4 @@
-<div style = "padding-bottom: 10%;" [ngSwitch]="layout">
+<div *ngIf = "siteConfig" style = "padding-bottom: 10%;" [ngSwitch]="siteConfig.fields.theme">
     <doo-product-detail-fashion-layout 
     [productDetails] = "productDetails" 
     [productReviews] = "productReviews"

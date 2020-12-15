@@ -3,7 +3,6 @@ import { map } from 'rxjs/operators';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import SettingsState from 'src/app/services/store/settings/settings.state';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Router, ActivatedRoute } from '@angular/router';
 import AdminState from 'src/app/services/store/admin/admin.state';
@@ -41,7 +40,7 @@ export class DashboardOrdersOverviewComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private store: Store<{ settings : SettingsState , admin : AdminState}> ,
+  constructor(private store: Store<{ admin : AdminState}> ,
               private navSerivce : NavigationService,
               private router: Router,
               private route: ActivatedRoute,
@@ -51,6 +50,7 @@ export class DashboardOrdersOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
+
     if(this.route.snapshot.params["uid"]) {
       this.store.dispatch(AdminActions.
         BeginLoadCustomerOrdersAction({payload : this.route.snapshot.params["uid"]}));

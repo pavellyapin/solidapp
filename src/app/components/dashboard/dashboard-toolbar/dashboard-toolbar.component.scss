@@ -10,7 +10,7 @@
 .doo-dashboard-toolbar {
   mat-toolbar {
     @include mat-elevation(0);
-    background-color: $dark-blue;
+    background-color: white;
     padding: 0% 1% !important;
     //height: 110px;
     position: relative;
@@ -19,13 +19,13 @@
   .doo-menu-items{
     padding: 0% 5% !important;
     position: absolute !important;
-    background-color: $dark-blue;
+    background-color: white;
     top: 0px;
     z-index: 1;
   }
   .doo-menu-actions {
     z-index: 15;
-    background :$dark-blue;
+    background :white;
   }
 }
 

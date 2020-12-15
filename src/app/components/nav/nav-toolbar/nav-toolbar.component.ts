@@ -81,6 +81,7 @@ export class NavToolbarComponent implements OnInit {
 
   public expandMenu(categoryObject:any) {
     if (categoryObject.fields.redirect) {
+      this.onExpandMainMenu(true);
       this.navService.ctaClick(categoryObject.fields.redirect);
       return;
     }
@@ -127,8 +128,8 @@ export class NavToolbarComponent implements OnInit {
     this.toggleMobileSideMenu.emit();
   }
 
-  public onExpandMainMenu() {
-    this.expandMainMenu.emit();
+  public onExpandMainMenu(closed?:boolean) {
+    this.expandMainMenu.emit(closed);
   }
 
   public onLogout() {

@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 
-export class Card {
+export class CartCard {
   static metadata: any = {
     NAME: new InjectionToken<string>('name'),
     INDEX: new InjectionToken<number>('index'),
@@ -44,29 +44,27 @@ export class Card {
   }, readonly component: any) {
   }
 
-  /* Grid column map */
+
   static colsMap = new Map([
-    ['xs', 24],
-    ['sm', 24],
-    ['md', 18],
-    ['lg', 18],
-    ['xl', 18],
+    ['xs', 12],
+    ['sm', 12],
+    ['md', 12],
+    ['lg', 12],
+    ['xl', 12],
   ]);
-  /* Big card column span map */
   static colsMapBig = new Map([
     ['xs', 12],
-    ['sm', 8],
-    ['md', 6],
-    ['lg', 6],
-    ['xl', 6],
+    ['sm', 12],
+    ['md', 12],
+    ['lg', 12],
+    ['xl', 12],
   ]);
-  /* Small card column span map */
   static rowsMapBig = new Map([
-    ['xs', 20],
-    ['sm', 14],
-    ['md', 11],
-    ['lg', 10],
-    ['xl', 10],
+    ['xs', 9],
+    ['sm', 5],
+    ['md', 5],
+    ['lg', 7],
+    ['xl', 7],
   ]);
 
 }

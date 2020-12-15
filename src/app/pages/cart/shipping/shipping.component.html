@@ -77,7 +77,7 @@
                                                 <mat-option *ngFor="let item of shippingOptions"
                                                         class="doo-letter-space" [value]="item.fields.name">
                                                         <span class="doo-option-text">{{item.fields.name}} -
-                                                                {{item.fields.price ? (item.fields.price | pricePipeSimple) : 'FREE'}}</span>
+                                                                {{item.fields.price ? (item.fields.price | pricePipe : true) : 'FREE'}}</span>
                                                 </mat-option>
                                         </mat-select>
                                 </mat-form-field>

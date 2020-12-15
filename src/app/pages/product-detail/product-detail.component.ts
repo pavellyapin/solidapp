@@ -29,6 +29,7 @@ export class ProductDeatilComponent implements OnInit {
   ProductReviewsSubscription: Subscription;
   PagesSubscription: Subscription;
   UserSubscription: Subscription;
+  ResolutionSubscription: Subscription;
   SettingsSubscription: Subscription;
   CartIdSubscription: Subscription;
   CartItemsSubscription: Subscription;
@@ -41,13 +42,13 @@ export class ProductDeatilComponent implements OnInit {
   user$: Observable<UserState>;
   userId: any;
 
-  layout: string = 'standard';
   product$: Observable<Entry<any>>;
   item: any;
 
   pages$: Observable<Entry<any>[]>;
   productReviews$: Observable<any[]>;
   resolution$: Observable<string>;
+  siteConfig$: Observable<Entry<any>>;
   productDetails: Entry<any>;
   productReviews: any[];
   pageLayout: Entry<any>;
@@ -59,6 +60,7 @@ export class ProductDeatilComponent implements OnInit {
   variantDiscount: any;
   displayedMediaIndex: number = 0;
   resolution: any;
+  siteConfig: any;
 
 
   constructor(private navService: NavigationService,
@@ -90,6 +92,8 @@ export class ProductDeatilComponent implements OnInit {
     this.cart$ = store.pipe(select('cart'));
 
     this.resolution$ = store.pipe(select('settings', 'resolution'));
+
+    this.siteConfig$ = store.pipe(select('settings', 'siteConfig'));
   }
 
   ngOnInit() {
@@ -163,14 +167,23 @@ export class ProductDeatilComponent implements OnInit {
       )
       .subscribe();
 
-    this.SettingsSubscription = this.resolution$
+    this.ResolutionSubscription = this.resolution$
       .pipe(
         map(x => {
           this.resolution = x;
         })
       )
       .subscribe();
+
+      this.SettingsSubscription = this.siteConfig$
+      .pipe(
+        map(x => {
+          this.siteConfig = x;
+        })
+      )
+      .subscribe();
   }
+      
 
   ngAfterViewInit() {
     this.navService.finishLoading();
@@ -311,6 +324,7 @@ export class ProductDeatilComponent implements OnInit {
     this.ProductReviewsSubscription.unsubscribe();
     this.UserSubscription.unsubscribe();
     this.PagesSubscription.unsubscribe();
+    this.ResolutionSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
     this.CartItemsSubscription.unsubscribe();
   }

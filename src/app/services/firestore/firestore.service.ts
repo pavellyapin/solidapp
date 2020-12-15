@@ -30,6 +30,12 @@ export class FirestoreService {
                         .snapshotChanges();
     }
 
+    getUserPermissions() {
+        return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
+                        .doc("permissions")
+                        .snapshotChanges();
+    }
+
     getUserSiteInfo() {
         return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
                         .doc("site")

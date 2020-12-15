@@ -6,7 +6,6 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import * as UserActions from './user.action';
 import * as CartActions from '../cart/cart.action';
 import { AuthService } from '../../auth/auth.service';
-import User from './user.model';
 import { FirestoreService } from '../../firestore/firestore.service';
 
 @Injectable()
@@ -48,6 +47,22 @@ export class UserEffects {
   )
 );
 
+GetUserPermissions$: Observable<Action> = createEffect(() =>
+this.action$.pipe(
+  ofType(UserActions.BeginGetUserPermissionsAction),
+  switchMap(action =>
+    this.firestoreService.getUserPermissions().pipe(
+      map((data: any) => {
+        return UserActions.SuccessGetUserPermissionsAction({ payload: data.payload.data()});
+      }),
+      catchError((error: Error) => {
+        return of(UserActions.ErrorUserAction(error));
+      })
+    )
+  )
+)
+);
+
   GetUserAddressInfo$: Observable<Action> = createEffect(() =>
   this.action$.pipe(
     ofType(UserActions.BeginGetUserAddressInfoAction),
@@ -71,6 +86,7 @@ export class UserEffects {
       this.authService.doLogin(action.payload.email,action.payload.password).pipe(
         switchMap((x) => [CartActions.BeginResetCartIdAction(),
                           UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginGetUserPermissionsAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
         ),
@@ -105,6 +121,7 @@ this.action$.pipe(
       switchMap((x) => 
        [CartActions.BeginResetCartIdAction(),
         UserActions.BeginGetUserInfoAction(),
+        UserActions.BeginGetUserPermissionsAction(),
         UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
         UserActions.BeginGetUserAddressInfoAction()]
       ),
@@ -123,7 +140,7 @@ this.action$.pipe(
       this.authService.doLoginWithGoogle().pipe(
         switchMap((x) => [CartActions.BeginResetCartIdAction(),
                           UserActions.BeginGetUserInfoAction(),
-                          UserActions.BeginGetSiteInfoAction(),
+                          UserActions.BeginGetUserPermissionsAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
         ),
@@ -142,6 +159,7 @@ this.action$.pipe(
       this.authService.doLoginWithFacebook().pipe(
         switchMap((x) => [CartActions.BeginResetCartIdAction(),
                           UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginGetUserPermissionsAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
         ),
@@ -161,6 +179,7 @@ this.action$.pipe(
       this.authService.doRegister(action.payload.email,action.payload.password).pipe(
         switchMap((x) => [CartActions.BeginResetCartIdAction(),
                           UserActions.BeginGetUserInfoAction(),
+                          UserActions.BeginGetUserPermissionsAction(),
                           UserActions.BeginSetUserIDAction({ payload: x.user.uid}),
                           UserActions.BeginGetUserAddressInfoAction()]
 ),

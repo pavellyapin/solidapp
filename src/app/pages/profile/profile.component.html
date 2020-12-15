@@ -35,6 +35,11 @@
             Orders
           </span>
         </button>
+        <button *ngIf = "permissions && permissions.enableStore" mat-button (click)="navigateToApp('store')">
+          <span class="mat-subheading-1">
+            Store
+          </span>
+        </button>
       </div>
 
       <button mat-button (click)="logout()">

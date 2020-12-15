@@ -2,7 +2,7 @@
 
 <app-nav-toolbar fxLayout = "column"
                  (logout)="logout()"
-                 (expandMainMenu)="expandMainMenu()"
+                 (expandMainMenu)="expandMainMenu($event)"
                  (expandCartNav) = "expandCartNav()"
                  (toggleMobileSideMenu) = "toggleMobileSideMenu()"
                  (startSearchProducts) = "startSearchProducts($event)"
@@ -30,8 +30,8 @@
                   (goToURL) = "goToFromMobileNav($event)">
                   </doo-mobile-side-nav>
     </mat-drawer>
-    <mat-drawer [opened]="isOpen" 
-                 (closedStart)="isOpen = false"
+    <mat-drawer [opened]="isCartOpen" 
+                 (closedStart)="isCartOpen = false"
                  mode="over"
                  autoFocus = "false"
                  [ngClass] = "utilService.bigScreens.includes(this.resolution) ? 'doo-cart-side-nav' : 'doo-mobile-cart-side-nav'" 

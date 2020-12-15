@@ -4,6 +4,10 @@ import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Entry } from "contentful";
 import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Store, select } from '@ngrx/store';
+import SettingsState from 'src/app/services/store/settings/settings.state';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Pipe({
   name: 'imagePipe'
@@ -36,25 +40,40 @@ export class RichTextPipe {
   name: 'pricePipe'
 })
 export class PricePipe {
-  transform(price: any): any {
-    if (price) {
-      return '<span class = "currency-label"> GBP£ </span>' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  settings$: Observable<Entry<any>>;
+  SettingsSubscription: Subscription;
+  siteConfig: Entry<any>;
+  constructor(store: Store<{ settings: SettingsState }>) {
+    this.settings$ = store.pipe(select('settings', 'siteConfig'));
+
+    this.SettingsSubscription = this.settings$
+      .pipe(
+        map(x => {
+          this.siteConfig = x;
+        }
+        )).subscribe();
+  }
+
+  transform(price: any, isSimple?: boolean): any {
+    if (price && this.siteConfig && this.siteConfig.fields.currancy == "Canadian Dollar") {
+      if (isSimple) {
+        return 'CAD$' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      } else {
+        return '<span class = "currency-label"> CAD$ </span>' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    } else if (price && this.siteConfig && this.siteConfig.fields.currancy == "British Pound") {
+      if (isSimple) {
+        return 'GBP£' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      } else {
+        return '<span class = "currency-label"> GBP£ </span>' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
     } else {
       return 'FREE';
     }
   }
-}
 
-@Pipe({
-  name: 'pricePipeSimple'
-})
-export class PricePipeSimple {
-  transform(price: any): any {
-    if (price) {
-      return 'GBP£' + parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    } else {
-      return 'FREE';
-    }
+  ngOnDestroy(): void {
+    this.SettingsSubscription.unsubscribe();
   }
 }
 

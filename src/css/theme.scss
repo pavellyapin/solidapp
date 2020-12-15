@@ -1,12 +1,12 @@
 @import "./styles";
 
-$primary: mat-color($mat-grey, 500);
-$accent: mat-color($mat-blue ,200);
+$primary: mat-color($mat-brown, 100);
+$accent: mat-color($mat-pink ,200);
 
 @include angular-material-theme(mat-light-theme(
-    mat-palette($mat-grey, 500),
-    mat-palette($mat-blue ,200),
-    mat-palette($mat-blue ,200)
+  mat-palette($mat-brown, 100),
+  mat-palette($mat-pink ,200),
+  mat-palette($mat-pink ,300)
 ));
 
 .doo-loading-overlay {

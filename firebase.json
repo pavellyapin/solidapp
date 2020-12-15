@@ -16,23 +16,19 @@
     ],
     "rewrites": [
       {
-        "source": "/the-bed-shop-ldn/us-central1/feed",
+        "source": "/janvier-couture/us-central1/feed",
         "function": "feed"
       },
       {
-        "source": "/the-bed-shop-ldn/us-central1/updateEmail",
+        "source": "/janvier-couture/us-central1/updateEmail",
         "function": "updateEmail"
       },
       {
-        "source": "/the-bed-shop-ldn/us-central1/paypal/pay",
+        "source": "/janvier-couture/us-central1/paypal/**",
         "function": "paypal"
       },
       {
-        "source": "/the-bed-shop-ldn/us-central1/paypal/process",
-        "function": "paypal"
-      },
-      {
-        "source": "/the-bed-shop-ldn/us-central1/admin/**",
+        "source": "/janvier-couture/us-central1/admin/**",
         "function": "admin"
       },
       {

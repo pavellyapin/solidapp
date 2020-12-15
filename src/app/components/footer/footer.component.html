@@ -1,4 +1,4 @@
-<div fxLayout="column" class="doo-footer-cont">
+<div *ngIf = "settings"  fxLayout="column" class="doo-footer-cont">
         <div *ngIf="showAll" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" class="sections-row">
                 <div *ngFor="let section of footerSections" fxLayout="column">
                         <span class="section-header" [innerHTML]="section.fields.content | richTextPipe">
@@ -25,7 +25,7 @@
                                         </button>
                                 </div>
                         </div>
-                        <div *ngIf = "settings" class="social-row" fxLayout="row" fxLayoutGap="15px">
+                        <div class="social-row" fxLayout="row" fxLayoutGap="15px">
                                 <mat-icon *ngIf="settings.fields.twitterLink" class="social-icon doo-pointer"
                                         (click)="navService.navigateExternalURL(settings.fields.twitterLink)"
                                         svgIcon="doo-twitter">

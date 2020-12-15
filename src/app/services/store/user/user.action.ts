@@ -49,6 +49,15 @@ export const SuccessGetSiteInfoAction = createAction(
   props<{ payload: any }>()
 );
 
+export const BeginGetUserPermissionsAction = createAction(
+  '[User] - Begin Get User Permissions'
+);
+
+export const SuccessGetUserPermissionsAction = createAction(
+  '[User] - Success Get User permissions',
+  props<{ payload: any }>()
+);
+
 export const SuccessSetCartUserAction = createAction(
   '[User] - Success Set Cart User',
   props<{ payload: any }>()

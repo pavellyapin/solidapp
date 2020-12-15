@@ -1,5 +1,5 @@
 <div *ngIf = "siteSettings" fxLayout="column" fxLayoutAlign="center" class="doo-primary-toolbar">
-  <div fxLayout="row" fxLayoutAlign="center" class="accent-background full-width" style = "padding: 5px 20px">
+  <div *ngIf = "siteSettings.fields.actions" fxLayout="row" fxLayoutAlign="center" class="accent-background full-width" style = "padding: 5px 20px">
     <doo-actions fxLayout="row" [actions]="siteSettings.fields.actions"></doo-actions>
   </div>
 
@@ -56,8 +56,8 @@
       </div>
     </div>
   </mat-toolbar>
-  <div *ngIf="mainMenuOpen" fxFlex="100" class="doo-expand-menu mat-elevation-z1">
-    <div fxLayout="row" fxFlex="75">
+  <div *ngIf="mainMenuOpen" fxLayout = "row" class="doo-expand-menu mat-elevation-z1">
+    <div fxLayout="row" [fxFlex]="activeCategory.fields.media ? 75: 100">
       <div fxLayout="column" fxLayoutGap="10px" class="sub-category-column" *ngFor="let category of subCategories">
         <span class="mat-subheading-2 accent-color">{{category.fields.title}}</span>
         <div *ngFor="let link of category.links" (click)="navigateCategory(link)">
@@ -66,8 +66,8 @@
         </div>
       </div>
     </div>
-    <div fxFlex="25">
-      <img *ngIf = "activeCategory?.fields.media" style = "height: 100%;" [lazyLoad]="activeCategory?.fields.media.fields.file.url"
+    <div *ngIf = "activeCategory?.fields.media" fxLayout = "column" fxFlex="25">
+      <img class = "full-width" [lazyLoad]="activeCategory?.fields.media.fields.file.url"
         [defaultImage]="'assets/placeholders/placeholder-1.svg'">
     </div>
   </div>

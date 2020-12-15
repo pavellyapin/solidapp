@@ -2,8 +2,8 @@ import {Component , OnInit, Input} from '@angular/core';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MediaObserver } from '@angular/flex-layout';
-import { Card } from 'src/app/components/cards/card';
 import { CartCardComponent } from 'src/app/components/cart-card/cart-card.component';
+import { CartCard } from '../cart-card';
 
 @Component({
   selector: 'doo-cart-items',
@@ -24,13 +24,13 @@ export class CartItemsComponent implements OnInit {
 
   _cartItems : Array<any>;
   actionSubscription: Subscription;
-  cartItemsCards: Card[] = [];
+  cartItemsCards: CartCard[] = [];
   cols: Observable<number>;
   colsBig: Observable<number>;
   rowsBig: Observable<number>;
   previousUrl : string = '';
 
-  cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
+  cards: BehaviorSubject<CartCard[]> = new BehaviorSubject<CartCard[]>([]);
 
       constructor(private mediaObserver: MediaObserver)
         {
@@ -41,44 +41,20 @@ export class CartItemsComponent implements OnInit {
 
   ngOnInit() {
 
-          /* Grid column map */
-          const colsMap = new Map([
-            ['xs', 12],
-            ['sm', 12],
-            ['md', 12],
-            ['lg', 12],
-            ['xl', 12],
-          ]);
-          /* Big card column span map */
-          const colsMapBig = new Map([
-            ['xs', 12],
-            ['sm', 12],
-            ['md', 12],
-            ['lg', 12],
-            ['xl', 12],
-          ]);
-          /* Small card column span map */
-          const rowsMapBig = new Map([
-            ['xs', 9],
-            ['sm', 5],
-            ['md', 5],
-            ['lg', 5],
-            ['xl', 5],
-          ]);
           let startCols: number;
           let startColsBig: number;
           let startRowsBig: number;
-          colsMap.forEach((cols, mqAlias) => {
+          CartCard.colsMap.forEach((cols, mqAlias) => {
             if (this.mediaObserver.isActive(mqAlias)) {
               startCols = cols;
             }
           });
-          colsMapBig.forEach((cols, mqAlias) => {
+          CartCard.colsMapBig.forEach((cols, mqAlias) => {
             if (this.mediaObserver.isActive(mqAlias)) {
               startColsBig = cols;
             }
           });
-          rowsMapBig.forEach((rows, mqAliast) => {
+          CartCard.rowsMapBig.forEach((rows, mqAliast) => {
             if (this.mediaObserver.isActive(mqAliast)) {
               startRowsBig = rows;
             }
@@ -86,25 +62,25 @@ export class CartItemsComponent implements OnInit {
           const media$ = this.mediaObserver.asObservable();
           this.cols = media$.pipe(
             map(change => {
-              return colsMap.get(change[0].mqAlias);
+              return CartCard.colsMap.get(change[0].mqAlias);
             }),
             startWith(startCols),
           );
           this.colsBig = media$.pipe(
             map(change => {
-              return colsMapBig.get(change[0].mqAlias);
+              return CartCard.colsMapBig.get(change[0].mqAlias);
             }),
             startWith(startColsBig),
           );
           this.rowsBig = media$.pipe(
             map(change => {
-              return rowsMapBig.get(change[0].mqAlias);
+              return CartCard.rowsMapBig.get(change[0].mqAlias);
             }),
             startWith(startRowsBig),
           );
   }
 
-  addCard(card: Card): void {
+  addCard(card: CartCard): void {
     this.cards.next(this.cards.getValue().concat(card));
   }
 
@@ -116,26 +92,26 @@ export class CartItemsComponent implements OnInit {
      this._cartItems.forEach((v,index) => {
             if (v) {
               this.addCard(
-                new Card(
+                new CartCard(
                   {
                     name: {
-                      key: Card.metadata.NAME,
+                      key: CartCard.metadata.NAME,
                       value:  v.product.fields.title,
                     },
                     index: {
-                      key: Card.metadata.INDEX,
+                      key: CartCard.metadata.INDEX,
                       value:  index,
                     },
                     object: {
-                      key: Card.metadata.OBJECT,
+                      key: CartCard.metadata.OBJECT,
                       value:  v,
                     },
                     cols: {
-                      key: Card.metadata.COLS,
+                      key: CartCard.metadata.COLS,
                       value: this['colsBig'],
                     },
                     rows: {
-                      key: Card.metadata.ROWS,
+                      key: CartCard.metadata.ROWS,
                       value: this['rowsBig'],
                     }
                   }, CartCardComponent, /* Reference to the component we'd like to spawn */

@@ -6,6 +6,10 @@ export default class User {
   orders? : Array<OrderItem>;
 }
 
+export class UserPermissions {
+  enableStore : boolean;
+}
+
 export class UserPerosnalInfo { 
   firstName : string;
   lastName: string;

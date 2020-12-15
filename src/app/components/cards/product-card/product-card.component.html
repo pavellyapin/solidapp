@@ -1,4 +1,4 @@
-<span [ngSwitch]="layout" >
+<span *ngIf = "siteConfig" [ngSwitch]="siteConfig.fields.theme" >
   <doo-product-card-fashion-layout
   [productReviews] = "productReviews"
   [productVariants] = "productVariants"

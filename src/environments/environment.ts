@@ -4,20 +4,19 @@
 
 export const environment = {
   production: false,
-  functionsOrigin: 'https://the-bed-shop-ldn.web.app',
+  functionsOrigin: 'https://janvier-couture.web.app',
   firebase: {
-    apiKey: "AIzaSyA57XfB07uQk_tJ2lpGrygI9VYeh0MuVJ0",
-    authDomain: "the-bed-shop-ldn.firebaseapp.com",
-    databaseURL: "https://the-bed-shop-ldn.firebaseio.com",
-    projectId: "the-bed-shop-ldn",
-    storageBucket: "the-bed-shop-ldn.appspot.com",
-    messagingSenderId: "76544108314",
-    appId: "1:76544108314:web:ddcc974716bc99589e2ea3",
-    measurementId: "G-F3JGN2FK7S"
+    apiKey: "AIzaSyAT2dns0nziP9ckAqQFTSvsuMDi48SuXVk",
+    authDomain: "janvier-couture.firebaseapp.com",
+    projectId: "janvier-couture",
+    storageBucket: "janvier-couture.appspot.com",
+    messagingSenderId: "793194367907",
+    appId: "1:793194367907:web:9433341c3174bb1e286816",
+    measurementId: "G-MFPGNR65DB"
   },
   contentful: {
-    spaceId: "zu4c0cuo9sxp",
-    token: "lmTVRhl_AHzGArqlWv1b0VMattDfD0x4sjJ_Umw8gjQ"
+    spaceId: "req6f5i83hv4",
+    token: "6fc8c31a7d20e273303177e872ad8e0c0d9c6ffbafe77fe415da613aa401d80e"
   }
 };
 

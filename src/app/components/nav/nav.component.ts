@@ -23,7 +23,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 })
 export class NavComponent implements OnInit {
   
-  isOpen:boolean = false;
+  isCartOpen:boolean = false;
   isMobileMenuOpen:boolean = false;
   isClosing:boolean = false;
   timerId : any;
@@ -113,9 +113,9 @@ export class NavComponent implements OnInit {
   }
 
   public toggleSideNav(autoclose:boolean) {
-      this.isOpen = !this.isOpen;
+      this.isCartOpen = !this.isCartOpen;
       if (autoclose) {
-        this.timerId = setTimeout(() => {this.isOpen = false ; clearTimeout(this.timerId);} , 3000);
+        this.timerId = setTimeout(() => {this.isCartOpen = false ; clearTimeout(this.timerId);} , 3000);
       }
   }
 
@@ -124,9 +124,9 @@ export class NavComponent implements OnInit {
       this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
-  public expandMainMenu() {
-    this.isOpen = false;
-    if (this.mainMenuOpen) {
+  public expandMainMenu(close?:boolean) {
+    this.isCartOpen = false;
+    if (this.mainMenuOpen || close) {
       this.mainMenuOpen = false;
     } else {
       this.mainMenuOpen = true;
@@ -138,7 +138,7 @@ export class NavComponent implements OnInit {
       this.mainMenuOpen = false;
     }
     this.utilService.scrollTop();
-    if (!this.isOpen || !this.cartSideNavComponent.cartItemCount) {
+    if (!this.isCartOpen || !this.cartSideNavComponent.cartItemCount) {
       this.toggleSideNav(false);
     } else {
       this.goToCart();

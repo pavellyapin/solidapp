@@ -66,7 +66,7 @@
 
       <ng-container matColumnDef="date">
         <mat-header-cell fxFlex="15" *matHeaderCellDef>Date</mat-header-cell>
-        <mat-cell fxFlex="15" *matCellDef="let element">{{element.date | timeAgo}}</mat-cell>
+        <mat-cell fxFlex="15" *matCellDef="let element">{{element.date | date : 'longDate'}}</mat-cell>
       </ng-container>
 
     <!-- Name Column -->

@@ -8,7 +8,7 @@ import { ProductReviewsComponent } from '../product-reviews/product-reviews.comp
 @Component({
   selector: 'doo-product-detail-fashion-layout',
   templateUrl: './fashion-layout.component.html',
-  styleUrls: ['./fashion-layout.component.scss']
+  styleUrls: ['./fashion-layout.component.scss','../product-detail.component.scss']
 })
 export class ProductDeatilFashionLayoutComponent implements OnInit {
 

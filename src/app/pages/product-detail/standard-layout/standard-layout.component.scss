@@ -10,15 +10,6 @@
   padding-bottom: 0px !important;
 }
 
-.doo-color-box {
-  min-width:23px;
-  min-height:23px;
-}
-
-.selected-image-full {
-  
-}
-
 .selected-image{
   border : solid 2px;
   border-color: $accent !important;
@@ -72,51 +63,6 @@ mat-radio-button {
   }
 }
 
-.plus-icon {
-  mat-icon {
-    height: 15px;
-    width: 15px;
-    
-    ::ng-deep .cls-1 {
-      stroke: $black;
-    }
-    ::ng-deep .cls-2 {
-      stroke: $black;
-    }
-  }
-
-  padding-left: 10px;
-}
-
-.minus-icon {
-  mat-icon {
-    height: 15px;
-    width: 15px;
-    
-    ::ng-deep .cls-1 {
-      stroke: $black;
-    }
-    ::ng-deep .cls-2 {
-      stroke: $black;
-    }
-  }
-
-  padding-right: 10px;
-  opacity: 0.5;
-}
-
-.qty-input {
-  text-align: center;
-  padding-top: 15px;
-  width:50px;
-  font-weight: bold;
-  ::ng-deep .mat-form-field-infix{
-    background-color: $lighter-grey;
-    border-style: solid;
-    border-width: 1px;
-    border-color: $light-grey;
-  }
-}
 
 .doo-reviews-cont{
   .mat-display-1{
@@ -139,21 +85,4 @@ mat-radio-button {
 
 .doo-standard-product-detail{
   padding-bottom: 50px;
-}
-
-.button-loading {
-  animation-duration: .5s;
-  animation-name: fade;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-@keyframes fade {
-  from {
-    opacity: 0.8;
-  }
-
-  to {
-    opacity: 0.3;
-  }
 }

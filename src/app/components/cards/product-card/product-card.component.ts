@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import SettingsState from 'src/app/services/store/settings/settings.state';
+import { Entry } from 'contentful';
 
 @Component({
   selector: 'doo-product-card',
@@ -20,14 +21,16 @@ import SettingsState from 'src/app/services/store/settings/settings.state';
 })
 export class ProductCardComponent extends AbstractCardComponent implements OnInit {
 
-  layout : string = 'standard';
   favorites$:Observable<FavoriteItem[]>;
   productReviews : any;
   UserSubscription: Subscription;
   FavoritesSubscription: Subscription;
   resolution$: Observable<string>;
+  siteConfig$: Observable<Entry<any>>;
   resolution : any;
+  siteConfig: any;
   SettingsSubscription : Subscription;
+  ResolutionSubscription : Subscription;
   isFavorite:FavoriteItem;
   cardStyle : any;
   productVariants: Map<string,[any]> = new Map();
@@ -47,6 +50,7 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       this.cardStyle = this.injector.get(Card.metadata.STYLE);
       this.favorites$ = store.pipe(select('user','favorites'));
       this.resolution$ = store.pipe(select('settings' , 'resolution'));
+      this.siteConfig$ = store.pipe(select('settings', 'siteConfig'));
   }
 
   ngOnInit() {
@@ -80,10 +84,18 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
     }
 
 
-    this.SettingsSubscription = this.resolution$
+    this.ResolutionSubscription = this.resolution$
     .pipe(
       map(x => {
         this.resolution = x;
+      })
+    )
+    .subscribe();
+
+    this.SettingsSubscription = this.siteConfig$
+    .pipe(
+      map(x => {
+        this.siteConfig = x;
       })
     )
     .subscribe();
@@ -144,7 +156,7 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       this.UserSubscription.unsubscribe();
       this.FavoritesSubscription.unsubscribe();
     }
-    
+    this.ResolutionSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
   }
 

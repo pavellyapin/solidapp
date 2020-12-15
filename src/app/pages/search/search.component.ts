@@ -121,44 +121,21 @@ export class SearchComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
-    /* Grid column map */
-    const colsMap = new Map([
-      ['xs', 24],
-      ['sm', 24],
-      ['md', 18],
-      ['lg', 9],
-      ['xl', 9],
-    ]);
-    /* Big card column span map */
-    const colsMapBig = new Map([
-      ['xs', 12],
-      ['sm', 8],
-      ['md', 6],
-      ['lg', 3],
-      ['xl', 3],
-    ]);
-    /* Small card column span map */
-    const rowsMapBig = new Map([
-      ['xs', 17],
-      ['sm', 10],
-      ['md', 7],
-      ['lg', 3],
-      ['xl', 3],
-    ]);
+    
     let startCols: number;
     let startColsBig: number;
     let startRowsBig: number;
-    colsMap.forEach((cols, mqAlias) => {
+    Card.colsMap.forEach((cols, mqAlias) => {
       if (this.mediaObserver.isActive(mqAlias)) {
         startCols = cols;
       }
     });
-    colsMapBig.forEach((cols, mqAlias) => {
+    Card.colsMapBig.forEach((cols, mqAlias) => {
       if (this.mediaObserver.isActive(mqAlias)) {
         startColsBig = cols;
       }
     });
-    rowsMapBig.forEach((rows, mqAliast) => {
+    Card.rowsMapBig.forEach((rows, mqAliast) => {
       if (this.mediaObserver.isActive(mqAliast)) {
         startRowsBig = rows;
       }
@@ -166,19 +143,19 @@ export class SearchComponent implements OnInit, OnDestroy {
     const media$ = this.mediaObserver.asObservable();
     this.cols = media$.pipe(
       map(change => {
-        return colsMap.get(change[0].mqAlias);
+        return Card.colsMap.get(change[0].mqAlias);
       }),
       startWith(startCols),
     );
     this.colsBig = media$.pipe(
       map(change => {
-        return colsMapBig.get(change[0].mqAlias);
+        return Card.colsMapBig.get(change[0].mqAlias);
       }),
       startWith(startColsBig),
     );
     this.rowsBig = media$.pipe(
       map(change => {
-        return rowsMapBig.get(change[0].mqAlias);
+        return Card.rowsMapBig.get(change[0].mqAlias);
       }),
       startWith(startRowsBig),
     );

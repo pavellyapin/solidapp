@@ -63,7 +63,7 @@
     <div fxLayout="row" class="mat-title doo-bottom-border">Timeline</div>
 
     <div fxLayout="column" class="timeline" fxLayoutGap="25px">
-      <div *ngFor="let date of activeDates" class="doo-bottom-border" fxLayout="column"
+      <div *ngFor="let date of activeDates | keyvalue: keyDescOrder" class="doo-bottom-border" fxLayout="column"
         fxLayoutGap="35px">
         <span class="mat-subheading-1 primary-color"
           style="text-transform: uppercase">{{date.value[0].date | date : 'longDate'}}</span>
