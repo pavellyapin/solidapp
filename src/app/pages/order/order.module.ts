@@ -14,6 +14,8 @@ import { PipesModule } from 'src/app/components/pipes/pipes.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
 import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
+import { CartCardsModule } from 'src/app/components/cart-card/cards.module';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [CheckoutSuccessComponent],
@@ -24,13 +26,15 @@ import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
     MatCardModule,
     MatIconModule,
     MatInputModule,
+    MatDividerModule,
     MatButtonModule,
     FlexLayoutModule,
     FormsModule,
     TranslateModule,
     LazyLoadImageModule,
     BlockLayoutsModule,
-    WidgetsModule
+    WidgetsModule,
+    CartCardsModule
   ],
 })
 export class OrderModule {

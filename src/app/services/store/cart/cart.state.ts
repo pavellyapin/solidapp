@@ -4,6 +4,7 @@ import { UserAddressInfo } from '../user/user.model';
 
 export default class CartState {
   cartId?: string;
+  isGuestFlow? : boolean;
   items: Array<CartItem>;
   total? : number;
   addressInfo? : UserAddressInfo;

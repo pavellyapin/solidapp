@@ -30,7 +30,7 @@ export let jQuery = (typeof window !== "undefined") ? window['$'] : null;
       LazyLoadImageModule,
       FlexLayoutModule,
     ],
-    providers :[{provide: JQ_TOKEN , useValue:jQuery}],
+    providers :[],
     exports : [ReviewStarsComponent,ProductCarouselComponent,ProductCardsSpawnerComponent]
   })
   export class CardsModule {

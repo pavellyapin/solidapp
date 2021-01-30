@@ -17,6 +17,16 @@
           stroke: $primary;
         }
       }
+
+      input {
+        letter-spacing: 2px;
+        font-size: 18px;
+      }
+    
+      mat-label {
+        font-size: 16px;
+        letter-spacing: 2px;
+      }
 }
 
 ::ng-deep .pac-logo:after {

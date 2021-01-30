@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
@@ -23,8 +23,10 @@ export class CheckoutSuccessComponent {
   siteSettings: Entry<any>;
   successPageContent : Entry<any>;
   cart: any;
+  cartItems: Array<any>;
 
   constructor(private firestore: FirestoreService,
+    private changeDetectorRef: ChangeDetectorRef,
     store: Store<{ settings : SettingsState}>,
     private navService: NavigationService,
     public route: ActivatedRoute,
@@ -45,14 +47,17 @@ export class CheckoutSuccessComponent {
             return page;
           }
         }).pop();
+        this.changeDetectorRef.detectChanges();
       })
     )
     .subscribe();
 
     this.cartSubscription = this.firestore.getCartData(this.route.snapshot.params["order"]).pipe(
       map((data) => {
-        this.navService.finishLoading();
         this.cart = data.data();
+        this.cartItems = this.cart.cart.cart
+        this.navService.finishLoading();
+        
       })
     ).subscribe();
   }

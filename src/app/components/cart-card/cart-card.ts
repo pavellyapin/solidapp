@@ -46,25 +46,25 @@ export class CartCard {
 
 
   static colsMap = new Map([
-    ['xs', 12],
-    ['sm', 12],
-    ['md', 12],
-    ['lg', 12],
-    ['xl', 12],
+    ['xs', 24],
+    ['sm', 24],
+    ['md', 24],
+    ['lg', 24],
+    ['xl', 24],
   ]);
   static colsMapBig = new Map([
-    ['xs', 12],
-    ['sm', 12],
-    ['md', 12],
-    ['lg', 12],
-    ['xl', 12],
+    ['xs', 24],
+    ['sm', 24],
+    ['md', 24],
+    ['lg', 24],
+    ['xl', 24],
   ]);
   static rowsMapBig = new Map([
-    ['xs', 9],
-    ['sm', 5],
-    ['md', 5],
-    ['lg', 7],
-    ['xl', 7],
+    ['xs', 18],
+    ['sm', 14],
+    ['md', 10],
+    ['lg', 9],
+    ['xl', 9],
   ]);
 
 }

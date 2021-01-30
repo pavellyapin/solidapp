@@ -5,6 +5,7 @@ import {NavComponent} from './components/nav/nav.component';
 import {CustomRouteReuseStrategy} from './services/navigation/nav-reuse-strategy';
 import {NavGuard} from './services/navigation/nav.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardGuard } from './components/dashboard/dashboard.guard';
 
 const routes: Routes = [
 
@@ -18,7 +19,7 @@ const routes: Routes = [
     path: dashboardNavPath,
     component: DashboardComponent,
     children: dashboardRoutes,
-    canActivateChild: [NavGuard],
+    canActivate: [DashboardGuard],
   },
   {
     data: {title: 'Cart' , isChild: true},

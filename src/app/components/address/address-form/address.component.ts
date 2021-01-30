@@ -59,6 +59,7 @@ import { ScriptService } from 'src/app/services/util/script.service';
         });
 
         if (this.userAddressInfo) {
+            this.addManually = true;
             this.addressForm.controls["addressLine1"].setValue(this.userAddressInfo.addressLine1);
             this.addressForm.controls["addressLine2"].setValue(this.userAddressInfo.addressLine2);
             this.addressForm.controls["city"].setValue(this.userAddressInfo.city);

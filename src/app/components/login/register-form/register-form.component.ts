@@ -5,36 +5,38 @@ import * as UserActions from 'src/app/services/store/user/user.action';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-;
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'doo-register-form',
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.scss'],
 })
-export class RegisterFormComponent implements OnInit , OnDestroy{
+export class RegisterFormComponent implements OnInit, OnDestroy {
 
   errorMessage: string;
   registerForm: FormGroup;
-  pwStrong : boolean = false;
-  showInfo : boolean = false;
-  errorSubscription :Subscription;
+  pwStrong: boolean = false;
+  showInfo: boolean = false;
+  errorSubscription: Subscription;
+  enableGoogleLogin = environment.enableGoogleLogin;
+  enableFacebookLogin = environment.enableFacebookLogin;
 
   constructor(private _actions$: Actions,
-              private store: Store<{ user: UserState }>) {
+    private store: Store<{ user: UserState }>) {
 
-                this.registerForm = new FormGroup({   
-                    email: new FormControl('' ,Validators.required),
-                    password: new FormControl('',Validators.required)
-                });
-        
+    this.registerForm = new FormGroup({
+      email: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required)
+    });
+
   }
 
   ngOnInit() {
     this.errorMessage = '';
     this.errorSubscription = this._actions$.pipe(ofType(UserActions.ErrorUserAction)).subscribe((x) => {
       this.errorMessage = x.message;
-    }); 
+    });
   }
 
   facebookLogin() {
@@ -44,7 +46,7 @@ export class RegisterFormComponent implements OnInit , OnDestroy{
   googleLogin() {
     this.store.dispatch(UserActions.BeginGoogleUserLoginAction());
   }
-  
+
 
   public async registerNewUser() {
     if (this.registerForm.valid && this.pwStrong) {
@@ -57,7 +59,7 @@ export class RegisterFormComponent implements OnInit , OnDestroy{
   }
 
   pwStrengthChange($event) {
-    if ($event==100) {
+    if ($event == 100) {
       this.pwStrong = true;
     }
   }

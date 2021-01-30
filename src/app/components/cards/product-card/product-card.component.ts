@@ -134,13 +134,9 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   }
 
   goToProduct() {
-    this.navService.startLoading();
     this.navService.resetStack([]);
     this.utilService.scrollTop();
-    this.router.navigateByUrl('/product', { skipLocationChange: true }).then(() => {
-      this.router.navigateByUrl('product/' + this.object.sys.id);
-  }); 
-    
+    this.router.navigateByUrl('product/' + this.object.sys.id);
   }
 
   favoriteToggle(isFavorite) {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Entry } from 'contentful';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Observable, Subscription } from 'rxjs';
@@ -20,8 +20,11 @@ export class CustomComponent implements OnInit {
   settings$: Observable<Entry<any>[]>;
   SettingsSubscription: Subscription;
 
+  sitePages : Entry<any>[];
+
   constructor(store: Store<{ settings : SettingsState }> ,
               public route: ActivatedRoute, 
+              private router: Router,
               private navService : NavigationService,
               private seoService : SEOService) {
                 
@@ -33,21 +36,30 @@ export class CustomComponent implements OnInit {
     .pipe(
       map(x => {
         if (x) {
-          this.customPageContent = x.filter(page=>{
-            if (page.fields.name == this.route.snapshot.params['page']) {
-              this.seoService.updateTitle(page.fields.title);
-              this.seoService.updateDescription(page.fields.description);
-              this.seoService.updateOgUrl(window.location.href);
-              return page;
-            }
-          }).pop();
+          this.sitePages = x;
+          this.getCustomPage();
         }
       })
     )
     .subscribe();
+
+    this.router.events.subscribe((val) => {
+      if(val instanceof NavigationEnd) {
+        this.getCustomPage();
+      }
+    });
   }
 
-  ngAfterViewInit() {
+  getCustomPage() {
+    this.navService.startLoading();
+    this.customPageContent = this.sitePages.filter(page=>{
+      if (page.fields.name == this.route.snapshot.params['page']) {
+        this.seoService.updateTitle(page.fields.title);
+        this.seoService.updateDescription(page.fields.description);
+        this.seoService.updateOgUrl(window.location.href);
+        return page;
+      }
+    }).pop();
     this.navService.finishLoading();
   }
 

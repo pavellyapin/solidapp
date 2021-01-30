@@ -101,28 +101,22 @@ export class NavigationService {
     this.store.dispatch(SettingsActions.SuccessLoadingAction());
   }
 
-  public navigateExternalURL(url:string) {
+  public navigateExternalURL(url: string) {
     window.open(url, '_blank');
   }
 
   public ctaClick(cta) {
-    this.store.dispatch(SettingsActions.BeginLoadingAction());
+    //this.store.dispatch(SettingsActions.BeginLoadingAction());
     if (cta.sys) {
       switch (cta.sys.contentType.sys.id) {
         case 'category':
-          this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.navRouteService.router.navigateByUrl('cat/' + cta.fields.name)
-          });
+          this.navRouteService.router.navigateByUrl('cat/' + cta.fields.name);
           break;
         case 'page':
-          this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.navRouteService.router.navigateByUrl('page/' + cta.fields.name)
-          });
+          this.navRouteService.router.navigateByUrl('page/' + cta.fields.name);
           break;
         case 'product':
-          this.navRouteService.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.navRouteService.router.navigateByUrl('product/' + cta.sys.id)
-          });
+          this.navRouteService.router.navigateByUrl('product/' + cta.sys.id);
           break;
       }
 

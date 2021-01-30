@@ -21,7 +21,7 @@ export class FashionCartCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    //console.log(this.object);
   }
 
   toggleFavorites(isFavorite) {

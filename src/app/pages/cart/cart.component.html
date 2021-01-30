@@ -1,3 +1,14 @@
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start center" class="doo-bottom-border">
+    <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="row">
+            <button [routerLink]="'/'" mat-button class="doo-nav-toggle-button">
+                <img [src]="siteSettings?.fields.logo.fields.file.url">
+            </button>
+        </div>
+    </div>
+    <cart-flow-header (stepClickedEmitter)="initCartStep($event, true)" [resolution]="resolution"
+        [currentStep]="currentStep" class="full-width"></cart-flow-header>
+</div>
 <mat-sidenav-container>
     <mat-sidenav [opened]="summaryOpen" (closedStart)="summaryOpen = false"
         [mode]="utilService.bigScreens.includes(this.resolution) ? 'side' : 'over'"
@@ -19,7 +30,7 @@
             <div class="cart-items-cont">
                 <doo-cart-items [cartItems]="cartItems"></doo-cart-items>
             </div>
-            <div *ngIf = "false" fxLayout="column" fxLayoutGap="5px" class="promo-form">
+            <div *ngIf="false" fxLayout="column" fxLayoutGap="5px" class="promo-form">
                 <div fxLayout.gt-xs="row" fxLayout.xs="row" fxLayoutAlign="center">
                     <mat-form-field fxFlex.gt-xs="75" color="primary" appearance="outline" class="full-width">
                         <mat-label>PROMO CODE</mat-label>
@@ -42,12 +53,14 @@
                         <span [innerHTML]="shippingCost ? (shippingCost | pricePipe) : 'FREE'">
                         </span>
                     </div>
-                    <div fxLayout="row" *ngIf = "siteSettings.fields.primaryTax" class="mat-caption" fxLayoutAlign="space-between">
+                    <div fxLayout="row" *ngIf="siteSettings.fields.primaryTax" class="mat-caption"
+                        fxLayoutAlign="space-between">
                         <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
                         <span [innerHTML]="primaryTax ? (primaryTax | pricePipe) : 'FREE'">
                         </span>
                     </div>
-                    <div fxLayout="row" *ngIf = "siteSettings.fields.secondaryTax" class="mat-caption" fxLayoutAlign="space-between">
+                    <div fxLayout="row" *ngIf="siteSettings.fields.secondaryTax" class="mat-caption"
+                        fxLayoutAlign="space-between">
                         <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
                         <span [innerHTML]="secondaryTax ? (secondaryTax | pricePipe) : 'FREE'">
                         </span>
@@ -65,18 +78,18 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <div fxLayout="column">
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between" class="doo-bottom-border">
-                <div fxLayout="column" fxLayoutGap="10px">
-                    <div></div>
-                    <div fxLayout="row">
-                        <button [routerLink]="'/'" mat-button class="doo-nav-toggle-button">
-                            <img [src]="siteSettings?.fields.logo.fields.file.url">
-                        </button>
+            <div *ngIf="loading" fxLayout="column" style="flex: 1 1 100%;min-height:100vh;position: absolute;"
+                fxLayoutAlign="start center" class="doo-loading-overlay">
+                <div fxLayout="column" fxLayoutGap="20px" class="doo-loading-screen">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <img src="assets/icons/logo.png">
                     </div>
+
+                    <span class="mat-subheading-1 doo-letter-space">Secure Transaction in Progress</span>
                 </div>
             </div>
-            <div *ngIf="!cartItems || !cartItems.length " class="doo-empty-cart" fxLayoutGap="20px" fxLayout="column"
-                fxLayoutAlign="start center" style="flex: 1 1 100%;min-height:100vh;">
+            <div *ngIf="!loading && (!cartItems || !cartItems.length) " class="doo-empty-cart" fxLayoutGap="20px"
+                fxLayout="column" fxLayoutAlign="start center" style="flex: 1 1 100%;min-height:100vh;">
                 <span class="mat-subheading-2">
                     Explore our store
                 </span>
@@ -90,16 +103,6 @@
                 </div>
             </div>
             <div *ngIf="cartItems && cartItems.length" fxLayout="column" style="position: relative">
-                <div *ngIf="loading" fxLayout="column" style="flex: 1 1 100%;min-height:100vh;position: absolute;"
-                    fxLayoutAlign="start center" class="doo-loading-overlay">
-                    <div fxLayout="column" class="doo-loading-screen">
-                            <div fxLayout="row" fxLayoutAlign="center center">
-                                    <img fxFlex="30" src="assets/icons/logo.png">
-                            </div>
-    
-                            <span class = "mat-headline doo-letter-space">Secure Transaction in Progress</span>
-                    </div>
-                </div>
                 <div *ngIf="!loading" fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end end"
                     class="doo-filters-btn">
                     <button mat-button fxLayout="row" (click)="utilService.scrollTop() ; summaryOpen = true;">

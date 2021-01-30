@@ -6,7 +6,7 @@ import CartState from 'src/app/services/store/cart/cart.state';
 import { Card } from 'src/app/components/cards/card';
 import { CartItem } from 'src/app/services/store/cart/cart.model';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import * as CartActions from '../../services/store/cart/cart.action';
 import { Actions, ofType } from '@ngrx/effects';
 import { UtilitiesService } from 'src/app/services/util/util.service';
@@ -17,7 +17,6 @@ import * as UserActions from 'src/app/services/store/user/user.action';
 import UserState from 'src/app/services/store/user/user.state';
 import { UserPerosnalInfo } from 'src/app/services/store/user/user.model';
 import { ImagePipe } from 'src/app/components/pipes/pipes';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { SEOService } from 'src/app/services/seo/seo.service';
 
 @Component({
@@ -33,15 +32,15 @@ export class CartComponent implements OnInit {
   ShippingMethodSubscription: Subscription;
   initOrderSubscription: Subscription;
   OrderSubscription: Subscription;
-  StripeSuccessSubscription: Subscription;
+  ResolutionSubscription: Subscription;
   SettingsSubscription: Subscription;
-  SettingsSubscription2: Subscription;
-  SettingsSubscription3: Subscription;
-  SettingsSubscription4: Subscription;
+  PagesSubscription: Subscription;
+  LoadingSubscription: Subscription;
   UserInfoSubscription: Subscription;
   UserSubscription: Subscription;
   CartStatusSubscription: Subscription;
-
+  RouterSubscription: Subscription;
+  GuestFlowSubscription: Subscription;
   //////////////////////////////////////
   cartId: string;
   cartItems: Array<any>;
@@ -62,14 +61,16 @@ export class CartComponent implements OnInit {
   shippingCost: number = 0;
   grandTotal: Number;
 
+  currentStep: any;
   summaryOpen: boolean = false;
   previousUrl: string = '';
   loading: boolean = true;
+  orderStatus: any;
   resolution: any;
+  resolution$: Observable<any>;
   settings$: Observable<any>;
-  settings2$: Observable<any>;
-  settings3$: Observable<any>;
-  settings4$: Observable<any>;
+  pages$: Observable<any>;
+  loading$: Observable<any>;
   siteSettings: Entry<any>;
 
   constructor(private store: Store<{ cart: CartState, settings: SettingsState, user: UserState }>,
@@ -80,13 +81,12 @@ export class CartComponent implements OnInit {
     private imagePipe: ImagePipe,
     public utilService: UtilitiesService,
     private contentfulService: ContentfulService,
-    private authState: AuthService,
     private seoService: SEOService) {
 
-    this.settings$ = store.pipe(select('settings', 'resolution'));
-    this.settings2$ = store.pipe(select('settings', 'siteConfig'));
-    this.settings3$ = store.pipe(select('settings', 'pages'));
-    this.settings4$ = store.pipe(select('settings', 'loading'));
+    this.resolution$ = store.pipe(select('settings', 'resolution'));
+    this.settings$ = store.pipe(select('settings', 'siteConfig'));
+    this.pages$ = store.pipe(select('settings', 'pages'));
+    this.loading$ = store.pipe(select('settings', 'loading'));
     this.shippingMethod$ = store.pipe(select('cart', 'shippingMethod'));
     this.cartId$ = store.pipe(select('cart', 'cartId'));
     this.user$ = store.pipe(select('user'));
@@ -95,29 +95,21 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit() {
-    //Subscribe to settings state
-    //Listen on loading state for loading screen
-    //Get settings object from contentful to determine shipping options etc
-    this.SettingsSubscription = this.settings$
+    this.RouterSubscription = this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        this.initCartStep();
+      }
+    });
+
+    this.ResolutionSubscription = this.resolution$
       .pipe(
         map(x => {
           this.resolution = x;
-
-          if (this.utilService.bigScreens.includes(this.resolution)) {
-            switch (this.navService.getActivePage().title) {
-              case 'Checkout Shipping':
-                this.summaryOpen = true;
-                break;
-              case 'Checkout Payment':
-                this.summaryOpen = true;
-                break;
-            }
-          }
         })
       )
       .subscribe();
 
-    this.SettingsSubscription2 = this.settings2$
+    this.SettingsSubscription = this.settings$
       .pipe(
         map(x => {
           this.siteSettings = x;
@@ -125,7 +117,7 @@ export class CartComponent implements OnInit {
       )
       .subscribe();
 
-    this.SettingsSubscription3 = this.settings3$
+    this.PagesSubscription = this.pages$
       .pipe(
         map(x => {
           x.filter(page => {
@@ -140,7 +132,7 @@ export class CartComponent implements OnInit {
       )
       .subscribe();
 
-    this.SettingsSubscription4 = this.settings4$
+    this.LoadingSubscription = this.loading$
       .pipe(
         map(x => {
           this.loading = x;
@@ -152,9 +144,6 @@ export class CartComponent implements OnInit {
     this.UserSubscription = this.user$
       .pipe(
         map(x => {
-          if ((this.authState.uid && !this.authState.isAnonymous) && !x.uid) {
-            this.store.dispatch(UserActions.BeginGetRedirectResultAction());
-          }
           this.userInfo = x.personalInfo;
         })
       )
@@ -163,88 +152,69 @@ export class CartComponent implements OnInit {
 
 
     this.initializeCartState();
-    /*
-    //On Set Status
-    */
-    this.CartStatusSubscription = this._actions$.pipe(ofType(
-      CartActions.SuccessSetCartStatusAction)).subscribe(() => {
-        this.initializeOrder(this.cartId);
-        this.router.navigateByUrl('cart/checkout/' + this.cartId + '/shipping');
-      });
+    this.initCartStep();
 
-    /*
-    //Everytime user updates address or personal info we want to initialize the order
-    //We are reusing the same function so container does not sleep
-    */
+    this.CartStatusSubscription = this._actions$.pipe(ofType(
+      CartActions.SuccessSetCartStatusAction,
+    )).subscribe(() => {
+      this.initializeOrder(this.cartId);
+    });
+
+    this.GuestFlowSubscription = this._actions$.pipe(ofType(
+      CartActions.SuccessSetGuestFlowAction,
+    )).subscribe((x) => {
+      if (x.payload) {
+        this.initCartStep('shipping', true);
+      }
+    });
+
     this.UserInfoSubscription = this._actions$.pipe(ofType(
       UserActions.SuccessGetUserInfoAction,
       CartActions.SuccessSetOrderShippingAction)).subscribe(() => {
         this.initializeOrder(this.cartId);
       });
 
-    //After every time init of order is successful we want to navigate to the next checkout step
-    //First step is guest page, or if user logged in first is shipping
     this.initOrderSubscription = this._actions$.pipe(ofType(CartActions.SuccessInitializeOrderAction)).subscribe(() => {
-      switch (this.navService.getActivePage().title) {
-        case 'Checkout Shipping':
-          if (this.utilService.bigScreens.includes(this.resolution)) { this.summaryOpen = true }
-          this.router.navigateByUrl('cart/checkout/' + this.cartId + '/payment');
+      switch (this.currentStep) {
+        case 'guest':
+          this.initCartStep('shipping', true);
           break;
-        case 'Checkout':
-          if (this.utilService.bigScreens.includes(this.resolution)) { this.summaryOpen = true }
-          this.router.navigateByUrl('cart/checkout/' + this.cartId + '/shipping');
-          break;
-        case 'Checkout Success':
-          this.summaryOpen = false;
+        case 'shipping':
+          this.initCartStep('payment', true);
           break;
       }
-      this.utilService.scrollTop();
-
     });
 
-    //This is for LOGGED IN users, we have a function triggered on insert to {payment}
-    //This observable will be updated everytime cart firestore obejct is updated
     this.OrderSubscription = this.order$
       .pipe(
         map(x => {
           if (x && x.status) {
-            if (x.status == "paid") {
-              this.store.dispatch(CartActions.BeginResetCartAction());
+            this.orderStatus = x.status;
+            if (this.orderStatus == "paid") {
               this.router.navigateByUrl('order/success/' + this.cartId);
             } else if (x.status == "failed") {
               this.router.navigateByUrl('cart/checkout/' + this.cartId + '/error');
-            } else if(x.status != "created" && x.status != "retry") {
+            } else if (x.status != "created" && x.status != "retry") {
               this.handleStripeAction(x);
             }
           }
         })
       )
-      .subscribe(); 
-
-    //This is for GUEST users, we are waiting for a function return when stripe is successful
-    this.StripeSuccessSubscription = this._actions$.pipe(ofType(CartActions.SuccessStripePaymentAction)).subscribe(() => {
-      this.store.dispatch(CartActions.BeginResetCartAction());
-      this.router.navigateByUrl('order/success/' + this.cartId);
-    });
+      .subscribe();
   }
 
   async handleStripeAction(x) {
     await stripe.handleCardAction(
       x.status
-    ).then((result)=>{
+    ).then((result) => {
       if (result.error) {
-        this.store.dispatch(CartActions.BeginSetCartStatusAction({ payload: {cartId :this.cartId , status : "failed" } }));
+        this.store.dispatch(CartActions.BeginSetCartStatusAction({ payload: { cartId: this.cartId, status: "failed" } }));
       } else {
-        this.store.dispatch(CartActions.BeginSetStripeTokenAction({ payload: { cartId: this.cartId, source: {paymentIntent: result.paymentIntent.id} } }));
+        this.store.dispatch(CartActions.BeginSetStripeTokenAction({ payload: { cartId: this.cartId, source: { paymentIntent: result.paymentIntent.id } } }));
       }
     });
   }
 
-  /* Connecting to cart state to fetch all current cart item, using a forkJoin we call contentful seperatly for each product
-  // This way price is always real.
-  // We are joining cart item info like variants choses to contentful object
-  // Here we are also calculating  << cartTotal >>
-  */
   initializeCartState() {
     this.CartSubscription = this.cartItems$
       .pipe(
@@ -317,12 +287,45 @@ export class CartComponent implements OnInit {
       .pipe(
         map(x => {
           this.cartId = x;
-          if (this.cartId) {
-            this.store.dispatch(CartActions.BeginGetCartAction({ payload: x }));
-          }
         })
       )
       .subscribe();
+  }
+
+  initCartStep(step?, navigate?) {
+    if (!this.cartId) {
+      return;
+    }
+    if (!step) {
+      this.currentStep = this.navService.getActivePage().title;
+    }
+    this.store.dispatch(CartActions.BeginGetCartAction({ payload: this.cartId }))
+    switch (step ? step : this.currentStep) {
+      case 'guest':
+        this.summaryOpen = false;
+        if (navigate) { this.router.navigateByUrl('cart') }
+        break;
+      case 'shipping':
+        if (!this.utilService.bigScreens.includes(this.resolution)) {
+          this.summaryOpen = false
+        } else {
+          this.summaryOpen = true
+        }
+        if (navigate) { this.router.navigateByUrl('cart/checkout/' + this.cartId + '/shipping') }
+        break;
+      case 'payment':
+        if (!this.utilService.bigScreens.includes(this.resolution)) {
+          this.summaryOpen = false
+        } else {
+          this.summaryOpen = true
+        }
+        if (navigate) { this.router.navigateByUrl('cart/checkout/' + this.cartId + '/payment') }
+        break;
+      case 'Checkout Success':
+        this.summaryOpen = false;
+        break;
+    }
+    this.utilService.scrollTop();
   }
 
   initializeOrder(cartId) {
@@ -352,6 +355,7 @@ export class CartComponent implements OnInit {
             shippingCost: this.shippingCost,
             primaryTax: this.primaryTax,
             secondaryTax: this.secondaryTax,
+            itemCount: this.cartItemCount,
             total: this.cartTotal.toFixed(2),
             grandTotal: this.grandTotal.toFixed(2)
           }
@@ -361,19 +365,23 @@ export class CartComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    if (this.orderStatus == "paid") {
+      this.store.dispatch(CartActions.BeginResetCartAction());
+    }
     this.initOrderSubscription.unsubscribe();
     this.ShippingMethodSubscription.unsubscribe();
     this.OrderSubscription.unsubscribe();
-    this.StripeSuccessSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
-    this.SettingsSubscription2.unsubscribe();
-    this.SettingsSubscription3.unsubscribe();
-    this.SettingsSubscription4.unsubscribe();
+    this.ResolutionSubscription.unsubscribe();
+    this.PagesSubscription.unsubscribe();
+    this.LoadingSubscription.unsubscribe();
     this.CartSubscription.unsubscribe();
     this.CartIdSubscription.unsubscribe();
     this.UserInfoSubscription.unsubscribe();
     this.UserSubscription.unsubscribe();
     this.CartStatusSubscription.unsubscribe();
+    this.RouterSubscription.unsubscribe();
+    this.GuestFlowSubscription.unsubscribe();
   }
 
 }

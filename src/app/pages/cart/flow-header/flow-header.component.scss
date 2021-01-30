@@ -1,0 +1,27 @@
+@import 'src/css/_variables.scss';
+
+.doo-round-num {
+    background: $primary;
+    color: white;
+    padding:  5px 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.doo-cart-steps {
+    //padding : 25px 0px;
+    height: 75px;
+}
+
+.currentStep {
+    color: $accent !important;
+    font-size: 24px;
+    transition: 500ms;
+    transform: translateY(10px);
+    .doo-round-num{
+        background: $accent;
+        transition: 500ms;
+        transform: translateY(10px);
+    }
+}

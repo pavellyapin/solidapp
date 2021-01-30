@@ -24,7 +24,7 @@
     <div class = "doo-cart-items-cont" fxLayout="column">
         <doo-cart-items [cartItems]="cartItems"></doo-cart-items>
     </div>
-    <div *ngIf="cartItemCount > 0" fxLayout="row" fxLayoutAlign="center center">
+    <div *ngIf="cartItemCount > 0" fxLayout="row" fxLayoutAlign="center center" style = "padding-bottom: 20px">
         <button color="primary" class="doo-checkout-btn" mat-flat-button fxFlex="80" (click)="goToCart()">
             {{'cart.checkout' | translate}}
         </button>

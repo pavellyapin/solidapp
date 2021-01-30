@@ -10,7 +10,7 @@ import { GuestFormComponent } from 'src/app/components/login/guest-form/guest-fo
 import { LoginErrorComponent } from 'src/app/components/login/error/error.component';
 
 export const loginRoutes: NavRoute[] = [
-  {data: {title: 'Login' , isChild: true},
+  {data: {title: 'Login' , isChild: false},
    path: '', 
    children : [
       {data: {title: 'Login Page' , isChild: true},

@@ -1,146 +1,96 @@
-<div *ngIf="cart" fxLayout="column" class="doo-order-success full-width" style="padding: 2% 5%;">
-    <div fxLayout="row" class="mat-display-1">
-        {{'cart.successTitle' | translate}}
-    </div>
-    <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px">
-        <div>
+<div fxLayout="row" fxLayoutAlign="center">
+    <div *ngIf="cart" fxLayout="column" fxLayoutGap="20px" class="doo-order-success full-width max-width">
+        <div fxLayout="row" class="mat-display-1">
+            {{'cart.successTitle' | translate}}
         </div>
         <div fxLayout="column" class="doo-order-summary" fxLayoutGap="20px">
-            <div class="mat-subheading-1">
-                Your Order # is <span class="doo-order-number">{{route.snapshot.params["order"]}}</span>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <div class="mat-subheading-1">
+                    {{'cart.orderedOn' | translate}} {{cart.cart.date | date}}
+                </div>
+                <mat-divider [vertical]="true"></mat-divider>
+                <div class="mat-subheading-1">
+                    {{'cart.yourOrderNumber' | translate}} <span
+                        class="doo-order-number">{{route.snapshot.params["order"]}}</span>
+                </div>
             </div>
-
-            <div>
+            <div class="mat-subheading-1">
                 {{'cart.successContent' | translate : {'email':cart.personalInfo.email} }}
             </div>
             <div fxLayout="row" fxLayoutAlign="space-between">
                 <button color="primary" [routerLink]="'/account/orders/' + route.snapshot.params['order']"
-                    mat-flat-button style="padding:10px 30px;" class="doo-checkout-btn">
-                    Track Your Order
+                    mat-flat-button class="doo-checkout-btn">
+                    {{'cart.trackOrderBtn' | translate}}
                 </button>
             </div>
         </div>
-        <div fxLayout="column">
-
-        </div>
-    </div>
-    <span class="mat-headline doo-letter-space">
-        Contact Details
-    </span>
-    <div fxLayout="column" fxLayoutGap="30px">
-        <div fxLayout="row">
-            <div fxLayout="column" fxFlex="50" fxFlex.lt-md class="doo-shipping-box" fxLayoutGap="10px">
-                <div fxLayout="row">
-                    <mat-icon svgIcon="doo-email" color="accent"></mat-icon>
-                    <div fxLayout="column" fxFlex fxLayoutGap="5px">
-
-                        <div class="add-field-placeholder">
-                            {{cart.personalInfo.firstName + ' ' + cart.personalInfo.lastName }}
-                        </div>
-                        <div class="add-field-placeholder doo-bottom-border">
-                            {{cart.personalInfo.email}}
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf = "cart.address.addressLine1" fxLayout="row">
-                    <mat-icon svgIcon="doo-location" color="accent"></mat-icon>
-                    <div fxLayout="column" fxFlex fxLayoutGap="5px">
-                        <div fxLayout="row" fxFlex="100">
-                            <div class="add-field-placeholder doo-bottom-border full-width">
-                                {{cart.address.addressLine2 ? cart.address.addressLine2 + ' - ' : 
-                                cart.address.addressLine2 }}
-                                {{cart.address.addressLine1}}
-                                <br>
-                                {{cart.address.city + ' ' + cart.address.province + ' ' + cart.address.postal}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf = "cart.shipping.name" fxLayout="row">
-                    <mat-icon svgIcon="doo-box" color="accent"></mat-icon>
-                    <div fxLayout="column" fxLayoutGap="5px">
-                        <div fxLayout="row" fxFlex="100">
-                            <div class="add-field-placeholder">
-                                {{cart.shipping.name}}
-                                <br>
-                                <span [innerHTML]="cart.shipping.price ? (cart.shipping.price | pricePipe) : 'FREE'">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <span class="mat-headline doo-letter-space">
-            Ordered Items
+            {{'cart.orderDetails' | translate}}
         </span>
-        <div fxLayout="row" fxLayout.lt-md="column">
-            <div fxLayout="column" fxFlex="70">
-                <div *ngFor="let item of cart.cart.cart" style="margin: 15px;" fxLayoutGap="10px" fxLayout="column">
-                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                        <div fxLayout="row" fxLayoutAlign="center" fxFlex="20">
-                            <div fxLayout="column" fxFlex.xs="55" fxFlex.lg="100">
-                                <img class="full-width doo-pointer" [lazyLoad]="item.thumbnail"
-                                    [defaultImage]="'assets/placeholders/placeholder-1.svg'">
-                            </div>
-                        </div>
-                        <div fxLayout="column" fxFlex="75" fxLayoutGap="10px" class="cart-card-content">
-                            <span class="mat-subheading-2 doo-letter-space">
-                                {{item.name}}
-                            </span>
-                            <span>
-                                <span class="add-field-placeholder">{{'product.qty' | translate}}: </span> {{item.qty}}
-                            </span>
-                            <span *ngIf="item.variants.support">
-                                <span class="add-field-placeholder">{{'product.support' | translate}}:</span> {{item.variants.support}}
-                            </span>
-                            <span *ngIf="item.variants.color">
-                                <span class="add-field-placeholder">{{'product.color' | translate}}:</span> {{item.variants.color}}
-                            </span>
-                            <span *ngIf="item.variants.size">
-                                <span class="add-field-placeholder">{{'product.size' | translate}}: </span> {{item.variants.size}}
-                            </span>
-                            <span class="mat-headline" [innerHTML]="item.price * item.qty | pricePipe">
-                            </span>
-
-                        </div>
-                    </div>
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="center">
+                <div fxLayout="column" fxFlex.gt-md="80" fxFlex>
+                    <doo-cart-items [cartItems]="cartItems"></doo-cart-items>
                 </div>
             </div>
-            <div fxLayout="column" fxFlex="30" class="doo-cart-summary">
-                <div fxLayout="column" class="doo-bottom-border">
-                    <div fxLayout="row" class="mat-subheading-1" fxLayoutAlign="space-between">
-                        <span class="doo-letter-space">{{'cart.subtotal' | translate}}</span>
-                        <span [innerHTML]="cart.cart.total | pricePipe">
+            <span class="mat-headline doo-letter-space">
+                {{'cart.shippingAndPayment' | translate}}
+            </span>
+            <div fxLayout.lt-md="column" fxLayout="row" fxLayoutGap="30px">
+                <doo-shipping-box fxFlex="50" [personalInfo]="cart.personalInfo" [address]="cart.address"
+                    [shipping]="cart.shipping"></doo-shipping-box>
+
+                <div fxLayout="column" fxFlex="50" fxLayoutGap="30px" class="doo-cart-summary">
+                    <div fxLayout="column">
+                        <div class="mat-subheading-2">{{'cart.paymentMethod' | translate}}</div>
+                        <div *ngIf="cart.method == 'card'" fxLayout="row" class="accepted-cards" fxLayoutGap="10px">
+                            <mat-icon svgIcon="doo-visa"></mat-icon>
+                            <mat-icon svgIcon="doo-mastercard"></mat-icon>
+                            <mat-icon svgIcon="doo-amex"></mat-icon>
+                            <mat-icon svgIcon="doo-discover"></mat-icon>
+                            <div class="mat-subheading-1 doo-letter-space">
+                                {{'cart.hashedLast4' | translate : {'last4':cart.last4} }}</div>
+                        </div>
+                        <div *ngIf="cart.method == 'paypal'" fxLayout="row">
+                            <mat-icon fxFlex="25" svgIcon="paypal" inline="true"></mat-icon>
+                        </div>
+                    </div>
+                    <div fxLayout="column" class="doo-bottom-border">
+                        <div fxLayout="row" class="mat-subheading-1" fxLayoutAlign="space-between">
+                            <span class="doo-letter-space">{{'cart.subtotal' | translate}}</span>
+                            <span [innerHTML]="cart.cart.total | pricePipe">
+                            </span>
+                        </div>
+                        <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
+                            <span class="doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
+                            <span [innerHTML]="cart.cart.shippingCost ? (cart.cart.shippingCost | pricePipe) : 'FREE'">
+                            </span>
+                        </div>
+                        <div fxLayout="row" *ngIf="cart.cart.primaryTax" class="mat-caption"
+                            fxLayoutAlign="space-between">
+                            <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
+                            <span [innerHTML]="cart.cart.primaryTax ? (cart.cart.primaryTax | pricePipe) : 'FREE'">
+                            </span>
+                        </div>
+                        <div fxLayout="row" *ngIf="cart.cart.secondaryTax" class="mat-caption"
+                            fxLayoutAlign="space-between">
+                            <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
+                            <span [innerHTML]="cart.cart.secondaryTax ? (cart.cart.secondaryTax | pricePipe) : 'FREE'">
+                            </span>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 15px 0px;">
+                        <span
+                            class="mat-subheading-1 doo-letter-space doo-uppercase">{{'cart.total' | translate}}</span>
+                        <span class="mat-title" [innerHTML]="cart.cart.grandTotal | pricePipe">
                         </span>
                     </div>
-                    <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
-                        <span class="doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
-                        <span [innerHTML]="cart.cart.shippingCost ? (cart.cart.shippingCost | pricePipe) : 'FREE'">
-                        </span>
-                    </div>
-                    <div fxLayout="row" *ngIf="cart.cart.primaryTax" class="mat-caption" fxLayoutAlign="space-between">
-                        <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
-                        <span [innerHTML]="cart.cart.primaryTax ? (cart.cart.primaryTax | pricePipe) : 'FREE'">
-                        </span>
-                    </div>
-                    <div fxLayout="row" *ngIf="cart.cart.secondaryTax" class="mat-caption"
-                        fxLayoutAlign="space-between">
-                        <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
-                        <span [innerHTML]="cart.cart.secondaryTax ? (cart.cart.secondaryTax | pricePipe) : 'FREE'">
-                        </span>
-                    </div>
-                </div>
-                <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 15px 0px;">
-                    <span class="mat-subheading-1 doo-letter-space">TOTAL</span>
-                    <span class="mat-title" [innerHTML]="cart.cart.grandTotal | pricePipe">
-                    </span>
                 </div>
             </div>
         </div>
-        <span></span>
     </div>
 </div>
+
 <div fxLayout="column">
     <div [ngSwitch]="block.sys.contentType?.sys.id" *ngFor="let block of successPageContent?.fields.blocks">
         <doo-widgets *ngSwitchCase="'widget'" [widget]="block">

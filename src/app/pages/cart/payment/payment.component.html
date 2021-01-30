@@ -1,99 +1,41 @@
 <div [formGroup]="paymentMethodForm" fxLayout="row" fxLayoutAlign="center" class="doo-cart-payment">
   <div fxLayout="column" fxFlex="80" fxFlex.lt-md fxLayoutGap="20px">
     <div></div>
-    <div class="doo-cart-steps" fxLayout="row" fxLayoutAlign="center">
-      <div fxLayout="row" fxFlex="80" fxFlex.xs fxLayoutAlign="center" fxLayoutGap="4px">
-        <button color="primary" mat-button [routerLink]="'/login'">
-          <span class="crumb-item">Guest/Login</span>
-          <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
-        </button>
-        <button color="primary" mat-button (click)="backToAddress()" class="accent-color">
-          <span class="crumb-item">Intake</span>
-          <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
-        </button>
-        <button color="accent" mat-button>
-          <span class="crumb-item">Payment</span>
-        </button>
-      </div>
-    </div>
     <div fxLayout="row" fxLayoutAlign="center" class="mat-headline doo-letter-space">
-      <span fxFlex fxFlex.lt-md="95">
-        Payment
-      </span>
     </div>
-    <div fxLayout="column" class="doo-shipping-box" fxLayoutGap="10px">
+    <div class="doo-shipping-box doo-light-card" fxLayout="column">
       <div fxLayout="row" fxLayoutAlign="space-between">
-        <span class="mat-subheading-2 doo-letter-space">Contact Info & Address</span>
-        <div (click)="backToAddress()" class="mat-caption doo-pointer doo-undeline">
+        <span class="mat-subheading-1 doo-letter-space">{{ 'cart.contactAndAddress' | translate }}</span>
+        <div (click)="backToAddress()" class="mat-caption accent-color doo-pointer doo-underline">
           {{ 'profile.buttons.edit' | translate }}
         </div>
       </div>
-      <div fxLayout="row">
-        <mat-icon svgIcon="doo-email" color="accent"></mat-icon>
-        <div fxLayout="column" fxFlex fxLayoutGap="5px">
-
-          <div class="add-field-placeholder">
-            {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
-          </div>
-          <div class="add-field-placeholder doo-bottom-border">
-            {{userInfo.email}}
-          </div>
-        </div>
-      </div>
-      <div fxLayout="row">
-        <mat-icon svgIcon="doo-location" color="accent"></mat-icon>
-        <div fxLayout="column" fxFlex fxLayoutGap="5px">
-          <div *ngIf="!userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
-
-            <div class="add-field-placeholder">
-              {{ 'profile.address.noAddressSaved' | translate }}
-            </div>
-          </div>
-          <div *ngIf="userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
-            <div class="add-field-placeholder doo-bottom-border full-width">
-              {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : 
-                                              userAddressInfo.addressLine2 }}
-              {{userAddressInfo.addressLine1}}
-              <br>
-              {{userAddressInfo.city + ' ' + userAddressInfo.province + ' ' + userAddressInfo.postal}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="shippingMethod" fxLayout="row">
-        <mat-icon svgIcon="doo-box" color="accent"></mat-icon>
-        <div fxLayout="column" fxLayoutGap="5px">
-          <div fxLayout="row" fxFlex="100">
-            <div class="add-field-placeholder">
-              {{shippingMethod.name}}
-              <br>
-              <span [innerHTML]="shippingMethod.price ? (shippingMethod.price | pricePipe) : 'FREE'">
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <doo-shipping-box (click)="backToAddress()" class="doo-pointer" fxFlex="50" [personalInfo]="userInfo"
+        [address]="userAddressInfo" [shipping]="shippingMethod"></doo-shipping-box>
     </div>
+
     <form fxLayout="row" fxLayoutAlign="center" class="doo-checkout-form">
       <div fxLayout="column" fxLayoutGap="30px" fxFlex>
-        <div class="cell example example2" id="example-2">
-          <div class="row">
+        <div class="mat-title doo-letter-space">
+            {{ 'cart.paymentMethods' | translate }}
+        </div>
+        <div fxLayout="column" fxLayoutGap="10px" class="cc-form">
+          <div fxLayout="row">
             <div class="field">
-              <div id="example2-card-number" class="input empty"></div>
-              <label for="example2-card-number" data-tid="elements_examples.form.card_number_label">Card
-                number</label>
+              <div id="card-number" class="input empty"></div>
+              <label for="card-number">{{ 'cart.cardNumber' | translate }}</label>
               <div class="baseline"></div>
             </div>
           </div>
-          <div class="row">
-            <div class="field half-width">
-              <div id="example2-card-expiry" class="input empty"></div>
-              <label for="example2-card-expiry" data-tid="elements_examples.form.card_expiry_label">Expiration</label>
+          <div fxLayout="row">
+            <div fxFlex="50" class="field">
+              <div id="card-expiry" class="input empty"></div>
+              <label for="card-expiry">{{ 'cart.cardExpiry' | translate }}</label>
               <div class="baseline"></div>
             </div>
-            <div class="field half-width">
-              <div id="example2-card-cvc" class="input empty"></div>
-              <label for="example2-card-cvc" data-tid="elements_examples.form.card_cvc_label">CVC</label>
+            <div fxFlex="50" class="field">
+              <div id="card-cvc" class="input empty"></div>
+              <label for="card-cvc">{{ 'cart.cardCVV' | translate }}</label>
               <div class="baseline"></div>
             </div>
           </div>
@@ -104,7 +46,7 @@
             class="doo-letter-space">
             <div fxLayoutAlign="start center" class="doo-payment-caption mat-caption accent-color">
               <mat-icon svgIcon="doo-lock"></mat-icon>
-              Pay with credit or debit card, using our secure payment system.
+              {{ 'cart.payWithCardDisclaimer' | translate }}
             </div>
             <div fxFlex fxLayoutAlign="end">
               <div fxLayout="row" class="accepted-cards" fxLayoutGap="10px">
@@ -124,16 +66,16 @@
         fxLayoutAlign="space-between">
         <button color="accent" mat-button class="doo-cta-btn" (click)="backToAddress()">
           <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
-          BACK TO INTAKE
+          {{ 'cart.paymentBackBtn' | translate }}
         </button>
         <button color="primary" mat-flat-button class="doo-cta-btn" (click)="onSubmit()">
-          PLACE ORDER
+          {{ 'cart.placeOrderBtn' | translate }}
         </button>
       </div>
     </div>
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
       <mat-divider fxFlex></mat-divider>
-      <div class="doo-letter-space primary-color">OR</div>
+      <div class="doo-letter-space primary-color">{{ 'cart.orDivider' | translate }}</div>
       <mat-divider fxFlex></mat-divider>
     </div>
     <div fxLayout="column" fxLayoutGap="30px" class="doo-pay-paypal">
@@ -146,7 +88,7 @@
         <div fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start center" class="doo-letter-space">
           <div fxLayoutAlign="start center" class="doo-payment-caption mat-caption accent-color">
             <mat-icon svgIcon="doo-lock"></mat-icon>
-            Pay with PayPal, you will be redirected to paypal terminal.
+            {{ 'cart.payWithPayPalDisclaimer' | translate }}
           </div>
         </div>
       </div>

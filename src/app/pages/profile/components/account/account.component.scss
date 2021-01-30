@@ -5,10 +5,7 @@
 
 .doo-account-profile {
   padding: 0 5%;
-  .add-field-placeholder {
-    opacity: 0.5;
-    padding-inline-start: 20px;
-  }
+  
   ::ng-deep  .phone-field {
       .mat-form-field-prefix {
         top : -0.3em !important;

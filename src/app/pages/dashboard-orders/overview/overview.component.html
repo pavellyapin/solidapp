@@ -1,16 +1,17 @@
-<span class="mat-display-1">Orders</span>
 
+<div fxLayout="column" fxLayoutGap="20px">
+    <span class="mat-headline">Orders</span>
+</div>
 <div fxLayout="column" class="mat-elevation-z2">
   <div fxFlexLayout="row" class="doo-dashboard-filters">
-    <button mat-button (click)="filterOrder('all')" [class.chosenFilter]="ordersFilter =='all'"
-      class="primary-color">
+    <button mat-button (click)="filterOrder('all')" [class.chosenFilter]="ordersFilter =='all'" class="primary-color">
       All
     </button>
-    <button mat-button (click)="filterOrder('registered')" [class.chosenFilter]="ordersFilter =='registered'"
+    <button mat-button (click)="filterOrder('new')" [class.chosenFilter]="ordersFilter =='new'"
       class="primary-color">
       New
     </button>
-    <button mat-button (click)="filterOrder('guest')" [class.chosenFilter]="ordersFilter =='guest'"
+    <button mat-button (click)="filterOrder('complete')" [class.chosenFilter]="ordersFilter =='complete'"
       class="primary-color">
       Fullfiled
     </button>
@@ -23,12 +24,12 @@
       <input type="text" placeholder="Filter orders" aria-label="Number" (keyup)="applyFilter($event)" matInput>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="start center" class="doo-dashboard-actions">
+  <div *ngIf="false" fxLayout="row" fxLayoutAlign="start center" class="doo-dashboard-actions">
     <mat-checkbox fxFlex="5" (change)="$event ? toggleAll($event) : null" [indeterminate]="selection.hasValue()">
     </mat-checkbox>
     <div *ngIf="selection.selected.length" fxLayout="row" class="mat-elevation-z1 doo-round-corners">
-      <div  class="doo-selected-label accent-color" fxLayoutGap="10px">
-        <span>{{selection.selected.length}}</span> <span>Selected</span> 
+      <div class="doo-selected-label accent-color" fxLayoutGap="10px">
+        <span>{{selection.selected.length}}</span> <span>Selected</span>
       </div>
       <button mat-button [matMenuTriggerFor]="menu" class="doo-actions-btn">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
@@ -55,7 +56,7 @@
     </ng-container>
     <!-- Position Column -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Customer</mat-header-cell>
       <mat-cell *matCellDef="let element">
         <div fxLayout="column">
           <span>{{element.name}}</span>
@@ -64,15 +65,32 @@
       </mat-cell>
     </ng-container>
 
-      <ng-container matColumnDef="date">
-        <mat-header-cell fxFlex="15" *matHeaderCellDef>Date</mat-header-cell>
-        <mat-cell fxFlex="15" *matCellDef="let element">{{element.date | date : 'longDate'}}</mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="date">
+      <mat-header-cell fxFlex="15" *matHeaderCellDef>Date</mat-header-cell>
+      <mat-cell fxFlex="15" *matCellDef="let element">{{element.date | date : 'longDate'}}</mat-cell>
+    </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+      <mat-cell *matCellDef="let element">
+        <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="start start">
+          <span>
+            {{element.id}}
+          </span>
+          <mat-chip-list>
+            <mat-chip color="primary" selected [removable]="false">Paid
+            </mat-chip>
+            <mat-chip *ngIf="element.status=='new'" color="accent" selected [removable]="false">New
+            </mat-chip>
+            <mat-chip *ngIf="element.status=='complete'" color="primary" selected [removable]="false">
+              Complete
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+
+
+      </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
@@ -83,12 +101,13 @@
     </ng-container>
 
     <ng-container matColumnDef="itemCount">
-        <mat-header-cell fxFlex="10" *matHeaderCellDef>Items</mat-header-cell>
-        <mat-cell fxFlex="10" *matCellDef="let element">{{element.itemCount}} item</mat-cell>
-      </ng-container>
+      <mat-header-cell fxFlex="10" *matHeaderCellDef>Items</mat-header-cell>
+      <mat-cell fxFlex="10" *matCellDef="let element">{{element.itemCount}} item</mat-cell>
+    </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row (click)="goToOrder(row.id,row.uid)" class="doo-pointer" *matRowDef="let row; columns: displayedColumns;">
+    <mat-row (click)="goToOrder(row.id,row.uid)" class="doo-pointer" [class.doo-opacity]="row.status!='new'"
+      *matRowDef="let row; columns: displayedColumns;">
     </mat-row>
   </mat-table>
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

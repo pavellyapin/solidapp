@@ -1,15 +1,19 @@
-<div fxLayout = "column">
-        <div class = "full-width" fxLayoutAlign = "end">
-                <mat-icon class = "doo-pointer" svgIcon = "doo-close" (click) = "dialogRef.close()"></mat-icon>
+<div fxLayout="column">
+        <div class="full-width" fxLayoutAlign="end">
+                <mat-icon class="doo-pointer" svgIcon="doo-close" (click)="dialogRef.close()"></mat-icon>
         </div>
-        <span class = "mat-subheading-2 doo-letter-space">
-                {{'profile.address.enterShippingAddress' | translate}}
-        </span>
-        <doo-address-form #addressForm 
-        [isWithName] = "true"
-        [userAddressInfo] = "data.userAddressInfo" 
-        [userInfo] = "data.userInfo"
-        [addressRequired] = "true"
-        (personalFormEmitter)="personalInfoUpdate($event)"
-        (addressFormEmitter)="addressUpdate($event)"></doo-address-form>
+        <div fxLayout="row" fxLayoutAlign="center">
+                <div fxFlex = "60" fxFlex.xs fxLayout="column" fxLayoutGap = "30px">
+                        <span class="mat-headline doo-letter-space">
+                                {{'cart.addressPopupHeader' | translate}}
+                        </span>
+                        <doo-address-form #addressForm [isWithName]="true" [userAddressInfo]="data.userAddressInfo"
+                                [userInfo]="data.userInfo" [addressRequired]="true"
+                                (personalFormEmitter)="personalInfoUpdate($event)"
+                                (addressFormEmitter)="addressUpdate($event)">
+                        </doo-address-form>
+                </div>
+        </div>
+
+
 </div>

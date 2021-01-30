@@ -11,6 +11,8 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { ProductCardComponent } from 'src/app/components/cards/product-card/product-card.component';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import { SEOService } from 'src/app/services/seo/seo.service';
+import { Actions, ofType } from '@ngrx/effects';
+import * as ProductActions from 'src/app/services/store/product/product.action';
 
 @Component({
   selector: 'app-product-category-page',
@@ -22,6 +24,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
   product$: Observable<ProductsState>;
   settings$: Observable<string>;
   ProductSubscription: Subscription;
+  ProductsLoadedSubscription: Subscription;
   SettingsSubscription: Subscription;
   productsLoaded: Entry<any>[];
   productsDisplayed: Entry<any>[];
@@ -49,6 +52,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
 
   constructor(store: Store<{ products: ProductsState, settings: SettingsState }>,
     private mediaObserver: MediaObserver,
+    private _actions$: Actions,
     private navService: NavigationService,
     private utilService: UtilitiesService,
     private seoService: SEOService) {
@@ -57,7 +61,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
       this.productCards = cards;
     });
     this.product$ = store.pipe(select('products'));
-    this.settings$ = store.pipe(select('settings' , 'resolution'));
+    this.settings$ = store.pipe(select('settings', 'resolution'));
 
   }
 
@@ -78,7 +82,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
             this.productsDisplayed = this.utilService.
               shuffleArray(this.productsLoaded.map(products => { return products }));
             this.createCards();
-          } 
+          }
         })
       )
       .subscribe();
@@ -97,6 +101,13 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+
+    this.ProductsLoadedSubscription = this._actions$.pipe(ofType(
+      ProductActions.SuccessLoadProductsAction
+    )).subscribe(() => {
+          this.navService.finishLoading(); 
+    });
+    
     let startCols: number;
     let startColsBig: number;
     let startRowsBig: number;
@@ -151,14 +162,10 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
     this.cards.getValue().splice(0, this.cards.getValue().length);
   }
 
-  ngAfterViewInit() {
-    this.navService.finishLoading();
-  }
-
   createCards(): void {
     if (this.productsDisplayed) {
       this.productsDisplayed.slice(this.cards.value.length, this.cards.value.length + this.productsLoadedInt).forEach((v, index) => {
-        if(v.fields.variants) {
+        if (v.fields.variants) {
           this.sortVariants(v);
         }
         if (this.filters.length == 0 || this.filterProduct(v)) {
@@ -332,6 +339,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
     window.removeEventListener('scroll', this.loadMore.bind(this));
     this.ProductSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
+    this.ProductsLoadedSubscription.unsubscribe();
     this.resetCards();
   }
 

@@ -44,7 +44,7 @@
       </div>
       <div *ngIf = "loading && !['Home','Profile'].includes(this.navService.getActivePage().title)" fxLayout = "row" fxLayoutAlign="center start" class = "doo-loading-overlay">
         <div class="doo-loading-screen" fxLayout = "row" fxLayoutAlign="center start">
-          <img fxFlex = "20" src = "assets/icons/logo.png">
+          <img src = "assets/icons/logo.png">
         </div>
       </div>
     <router-outlet style = "padding-top: 250px;"></router-outlet>

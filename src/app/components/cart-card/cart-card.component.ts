@@ -25,11 +25,11 @@ export class CartCardComponent extends AbstractCartCardComponent implements OnIn
   isFavorite: FavoriteItem;
   loading: boolean = true;
 
-  constructor(private injector: Injector, 
-              private store: Store<{ user: UserState }>,
-              private navService: NavigationService,
-              private router: Router,
-              private utilService: UtilitiesService) {
+  constructor(private injector: Injector,
+    private store: Store<{ user: UserState }>,
+    private navService: NavigationService,
+    private router: Router,
+    private utilService: UtilitiesService) {
     super(injector.get(CartCard.metadata.NAME),
       injector.get(CartCard.metadata.INDEX),
       injector.get(CartCard.metadata.OBJECT),
@@ -58,13 +58,9 @@ export class CartCardComponent extends AbstractCartCardComponent implements OnIn
   }
 
   goToProduct() {
-    this.navService.startLoading();
     this.navService.resetStack([]);
     this.utilService.scrollTop();
-    this.router.navigateByUrl('/product', { skipLocationChange: true }).then(() => {
-      this.router.navigateByUrl('product/' + this.object.product.sys.id);
-    });
-
+    this.router.navigateByUrl('product/' + this.object.product.sys.id);
   }
 
   favoriteToggle(isFavorite) {

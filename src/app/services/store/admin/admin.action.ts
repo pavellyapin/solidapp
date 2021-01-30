@@ -1,5 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
+export const SuccessSetAdminEnvAction = createAction('[admin] - Success set admin env',props<{ payload: any }>());
+
 export const BeginLoadCustomersAction = createAction('[admin] - Begin LOAD customers');
 export const SuccessLoadCustomersAction = createAction('[admin] - Success LOAD customers',props<{ payload: any }>());
 
@@ -18,8 +20,18 @@ export const SuccessLoadCustomerOrdersAction = createAction('[admin] - Success L
 export const BeginLoadOrdersAction = createAction('[admin] - Begin LOAD orders');
 export const SuccessLoadOrdersAction = createAction('[admin] - Success LOAD orders',props<{ payload: any }>());
 
+export const BeginLoadNewOrdersAction = createAction('[admin] - Begin LOAD new orders');
+export const SuccessLoadNewOrdersAction = createAction('[admin] - Success LOAD new orders',props<{ payload: any }>());
+
+
+
 export const BeginLoadOrderDetailsAction = createAction('[admin] - Begin LOAD order details',props<{ payload: any }>());
 export const SuccessLoadOrderDetailsAction = createAction('[admin] - Success LOAD order details',props<{ payload: any }>());
 
+export const BeginFulfillOrderAction = createAction('[admin] - Begin fulfill order',props<{ payload: any }>());
+export const SuccessFulfillOrderAction = createAction('[admin] - Success fulfill order',props<{ payload: any }>());
+
+export const BeginUnfulfillOrderAction = createAction('[admin] - Begin unfulfill order',props<{ payload: any }>());
+export const SuccessUnfulfillOrderAction = createAction('[admin] - Success unfulfill order',props<{ payload: any }>());
 
 export const ErrorAdminAction = createAction('[admin] - Error', props<Error>());

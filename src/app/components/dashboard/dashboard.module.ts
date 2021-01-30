@@ -11,6 +11,7 @@ import { PipesModule } from '../pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
@@ -32,6 +33,7 @@ import { DashboardToolbarComponent } from './dashboard-toolbar/dashboard-toolbar
     MatSidenavModule,
     FlexLayoutModule,
     MatListModule,
+    MatSlideToggleModule,
     MatGridListModule,
     MatToolbarModule,
     MatIconModule,

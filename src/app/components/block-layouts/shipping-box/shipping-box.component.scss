@@ -1,0 +1,20 @@
+@import 'src/css/_variables.scss';
+
+.doo-shipping-box {
+    background: white;
+    padding:20px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    mat-icon {
+    padding-right: 10px;
+    height: 25px;
+    width: 25px;
+    
+    ::ng-deep .cls-1 {
+        stroke: $primary;
+    }
+    ::ng-deep .cls-2 {
+        stroke: $primary;
+    }
+    }
+}

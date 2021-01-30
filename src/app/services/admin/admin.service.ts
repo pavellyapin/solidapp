@@ -1,37 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Store, select } from '@ngrx/store';
-import UserState from '../store/user/user.state';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { Store, select } from '@ngrx/store';
+import AdminState from '../store/admin/admin.state';
+import { DashboardModule } from 'src/app/components/dashboard/dashboard.module';
+import { map } from 'rxjs/operators';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: DashboardModule,
 })
 export class AdminService {
 
-    site$: Observable<any>;
-    SiteSubscription: Subscription;
-    root: any;
+    env: any;
 
     constructor(
-        private http: HttpClient,
-        private store: Store<{ user: UserState }>,
-        private firebaseFunctions: AngularFireFunctions) {
-
-        this.site$ = store.pipe(select('user', 'site'));
-        this.SiteSubscription = this.site$
+        private firebaseFunctions: AngularFireFunctions,
+        private store: Store<{ admin : AdminState}> ) {
+            store.pipe(select('admin','env'))
             .pipe(
-                map(x => {
-                    if (x) {
-                        this.root = x.root;
-                    } else {
-                        this.root = null;
-                    }
-                })
-            )
-            .subscribe();
+              map(x => {
+                this.env = x;
+              })
+            ).subscribe();
     }
 
     getCustomers() : Observable<any>{
@@ -41,7 +31,7 @@ export class AdminService {
 
     getCarts() : Observable<any>{
         var getCarts = this.firebaseFunctions.httpsCallable('admin/getCarts');
-        return getCarts({});
+        return getCarts({"env" : this.env});
     }
 
     deleteCustomers(customers : [any]) {
@@ -50,31 +40,38 @@ export class AdminService {
     }
 
     getCustomerDetails(uid) {
-        if (this.root) {
-            let params = new HttpParams().set('uid', uid);
-            return this.http.get(this.root + 'admin/getCustomer', { params: params });
-        }
-
+        var getCustomer = this.firebaseFunctions.httpsCallable('admin/getCustomer');
+        return getCustomer(uid);
     }
 
     getCustomerOrders(uid) {
-        if (this.root) {
-            let params = new HttpParams().set('uid', uid);
-            return this.http.get(this.root + 'admin/getCustomerOrders',{ params: params });
-        }
+        var getCustomerOrders = this.firebaseFunctions.httpsCallable('admin/getCustomerOrders');
+        return getCustomerOrders(uid);
     }
 
     getOrders() {
-        if (this.root) {
-            return this.http.get(this.root + 'admin/getOrders');
-        }
+        var getOrders = this.firebaseFunctions.httpsCallable('admin/getOrders');
+        return getOrders({"env" : this.env});
+    }
+
+    getNewOrders() {
+        var getNewOrders = this.firebaseFunctions.httpsCallable('admin/getNewOrders');
+        return getNewOrders({"env" : this.env});
     }
 
     getOrderDetails(uid, orderId) {
-        if (this.root) {
-            let params = new HttpParams().set('orderId', orderId).set('uid', uid);
-            return this.http.get(this.root + 'admin/getOrder', { params: params });
-        }
+        var getOrder = this.firebaseFunctions.httpsCallable('admin/getOrder');
+        return getOrder({"uid" : uid , "orderId" : orderId , "env" : this.env});
+    }
+
+    fullFillOrder(uid, orderId) {
+        var fullFillOrder = this.firebaseFunctions.httpsCallable('admin/fulfillOrder');
+        return fullFillOrder({"uid" : uid , "orderId" : orderId, "env" : this.env});
+    }
+
+    unfullFillOrder(uid, orderId) {
+        var unfullFillOrder = this.firebaseFunctions.httpsCallable('admin/unfulfillOrder');
+        return unfullFillOrder({"uid" : uid , "orderId" : orderId, "env" : this.env});
     }
 
 

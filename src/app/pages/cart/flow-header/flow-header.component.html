@@ -1,0 +1,23 @@
+<div fxLayout="row" fxLayoutAlign="center">
+    <div class="doo-cart-steps full-width" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+        <button color="primary" [ngClass]="isCurrentStep('guest') ? 'currentStep' : 'doo-opacity'" mat-button
+            [routerLink]="'/login'">
+            <span class="doo-round-num">1</span>
+            <span class="crumb-item doo-letter-space">{{ 'cart.flowStartHeader' | translate }}</span>
+        </button>
+        <button (click)="stepClicked('shipping')" [ngClass]="isCurrentStep('shipping') ? 'currentStep' : 'doo-opacity'"
+            color="primary" mat-button>
+            <span class="doo-round-num">2</span>
+            <span class="crumb-item doo-letter-space">{{ 'cart.flowSecondHeader' | translate }}</span>
+        </button>
+        <button (click)="stepClicked('payment')" [ngClass]="isCurrentStep('payment') ? 'currentStep' : 'doo-opacity'"
+            color="primary" mat-button>
+            <span class="doo-round-num">3</span>
+            <span class="crumb-item doo-letter-space">{{ 'cart.flowThirdHeader' | translate }}</span>
+        </button>
+        <button [ngClass]="isCurrentStep('confirmation') ? 'currentStep' : 'doo-opacity'" color="primary" mat-button>
+            <span class="doo-round-num">4</span>
+            <span class="crumb-item doo-letter-space">{{ 'cart.flowFinalHeader' | translate }}</span>
+        </button>
+    </div>
+</div>

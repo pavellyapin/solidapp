@@ -4,6 +4,9 @@ import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import { EventEmitter } from '@angular/core';
 import { MyErrorStateMatcher } from 'src/app/components/pipes/pipes';
 import { ProductReviewsComponent } from '../product-reviews/product-reviews.component';
+import { MatButton } from '@angular/material/button';
+import { Actions, ofType } from '@ngrx/effects';
+import * as CartActions from '../../../services/store/cart/cart.action';
 
 @Component({
   selector: 'doo-product-detail-fashion-layout',
@@ -27,8 +30,11 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   @ViewChild('mediaEnd',{static: false}) mediaElementEnd: ElementRef;
   @ViewChild('stickyProductDetail',{static: false}) stickyProductDetail: ElementRef;
   @ViewChild('stickyInnerCont',{static: false}) stickyInnerCont: ElementRef;
-  @ViewChild('reviewsComponent',{static: false}) 
+  @ViewChild('reviewsComponent',{static: false})
   public reviewsComponent: ProductReviewsComponent;
+
+  @ViewChild('addProductBtn', { static: false })
+  public addProductButton: MatButton;
 
   displayedMediaIndex:number = 0;
   zoomed : boolean = false;
@@ -37,12 +43,17 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   
   
 
-      constructor(private renderer: Renderer2)
+      constructor(private renderer: Renderer2,private _actions$: Actions)
         {
           window.addEventListener('scroll', this.checkScroll.bind(this), {passive:true});
         }
 
   ngOnInit() {
+    this._actions$.pipe(ofType(
+      CartActions.SuccessBackGroundInitializeOrderAction)).subscribe(() => {
+        this.renderer.removeClass(this.addProductButton._elementRef.nativeElement, 'button-loading');
+        this.addProductButton.disabled = false;
+      });
   }
 
   ngAfterViewInit() {
@@ -50,7 +61,8 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   }
 
   addProductToCart() {
-    
+    this.renderer.addClass(this.addProductButton._elementRef.nativeElement, 'button-loading');
+    this.addProductButton.disabled = true;
     this.addToCart.emit();
   }
 

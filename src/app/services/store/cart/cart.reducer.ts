@@ -7,6 +7,15 @@ const initialState = initializeState();
 const reducer = createReducer(
   initialState,
 
+  on(CartActions.SuccessSetGuestFlowAction,
+    (state: CartState, {payload}) => {
+      return {
+        ...state,
+        isGuestFlow: payload,
+        UserError: null
+      }
+    }),
+
   on(CartActions.BeginResetCartAction, (state: CartState, {}) => {
     return { ...state, 
             items: [],

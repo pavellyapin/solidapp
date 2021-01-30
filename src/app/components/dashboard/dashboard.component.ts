@@ -7,8 +7,10 @@ import { FormControl } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
-import { Actions } from '@ngrx/effects';
+import { Actions, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
+import * as AdminActions from 'src/app/services/store/admin/admin.action';
+import AdminState from 'src/app/services/store/admin/admin.state';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +20,10 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
 
   settings$: Observable<SettingsState>;
+  admin$: Observable<any>;
   SettingsSubscription: Subscription;
+  AdminSubscription: Subscription;
+  NewOrdersSubscription: Subscription;
   siteSettings: Entry<any>;
 
   resolution: any;
@@ -28,16 +33,20 @@ export class DashboardComponent implements OnInit {
   filteredOptions: Observable<Entry<any>[]>;
 
   isAppsOpen: boolean = true;
+  orderCount: number;
+  interval: any;
+  env:any;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private store: Store<{ settings: SettingsState }>,
+    private store: Store<{ settings: SettingsState , admin: AdminState }>,
     private _actions$: Actions,
     private utilService: UtilitiesService,
     public navService: NavigationService) {
 
     this.settings$ = store.pipe(select('settings'));
+    this.admin$ = store.pipe(select('admin','env'));
   }
 
   ngOnInit(): void {
@@ -52,6 +61,28 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe();
+
+      this.AdminSubscription = this.admin$
+      .pipe(
+        map(x => {
+          this.env = x;
+        })
+      )
+      .subscribe();
+
+      this.NewOrdersSubscription = this._actions$.pipe(ofType(AdminActions.SuccessLoadNewOrdersAction)).subscribe((result) => {
+        this.orderCount = result.payload.length;
+      });
+
+      this.interval = setInterval(() => {
+        //this.store.dispatch(AdminActions.BeginLoadNewOrdersAction());
+      },5000)
+  }
+
+  envChange($event) {
+    this.store.dispatch(AdminActions.SuccessSetAdminEnvAction({payload : $event.checked ? 'prod' : 'test'}));
+    this.router.navigateByUrl('store');
+    this.store.dispatch(AdminActions.BeginLoadNewOrdersAction());
   }
 
   navigateApp(app) {
@@ -68,6 +99,12 @@ export class DashboardComponent implements OnInit {
         break;
     }
 
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
+    this.SettingsSubscription.unsubscribe();
+    this.AdminSubscription.unsubscribe();
   }
 
 }

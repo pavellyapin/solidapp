@@ -1,6 +1,10 @@
 @import 'src/css/_variables.scss';
 
 .doo-order-success{
+    padding: 2% 5%;
+    .mat-subheading-1{
+        margin: 0px;
+    }
     .doo-shipping-box {
         background: white;
         padding:20px;
@@ -32,9 +36,5 @@
 
     .mat-display-1{
         margin : 0 0 14px;
-    }
-
-    .add-field-placeholder {
-        opacity: 0.5;
     }
 }

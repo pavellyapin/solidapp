@@ -9,7 +9,9 @@
         } ,
         "account" : {
           "personalInfo" : "Personal Information" ,
+          "noName" : "Please fill in your name and email",
           "addName" : "Add name",
+          "addEmail" : "Add Email",
           "firstName" : "First name",
           "lastName" : "Last Name",
           "contact" : "Contact",
@@ -18,10 +20,12 @@
           "email" : "Email",
           "password" : "Password",
           "currentPassword" : "Current Password",
-          "newPassword" : "New Password"
+          "newPassword" : "New Password",
+          "subscribeCheck" : "Sign me up for Janvier emails (you can unsubscribe at any time)."
         } ,
         "address" : {
-          "addressSearch" : "Address, postalcode or city",
+          "formHeader" : "Shipping Details",
+          "addressSearch" : "Search address, postalcode or city",
           "addressLine1" : "Street address",
           "addressLine2" : "Detailed address (optional)",
           "addAddressLine2" : "Add another address line",
@@ -55,14 +59,38 @@
       "home" : "Home"
     } ,
     "cart" : {
+      "flowStartHeader" : "Guest/Login",
+      "flowSecondHeader" : "Shipping",
+      "flowThirdHeader" : "Payment",
+      "flowFinalHeader" : "Confirmation",
+      "addressPopupHeader" : "Contact Information",
       "shoppingList" : "Shopping List",
-      "shippingTitle" : "Shipping",
+      "shippingTitle" : "Shipping Details",
+      "deliveryMethodTitle" : "Shipping Method",
+      "contactAndAddress" : "Contact Info & Address",
       "continueShopping" : "Continue Shopping",
       "continueCheckout" : "Continue to checkout",
-      "continuePayment" : "Continue to payment",
+      "continuePayment" : "CONTINUE TO PAYMENT",
+      "stillShopping" : "STILL SHOPPING",
       "backToCart" : "Back to Shopping Cart",
       "backToShipping" : "Back to Shipping",
       "orderSummary" : "Order Summary",
+      "paymentMethod" : "Payment Method",
+      "paymentMethods" : "Payment Methods",
+      "cardNumber" : "Card Number",
+      "cardExpiry" : "Expiration",
+      "cardCVV" : "CVV",
+      "orDivider" : "OR",
+      "payWithCardDisclaimer" : "Pay with credit or debit card, using our secure payment system.",
+      "payWithPayPalDisclaimer" : "Pay with PayPal, you will be redirected to paypal terminal.",
+      "paymentBackBtn" : "BACK TO SHIPPING",
+      "placeOrderBtn" : "PLACE ORDER",
+      "yourOrderNumber" : "Your Order # is",
+      "orderedOn" : "Ordered on",
+      "trackOrderBtn" : "Track Your Order",
+      "orderDetails": "Order Details",
+      "shippingAndPayment" : "Shipping & Payment",
+      "hashedLast4" : "***{{last4}}",
       "addToCart" : "Add to cart",
       "checkout" : "Checkout",
       "subtotal" : "Subtotal",
@@ -73,6 +101,16 @@
       "successContent" : "Thanks for shopping! Your order has been confirmed and an email was sent to {{email}}."
     } ,
 
+    "login" : {
+      "loginHeader" : "Enter Shop",
+      "loginSubHeader" : "Welcome back dear user, happy to catch up",
+      "loginBtn" : "LOG IN",
+      "googleLogin" : "LOGIN WITH GOOGLE",
+      "facebookLogin" : "LOGIN WITH GOOGLE",
+      "forgotPassText" : "Forgot password?",
+      "createAccountText" : "Create account",
+      "guestHeader" : "Continue as Guest"
+    },
     "errors" : {
       "required" : "This field is required."
     }

@@ -3,25 +3,27 @@
                 [siteSettings]="siteSettings" [resolution]="resolution">
         </app-dashboard-toolbar>
         <mat-drawer [opened]="isAppsOpen" autoFocus="false" mode="side" class="doo-dashboard-apps" position="start">
-                <div fxLayout="column" fxLayoutAlign="space-between">
-                        <button (click)="navigateApp('home')" mat-button fxLayoutAlign="start" class="dash-app-link">
+                <div fxLayout="column" fxLayoutGap = "10px" fxLayoutAlign="space-between">
+                        <button (click)="navigateApp('home')" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-home">
-                                </mat-icon> <span>Home</span>
+                                </mat-icon> <span class="dash-app-link">Home</span>
                         </button>
-                        <button (click)="navigateApp('orders')" mat-button fxLayoutAlign="start" class="dash-app-link">
+                        <button (click)="navigateApp('orders')" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-download">
-                                </mat-icon> <span>Orders</span>
+                                </mat-icon> <span class="dash-app-link" [matBadge]="orderCount"
+                                        [matBadgeHidden]="!orderCount" matBadgeOverlap="false">Orders</span>
                         </button>
-                        <button (click)="navigateApp('customers')" mat-button fxLayoutAlign="start"
-                                class="dash-app-link">
+                        <button (click)="navigateApp('customers')" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-profile">
-                                </mat-icon> <span>Customers</span>
+                                </mat-icon> <span class="dash-app-link">Customers</span>
                         </button>
-                        <button (click)="navigateApp('carts')" mat-button fxLayoutAlign="start"
-                                class="dash-app-link">
+                        <button (click)="navigateApp('carts')" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-cart">
-                                </mat-icon> <span>Carts</span>
+                                </mat-icon> <span class="dash-app-link">Carts</span>
                         </button>
+                        <div fxLayout="row" fxLayoutAlign="center">
+                                <mat-slide-toggle (change)="envChange($event)" [checked] = "env=='prod'">{{env=='prod' ? 'Viewing live data' : 'Viewing test data' }}</mat-slide-toggle>
+                        </div>
                 </div>
         </mat-drawer>
         <mat-drawer-container>
@@ -31,7 +33,7 @@
                                         style="flex: 1 1 100%;min-height:100vh;position: absolute;"
                                         fxLayoutAlign="center start" class="doo-loading-overlay">
                                         <div class="doo-loading-screen" fxLayout="row" fxLayoutAlign="center start">
-                                                <img fxFlex="30" src="assets/icons/logo.svg">
+                                                <img src="assets/icons/logo.png">
                                         </div>
                                 </div>
                                 <router-outlet></router-outlet>

@@ -10,6 +10,10 @@ export const BeginUserLoginAction = createAction(
   props<{ payload: any }>()
 );
 
+export const BeginPostLoginAction = createAction(
+  '[User] - Begin Post Login'
+);
+
 export const BeginLoginWithRedirectAction = createAction(
   '[User] - Begin Redirect Login',
   props<{ payload: any }>()
@@ -111,7 +115,7 @@ export const BeginUpdateUserContactInfoAction = createAction(
 
 export const BeginSetUserIDAction = createAction(
   '[User] - Begin Set user ID',
-  props<{ payload: FormGroup }>()
+  props<{ payload: any }>()
 );
 
 

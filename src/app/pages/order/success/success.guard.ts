@@ -21,7 +21,6 @@ export class CheckoutSuccessGuard implements CanActivate  {
 
 
   canActivate(route: ActivatedRouteSnapshot) : Observable<boolean> | boolean {
-    this.store.dispatch(CartActions.BeginResetCartAction());
       return this.afAuth.authState.pipe(map((auth)=> {
         return true
       }));

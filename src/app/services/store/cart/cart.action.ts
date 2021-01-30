@@ -1,5 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 
+export const SuccessSetGuestFlowAction = createAction(
+  '[Cart] - Begin Set Guest Flow',
+  props<{ payload: any }>()
+);
 
 //Reset Actions
 export const BeginResetCartAction = createAction('[Cart] - Reset cart');

@@ -1,36 +1,21 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router} from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import CartState from 'src/app/services/store/cart/cart.state';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { CanActivate } from '@angular/router';
+import { ScriptService } from 'src/app/services/util/script.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CheckoutPaymentGuard implements CanActivate  {
+export class CheckoutPaymentGuard implements CanActivate {
 
-  cartId$: Observable<string>;
-  cartId: string;
-  
-  constructor(private router: Router , 
-              store: Store<{cart: CartState}>,
-              public afAuth: AngularFireAuth) {
-      this.cartId$ = store.select('cart','cartId');
-      this.cartId$.pipe(
-        map(x => {
-          this.cartId = x;
-        }
-      )).subscribe();
+  constructor(
+    public scriptService: ScriptService) {
   }
 
-
-  canActivate() : Observable<boolean> | boolean {
-    if (this.cartId) {
-        return true
-    } else {
-        this.router.navigate(['cart']);
-    }
+  canActivate(): Promise<any> {
+    return this.scriptService.loadScript('stripe').then(data => {
+      return this.scriptService.loadScript('stripeElements').then(data => {
+        return true;
+      });
+     }).catch(error => console.log(error));
   }
 }

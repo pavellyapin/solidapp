@@ -1,77 +1,35 @@
 <div style="flex: 1 1 100%;min-height:100vh;" fxLayout="column" fxLayoutGap="20px">
-        <div class="doo-cart-steps" fxLayout="row" fxLayoutAlign="center">
-                <div fxLayout="row" fxFlex="80" fxFlex.xs fxLayoutAlign="center" fxLayoutGap="4px">
-                        <button color="primary" mat-button [routerLink]="'/login'">
-                                <span class="crumb-item">Guest/Login</span>
-                                <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
-
-                        </button>
-                        <button color="accent" mat-button class="accent-color">
-                                <span class="crumb-item">Intake</span>
-                                <mat-icon class="doo-opacity" svgIcon="doo-arrow-right"></mat-icon>
-                        </button>
-                        <button color="primary" mat-button (click)="continueCheckout()">
-                                <span class="crumb-item">Payment</span>
-                        </button>
-                </div>
-        </div>
         <div fxLayout="row" fxLayoutAlign="center">
                 <div fxLayout="column" fxFlex="80" fxFlex.lt-sm fxLayoutGap="30px" id="doo-shipping-form">
                         <div></div>
-                        <div fxLayout="row" fxLayoutAlign="center" class="mat-headline doo-letter-space">
+                        <div fxLayout="row" fxLayoutAlign="center" class="mat-display-1 doo-letter-space">
                                 <span fxFlex fxFlex.lt-md="95">
-                                        Intake Form
+                                        {{ 'cart.shippingTitle' | translate }}
                                 </span>
                         </div>
-
-                        <div fxLayout="column" class="doo-shipping-box" fxLayoutGap="10px">
+                        <div class="doo-shipping-box doo-light-card" fxLayout="column">
                                 <div fxLayout="row" fxLayoutAlign="space-between">
-                                        <span class="mat-subheading-2 doo-letter-space">Contact Info & Address</span>
-                                        <div (click)="openAddressModal()" class="mat-caption doo-pointer doo-undeline">
+                                        <span class="mat-subheading-1 doo-letter-space">{{ 'cart.contactAndAddress' | translate }}</span>
+                                        <div (click)="openAddressModal()"
+                                                class="mat-caption accent-color doo-pointer doo-underline">
                                                 {{ 'profile.buttons.edit' | translate }}
                                         </div>
                                 </div>
-                                <div fxLayout="row">
-                                        <mat-icon svgIcon="doo-email" color="accent"></mat-icon>
-                                        <div fxLayout="column" fxFlex fxLayoutGap="5px">
-
-                                                <div class="add-field-placeholder">
-                                                        {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
-                                                </div>
-                                                <div class="add-field-placeholder doo-bottom-border">
-                                                        {{userInfo.email}}
-                                                </div>
-                                        </div>
-                                </div>
-                                <div fxLayout="row">
-                                        <mat-icon svgIcon="doo-location" color="accent"></mat-icon>
-                                        <div fxLayout="column" fxLayoutGap="5px">
-                                                <div *ngIf="!userAddressInfo || !userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
-
-                                                        <div class="add-field-placeholder">
-                                                                {{ 'profile.address.noAddressSaved' | translate }}
-                                                        </div>
-                                                </div>
-                                                <div *ngIf="userAddressInfo && userAddressInfo.addressLine1" fxLayout="row" fxFlex="100">
-                                                        <div class="add-field-placeholder">
-                                                                {{userAddressInfo.addressLine2 ? userAddressInfo.addressLine2 + ' - ' : 
-                                                                userAddressInfo.addressLine2 }}
-                                                                {{userAddressInfo.addressLine1}}
-                                                                <br>
-                                                                {{userAddressInfo.city + ' ' + userAddressInfo.province + ' ' + userAddressInfo.postal}}
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </div>
+                                <doo-shipping-box (click)="openAddressModal()" class = "doo-pointer" fxFlex="50" [personalInfo]="userInfo" [address]="userAddressInfo"
+                                        [editable]="true"></doo-shipping-box>
                         </div>
+
                         <div *ngIf="shippingOptions" [formGroup]="shippingMethodForm" fxLayout="column"
-                                class="doo-shipping-box">
-                                <span class="mat-subheading-2 doo-letter-space">
-                                        Choose delivery method
-                                </span>
+                                class="doo-shipping-box doo-light-card">
+                                <div fxLayout="row">
+                                        <mat-icon svgIcon="doo-box" color="accent"></mat-icon>
+                                        <span class="mat-subheading-1 doo-letter-space">
+                                                {{ 'cart.deliveryMethodTitle' | translate }}
+                                        </span>
+                                </div>
+
                                 <mat-form-field appearance="outline" class="full-width doo-letter-space"
                                         color="primary">
-                                        <mat-label>Shipping Method</mat-label>
                                         <mat-select #shippingMethod formControlName="shipping"
                                                 (selectionChange)="setShippingMethod($event.value)" name="shipping">
                                                 <mat-option *ngFor="let item of shippingOptions"
@@ -89,11 +47,11 @@
                 <div fxLayout="column" fxLayout.lt-md="column" fxLayoutGap.lt-md="15px" fxFlex="80"
                         fxLayoutAlign="space-between">
                         <button color="primary" mat-flat-button class="doo-cta-btn" (click)="continueCheckout()">
-                                CONTINUE TO PAYMENT
+                                {{ 'cart.continuePayment' | translate }}
                         </button>
                         <button color="accent" mat-button class="doo-cta-btn" [routerLink]="'/'">
                                 <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
-                                STILL SHOPPING
+                                {{ 'cart.stillShopping' | translate }}
                         </button>
 
                 </div>

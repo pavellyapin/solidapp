@@ -3,28 +3,28 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import { NavRoute } from 'src/app/services/navigation/nav-routing';
 import { CartComponent } from './cart.component';
-import { CheckoutShippingGuard } from './shipping/shipping.guard';
 import { CheckoutShippingComponent } from './shipping/shipping.component';
 import { CheckoutPaymentGuard } from './payment/payment.guard';
 import { CheckoutPaymentComponent } from './payment/payment.component';
 import { GuestCheckoutComponent } from './guest/guest.component';
-import { GuestCheckoutGuard } from './guest/guest.guard';
 import { CartErrorComponent } from './error/error.component';
 import { CheckoutCartGuard } from './cart.guard';
+import { CartAuthGuard } from './cart-auth.guard';
 
 export const cartRoutes: NavRoute[] = [
   {data: {title: 'Cart' , isChild: true},
-   canActivate : [CheckoutCartGuard],
+   canActivate : [CartAuthGuard],
+   canActivateChild : [CheckoutCartGuard],
+   canDeactivate: [CartAuthGuard],
    path: '', 
    children : [
-      {data: {title: 'Checkout' , isChild: true},
+      {data: {title: 'guest' , isChild: true},
       path: '', 
-      canActivate: [GuestCheckoutGuard],
       component: GuestCheckoutComponent},
-      {data: {title: 'Checkout Shipping' , isChild: true},
+      {data: {title: 'shipping' , isChild: true},
       path: 'checkout/:cartId/shipping', 
       component: CheckoutShippingComponent},
-      {data: {title: 'Checkout Payment' , isChild: true},
+      {data: {title: 'payment' , isChild: true},
       path: 'checkout/:cartId/payment', 
       canActivate: [CheckoutPaymentGuard],
       component: CheckoutPaymentComponent},

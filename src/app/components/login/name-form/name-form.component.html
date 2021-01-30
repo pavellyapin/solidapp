@@ -1,5 +1,4 @@
-<div class="doo-name-form" fxLayout="column">
-        <div></div>
+<div class="doo-name-form" fxLayoutGap="10px" fxLayout="column">
         <div fxLayout="column">
                 <div fxLayout="row">
                         <div *ngIf="!editMode" (click)="editMode = !editMode" fxLayout="row" fxFlex="100">
@@ -11,36 +10,53 @@
                         <form *ngIf="editMode" [formGroup]="userForm" fxLayout="column" fxLayoutGap="10px" fxFlex
                                 (keyup.enter)="savePersonalInfo()">
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                        <mat-form-field fxFlex="48" appearance="outline" class="full-width">
-                                                <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
-                                                <input formControlName="firstName" autocomplete="firstName" matInput
-                                                        name="firstName" type="text" />
-                                                <mat-error *ngIf="userForm.controls['firstName'].invalid">
-                                                        {{'errors.required' | translate}}</mat-error>
-                                        </mat-form-field>
-                                        <mat-form-field fxFlex="48" appearance="outline" class="full-width">
-                                                <mat-label>{{ 'profile.account.lastName' | translate }}</mat-label>
-                                                <input formControlName="lastName" autocomplete="lastName" matInput
-                                                        name="lastName" type="text" />
-                                                <mat-error *ngIf="userForm.controls['lastName'].invalid">
-                                                        {{'errors.required' | translate}}</mat-error>
-                                        </mat-form-field>
+                                        <div fxLayout="column" fxFlex="48" class="full-width">
+                                                <mat-label>{{ 'profile.account.firstName' | translate }}
+                                                </mat-label>
+
+                                                <mat-form-field appearance="outline">
+                                                        <input formControlName="firstName" autocomplete="firstName"
+                                                                matInput name="firstName" type="text" />
+                                                        <mat-error *ngIf="userForm.controls['firstName'].invalid">
+                                                                {{'errors.required' | translate}}</mat-error>
+                                                </mat-form-field>
+                                        </div>
+                                        <div fxLayout="column" fxFlex="48" class="full-width">
+                                                <mat-label>{{ 'profile.account.lastName' | translate }}
+                                                </mat-label>
+                                                <mat-form-field appearance="outline">
+                                                        <input formControlName="lastName" autocomplete="lastName"
+                                                                matInput name="lastName" type="text" />
+                                                        <mat-error *ngIf="userForm.controls['lastName'].invalid">
+                                                                {{'errors.required' | translate}}</mat-error>
+                                                </mat-form-field>
+                                        </div>
+
+
                                 </div>
-                                <div fxLayout="row" fxLayoutAlign="space-between">
-                                        <mat-form-field fxFlex="48" appearance="outline" class="full-width">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxFlex="48" class="full-width">
                                                 <mat-label>{{ 'profile.account.email' | translate }}</mat-label>
-                                                <input formControlName="email" autocomplete="email" matInput
-                                                        name="email" type="text" />
-                                                <mat-error *ngIf="userForm.controls['email'].invalid">
-                                                        {{'errors.required' | translate}}</mat-error>
-                                        </mat-form-field>
-                                        <mat-form-field fxFlex="48" appearance="outline" class="full-width">
-                                                <mat-label>Phone</mat-label>
-                                                <input formControlName="phone" autocomplete="phone" matInput
-                                                        name="phone" type="text" />
-                                                <mat-error *ngIf="userForm.controls['phone'].invalid">
-                                                        {{'errors.required' | translate}}</mat-error>
-                                        </mat-form-field>
+                                                <mat-form-field appearance="outline">
+                                                        <input formControlName="email" autocomplete="email" matInput
+                                                                name="email" type="text" />
+                                                        <mat-error *ngIf="userForm.controls['email'].invalid">
+                                                                {{'errors.required' | translate}}</mat-error>
+                                                </mat-form-field>
+                                        </div>
+                                        <div fxLayout="column" fxFlex="48" class="full-width">
+                                                <mat-label>{{ 'profile.account.phone' | translate }}</mat-label>
+                                                <mat-form-field appearance="outline">
+                                                        <input formControlName="phone" autocomplete="phone" matInput
+                                                                name="phone" type="text" />
+                                                        <mat-error *ngIf="userForm.controls['phone'].invalid">
+                                                                {{'errors.required' | translate}}</mat-error>
+                                                </mat-form-field>
+                                        </div>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-checkbox></mat-checkbox>
+                                        <span class = "doo-letter-space mat-caption">{{'profile.account.subscribeCheck' | translate}}</span>
                                 </div>
                                 <div *ngIf="showSaveButton" fxLayout="row" fxLayoutAlign="center">
                                         <div fxLayout="row" fxFlex="50">
@@ -53,4 +69,5 @@
                         </form>
                 </div>
         </div>
+        <mat-divider></mat-divider>
 </div>

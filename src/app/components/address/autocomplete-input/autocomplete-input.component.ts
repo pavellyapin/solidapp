@@ -1,5 +1,6 @@
 /// <reference types="@types/googlemaps" />
 import { Component, ViewChild, EventEmitter, Output, OnInit, AfterViewInit, Input } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class AutocompleteInputComponent implements OnInit, AfterViewInit {
     private getPlaceAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(this.addresstext.nativeElement,
             {
-                componentRestrictions: { country: 'UK'}
+                componentRestrictions: { country: environment.countryCode}
                 //types: ['address']  // 'establishment' / 'address' / 'geocode'
             });
         google.maps.event.addListener(autocomplete, 'place_changed', () => {

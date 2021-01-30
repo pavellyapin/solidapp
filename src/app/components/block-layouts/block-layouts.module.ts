@@ -15,6 +15,8 @@ import { RowOfTwoPostComponent } from './row-of-two/row-of-two.component';
 import { RowOfThreePostComponent } from './row-of-three/row-of-three.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ExpandBlockComponent } from './expand/expand.component';
+import { ShippingBoxComponent } from './shipping-box/shipping-box.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     declarations: [BackgroundImageBlockComponent,
@@ -25,17 +27,19 @@ import { ExpandBlockComponent } from './expand/expand.component';
                    CardPostComponent,
                    RowOfTwoPostComponent,
                    RowOfThreePostComponent,
-                   ExpandBlockComponent],
+                   ExpandBlockComponent,
+                   ShippingBoxComponent],
     imports: [
         CommonModule,
         PipesModule,
+        TranslateModule,
         LazyLoadImageModule,
         FlexLayoutModule,
         MatButtonModule,
         MatIconModule,
         MatExpansionModule
     ],
-    exports: [BlockLayoutComponent,ActionsComponent]
+    exports: [BlockLayoutComponent,ActionsComponent,ShippingBoxComponent]
   })
   export class BlockLayoutsModule {
   }

@@ -146,8 +146,9 @@ export class CheckoutShippingComponent {
     let config;
     if (this.utilService.bigScreens.includes(this.resolution)) {
       config = {
-        height: '80%',
-        width: '60vw',
+        height: '100%',
+        width: '100vw',
+        panelClass: 'full-screen-modal',
         data: { userAddressInfo: this.userAddressInfo, userInfo: this.userInfo }
       };
     } else {

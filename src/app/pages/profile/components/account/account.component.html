@@ -12,7 +12,7 @@
                 </div>
               <div fxLayout = "row">
                 <div *ngIf = "!editMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon svgIcon = "doo-profile">y</mat-icon>
+                    <mat-icon svgIcon = "doo-profile"></mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.firstName.length > 0 || userInfo.lastName.length > 0 ? userInfo.firstName + ' ' + userInfo.lastName  : 'profile.account.addName' | translate}}
                     </div>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div *ngIf = "!contactEditMode" fxLayout = "row" fxFlex = "100" class = "doo-bottom-border">
-                    <mat-icon svgIcon = "doo-email" color = "accent">email</mat-icon>
+                    <mat-icon svgIcon = "doo-email" color = "accent"></mat-icon>
                     <div class="add-field-placeholder" >
                         {{userInfo.email}}
                     </div>

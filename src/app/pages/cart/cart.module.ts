@@ -25,7 +25,9 @@ import { FooterModule } from 'src/app/components/footer/footer.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ImagePipe } from 'src/app/components/pipes/pipes';
 import { CartErrorComponent } from './error/error.component';
+import { CartFlowHeaderComponent } from './flow-header/flow-header.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
 
 
 @NgModule({
@@ -35,13 +37,15 @@ import { MatDividerModule } from '@angular/material/divider';
                  CartShippingModalComponent,
                  CheckoutShippingComponent,
                  CheckoutPaymentComponent,
-                 CartErrorComponent],
+                 CartErrorComponent,
+                 CartFlowHeaderComponent],
   imports: [
     CommonModule,
     CartRoutingModule,
     PipesModule,
     FormsModule,
     FooterModule,
+    BlockLayoutsModule,
     ReactiveFormsModule,
     TranslateModule,
     MatDialogModule,

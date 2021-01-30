@@ -33,8 +33,45 @@
     .mat-display-1{
         margin : 0 0 14px;
     }
-
-    .add-field-placeholder {
-        opacity: 0.5;
-    }
 }
+
+  /* The actual timeline (the vertical ruler) */
+  .timeline {
+    position: relative;
+    margin: 0 50px;
+  }
+  
+  /* The actual timeline (the vertical ruler) */
+  .timeline::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    background-color: $light-grey;
+    top: 0;
+    bottom: 0;
+    left: 30px;
+    margin-left: -50px;
+  }
+  
+  .container {
+    position: relative;
+  }
+  
+  /* The circles on the timeline */
+  .container::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: -17px;
+    background-color: $light-grey;
+    border: 2px solid $lighter-grey;
+    top: 0px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  
+  /* Fix the circle for containers on the right side */
+  .right::after {
+    left: -28px;
+  }

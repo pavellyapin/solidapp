@@ -43,7 +43,7 @@ export class CartSideNavComponent implements OnInit {
     this.CartSubscription = this.cartItems$
     .pipe(
       map(_cartItems => {
-        this.cartItemCount = 0;
+        var cartCount = 0;
         if (!_cartItems || _cartItems.length == 0) {
           this.cartItems = [];
         }
@@ -52,24 +52,30 @@ export class CartSideNavComponent implements OnInit {
           requestArray.push(this.contentfulService.getProductDetails(item.productId));
           }
         )
-        forkJoin(requestArray).pipe(
-          map((results : any) => {
+        if (requestArray.length) {
+          forkJoin(requestArray).pipe(
+            map((results : any) => {
+  
+              this.cartItems = _cartItems.map((item)=>({
+                ...item,
+                product : (
+                  results.filter(product=>{
+                    if (product && (product.sys.id == item.productId)) {
+                      return product;
+                    }
+                  }).pop()
+                )
+              }));
+              this.cartItems.forEach(item=> {
+                  cartCount = cartCount + item.qty;
+                });  
+                this.cartItemCount = cartCount;
+            })
+          ).subscribe();
+        } else {
+          this.cartItemCount = cartCount;
+        }
 
-            this.cartItems = _cartItems.map((item)=>({
-              ...item,
-              product : (
-                results.filter(product=>{
-                  if (product.sys.id == item.productId) {
-                    return product;
-                  }
-                }).pop()
-              )
-            }));
-            this.cartItems.forEach(item=> {
-                this.cartItemCount = this.cartItemCount + item.qty;
-              });  
-          })
-        ).subscribe();
       })
     )
     .subscribe();

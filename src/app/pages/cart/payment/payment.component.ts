@@ -95,11 +95,12 @@ export class CheckoutPaymentComponent {
   }
 
   backToAddress() {
+    this.store.dispatch(CartActions.BeginGetCartAction({ payload: this.cartId }));
     this.router.navigateByUrl('cart/checkout/' + this.cartId + '/shipping');
   }
 
   initStripe() {
-    var inputs = document.querySelectorAll('.cell.example.example2 .input');
+    var inputs = document.querySelectorAll('.cc-form .input');
     Array.prototype.forEach.call(inputs, function (input) {
       input.addEventListener('focus', function () {
         input.classList.add('focused');
@@ -150,19 +151,19 @@ export class CheckoutPaymentComponent {
       style: elementStyles,
       classes: elementClasses,
     });
-    this.cardNumber.mount('#example2-card-number');
+    this.cardNumber.mount('#card-number');
 
     this.cardExpiry = elements.create('cardExpiry', {
       style: elementStyles,
       classes: elementClasses,
     });
-    this.cardExpiry.mount('#example2-card-expiry');
+    this.cardExpiry.mount('#card-expiry');
 
     this.cardCvc = elements.create('cardCvc', {
       style: elementStyles,
       classes: elementClasses,
     });
-    this.cardCvc.mount('#example2-card-cvc');
+    this.cardCvc.mount('#card-cvc');
     this.navService.finishLoading();
   }
 

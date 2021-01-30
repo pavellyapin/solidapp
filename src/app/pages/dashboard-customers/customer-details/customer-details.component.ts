@@ -23,7 +23,7 @@ export class DashboardCustomerDetailsComponent implements OnInit {
 
   customerDetails: any;
   displayedOrder: number = 0;
-  activeDates: Map<String, Array<any>> = new Map<String, Array<any>>();
+  activeDates: any;
 
   constructor(private store: Store<{ settings: SettingsState }>,
     private navSerivce: NavigationService,
@@ -38,22 +38,24 @@ export class DashboardCustomerDetailsComponent implements OnInit {
       BeginLoadCustomerDetailsAction({ payload: this.route.snapshot.params["uid"] }));
     this.CustomerSubscription = this._actions$.pipe(ofType(AdminActions.SuccessLoadCustomerDetailsAction)).subscribe((result) => {
       this.customerDetails = result.payload;
+      const dates = new Map<String, Array<any>>();
       this.customerDetails.orders.slice()
         .forEach((order) => {
           const orderDate = new Date(parseInt(order.date, 10));
           const dateString = orderDate.getMonth() + " " + orderDate.getDate() + "," + orderDate.getFullYear();
-        if (this.activeDates.get(dateString)) {
-          this.activeDates.get(dateString).push(order)
+        if (dates.get(dateString)) {
+          dates.get(dateString).push(order)
         } else {
-          this.activeDates.set(dateString, [order]);
+          dates.set(dateString, [order]);
         }
         });
+        this.activeDates = new Map([...dates.entries()]);
         this.navSerivce.finishLoading();
     })
   }
 
-  public keyDescOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
-    return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
+ keyDescOrder (a: KeyValue<number,string>, b: KeyValue<number,string>): number {
+    return a.key > b.key ? 1 : (b.key > a.key ? -1 : 0);
   }
 
   goToCustomerOrders() {

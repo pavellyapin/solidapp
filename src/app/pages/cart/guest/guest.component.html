@@ -1,1 +1,18 @@
-<doo-guest-form [isFromLogin]="false" (continueGuestEvent) = "continueGuest($event)"></doo-guest-form>
+
+
+
+<div fxLayout = "column">
+    <div fxLayout="row" 
+        style = "height: 100%"
+        fxLayout.lt-sm="column">
+      <div [fxFlex] = "utils.bigScreens.includes(this.resolution) ? 65 : 100" fxLayout="column">
+        <doo-guest-form [isFromLogin]="false" (continueGuestEvent) = "continueGuest()"></doo-guest-form>
+      </div>
+      <div *ngIf = "utils.bigScreens.includes(this.resolution)" fxLayout="column" fxFlex = "35">
+              <div [ngSwitch]="block.sys.contentType?.sys.id" *ngFor = "let block of loginPageContent?.fields.blocks">
+                      <doo-block-layouts *ngSwitchCase="'block'" [block] = "block">
+                      </doo-block-layouts>
+              </div>
+      </div>
+    </div>
+</div>

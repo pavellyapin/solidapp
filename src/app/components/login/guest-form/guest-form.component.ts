@@ -10,6 +10,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { map } from 'rxjs/operators';
 import { Entry } from 'contentful';
+import { environment } from 'src/environments/environment';
 ;
 
 @Component({
@@ -29,8 +30,10 @@ export class GuestFormComponent implements OnInit , OnDestroy{
   username:any;
   password:any;
 
-  guestForm: FormGroup;
   loginForm: FormGroup;
+
+  enableGoogleLogin = environment.enableGoogleLogin;
+  enableFacebookLogin = environment.enableFacebookLogin;
   
   errorSubscription :Subscription;
 
@@ -47,12 +50,6 @@ export class GuestFormComponent implements OnInit , OnDestroy{
                     email: new FormControl('' ,Validators.required),
                     password: new FormControl('',Validators.required)
                 });
-
-                this.guestForm = new FormGroup({        
-                  firstName: new FormControl('' ,Validators.required),
-                  lastName: new FormControl('',Validators.required),
-                  email: new FormControl('',Validators.required)
-              });
 
               this.settings$ = store.pipe(select('settings'));
         
@@ -81,10 +78,7 @@ export class GuestFormComponent implements OnInit , OnDestroy{
   }
 
   continueGuest() {
-    if (this.guestForm.valid) {
-      this.navService.startLoading();
-      this.continueGuestEvent.emit(this.guestForm.value);
-    }
+    this.continueGuestEvent.emit();
   }
 
   facebookLogin() {
@@ -102,7 +96,6 @@ export class GuestFormComponent implements OnInit , OnDestroy{
     } else {
       this.store.dispatch(UserActions.BeginGoogleUserLoginAction());
     }
-    
   }
   
 

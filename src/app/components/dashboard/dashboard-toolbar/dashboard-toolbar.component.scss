@@ -8,6 +8,7 @@
 }
 
 .doo-dashboard-toolbar {
+  border-bottom:solid 1px $light-grey;
   mat-toolbar {
     @include mat-elevation(0);
     background-color: white;

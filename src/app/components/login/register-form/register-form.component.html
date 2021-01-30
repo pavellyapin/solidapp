@@ -51,7 +51,7 @@
             CREATE ACCOUNT
           </button>
         </div>
-        <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+        <div *ngIf = "enableGoogleLogin" fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
           <button fxFlex (click)="googleLogin()" class = "doo-checkout-btn"
                   color="primary" mat-stroked-button type="button">
                   <div fxLayout = "row" fxLayoutAlign="center center" fxLayoutGap="10px">
@@ -60,7 +60,7 @@
                   </div>
           </button>
         </div>
-        <div fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
+        <div *ngIf = "enableFacebookLogin" fxLayout = "row" class = "full-width" fxLayoutAlign="space-between" fxLayoutGap="10px">
           <button fxFlex (click)="facebookLogin()" class = "doo-checkout-btn"
                   color="primary" mat-stroked-button type="button">
                   <div fxLayout = "row" fxLayoutAlign="center center" fxLayoutGap="10px">

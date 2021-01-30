@@ -31,6 +31,8 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { AdminReducer } from './services/store/admin/admin.reducer';
 import { AdminEffects } from './services/store/admin/admin.effects';
 import { DashboardModule } from './components/dashboard/dashboard.module';
+import { JQ_TOKEN } from './services/util/jQuery.service';
+import { jQuery } from './components/cards/cards.module';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['user', 'cart'], rehydrate: true })(reducer);
@@ -85,7 +87,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       ],
       multi: true,
     },
-    { provide: FUNCTIONS_ORIGIN, useValue: environment.functionsOrigin }
+    { provide: FUNCTIONS_ORIGIN, useValue: environment.functionsOrigin },
+    {provide: JQ_TOKEN , useValue:jQuery}
   ],
   bootstrap: [AppComponent],
 })

@@ -45,6 +45,7 @@ export class AuthService {
     return from(new Promise<any>((resolve, reject) => {
       firebase.auth().getRedirectResult()
         .then(res => {
+          console.log('res',res);
           if (res.user && res.additionalUserInfo.isNewUser) {
             this.firestore
               .collection("customers")

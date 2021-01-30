@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
 export interface OrderData {
+  status : string;
   id: string;
   uid:string;
   name: string;
@@ -79,9 +80,10 @@ export class DashboardOrdersOverviewComponent implements OnInit {
   }
 
   createOrder(order, filter?): OrderData {
-    if (!filter || filter == 'all') {
+    if (!filter || filter == 'all' || order.status == filter) {
       return {
         id: order.orderId,
+        status : order.status,
         uid : order.uid,
         date : order.date,
         name: order.personalInfo ? order.personalInfo.firstName + ' ' + order.personalInfo.lastName : 'Guest User',

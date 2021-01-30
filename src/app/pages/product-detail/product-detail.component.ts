@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import ProductsState from 'src/app/services/store/product/product.state';
 import { Store, select } from '@ngrx/store';
@@ -16,6 +16,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 import CartState from 'src/app/services/store/cart/cart.state';
 import { SEOService } from 'src/app/services/seo/seo.service';
 import { Actions, ofType } from '@ngrx/effects';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'doo-product-detail',
@@ -33,6 +34,7 @@ export class ProductDeatilComponent implements OnInit {
   SettingsSubscription: Subscription;
   CartIdSubscription: Subscription;
   CartItemsSubscription: Subscription;
+  RouterSubscription : Subscription;
   ///////////////
 
   cart$: Observable<CartState>;
@@ -61,27 +63,21 @@ export class ProductDeatilComponent implements OnInit {
   displayedMediaIndex: number = 0;
   resolution: any;
   siteConfig: any;
+  sitePages: Entry<any>[];
 
 
   constructor(private navService: NavigationService,
     private utilService: UtilitiesService,
     private seoService: SEOService,
     private _actions$: Actions,
+    private router: Router,
+    private cd : ChangeDetectorRef,
     private store: Store<{
       products: ProductsState,
       user: UserState,
       cart: CartState,
       settings: SettingsState
     }>) {
-    this.cartItemForm = new FormGroup({
-      size: new FormControl(''),
-      color: new FormControl(''),
-      support: new FormControl(''),
-      duration: new FormControl(''),
-      occupancy : new FormControl(''),
-      facilitation : new FormControl(''),
-      qty: new FormControl(1, Validators.required)
-    });
 
     this.product$ = store.pipe(select('products', 'productDetails'));
     this.productReviews$ = store.pipe(select('products', 'reviews'));
@@ -97,6 +93,12 @@ export class ProductDeatilComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.RouterSubscription = this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        this.getProductDetail();
+      }
+    });
 
     this.CartItemsSubscription = this._actions$.pipe(ofType(
       CartActions.SuccessBackGroundInitializeOrderAction)).subscribe((result) => {
@@ -120,9 +122,7 @@ export class ProductDeatilComponent implements OnInit {
           this.seoService.updateTitle(this.productDetails.fields.title);
           this.seoService.updateDescription(this.productDetails.fields.title);
           this.seoService.updateOgUrl(window.location.href);
-          if (this.productDetails && this.productDetails.fields.variants) {
-            this.sortVariants();
-          }
+          this.sortVariants();
         })
       )
       .subscribe();
@@ -138,13 +138,8 @@ export class ProductDeatilComponent implements OnInit {
     this.PagesSubscription = this.pages$
       .pipe(
         map(x => {
-          if (x) {
-            this.pageLayout = x.filter(page => {
-              if (page.fields.type == "product") {
-                return page;
-              }
-            }).pop();
-          }
+          this.sitePages = x;
+          this.getProductDetail();
         })
       )
       .subscribe();
@@ -175,7 +170,7 @@ export class ProductDeatilComponent implements OnInit {
       )
       .subscribe();
 
-      this.SettingsSubscription = this.siteConfig$
+    this.SettingsSubscription = this.siteConfig$
       .pipe(
         map(x => {
           this.siteConfig = x;
@@ -183,9 +178,29 @@ export class ProductDeatilComponent implements OnInit {
       )
       .subscribe();
   }
-      
 
-  ngAfterViewInit() {
+  initForm() {
+    this.cartItemForm = new FormGroup({
+      size: new FormControl(''),
+      color: new FormControl(''),
+      support: new FormControl(''),
+      duration: new FormControl(''),
+      occupancy: new FormControl(''),
+      facilitation: new FormControl(''),
+      qty: new FormControl(1, Validators.required)
+    });
+    this.productVariants = new Map();
+  }
+
+  getProductDetail() {
+    this.navService.startLoading();
+    this.pageLayout = null;
+    this.cd.detectChanges();
+    this.pageLayout = this.sitePages.filter(page => {
+      if (page.fields.type == "product") {
+        return page;
+      }
+    }).pop();
     this.navService.finishLoading();
   }
 
@@ -210,7 +225,7 @@ export class ProductDeatilComponent implements OnInit {
       this.item.productId = this.productDetails.sys.id;
       this.item.qty = Number(this.cartItemForm.controls["qty"].value);
 
-    
+
       if (this.cartItemForm.controls["size"].value != '') {
         this.item.variants.size = this.cartItemForm.controls["size"].value;
       }
@@ -272,27 +287,30 @@ export class ProductDeatilComponent implements OnInit {
   }
 
   sortVariants() {
-    this.productDetails.fields.variants.forEach(variant => {
-      if (this.cartItemForm.controls[variant.fields.option]) {
-        this.cartItemForm.controls[variant.fields.option].setValidators(Validators.required)
-      }
-      if (this.productVariants.get(variant.fields.option)) {
-        this.productVariants.get(variant.fields.option)
-          .push({ name: variant.fields.name, code: variant.fields.code, price: variant.fields.price, discount: variant.fields.discount, type: variant.fields.option });
-      } else {
-        if (variant.fields.price || variant.fields.price  == 0) {
-          this.variantPrice = variant.fields.price;
-        }
-        if (variant.fields.discount || variant.fields.discount  == 0) {
-          this.variantDiscount = variant.fields.discount;
-        }
-        this.productVariants.set(variant.fields.option,
-          [{ name: variant.fields.name, code: variant.fields.code, price: variant.fields.price,discount: variant.fields.discount, type: variant.fields.option, checked: true }]);
+    this.initForm();
+    if (this.productDetails.fields.variants) {
+      this.productDetails.fields.variants.forEach(variant => {
         if (this.cartItemForm.controls[variant.fields.option]) {
-          this.cartItemForm.controls[variant.fields.option].setValue(variant.fields.name);
+          this.cartItemForm.controls[variant.fields.option].setValidators(Validators.required)
         }
-      }
-    });
+        if (this.productVariants.get(variant.fields.option)) {
+          this.productVariants.get(variant.fields.option)
+            .push({ name: variant.fields.name, code: variant.fields.code, price: variant.fields.price, discount: variant.fields.discount, type: variant.fields.option });
+        } else {
+          if (variant.fields.price || variant.fields.price == 0) {
+            this.variantPrice = variant.fields.price;
+          }
+          if (variant.fields.discount || variant.fields.discount == 0) {
+            this.variantDiscount = variant.fields.discount;
+          }
+          this.productVariants.set(variant.fields.option,
+            [{ name: variant.fields.name, code: variant.fields.code, price: variant.fields.price, discount: variant.fields.discount, type: variant.fields.option, checked: true }]);
+          if (this.cartItemForm.controls[variant.fields.option]) {
+            this.cartItemForm.controls[variant.fields.option].setValue(variant.fields.name);
+          }
+        }
+      });
+    }
   }
 
 
@@ -327,6 +345,7 @@ export class ProductDeatilComponent implements OnInit {
     this.ResolutionSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
     this.CartItemsSubscription.unsubscribe();
+    this.RouterSubscription.unsubscribe();
   }
 
 }

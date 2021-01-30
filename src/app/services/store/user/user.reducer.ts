@@ -83,6 +83,7 @@ const reducer = createReducer(
       return {
         ...state,
         uid: '',
+        isGuestFlow : false,
         personalInfo: null,
         site: null,
         addressInfo: null,

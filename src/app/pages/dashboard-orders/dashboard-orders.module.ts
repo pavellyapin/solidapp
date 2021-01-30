@@ -22,6 +22,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslateModule } from '@ngx-translate/core';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { DashboardOrderActionsComponent } from './order-actions/order-actions.component';
+import { CartCardsModule } from 'src/app/components/cart-card/cards.module';
+import { MatChipsModule } from '@angular/material/chips';
+import { ConfirmFullfillOrderModalComponent } from './modals/confirm-fullfill/confirm-fulfill.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmUnFullfillOrderModalComponent } from './modals/confirm-unfullfill/confirm-unfulfill.component';
 
 @NgModule({
   imports: [
@@ -31,20 +37,27 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     DashboardOrdersRoutingModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatListModule,
     MatIconModule,
     MatMenuModule,
     MatInputModule,
     MatTableModule,
+    MatChipsModule,
     MatCheckboxModule,
     MatPaginatorModule,
     MatTooltipModule,
     FlexLayoutModule,
     LazyLoadImageModule,
+    CartCardsModule,
+    BlockLayoutsModule
   ],
   declarations: [DashboardOrdersComponent,
                  DashboardOrdersOverviewComponent,
-                 DashboardOrderDetailsComponent],
+                 DashboardOrderDetailsComponent,
+                 DashboardOrderActionsComponent,
+                 ConfirmFullfillOrderModalComponent,
+                 ConfirmUnFullfillOrderModalComponent],
   providers: [],
   entryComponents: [],
 })

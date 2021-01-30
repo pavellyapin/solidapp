@@ -1,18 +1,11 @@
 
 @import 'src/css/_variables.scss';
+@import 'src/css/_material.scss';
 
 #doo-shipping-form {
   .doo-bottom-border{
     padding-bottom: 10px;
   }
-  
- ::ng-deep .mat-select-value-text {
-   white-space: normal;
- }
- ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0.2em !important;
-  }
-
   .doo-shipping-box {
     background: white;
     padding:20px;
@@ -30,48 +23,7 @@
         stroke: $primary;
       }
     }
-
-    .doo-undeline {
-      color: $accent;
-      text-decoration: underline;
-    }
   }
-
-  .promo-form{
-    background: $primary;
-    padding:20px;
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: $light-grey;
-
-    .mat-caption{
-      opacity: 0.7;
-      letter-spacing: 2px;
-    }
-    ::ng-deep .mat-form-field-outline-start {
-      background: white;
-    }
-  
-    ::ng-deep .mat-form-field-outline-end {
-      background: white;
-    }
-
-    ::ng-deep .mat-form-field-outline-gap {
-      background: white;
-    }
-  
-    ::ng-deep .mat-form-field-flex {
-      padding-left: 25px !important;
-    }
-
-  
-    ::ng-deep .mat-form-field-wrapper {
-      padding-bottom : 0px !important;
-    }
-  }
-
-
 }
 
 ::ng-deep .full-screen-modal {
@@ -89,21 +41,10 @@
   }
 }
 
-.add-field-placeholder {
-  opacity: 0.5;
-  padding-inline-start: 20px;
-}
-
 ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
   color: $black;
+  font-size: 18px;
 }
-
-::ng-deep  .phone-field {
-    .mat-form-field-prefix {
-      top : -0.2em !important;
-      opacity: 0.5;
-    }
-  }
 
 
   

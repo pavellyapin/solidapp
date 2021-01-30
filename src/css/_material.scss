@@ -1,0 +1,58 @@
+
+//Checkbox------------
+
+mat-checkbox {
+   padding : 5px 0px;
+   letter-spacing: 2px;
+   font-size: 12px;
+}
+
+
+::ng-deep .mat-checkbox-frame {
+    border-radius: 1px !important;
+    border-width: 1px !important;
+    border-color: $light-grey;
+    padding : 5px !important;
+
+}
+
+::ng-deep .mat-checkbox-inner-container {
+    height: 20px !important;
+    width: 20px !important;
+    margin-right : 15px !important;
+}
+
+//Input-------
+
+::ng-deep .mat-form-field-wrapper {
+    margin : 5px 0 !important;
+    padding-bottom: 3px !important;
+  }
+
+  ::ng-deep .mat-form-field-label-wrapper {
+    //top: -0.14375em;
+    padding-top: 0.14375em;
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+    transform: translateY(-1.0em) scale(0.75);
+  }
+
+  ::ng-deep .mat-form-field-outline-gap {
+    border-top-color: inherit !important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    letter-spacing: 2px;
+    padding: 0.85em 0 0.85em 0;
+    border-top: 0.5em solid transparent;
+  }
+
+  ::ng-deep .mat-form-field-subscript-wrapper {
+    margin-top: 1.666667em;
+  }
+
+  //
+  mat-select {
+    font-size: 16px;
+  }

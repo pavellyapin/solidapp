@@ -1,10 +1,10 @@
 <div style="margin: 15px;" class="doo-cart-card" fxLayoutGap="10px" fxLayout="column">
   <span fxShow fxHide.xs class="mat-subheading-2 doo-letter-space">
-    {{object.product.fields.title}}
+    {{object.product ? object.product.fields.title : object.name}}
   </span>
 
   <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-    <div fxLayout="row" fxHide fxShow.xs fxLayoutAlign="space-between">
+    <div *ngIf = "object.product" fxLayout="row" fxHide fxShow.xs fxLayoutAlign="space-between">
 
       <span class="doo-cart-action doo-pointer">
         <mat-icon class="fav-border" svgIcon="doo-favorite" *ngIf="!isFavorite" (click)="toggleFavorites(true)">
@@ -16,17 +16,17 @@
         <mat-icon svgIcon="doo-close" (click)="removeFromCart()"></mat-icon>
       </span>
     </div>
-    <div fxLayout="row" fxLayoutAlign="center" fxFlex="30">
+    <div fxLayout="row" fxLayoutAlign="center" fxFlex="20">
       <div fxLayout="column" fxFlex.xs="45" fxFlex.lg="100">
 
-        <img class="full-width doo-pointer" (click)="goToProduct()" [lazyLoad]="object?.product.fields.media[0].fields.file.url"
-          [alt]="object?.product.fields.media[0].fields.description" [defaultImage]="'assets/placeholders/placeholder-1.svg'">
+        <img class="full-width doo-pointer" (click)="goToProduct()" [lazyLoad]="object.product ? object.product.fields.media[0].fields.file.url : object.thumbnail"
+          [alt]="object.product?.fields.media[0].fields.description" [defaultImage]="'assets/placeholders/placeholder-1.svg'">
       </div>
     </div>
-    <div fxLayout="column" fxLayoutAlign="space-between" fxFlex="55" class="cart-card-content">
+    <div fxLayout="column" fxLayoutAlign="space-between" [fxFlex]="object.product ? 55 : 75" class="cart-card-content">
       <div fxLayout="column">
         <span fxHide fxShow.xs class="mat-subheading-2">
-          {{object.product.fields.title}}
+            {{object.product ? object.product.fields.title : object.name}}
         </span>
         <span *ngIf="object.variants.support" class="mat-caption cart-item-variant">
           <span>{{'product.support' | translate}}:</span> {{object.variants.support}}
@@ -41,23 +41,29 @@
           <span>{{'product.qty' | translate}}: </span> {{object.qty}}
         </span>
       </div>  
-      <div fxLayout="column">
+      <div *ngIf = "object.product" fxLayout="column">
           <div *ngIf="(object.product.fields.discount && !object.variantPrice) || object.variantDiscount" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
               <mat-icon class = "doo-price-tag" svgIcon="doo-tag"></mat-icon>
               <span class="mat-caption accent-color">Low Price</span>
           </div>
           
           <div fxLayout="row" fxLayoutAlign="start">
-            <span [innerHTML]="(object.variantPrice ? object.variantPrice  : object.product.fields.price) | pricePipe"
+            <span [innerHTML]="(object.variantPrice ? object.variantPrice  : object.product.fields.price)*object.qty | pricePipe"
               [ngClass]="((object.product.fields.discount  && !object.variantPrice) || object.variantDiscount) ? 'doo-stroked-price mat-subheading-2' : 'mat-subheading-2'">
             </span>
             <span *ngIf="(object.product.fields.discount && !object.variantPrice) || object.variantDiscount" class="mat-subheading-2"
-              [innerHTML]="(object.variantDiscount ? object.variantDiscount : object.product.fields.discount) | pricePipe">
+              [innerHTML]="(object.variantDiscount ? object.variantDiscount : object.product.fields.discount)*object.qty | pricePipe">
             </span>
           </div>
         </div>
+        <div *ngIf = "!object.product" fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="start">
+                <span class = "mat-subheading-2" [innerHTML]="object.price*object.qty | pricePipe">
+                </span>
+              </div>
+        </div>
     </div>
-    <div fxLayout="column" fxFlex="10" fxHide fxShow.gt-xs fxLayoutAlign="space-between">
+    <div *ngIf = "object.product" fxLayout="column" fxFlex="10" fxHide fxShow.gt-xs fxLayoutAlign="space-between">
       <span class="doo-cart-action doo-pointer">
         <mat-icon svgIcon="doo-close" (click)="removeFromCart()"></mat-icon>
       </span>
