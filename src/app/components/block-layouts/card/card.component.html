@@ -1,41 +1,57 @@
 <div fxLayout="column" [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px' ">
      <div fxLayout="row" fxLayoutAlign="center">
-          <div fxLayout="column" [fxFlex]="block.fields.width" fxLayoutAlign="center">
-               <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
-                    fxLayout="column" fxFlex.lt-md="100" style="padding:20px"
+          <div fxLayout="column" [fxFlex]="block.fields.width" fxFlex.lt-md="100" fxLayoutAlign="center">
+               <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 1 : 2"
+                    fxLayout="column" style="padding:20px"
                     [class.primary-background]="block.fields.textBackground == 'Primary'"
                     [class.accent-background]="block.fields.textBackground == 'Accent'"
                     [class.white-background]="block.fields.textBackground == 'White'"
                     [class.black-background]="block.fields.textBackground == 'Black'">
-                    <div class="doo-cta-content doo-contentful"
-                         [class.primary-color]="block.fields.textColor == 'Primary'"
-                         [class.accent-color]="block.fields.textColor == 'Accent'"
-                         [class.white-color]="block.fields.textColor == 'White'"
-                         [class.black-color]="block.fields.textColor == 'Black'"
-                         [style.text-align]="block.fields.textAlign" [innerHTML]="block.fields.content | richTextPipe">
+                    <div fxLayout="row" [fxLayoutAlign]="block.fields.textAlign">
+                         <div class="doo-cta-content doo-contentful"
+                              [class.primary-color]="block.fields.textColor == 'Primary'"
+                              [class.accent-color]="block.fields.textColor == 'Accent'"
+                              [class.white-color]="block.fields.textColor == 'White'"
+                              [class.black-color]="block.fields.textColor == 'Black'"
+                              [style.text-align]="block.fields.textAlign" 
+                              [fxFlex.gt-md]="block.fields.textWidth"
+                              [innerHTML]="block.fields.content | richTextPipe">
+                         </div>
                     </div>
-                    <div class="doo-cta-content doo-contentful"
-                         [class.primary-color]="block.fields.otherTextColor == 'Primary'"
-                         [class.accent-color]="block.fields.otherTextColor == 'Accent'"
-                         [class.white-color]="block.fields.otherTextColor == 'White'"
-                         [class.black-color]="block.fields.otherTextColor == 'Black'"
-                         [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
-                         [innerHTML]="block.fields.otherContent | richTextPipe">
+                    <div fxLayout="row" [fxLayoutAlign]="block.fields.textAlign">
+                         <div class="doo-cta-content doo-contentful"
+                              [class.primary-color]="block.fields.otherTextColor == 'Primary'"
+                              [class.accent-color]="block.fields.otherTextColor == 'Accent'"
+                              [class.white-color]="block.fields.otherTextColor == 'White'"
+                              [class.black-color]="block.fields.otherTextColor == 'Black'"
+                              [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
+                              [fxFlex.gt-md]="block.fields.textWidth"
+                              [innerHTML]="block.fields.otherContent | richTextPipe">
+                         </div>
                     </div>
+
                     <doo-actions [fxLayoutAlign]="block.fields.actionsPosition" fxLayoutGap="20px" fxLayout="row"
                          [actions]="block.fields.actions"></doo-actions>
 
                </div>
-               <div fxLayout = "column" fxLayoutAlign = "center center">
-                    <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="post-placeholder"
-                         [style.width]="block.fields.textBoxWidth ? block.fields.textBoxWidth + '%' : '100%'"
+               <div fxLayout="column" [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
+                    fxLayoutAlign="center center" [ngClass]="utils.bigScreens.includes(this.resolution) ? '' : 'crop'">
+                    <img #postImg *ngIf="block.fields.media[0].fields.file.details.image"
+                         class="full-width post-placeholder" (click)="navigate()"
+                         [class.doo-pointer]="block.fields.imageAction"
+                         [style.width]="utils.bigScreens.includes(this.resolution) ? (block.fields.textBoxWidth ? block.fields.textBoxWidth + '%' : '100%') : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
+                         [style.padding-left]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaLeftPadding ? block.fields.mobileMediaLeftPadding : '0px')"
+                         [style.padding-right]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaRightPadding ? block.fields.mobileMediaRightPadding : '0px')"
                          [lazyLoad]="block.fields.media[0].fields.file.url"
-                         [alt] = "block.fields.media[0].fields.description"
+                         [alt]="block.fields.media[0].fields.description"
                          [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
                          (onStateChange)="myCallbackFunction($event)">
                     <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
-                         [src]="block.fields.media[0].fields.file.url" autoplay muted="muted" loop playsinline
-                         style="width: 100%;display: block;">
+                         [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
+                         [style.padding-left]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaLeftPadding ? block.fields.mobileMediaLeftPadding : '0px')"
+                         [style.padding-right]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaRightPadding ? block.fields.mobileMediaRightPadding : '0px')"
+                         [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline
+                         class="full-width">
                     </video>
                </div>
 

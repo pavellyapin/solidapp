@@ -159,7 +159,30 @@ export class FirestoreService {
               }));
         }
     }
-
+    
+    saveClientForm(form: any) : Observable<any> {
+        if (this.authservice.uid) {
+            return from(this.firestore
+                .collection("form").add({ form: form }).then((x) => {
+                    return { id: x.id };
+                }
+                ).catch((error) => {
+                    console.error(error);
+                }));
+        } else {
+            return from(firebase.auth().signInAnonymously().then((creds) => {
+                return this.firestore
+                    .collection("form").add({ form: form }).then((x) => {
+                        return { id: x.id };
+                    }
+                    ).catch((error) => {
+                        console.error(error);
+                    });
+            }).catch(function (error) {
+                console.error(error);
+            }));
+        }
+    }
 
     getOrderStatus(cart : any) {
         return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)

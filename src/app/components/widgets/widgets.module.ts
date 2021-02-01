@@ -14,13 +14,16 @@ import { FeaturedProductsComponent } from './featured-products/featured-products
 import { BlockLayoutsModule } from '../block-layouts/block-layouts.module';
 import { BlockCarouselComponent } from './block-carousel/block-carousel.component';
 import { MatIconModule } from '@angular/material/icon';
+import { FormWidgetComponent } from './form/form.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
     declarations: [MoreFromCatCarouselComponent,
                    SubscribeComponent,
                    WidgetsComponent,
                    FeaturedProductsComponent,
-                   BlockCarouselComponent],
+                   BlockCarouselComponent,
+                   FormWidgetComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -30,9 +33,11 @@ import { MatIconModule } from '@angular/material/icon';
         BlockLayoutsModule,
         FlexLayoutModule,
         MatButtonModule,
+        MatRadioModule,
         MatInputModule,
         MatIconModule,
-        TranslateModule
+        TranslateModule,
+        BlockLayoutsModule
     ],
     providers: [],
     exports: [MoreFromCatCarouselComponent,

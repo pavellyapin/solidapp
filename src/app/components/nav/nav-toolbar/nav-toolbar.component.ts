@@ -7,10 +7,11 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { navbarTransition } from '../../pipes/animations';
+import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-nav-toolbar',
-  templateUrl: './nav-toolbar.component.html',
+  templateUrl: './custom-nav-toolbar.component.html',
   styleUrls: ['./nav-toolbar.component.scss'],
   animations: [navbarTransition]
 })
@@ -44,7 +45,9 @@ export class NavToolbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public navService: NavigationService) {
+    public navService: NavigationService,
+    public util : UtilitiesService
+    ) {
       window.addEventListener('scroll', () => {
         var st = window.pageYOffset || document.documentElement.scrollTop;
         if (st > this.lastScrollTop && !this.mainMenuOpen){
@@ -66,6 +69,9 @@ export class NavToolbarComponent implements OnInit {
 
   public navigateHome() {
     this.router.navigateByUrl('/');
+    if (this.util.bigScreens.includes(this.resolution) && this.mainMenuOpen) {
+      this.onExpandMainMenu();
+    }
   }
 
   public navigateCategory(link) {

@@ -28,7 +28,13 @@ export class RichTextPipe {
   constructor() { }
   transform(text): any {
     if (text) {
-      return documentToHtmlString(text)
+      let options = {
+        renderNode: {
+          'embedded-asset-block': (node) =>
+            `<img class="img-wrap" src="${node.data.target.fields.file.url}"/>`
+        }
+      }
+      return documentToHtmlString(text, options);
     } else {
       return ''
     }

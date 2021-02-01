@@ -1,0 +1,78 @@
+<div fxLayout="row" [formGroup]="formWidget" fxLayoutAlign="center" class="doo-form-widget">
+    <div *ngIf="widget" fxLayout="column" fxLayoutGap="10px" fxFlex.gt-md="70" fxFlex="100" class="doo-light-card">
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                <mat-form-field fxFlex="48" appearance="outline" class="full-width">
+                    <mat-label>{{ 'profile.account.firstName' | translate }}</mat-label>
+                    <input formControlName="firstName" autocomplete="firstName" matInput name="firstName" type="text" />
+                    <mat-error *ngIf="formWidget.controls['firstName'].invalid">
+                        {{'errors.required' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="48" appearance="outline" class="full-width">
+                    <mat-label>{{ 'profile.account.lastName' | translate }}</mat-label>
+                    <input formControlName="lastName" autocomplete="lastName" matInput name="lastName" type="text" />
+                    <mat-error *ngIf="formWidget.controls['lastName'].invalid">
+                        {{'errors.required' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                <mat-form-field fxFlex="48" appearance="outline" class="full-width">
+                    <mat-label>{{ 'profile.account.email' | translate }}</mat-label>
+                    <input formControlName="email" autocomplete="email" matInput name="email" type="text" />
+                    <mat-error *ngIf="formWidget.controls['email'].invalid">
+                        {{'errors.required' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="48" appearance="outline" class="full-width">
+                    <mat-label>Phone</mat-label>
+                    <input formControlName="phone" autocomplete="phone" matInput name="phone" type="text" />
+                    <mat-error *ngIf="formWidget.controls['phone'].invalid">
+                        {{'errors.required' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <mat-form-field fxFlex appearance="outline" class="full-width">
+                    <mat-label>Where do you live?(City/Country)</mat-label>
+                    <input formControlName="address" autocomplete="adress" matInput name="address" type="text" />
+                    <mat-error *ngIf="formWidget.controls['address'].invalid">
+                        {{'errors.required' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div [ngSwitch]="block.sys.contentType.sys.id" *ngFor="let block of widget.fields.blocks">
+            <doo-block-layouts *ngSwitchCase="'block'" [block]="block">
+            </doo-block-layouts>
+            <div *ngSwitchCase="'question'">
+                <div class="doo-contentful" [innerHTML]="block.fields.question | richTextPipe">
+
+                </div>
+                <div [ngSwitch]="block.fields.type">
+                    <mat-form-field *ngSwitchCase="'free text'" appearance="outline" fxFlex>
+                        <textarea [errorStateMatcher]="matcher" [formControlName]="block.fields.name"
+                            matInput></textarea>
+                        <mat-error *ngIf="formWidget.controls[block.fields.name].invalid">
+                            {{'errors.required' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-radio-group [formControlName]="block.fields.name" fxLayout="column" fxLayoutGap="5px"
+                        *ngSwitchCase="'multiple choice'">
+                        <mat-radio-button *ngFor="let choice of block.fields.choices ; let i = index" [value]="choice"
+                            [checked]="i==0">
+                            <span class="wrap-mat-radio-label">
+                                    {{choice}}
+                            </span>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field *ngSwitchCase="'short text'" appearance="outline">
+                        <input [errorStateMatcher]="matcher" [formControlName]="block.fields.name" matInput
+                            type="text" />
+                        <mat-error *ngIf="formWidget.controls[block.fields.name].invalid">
+                            {{'errors.required' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </div>
+        <button color="primary" mat-flat-button class="doo-cta-btn" (click)="submitForm()" type="submit">
+            SUBMIT
+        </button>
+    </div>
+</div> 

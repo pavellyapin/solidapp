@@ -12,7 +12,7 @@ import {
       'top': '60px'
     })),
     state('bottom', style ({
-      'top': '10px'
+      'top': '0px'
     })),
     transition('top => bottom', animate('500ms ease-in')),
     transition('bottom => top', animate('500ms ease-out'))

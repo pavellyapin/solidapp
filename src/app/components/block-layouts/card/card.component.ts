@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, NgZone, ChangeDetectorRef } from '@angular/core';
 import { StateChange } from 'ng-lazyload-image';
+import { UtilitiesService } from 'src/app/services/util/util.service';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
 
 @Component({
   selector: 'doo-card-post',
@@ -9,6 +11,7 @@ import { StateChange } from 'ng-lazyload-image';
 export class CardPostComponent implements OnInit {
 
   @Input() block;
+  @Input() resolution;
   imgLoaded: boolean = false;
   @ViewChild('postImg', { static: false }) mediaElement: ElementRef;
   @ViewChild('content', { static: false }) contentElement: ElementRef;
@@ -17,6 +20,8 @@ export class CardPostComponent implements OnInit {
 
   constructor(private renderer: Renderer2,
     private zone: NgZone,
+    public navService : NavigationService,
+    public utils : UtilitiesService,
     private changeDetectorRef: ChangeDetectorRef, ) {
   }
 
@@ -24,6 +29,15 @@ export class CardPostComponent implements OnInit {
 
   }
 
+  navigate() {
+    if(this.block.fields.imageAction) {
+      if (this.block.fields.imageAction.fields.action) {
+        this.navService.ctaClick(this.block.fields.imageAction.fields.action)
+      } else {
+        this.navService.navigateExternalURL(this.block.fields.imageAction.fields.externalUrl);
+      }
+    }
+  }
   myCallbackFunction(event: StateChange) {
     switch (event.reason) {
       case 'setup':

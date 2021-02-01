@@ -1,12 +1,16 @@
 <div fxLayout="row" fxLayoutAlign="center">
         <div fxLayout="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100" fxFlex.lt-sm
                 [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
-                <div fxLayout="row" fxLayoutAlign="center" [class.primary-background]="block.fields.textBackground == 'Primary'"
+                <div fxLayout="row" [fxLayoutAlign]="block.fields.contentPosition? block.fields.contentPosition : 'center'"
+                        [class.primary-background]="block.fields.textBackground == 'Primary'"
                         [class.accent-background]="block.fields.textBackground == 'Accent'"
                         [class.white-background]="block.fields.textBackground == 'White'"
                         [class.black-background]="block.fields.textBackground == 'Black'">
-                        <div fxLayout="column" [fxFlex]="block.fields.textBoxWidth" fxFlex.lt-md="100" style="padding:20px">
+                        <div fxLayout="column" [fxFlex]="block.fields.textBoxWidth" fxFlex.lt-md="100"
+                                style="padding:20px">
                                 <div class="doo-cta-content doo-contentful"
+                                        [class.wrap-left]="['start' , 'center'].includes(block.fields.contentPosition)"
+                                        [class.wrap-right]="['end'].includes(block.fields.contentPosition)"
                                         [class.primary-color]="block.fields.textColor == 'Primary'"
                                         [class.accent-color]="block.fields.textColor == 'Accent'"
                                         [class.white-color]="block.fields.textColor == 'White'"
@@ -15,6 +19,8 @@
                                         [innerHTML]="block.fields.content | richTextPipe">
                                 </div>
                                 <div class="doo-cta-content doo-contentful"
+                                        [class.wrap-left]="['start' , 'center'].includes(block.fields.contentPosition)"
+                                        [class.wrap-right]="['end'].includes(block.fields.contentPosition)"
                                         [class.primary-color]="block.fields.otherTextColor == 'Primary'"
                                         [class.accent-color]="block.fields.otherTextColor == 'Accent'"
                                         [class.white-color]="block.fields.otherTextColor == 'White'"

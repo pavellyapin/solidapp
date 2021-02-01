@@ -42,3 +42,19 @@
       opacity: 0.2;
     }
   }
+
+  ::ng-deep .wrap-left {
+    .img-wrap{
+       float: left;
+       width:50%;
+       margin-right:15px;
+     }
+   }
+ 
+   ::ng-deep .wrap-right {
+     .img-wrap{
+       float: right;
+       width:50%;
+       margin-left:15px;
+     }
+   }

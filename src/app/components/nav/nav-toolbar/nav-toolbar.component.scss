@@ -8,25 +8,25 @@
 }
 
 .doo-primary-toolbar {
-  background-color: #ffffff;
+  background-color: $nav-bk;
   mat-toolbar {
     @include mat-elevation(0);
-    background-color: #ffffff;
+    background-color: $nav-bk;
     padding: 0% 5% !important;
     height: 100%;
     position: relative;
     z-index: 12;
   }
   .doo-menu-items{
-    padding: 0% 5% !important;
+    padding: 0% 5%;
     position: absolute !important;
-    background-color: #ffffff;
+    background-color: $nav-bk;
     top: 0px;
     z-index: 1;
   }
   .doo-menu-actions {
     z-index: 15;
-    background :white;
+    background :$nav-bk;
     height: 100%;
   }
 }

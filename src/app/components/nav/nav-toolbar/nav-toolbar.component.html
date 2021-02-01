@@ -10,7 +10,7 @@
         </mat-icon>
       </button>
       <button (click)="navigateHome()" mat-button class="doo-nav-toggle-button">
-        <img [src]="siteSettings?.fields.logo.fields.file.url">
+        <img class = "full-width" [src]="siteSettings?.fields.logo.fields.file.url">
       </button>
       <form *ngIf="siteSettings && bigScreens.includes(resolution) && siteSettings.fields.globalSearchEnabled"
         fxLayoutAlign="center center" fxFlex="50" class="mat-caption doo-search-box">
