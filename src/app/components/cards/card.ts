@@ -64,9 +64,9 @@ export class Card {
   static rowsMapBig = new Map([
     ['xs', 20],
     ['sm', 14],
-    ['md', 11],
-    ['lg', 10],
-    ['xl', 10],
+    ['md', 9],
+    ['lg', 8],
+    ['xl', 8],
   ]);
 
 }

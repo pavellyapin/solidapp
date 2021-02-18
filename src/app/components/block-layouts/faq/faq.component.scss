@@ -1,0 +1,21 @@
+@import 'src/css/_variables.scss';
+@import 'src/css/contentful.scss';
+
+::ng-deep  .doo-faq {
+    min-width: 70px;
+    min-height: 70px;
+    padding-right: 30px;
+    #doo-corner {
+        rect {
+            fill: $accent !important;
+        }
+        polygon {
+            fill: $accent !important;
+        }
+    }
+    #doo-circle{
+        stroke: none !important;
+        //fill: $primary !important;
+    }
+}
+

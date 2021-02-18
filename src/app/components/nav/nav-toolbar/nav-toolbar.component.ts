@@ -11,7 +11,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-nav-toolbar',
-  templateUrl: './custom-nav-toolbar.component.html',
+  templateUrl: './nav-toolbar.component.html',
   styleUrls: ['./nav-toolbar.component.scss'],
   animations: [navbarTransition]
 })

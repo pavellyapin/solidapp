@@ -17,6 +17,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ExpandBlockComponent } from './expand/expand.component';
 import { ShippingBoxComponent } from './shipping-box/shipping-box.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { FAQPostComponent } from './faq/faq.component';
 
 @NgModule({
     declarations: [BackgroundImageBlockComponent,
@@ -28,7 +29,8 @@ import { TranslateModule } from '@ngx-translate/core';
                    RowOfTwoPostComponent,
                    RowOfThreePostComponent,
                    ExpandBlockComponent,
-                   ShippingBoxComponent],
+                   ShippingBoxComponent,
+                   FAQPostComponent],
     imports: [
         CommonModule,
         PipesModule,

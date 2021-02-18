@@ -18,7 +18,7 @@ export class AuthService {
 
   constructor(public afAuth: AngularFireAuth,
     private firestore: AngularFirestore) {
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    firebase.default.auth().setPersistence(firebase.default.auth.Auth.Persistence.LOCAL);
     this.afAuth.authState.subscribe(
       (auth) => {
         this.authReady$.next(true);
@@ -34,7 +34,7 @@ export class AuthService {
 
   doLogin(email, password): Observable<any> {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().signInWithEmailAndPassword(email, password)
+      firebase.default.auth().signInWithEmailAndPassword(email, password)
         .then(res => {
           resolve(res);
         }, err => reject(err));
@@ -43,7 +43,7 @@ export class AuthService {
 
   getRedirectResult() {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().getRedirectResult()
+      firebase.default.auth().getRedirectResult()
         .then(res => {
           console.log('res',res);
           if (res.user && res.additionalUserInfo.isNewUser) {
@@ -72,15 +72,15 @@ export class AuthService {
 
   signInWithRedirect(provider) {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().signInWithRedirect(provider == 'google' ? new firebase.auth.GoogleAuthProvider() : new firebase.auth.FacebookAuthProvider());
+      firebase.default.auth().signInWithRedirect(provider == 'google' ? new firebase.default.auth.GoogleAuthProvider() : new firebase.default.auth.FacebookAuthProvider());
     }));
   }
 
   doLoginWithGoogle() {
     return from(new Promise<any>((resolve, reject) => {
       if (this.uid) {
-        firebase.auth().signOut().then(() => {
-          firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        firebase.default.auth().signOut().then(() => {
+          firebase.default.auth().signInWithPopup(new firebase.default.auth.GoogleAuthProvider())
             .then(res => {
               if (res.additionalUserInfo.isNewUser) {
                 this.firestore
@@ -101,7 +101,7 @@ export class AuthService {
             }, err => reject(err));
         });
       } else {
-        firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        firebase.default.auth().signInWithPopup(new firebase.default.auth.GoogleAuthProvider())
           .then(res => {
             if (res.additionalUserInfo.isNewUser) {
               this.firestore
@@ -127,8 +127,8 @@ export class AuthService {
   doLoginWithFacebook() {
     return from(new Promise<any>((resolve, reject) => {
       if (this.uid) {
-        firebase.auth().signOut().then(() => {
-          firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        firebase.default.auth().signOut().then(() => {
+          firebase.default.auth().signInWithPopup(new firebase.default.auth.FacebookAuthProvider())
             .then(res => {
               if (res.additionalUserInfo.isNewUser) {
                 this.firestore
@@ -149,7 +149,7 @@ export class AuthService {
             }, err => reject(err));
         });
       } else {
-        firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        firebase.default.auth().signInWithPopup(new firebase.default.auth.FacebookAuthProvider())
           .then(res => {
             if (res.additionalUserInfo.isNewUser) {
               this.firestore
@@ -174,8 +174,8 @@ export class AuthService {
 
   doLogout() {
     return from(new Promise((resolve, reject) => {
-      if (firebase.auth().currentUser) {
-        this.afAuth.auth.signOut();
+      if (firebase.default.auth().currentUser) {
+        this.afAuth.signOut();
         this.uid = null;
         this.idToken = null;
         resolve();
@@ -188,8 +188,8 @@ export class AuthService {
   doRegister(email, password) {
     return from(new Promise<any>((resolve, reject) => {
       if (this.uid) {
-        firebase.auth().signOut().then(() => {
-          firebase.auth().createUserWithEmailAndPassword(email, password)
+        firebase.default.auth().signOut().then(() => {
+          firebase.default.auth().createUserWithEmailAndPassword(email, password)
             .then(res => {
               this.firestore
                 .collection("customers")
@@ -208,7 +208,7 @@ export class AuthService {
             }, err => reject(err));
         });
       } else {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+        firebase.default.auth().createUserWithEmailAndPassword(email, password)
           .then(res => {
             this.firestore
               .collection("customers")
@@ -230,13 +230,13 @@ export class AuthService {
 
 
   updatePassword(password, newPassword) {
-    let credentials = firebase.auth.EmailAuthProvider.credential(
-      firebase.auth().currentUser.email, password);
+    let credentials = firebase.default.auth.EmailAuthProvider.credential(
+      firebase.default.auth().currentUser.email, password);
 
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().currentUser.reauthenticateWithCredential(credentials).then(
+      firebase.default.auth().currentUser.reauthenticateWithCredential(credentials).then(
         () => {
-          firebase.auth().currentUser.updatePassword(newPassword);
+          firebase.default.auth().currentUser.updatePassword(newPassword);
         }, err => reject(err));
     }
     ));
@@ -244,7 +244,7 @@ export class AuthService {
 
   forgotPassword(email) {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().sendPasswordResetEmail(email).then(
+      firebase.default.auth().sendPasswordResetEmail(email).then(
         (res) => {
           resolve(res);
         }, err => reject(err));
@@ -254,7 +254,7 @@ export class AuthService {
 
   verifyPasswordResetCode(code) {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().verifyPasswordResetCode(code).then(
+      firebase.default.auth().verifyPasswordResetCode(code).then(
         (res) => {
           resolve(res);
         }, err => reject(err));
@@ -264,7 +264,7 @@ export class AuthService {
 
   confirmPasswordReset(code, newPassword) {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().confirmPasswordReset(code, newPassword).then(
+      firebase.default.auth().confirmPasswordReset(code, newPassword).then(
         (res) => {
           resolve(res);
         }, err => reject(err));
@@ -274,7 +274,7 @@ export class AuthService {
 
   updateEmail(newEmail) {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.auth().currentUser.updateEmail(newEmail).then(
+      firebase.default.auth().currentUser.updateEmail(newEmail).then(
         res => {
           resolve(res);
         }, err => reject(err));

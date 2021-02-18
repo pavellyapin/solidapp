@@ -38,7 +38,7 @@ import * as UserActions from 'src/app/services/store/user/user.action';
       .pipe(
         map(x => {
           this.settings = x;
-          if (x.fields.footer) {
+          if (x && x.fields.footer) {
             this.footerSections = x.fields.footer.filter(section => {if (section.sys.contentType.sys.id == 'block') {return section}});
             this.footerLinks = x.fields.footer.filter(section => {if (section.sys.contentType.sys.id == 'cta') {return section}});
             //console.log('footer' , this.footerLinks)

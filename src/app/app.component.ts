@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as firebase from 'firebase/app'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -209,9 +210,19 @@ export class AppComponent {
       'doo-tag',
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/tag.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      'doo-faq-q',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/faq-q.svg")
+    );
+    this.matIconRegistry.addSvgIcon(
+      'doo-faq-a',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/faq-a.svg")
+    );
   }
 
   ngOnInit() {
-    firebase.analytics();
+    if (environment.production) {
+      firebase.default.analytics();
+    }
    }
 }

@@ -19,6 +19,7 @@ export class CustomComponent implements OnInit {
   customPageContent : Entry<any>;
   settings$: Observable<Entry<any>[]>;
   SettingsSubscription: Subscription;
+  RouterSubscription: Subscription;
 
   sitePages : Entry<any>[];
 
@@ -43,7 +44,7 @@ export class CustomComponent implements OnInit {
     )
     .subscribe();
 
-    this.router.events.subscribe((val) => {
+    this.RouterSubscription = this.router.events.subscribe((val) => {
       if(val instanceof NavigationEnd) {
         this.getCustomPage();
       }
@@ -65,6 +66,7 @@ export class CustomComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.SettingsSubscription.unsubscribe();
+    this.RouterSubscription.unsubscribe();
   }
 
 }

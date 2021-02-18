@@ -22,7 +22,7 @@ import { CartReducer } from './services/store/cart/cart.reducer';
 import { PipesModule } from './components/pipes/pipes.module';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireFunctionsModule, FUNCTIONS_ORIGIN } from '@angular/fire/functions';
+import { AngularFireFunctionsModule} from '@angular/fire/functions';
 import { ProductsReducer } from './services/store/product/product.reducer';
 import { ProductsEffects } from './services/store/product/product.effects';
 import { CartEffects } from './services/store/cart/cart.effects';
@@ -87,7 +87,6 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       ],
       multi: true,
     },
-    { provide: FUNCTIONS_ORIGIN, useValue: environment.functionsOrigin },
     {provide: JQ_TOKEN , useValue:jQuery}
   ],
   bootstrap: [AppComponent],

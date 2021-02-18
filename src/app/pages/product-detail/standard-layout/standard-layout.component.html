@@ -28,7 +28,7 @@
       <div fxLayout="column">
         <div *ngIf="(productDetails.fields.discount && !variantPrice) || variantDiscount" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
             <mat-icon class = "doo-price-tag" svgIcon="doo-tag"></mat-icon>
-            <span class="mat-caption accent-color">Low Price</span>
+            <span class="mat-caption accent-color">{{ 'product.discount' | translate }}</span>
         </div>
         
         <div fxLayout="row" fxLayoutAlign="center">

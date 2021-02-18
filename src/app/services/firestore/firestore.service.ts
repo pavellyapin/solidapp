@@ -148,7 +148,7 @@ export class FirestoreService {
             }
 
         } else {
-            return from (firebase.auth().signInAnonymously().then((creds)=>{
+            return from (firebase.default.auth().signInAnonymously().then((creds)=>{
                 return this.firestore
                     .collection("customers").doc("customers").collection(creds.user.uid)
                     .doc(this.ordersCollection).collection("orders").add({cart : cart.cart , status : "created"}).catch((error)=> {
@@ -170,7 +170,7 @@ export class FirestoreService {
                     console.error(error);
                 }));
         } else {
-            return from(firebase.auth().signInAnonymously().then((creds) => {
+            return from(firebase.default.auth().signInAnonymously().then((creds) => {
                 return this.firestore
                     .collection("form").add({ form: form }).then((x) => {
                         return { id: x.id };
