@@ -23,10 +23,6 @@ export const SuccessLoginWithRedirectAction = createAction(
   '[User] - Success Redirect Login'
 );
 
-export const BeginGetRedirectResultAction = createAction(
-  '[User] - Begin Redirect result Login'
-);
-
 export const BeginGoogleUserLoginAction = createAction(
   '[User] - Begin Google Login'
 );
@@ -41,15 +37,6 @@ export const BeginGetUserInfoAction = createAction(
 
 export const SuccessGetUserInfoAction = createAction(
   '[User] - Success Login & Get User Info',
-  props<{ payload: any }>()
-);
-
-export const BeginGetSiteInfoAction = createAction(
-  '[User] - Begin Get Site Info'
-);
-
-export const SuccessGetSiteInfoAction = createAction(
-  '[User] - Success Login & Get Site Info',
   props<{ payload: any }>()
 );
 

@@ -1,1 +1,21 @@
 @import 'src/css/_dashboard.scss';
+
+
+.mat-column-select {
+    max-width: 64px;
+  }
+
+  .mat-column-id {
+    max-width: 200px;
+    min-width: 200px;
+  }
+
+  .mat-column-date {
+    max-width: 100px;
+    min-width: 100px;
+  }
+
+  .mat-column-name {
+    max-width: 220px;
+    min-width: 220px;
+  }

@@ -1,0 +1,24 @@
+<div fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="column" fxLayoutGap = "10px" class="doo-contentful max-width" fxFlex>
+        <div class="full-width" fxLayoutAlign="end">
+            <mat-icon class="doo-pointer" svgIcon="doo-close" (click)="dialogRef.close()"></mat-icon>
+        </div>
+        <span class="mat-headline doo-letter-space doo-bottom-border">
+            Review {{data.order.order.cart.itemCount}} items
+        </span>
+        <div fxLayout="row" fxLayoutAlign="center">
+            <doo-cart-items fxFlex = "80" [cartItems]="data.order.order.cart.cart"></doo-cart-items>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-md="center">
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" fxLayoutGap.lt-md="15px" fxFlex="80"
+                fxLayoutAlign="end">
+                <button color="accent" mat-stroked-button class="doo-cta-btn" (click)="onNoClick()">
+                    CANCEL
+                </button>
+                <button color="primary" mat-flat-button class="doo-cta-btn" [mat-dialog-close]="'fulfill'" cdkFocusInitial>
+                    REVIEW
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

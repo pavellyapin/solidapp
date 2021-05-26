@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Observable, Subscription } from 'rxjs';
@@ -15,12 +15,14 @@ import * as AdminActions from 'src/app/services/store/admin/admin.action';
 import { ofType, Actions } from '@ngrx/effects';
 import { ConfirmDeleteCartModalComponent } from '../modals/confirm-delete/confirm-delete.component';
 
-export interface CustomerData {
+export interface CartData {
+  status : string;
   id: string;
   name: string;
   email: string;
-  orders: string;
-  total: string;
+  uid:string;
+  date: string;
+  itemCount: string;
 }
 
 @Component({
@@ -33,14 +35,15 @@ export class DashboardCartsOverviewComponent implements OnInit {
 
   admin$: Observable<any>;
   AdminSubscription: Subscription;
-  DeleteCustomerSubscription : Subscription;
+  DeleteCartsSubscription : Subscription;
   SettingsSubscription: Subscription;
   settings$: Observable<SettingsState>;
   resolution: any;
 
-  customers: any;
-  customerFilter: any = 'all';
-  displayedColumns: string[] = ['select', 'name', 'orders', 'total'];
+  carts: any;
+  cartFilter: any = 'all';
+  displayedColumns: string[] = ['select','id','name', 'date','itemCount'];
+  
   dataSource: MatTableDataSource<any>;
 
   selection = new SelectionModel<any>(true, []);
@@ -51,27 +54,21 @@ export class DashboardCartsOverviewComponent implements OnInit {
     private router: Router,
     private _actions$: Actions,
     private dialog: MatDialog,
-    private utilService: UtilitiesService) {
+    public utilService: UtilitiesService,
+    private changeDetectorRef: ChangeDetectorRef,) {
 
     this.admin$ = store.pipe(select('admin','carts'));
     this.settings$ = store.pipe(select('settings'));
   }
 
   ngOnInit() {
-    this.navSerivce.startLoading();
-    this.AdminSubscription = this.admin$
-      .pipe(
-        map(x => {
-          if (x) {
-            this.customers = x;
-            const customers = Array.from(x, customer => this.createCustomer(customer));
-            this.dataSource = new MatTableDataSource(customers);
-            this.dataSource.paginator = this.paginator;
-            this.navSerivce.finishLoading();
-          }
-        })
-      )
-      .subscribe();
+      this.AdminSubscription = this._actions$.pipe(ofType(AdminActions.SuccessLoadCartsAction)).subscribe((result) => {
+        this.carts = result.payload;
+        const carts = Array.from(result.payload, cart => this.createCart(cart));
+        this.dataSource = new MatTableDataSource(carts);
+        this.dataSource.paginator = this.paginator;
+        this.navSerivce.finishLoading();
+      });
 
       this.SettingsSubscription = this.settings$
       .pipe(
@@ -81,47 +78,35 @@ export class DashboardCartsOverviewComponent implements OnInit {
       )
       .subscribe();
 
-      this.DeleteCustomerSubscription = this._actions$.pipe(ofType(AdminActions.SuccessDeleteCustomersAction)).subscribe((result) => {
+      this.DeleteCartsSubscription = this._actions$.pipe(ofType(AdminActions.SuccessDeleteCartsAction)).subscribe((result) => {
+        this.selection.clear();
         this.store.dispatch(AdminActions.BeginLoadCartsAction());
       });
   }
 
-  createCustomer(customer, filter?): CustomerData {
-    if (!filter || filter == 'all') {
+  createCart(cart, filter?): CartData {
+    if (!filter || filter == 'all' || cart.status == filter) {
       return {
-        id: customer.id,
-        name: customer.personalInfo ? customer.personalInfo.firstName + ' ' + customer.personalInfo.lastName : 'Guest User',
-        email: customer.personalInfo ? customer.personalInfo.email : 'Guest User',
-        orders: customer.orders,
-        total: customer.ordersTotal
-      };
-    } else if (filter == 'registered' && customer.personalInfo) {
-      return {
-        id: customer.id,
-        name: customer.personalInfo ? customer.personalInfo.firstName + ' ' + customer.personalInfo.lastName : 'Guest User',
-        email: customer.personalInfo ? customer.personalInfo.email : 'Guest User',
-        orders: customer.orders,
-        total: customer.ordersTotal
-      };
-    } else if (filter == 'guest' && !customer.personalInfo) {
-      return {
-        id: customer.id,
-        name: customer.personalInfo ? customer.personalInfo.firstName + ' ' + customer.personalInfo.lastName : 'Guest User',
-        email: customer.personalInfo ? customer.personalInfo.email : 'Guest User',
-        orders: customer.orders,
-        total: customer.ordersTotal
+        id: cart.cartId,
+        status : cart.status,
+        uid : cart.uid,
+        name: cart.personalInfo ? cart.personalInfo.firstName + ' ' + cart.personalInfo.lastName : 'Guest User',
+        email: cart.personalInfo ? cart.personalInfo.email : 'Guest User',
+        date : cart.date,
+        itemCount: cart.itemCount,
       };
     }
   }
 
-  filterCustomer(type) {
-    this.customerFilter = type;
-    let customers = Array.from(this.customers, customer => this.createCustomer(customer, type));
-    customers = customers.filter(function (element) {
+  filterCarts(type) {
+    this.cartFilter = type;
+    let carts = Array.from(this.carts, cart => this.createCart(cart, type));
+    carts = carts.filter(function (element) {
       return element !== undefined;
     });
-    this.dataSource = new MatTableDataSource(customers);
+    this.dataSource = new MatTableDataSource(carts);
     this.dataSource.paginator = this.paginator;
+
   }
 
   applyFilter(event: Event) {
@@ -131,11 +116,13 @@ export class DashboardCartsOverviewComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+
+    this.changeDetectorRef.detectChanges();
   }
 
-  goToCustomer(id) {
+  goToCart(cartId,uid) {
     this.navSerivce.startLoading();
-    this.router.navigateByUrl('store/customers/' + id)
+    this.router.navigateByUrl('store/carts/' + cartId + '/' + (uid ? uid : '') )
   }
 
   toggleAll($event) {
@@ -163,18 +150,12 @@ export class DashboardCartsOverviewComponent implements OnInit {
   }
 
   confirmDeletePopUp() {
-
-    let customersWithOrders = this.selection.selected.filter(customer=> {
-      if (customer.orders) {
-        return customer;
-      }
-    }).length;
     let config;
     if (this.utilService.bigScreens.includes(this.resolution)) {
       config = {
         height: '40%',
         width: '60vw',
-        data: { count: this.selection.selected.length , withOrders: customersWithOrders }
+        data: { count: this.selection.selected.length }
       };
     } else {
       config = {
@@ -193,7 +174,7 @@ export class DashboardCartsOverviewComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.navSerivce.startLoading();
-        this.store.dispatch(AdminActions.BeginDeleteCustomersAction({payload : this.selection.selected}));
+        this.store.dispatch(AdminActions.BeginDeleteCartsAction({payload : this.selection.selected}));
         console.log('The dialog was closed' , result);
       }
     });
@@ -202,7 +183,7 @@ export class DashboardCartsOverviewComponent implements OnInit {
   ngOnDestroy(): void {
     this.AdminSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
-    this.DeleteCustomerSubscription.unsubscribe();
+    this.DeleteCartsSubscription.unsubscribe();
   }
 
 }

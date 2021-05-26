@@ -1,12 +1,83 @@
-<div fxLayout="column">
-        <div [ngSwitch]="block.sys.contentType.sys.id" *ngFor = "let block of homePageContent?.fields.blocks">
-                <doo-widgets *ngSwitchCase="'widget'" [widget] = "block">
-                </doo-widgets>
-                <doo-block-layouts *ngSwitchCase="'block'" [block] = "block">
-                </doo-block-layouts>
+<mat-drawer-container>
+    <mat-drawer [opened]="isSummaryOpen" (closedStart)="isSummaryOpen = false;"
+        [mode]="utilService.bigScreens.includes(this.resolution) ? 'side' : 'over'"
+        [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-home-summary' : 'doo-home-mobile-summary'"
+        autoFocus="false" position="end">
+        <div *ngIf="!this.utilService.bigScreens.includes(this.resolution)" fxLayout="row" fxLayoutAlign="start end"
+            class="doo-filters-btn">
+            <button mat-button fxLayout="row" (click)="utilService.scrollTop() ; isSummaryOpen = false;">
+                <mat-icon svgIcon="doo-arrow-left"></mat-icon>
+            </button>
         </div>
-</div>
+        <div class="dash-home-date-dropdown doo-bottom-border" fxLayout="column" fxLayoutGap="10px"
+            fxLayoutAlign="space-between">
+            <button mat-stroked-button [matMenuTriggerFor]="menu">
+                <div fxLayout="row" fxLayoutAlign="center start">
+                    <span *ngIf="isQuickLook">{{'dashboard.' + currentLookup | translate}}</span>
+                    <span *ngIf="!isQuickLook">{{ selectedDate | date : 'mediumDate'}}</span>
+                    <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+                </div>
+            </button>
+            <mat-menu #menu="matMenu" direction="center">
+                <button mat-menu-item (click)="getStatsQuickLook('today')">{{'dashboard.today' | translate}}</button>
+                <button mat-menu-item
+                    (click)="getStatsQuickLook('yesterday')">{{'dashboard.yesterday' | translate}}</button>
+                <button mat-menu-item (click)="getStatsQuickLook('week')">{{'dashboard.week' | translate}}</button>
+                <button mat-menu-item (click)="getStatsQuickLook('month')">{{'dashboard.month' | translate}}</button>
+                <mat-calendar #dooCalendar (click)="$event.stopPropagation()" [selected]="selectedDate"
+                    (selectedChange)="getStatsForDate($event)">
+                </mat-calendar>
+            </mat-menu>
+        </div>
+        <div fxLayout="column" fxLayoutGap="10px" class="dash-home-summary-row doo-bottom-border">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <span>
+                    TOTAL SALES
+                </span>
+                <span *ngIf="isQuickLook" class="doo-opacity">
+                    {{'dashboard.' + currentLookup | translate}}
+                </span>
+                <span *ngIf="!isQuickLook" class="doo-opacity">
+                    {{ selectedDate | date : 'mediumDate'}}
+                </span>
 
+            </div>
+            <div *ngIf="!stats || !stats.count" class="doo-opacity">
+                There were no sales during this time.
+            </div>
+            <div *ngIf="stats && stats.count" fxLayout="row" fxLayoutAlign="space-between">
+                <div class="mat-title" [innerHTML]="stats.total | pricePipe">
 
+                </div>
+                <div class="doo-opacity mat-subheading-1">
+                    {{stats.count}} orders
+                </div>
+            </div>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content style="min-height:100vh;">
+        <div fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end end" class="doo-filters-btn">
+            <button mat-button fxLayout="row" (click)="utilService.scrollTop() ; isSummaryOpen = true;">
+                <mat-icon svgIcon="doo-basket"></mat-icon>
+            </button>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center start" style="padding: 20px;">
+            <div fxLayout="column" fxFlex="80" fxLayoutGap="20px">
+                <span class="mat-caption doo-opacity">Here's what's happening with your store today.</span>
+                <button mat-button style="padding:0px;" (click)="goToOrder()">
+                    <mat-card>
+                        <div fxLayout="row" fxLayoutAlign="space-between">
+                            <div fxLayoutAlign="start center" fxLayoutGap="20px">
+                                <mat-icon svgIcon="doo-download"></mat-icon>
+                                <div class="mat-subheading-1 doo-no-margin"><strong>{{newOrders}} orders</strong> to
+                                    complete</div>
+                            </div>
 
-
+                            <mat-icon svgIcon="doo-arrow-right"></mat-icon>
+                        </div>
+                    </mat-card>
+                </button>
+            </div>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

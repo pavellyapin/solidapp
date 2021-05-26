@@ -99,7 +99,6 @@ export class ProfileComponent implements OnInit {
   public async logout() {
     this.navService.startLoading();
     this.store.dispatch(UserActions.BeginUserLogoutAction());
-    this.store.dispatch(CartActions.BeginResetCartAction());
     this.router.navigate(['']);
   }
 
@@ -124,7 +123,7 @@ export class ProfileComponent implements OnInit {
         this.router.navigateByUrl('account/orders');
         break;
       case 'store':
-        this.router.navigateByUrl('store');
+        this.router.navigateByUrl('store/overview');
         break;
       default:
 

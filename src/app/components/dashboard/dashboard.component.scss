@@ -23,8 +23,41 @@
         }
       }
 
+      .doo-dashboard-mobile-apps{
+        background-color: $lighter-grey;
+        width:  75%;
+        position: fixed;
+        padding-top:70px;
+        .dash-app-link{
+          padding-left: 10px;
+          font-size: 18px;
+          font-weight: 700;
+        }
+      }
+
+      .doo-dashboard-content{
+        min-height:100vh;
+        padding-left: 15%;
+      }
+
+      .doo-dashboard-mobile-content{
+        min-height:100vh;
+      }
+
       .doo-loading-screen {
         padding-left: 15%;
+      }
+
+      .dash-orders-btn{
+        ::ng-deep .mat-button-wrapper {
+          width: 100%;
+        }
+        .orders-count-circle{
+          background: $primary; 
+          font-size: 13px;
+          padding:5px 8px;
+          border-radius: 20px;
+        }
       }
 }
 

@@ -10,6 +10,8 @@ import * as AdminActions from 'src/app/services/store/admin/admin.action';
 import { ofType, Actions } from '@ngrx/effects';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { UtilitiesService } from 'src/app/services/util/util.service';
+import SettingsState from 'src/app/services/store/settings/settings.state';
 
 export interface OrderData {
   status : string;
@@ -32,8 +34,12 @@ export class DashboardOrdersOverviewComponent implements OnInit {
 
   admin$: Observable<any>;
   AdminSubscription: Subscription;
+  SettingsSubscription: Subscription;
+  settings$: Observable<SettingsState>;
+  resolution: any;
 
   orders: any;
+  searchKey: any = '';
   ordersFilter: any = 'all';
   displayedColumns: string[] = ['select','id', 'date', 'name','total','itemCount'];
   dataSource: MatTableDataSource<any>;
@@ -41,42 +47,38 @@ export class DashboardOrdersOverviewComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private store: Store<{ admin : AdminState}> ,
+  constructor(private store: Store<{ settings: SettingsState,admin : AdminState}> ,
               private navSerivce : NavigationService,
               private router: Router,
               private route: ActivatedRoute,
-              private _actions$: Actions) {
+              private _actions$: Actions,
+              public utilService: UtilitiesService) {
                 
                 this.admin$ = store.pipe(select('admin','orders'));
+                this.settings$ = store.pipe(select('settings'));
   }
 
   ngOnInit() {
 
-    if(this.route.snapshot.params["uid"]) {
-      this.store.dispatch(AdminActions.
-        BeginLoadCustomerOrdersAction({payload : this.route.snapshot.params["uid"]}));
-        this.AdminSubscription = this._actions$.pipe(ofType(AdminActions.SuccessLoadCustomerOrdersAction)).subscribe((result) => {
-          this.orders = result.payload;
-          const orders = Array.from(result.payload, order => this.createOrder(order));
-          this.dataSource = new MatTableDataSource(orders);
-          this.dataSource.paginator = this.paginator;
-          this.navSerivce.finishLoading();
-        })
-    } else {
-      this.AdminSubscription = this.admin$
-      .pipe(
-        map(x => {
-          if (x) {
-            this.orders = x;
-            const orders = Array.from(x, order => this.createOrder(order));
-            this.dataSource = new MatTableDataSource(orders);
-            this.dataSource.paginator = this.paginator;
-            this.navSerivce.finishLoading();
-          }
-        })
-      )
-      .subscribe();
-    }
+    this.AdminSubscription = this._actions$.pipe(ofType(AdminActions.SuccessLoadOrdersAction)).subscribe((result) => {
+      this.orders = result.payload;
+      const orders = Array.from(result.payload, order => this.createOrder(order));
+      this.dataSource = new MatTableDataSource(orders);
+      this.dataSource.paginator = this.paginator;
+      if(this.route.snapshot.params["uid"]) {
+        this.dataSource.filter = this.route.snapshot.params["uid"];
+        this.searchKey = this.route.snapshot.params["uid"];
+      }
+      this.navSerivce.finishLoading();
+    });
+
+    this.SettingsSubscription = this.settings$
+    .pipe(
+      map(x => {
+        this.resolution = x.resolution;
+      })
+    )
+    .subscribe();
   }
 
   createOrder(order, filter?): OrderData {
@@ -117,6 +119,7 @@ export class DashboardOrdersOverviewComponent implements OnInit {
       return element !== undefined;
     });
     this.dataSource = new MatTableDataSource(orders);
+    this.dataSource.filter = this.searchKey;
     this.dataSource.paginator = this.paginator;
   }
 
@@ -130,6 +133,7 @@ export class DashboardOrdersOverviewComponent implements OnInit {
   }
 
   goToOrder(orderId,uid) {
+    this.navSerivce.startLoading();
     this.router.navigateByUrl('store/orders/' + orderId + '/' + (uid ? uid : '') )
   }
 

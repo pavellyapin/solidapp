@@ -1,4 +1,30 @@
 {
+  "dashboard" : {
+    "cart" : {
+      "status" : {
+        "created" : "This cart was created by user",
+        "reviewed" : "You marked this cart as"
+      }
+    },
+    "order" : {
+      "status" : {
+        "card" : {
+          "created" : "Customer placed this order",
+          "paid": "Order was processed on Stripe",
+          "fullfilled" : "You fullfilled this order"
+        },
+        "paypal" : {
+          "created" : "Customer placed this order",
+          "paid": "Order was processed on PayPal",
+          "fullfilled" : "You fullfilled this order"
+        }
+      }
+    },
+    "today" : "Today",
+    "yesterday" : "Yesterday",
+    "week": "This week",
+    "month": "This month"
+  },
   "profile": {
         "buttons" : {
           "add" : "Add" ,
@@ -44,12 +70,13 @@
           "paid" : "Paid"
         }
     },
-    "product" : {
+  "product" : {
       "new" : "New",
       "size" : "Size",
       "color" : "Color",
       "support" : "Support",
       "qty" : "Quantity",
+      "discount" : "Sale",
       "validations" : {
         "size_required" : "Please select a size",
         "qty_required" : "Select quantity"

@@ -44,13 +44,13 @@ export class AdminEffects {
     )
   );
 
-  DeleteCustomers$: Observable<Action> = createEffect(() =>
+  DeleteCarts$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
-      ofType(AdminActions.BeginDeleteCustomersAction),
+      ofType(AdminActions.BeginDeleteCartsAction),
       mergeMap(action =>
-        this.adminService.deleteCustomers(action.payload).pipe(
+        this.adminService.deleteCarts(action.payload).pipe(
           map((data: any) => {
-            return AdminActions.SuccessDeleteCustomersAction();
+            return AdminActions.SuccessDeleteCartsAction();
           }),
           catchError((error: Error) => {
             return of(AdminActions.ErrorAdminAction(error));
@@ -59,6 +59,22 @@ export class AdminEffects {
       )
     )
   );
+
+  CleanupUsers$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(AdminActions.BeginCleanupUsersAction),
+    mergeMap(action =>
+      this.adminService.cleanupUsers().pipe(
+        map((data: any) => {
+          return AdminActions.SuccessCleanupUsersAction();
+        }),
+        catchError((error: Error) => {
+          return of(AdminActions.ErrorAdminAction(error));
+        })
+      )
+    )
+  )
+);
 
   GetCustomerDetails$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
@@ -124,6 +140,22 @@ export class AdminEffects {
     )
   );
 
+  StatsPerPeriod$: Observable<Action> = createEffect(() =>
+  this.action$.pipe(
+    ofType(AdminActions.BeginStatsPerPeriodAction),
+    mergeMap(action =>
+      this.adminService.statsForPeriod(action.payload.quickLook, action.payload.startDate, action.payload.endDate).pipe(
+        map((data: any) => {
+          return AdminActions.SuccessStatsPerPeriodAction({ payload: data });
+        }),
+        catchError((error: Error) => {
+          return of(AdminActions.ErrorAdminAction(error));
+        })
+      )
+    )
+  )
+);
+
   GetOrderDetails$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
       ofType(AdminActions.BeginLoadOrderDetailsAction),
@@ -157,19 +189,67 @@ export class AdminEffects {
   );
 
   UnfulfillOrder$: Observable<Action> = createEffect(() =>
-  this.action$.pipe(
-    ofType(AdminActions.BeginUnfulfillOrderAction),
-    mergeMap(action =>
-      this.adminService.unfullFillOrder(action.payload.uid, action.payload.orderId).pipe(
-        map((data: any) => {
-          return AdminActions.SuccessUnfulfillOrderAction({ payload: data });
-        }),
-        catchError((error: Error) => {
-          return of(AdminActions.ErrorAdminAction(error));
-        })
+    this.action$.pipe(
+      ofType(AdminActions.BeginUnfulfillOrderAction),
+      mergeMap(action =>
+        this.adminService.unfullFillOrder(action.payload.uid, action.payload.orderId).pipe(
+          map((data: any) => {
+            return AdminActions.SuccessUnfulfillOrderAction({ payload: data });
+          }),
+          catchError((error: Error) => {
+            return of(AdminActions.ErrorAdminAction(error));
+          })
+        )
       )
     )
-  )
-);
+  );
+
+  GetCartDetails$: Observable<Action> = createEffect(() =>
+    this.action$.pipe(
+      ofType(AdminActions.BeginLoadCartDetailsAction),
+      mergeMap(action =>
+        this.adminService.getCartDetails(action.payload.uid, action.payload.cartId).pipe(
+          map((data: any) => {
+            return AdminActions.SuccessLoadCartDetailsAction({ payload: data });
+          }),
+          catchError((error: Error) => {
+            return of(AdminActions.ErrorAdminAction(error));
+          })
+        )
+      )
+    )
+  );
+
+  ReviewCart$: Observable<Action> = createEffect(() =>
+    this.action$.pipe(
+      ofType(AdminActions.BeginReviewCartAction),
+      mergeMap(action =>
+        this.adminService.reviewCart(action.payload.uid, action.payload.cartId).pipe(
+          map((data: any) => {
+            return AdminActions.SuccessReviewCartAction({ payload: data });
+          }),
+          catchError((error: Error) => {
+            return of(AdminActions.ErrorAdminAction(error));
+          })
+        )
+      )
+    )
+  );
+
+  UnreviewCart$: Observable<Action> = createEffect(() =>
+    this.action$.pipe(
+      ofType(AdminActions.BeginUnReviewCartAction),
+      mergeMap(action =>
+        this.adminService.unreviewCart(action.payload.uid, action.payload.cartId).pipe(
+          map((data: any) => {
+            return AdminActions.SuccessUnReviewCartAction({ payload: data });
+          }),
+          catchError((error: Error) => {
+            return of(AdminActions.ErrorAdminAction(error));
+          })
+        )
+      )
+    )
+  );
 
 }

@@ -4,7 +4,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import SettingsState from 'src/app/services/store/settings/settings.state';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as AdminActions from 'src/app/services/store/admin/admin.action';
 import { ofType, Actions } from '@ngrx/effects';
 import { Entry } from 'contentful';
@@ -37,7 +37,8 @@ export class DashboardOrderDetailsComponent implements OnInit {
     private _actions$: Actions,
     private dialog: MatDialog,
     private utilService: UtilitiesService,
-    public route: ActivatedRoute) {
+    public route: ActivatedRoute,
+    private router: Router) {
 
     this.settings$ = store.pipe(select('settings'));
   }
@@ -60,6 +61,7 @@ export class DashboardOrderDetailsComponent implements OnInit {
       const dates = new Map<String, Array<any>>();
       const orderDate = new Date(parseInt(this.order.order.cart.date, 10));
       const dateString = orderDate.getMonth() + " " + orderDate.getDate() + "," + orderDate.getFullYear();
+      
       
       dates.set(dateString, [{action : 'created' , date : this.order.order.cart.date}]);
       dates.get(dateString).push({action : 'paid' , date : this.order.order.cart.date});
@@ -144,10 +146,11 @@ export class DashboardOrderDetailsComponent implements OnInit {
       BeginUnfulfillOrderAction({ payload: { "uid": this.route.snapshot.params["uid"], "orderId": this.route.snapshot.params["orderId"] } }));
   }
 
-  goToCustomer(id) {
-    console.log(id);
-
+  goToCustomer() {
+    this.navSerivce.startLoading();
+    this.router.navigateByUrl('/store/customers/' + this.route.snapshot.params["uid"]);
   }
+  
   ngOnDestroy(): void {
     this.OrderSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();

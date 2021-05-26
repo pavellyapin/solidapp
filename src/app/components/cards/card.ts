@@ -48,9 +48,9 @@ export class Card {
   static colsMap = new Map([
     ['xs', 24],
     ['sm', 24],
-    ['md', 18],
-    ['lg', 18],
-    ['xl', 18],
+    ['md', 24],
+    ['lg', 24],
+    ['xl', 24],
   ]);
   /* Big card column span map */
   static colsMapBig = new Map([
@@ -62,11 +62,11 @@ export class Card {
   ]);
   /* Small card column span map */
   static rowsMapBig = new Map([
-    ['xs', 20],
+    ['xs', 24],
     ['sm', 14],
-    ['md', 9],
-    ['lg', 8],
-    ['xl', 8],
+    ['md', 12],
+    ['lg', 11],
+    ['xl', 11],
   ]);
 
 }

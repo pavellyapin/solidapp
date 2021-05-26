@@ -8,13 +8,12 @@ import { CheckoutPaymentGuard } from './payment/payment.guard';
 import { CheckoutPaymentComponent } from './payment/payment.component';
 import { GuestCheckoutComponent } from './guest/guest.component';
 import { CartErrorComponent } from './error/error.component';
-import { CheckoutCartGuard } from './cart.guard';
 import { CartAuthGuard } from './cart-auth.guard';
 
 export const cartRoutes: NavRoute[] = [
   {data: {title: 'Cart' , isChild: true},
    canActivate : [CartAuthGuard],
-   canActivateChild : [CheckoutCartGuard],
+   canActivateChild : [CartAuthGuard],
    canDeactivate: [CartAuthGuard],
    path: '', 
    children : [

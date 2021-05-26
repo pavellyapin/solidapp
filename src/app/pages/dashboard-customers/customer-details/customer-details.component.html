@@ -1,75 +1,89 @@
-<div *ngIf="customerDetails" fxLayout="row" fxLayoutGap="20px" style="padding-top: 50px;">
-  <div fxFlex="70" fxLayout="column" fxLayoutGap="20px">
-    <mat-card class="example-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title class="doo-overview-title">
-          {{customerDetails.personalInfo? customerDetails.personalInfo.firstName + ' ' + customerDetails.personalInfo.lastName : 'Guest User'}}
-        </mat-card-title>
-        <mat-card-subtitle>Customer since {{(customerDetails.created ? customerDetails.created: customerDetails.orders[0].date) | timeAgo}}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
+<div *ngIf="customerDetails" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+  <app-dashboard-customer-actions class="max-width full-width" [customer]="customerDetails"
+    [customerId]="route.snapshot.params['uid']">
+  </app-dashboard-customer-actions>
+  <div fxLayout="column" class="max-width full-width">
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" class="max-width full-width pad-20">
+      <div fxFlex="70" fxLayout="column" fxLayoutGap="20px">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="doo-avatar"></div>
+            <mat-card-title>
+              <span class ="mat-title">
+                  {{customerDetails.personalInfo ? customerDetails.personalInfo.email : 'Guest User'}}
+              </span>
+            </mat-card-title>
+            <mat-card-subtitle>
+              <span class="mat-subheading-1">
+                  Customer since
+                  {{(customerDetails.created ? customerDetails.created: customerDetails.orders[0].date) | timeAgo}}
+              </span>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
 
-      </mat-card-content>
-      <mat-card-actions *ngIf="customerDetails.orders[0]">
-        <div fxLayout="row" fxLayoutAlign="center">
-          <div fxLayout="column">
-            <button mat-button>Last Order</button>
-            <span fxLayoutAlign="center">{{customerDetails.orders[0].date | timeAgo}}</span>
-          </div>
-          <div fxLayout="column">
-            <button mat-button disabled>Total spent to date</button>
-            <span fxLayoutAlign="center" [innerHTML]="customerDetails.ordersTotal | pricePipe"></span>
-            <span fxLayoutAlign="center">{{customerDetails.ordersCount}} orders</span>
-          </div>
-        </div>
+          </mat-card-content>
+          <mat-card-actions *ngIf="customerDetails.orders[0]">
+            <div fxLayout="row" fxLayoutAlign="center">
+              <div fxLayout="column">
+                <button (click)="goToOrder(customerDetails.orders[0].orderId)" mat-button>
+                  Last Order<span class="mat-subheading-1 doo-opacity" fxLayoutAlign="center">{{customerDetails.orders[0].date | timeAgo}}</span>
+                </button>
+                
+              </div>
+              <div fxLayout="column">
+                <button mat-button disabled>Total spent to date</button>
+                <span fxLayoutAlign="center" class="mat-subheading-1 doo-no-margin" [innerHTML]="customerDetails.ordersTotal | pricePipe"></span>
+                <span fxLayoutAlign="center">{{customerDetails.ordersCount}} orders</span>
+              </div>
+            </div>
 
-      </mat-card-actions>
-    </mat-card>
-    <mat-card class="example-card">
-      <mat-card-header>
-        <span class="mat-subheading-1">Orders placed</span>
-      </mat-card-header>
-      <mat-card-content>
-        <div *ngIf="customerDetails.orders[0]" fxLayout="column" fxLayoutGap="10px">
-          <div fxLayout="row" fxLayoutAlign="space-between">
-            <button mat-button class="accent-color">
-              Order #{{customerDetails.orders[displayedOrder].orderId}}
+          </mat-card-actions>
+        </mat-card>
+        <mat-card>
+           <mat-card-content>
+            <div *ngIf="customerDetails.orders[0]" fxLayout="column" fxLayoutGap="10px">
+              <div fxLayout="row" fxLayout.lt-md = "column" fxLayoutAlign="space-between">
+                <button mat-button class="accent-color" (click)="goToOrder(customerDetails.orders[displayedOrder].orderId)">
+                  Order #{{customerDetails.orders[displayedOrder].orderId}}
+                </button>
+                <span class="mat-subheading-1 doo-no-margin">{{customerDetails.orders[displayedOrder].date | date : 'medium'}}</span>
+              </div>
+              <span style="padding: 0 16px" class="mat-subheading-1 doo-no-margin" [innerHTML]="customerDetails.orders[displayedOrder].grandTotal | pricePipe">
+              </span>
+            </div>
+          </mat-card-content>
+          <mat-card-actions *ngIf="customerDetails.orders[0]" class="doo-orders-actions" fxLayout="row"
+            fxLayoutAlign="space-between">
+            <div class = "doo-top-border-radius">
+              <button class="doo-arrow-btn left" [class.disabled]="!displayedOrder" mat-button [disabled]="!displayedOrder"
+                (click)="displayedOrder = displayedOrder - 1">
+                <mat-icon svgIcon="doo-arrow-left"></mat-icon>
+              </button>
+              <button class="doo-arrow-btn right" mat-button
+                [class.disabled]="displayedOrder == (customerDetails.ordersCount-1)"
+                [disabled]="displayedOrder == (customerDetails.ordersCount-1)"
+                (click)="displayedOrder = displayedOrder + 1">
+                <mat-icon svgIcon="doo-arrow-right"></mat-icon>
+              </button>
+            </div>
+            <button (click)="goToCustomerOrders()" mat-button class="accent-color" style="line-height: 20px;">
+              View all orders
             </button>
-            <span style="line-height: 36px;">{{customerDetails.orders[displayedOrder].date | date : 'medium'}}</span>
-          </div>
-          <span style="padding: 0 16px" [innerHTML]="customerDetails.orders[displayedOrder].grandTotal | pricePipe">
-          </span>
-        </div>
-      </mat-card-content>
-      <mat-card-actions *ngIf="customerDetails.orders[0]" class="doo-orders-actions" fxLayout="row"
-        fxLayoutAlign="space-between">
-        <div>
-          <button class="doo-arrow-btn" [class.disabled]="!displayedOrder" mat-button [disabled]="!displayedOrder"
-            (click)="displayedOrder = displayedOrder - 1">
-            <mat-icon svgIcon="doo-arrow-left"></mat-icon>
-          </button>
-          <button class="doo-arrow-btn" mat-button [class.disabled]="displayedOrder == (customerDetails.ordersCount-1)"
-            [disabled]="displayedOrder == (customerDetails.ordersCount-1)"
-            (click)="displayedOrder = displayedOrder + 1">
-            <mat-icon svgIcon="doo-arrow-right"></mat-icon>
-          </button>
-        </div>
-        <button (click)="goToCustomerOrders()" mat-button class="accent-color" style="line-height: 20px;">
-          View all orders
-        </button>
-      </mat-card-actions>
-    </mat-card>
-    <div fxLayout="row" class="mat-title doo-bottom-border">Timeline</div>
+          </mat-card-actions>
+        </mat-card>
 
+      </div>
+    </div>
     <div fxLayout="column" class="timeline" fxLayoutGap="25px">
+      <div fxLayout="row" class="mat-title doo-bottom-border">Timeline</div>
       <div *ngFor="let date of activeDates | keyvalue: keyDescOrder" class="doo-bottom-border" fxLayout="column"
         fxLayoutGap="35px">
         <span class="mat-subheading-1 primary-color"
           style="text-transform: uppercase">{{date.value[0].date | date : 'longDate'}}</span>
-        <div fxLayout="row" *ngFor="let order of date.value" fxLayoutAlign="space-between" class="container right">
+        <div fxLayout="row" fxLayout.lt-md = "column" *ngFor="let order of date.value" fxLayoutAlign="space-between" class="mat-subheading-1 container right">
           <span>The customer placed order
-            <button mat-button class="accent-color" style="line-height: 20px;">
+            <button mat-button class="accent-color" style="line-height: 20px;" (click)="goToOrder(order.orderId)">
               #{{order.orderId}}
             </button>
           </span>
@@ -77,26 +91,5 @@
         </div>
       </div>
     </div>
-  </div>
-  <div fxFlex="30" fxLayout="column">
-    <mat-card class="example-card">
-      <mat-card-header>
-        <mat-card-title class="doo-overview-title">Customer overview</mat-card-title>
-        <mat-card-subtitle class="doo-bottom-border">{{customerDetails.personalInfo ? customerDetails.personalInfo.email : 'Guest User'}}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div fxLayout="column">
-          <div class="mat-subheading-1">DEFAULT ADDRESS</div>
-          <div *ngIf="customerDetails.address" fxLayout="column">
-            <span>{{customerDetails.address.addressLine1}}</span>
-            <span>{{customerDetails.address.addressLine2}}</span>
-            <span>{{customerDetails.address.city}}</span>
-            <span>{{customerDetails.address.postal}}</span>
-            <span>{{customerDetails.address.province}}</span>
-          </div>
-        </div>
-
-      </mat-card-content>
-    </mat-card>
   </div>
 </div>

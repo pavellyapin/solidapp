@@ -30,7 +30,7 @@ export class DashboardCustomerDetailsComponent implements OnInit {
     private _actions$: Actions,
     public util: UtilitiesService,
     private router: Router,
-    private route: ActivatedRoute) {
+    public route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -55,7 +55,7 @@ export class DashboardCustomerDetailsComponent implements OnInit {
   }
 
  keyDescOrder (a: KeyValue<number,string>, b: KeyValue<number,string>): number {
-    return a.key > b.key ? 1 : (b.key > a.key ? -1 : 0);
+    return a.key < b.key ? 1 : (b.key < a.key ? -1 : 0);
   }
 
   goToCustomerOrders() {
@@ -63,6 +63,10 @@ export class DashboardCustomerDetailsComponent implements OnInit {
     this.router.navigateByUrl('store/orders/' + this.route.snapshot.params["uid"])
 
   }
+   goToOrder(orderId) {
+    this.navSerivce.startLoading();
+    this.router.navigateByUrl('store/orders/' +orderId+'/' + this.route.snapshot.params["uid"])
+   }
 
   ngOnDestroy(): void {
     this.CustomerSubscription.unsubscribe();

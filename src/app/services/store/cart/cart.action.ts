@@ -38,7 +38,9 @@ export const BeginRemoveProductFromCartAction = createAction('[Cart] - Remove pr
 
   export const SuccessInitializeOrderAction = createAction('[Cart] - Success Initialize Order',props<{ payload: any }>()); 
 
-  export const SuccessBackGroundInitializeOrderAction = createAction('[Cart] - Success Initialize Order',props<{ payload: any }>()); 
+  export const SuccessBackGroundInitializeOrderAction = createAction('[Cart] - Success Initialize background Order',props<{ payload: any }>()); 
+
+  export const BeginBackGroundInitializeCartAction = createAction('[Cart] - Begin call global nav cart init',props<{ payload: any }>());  
 
   ///////
 

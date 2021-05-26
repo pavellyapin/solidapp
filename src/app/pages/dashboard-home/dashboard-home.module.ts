@@ -12,16 +12,29 @@ import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
 import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
 import { DashboardHomeRoutingModule } from './dashboard-home-routing.module';
 import { DashboardHomeComponent } from './dashboard-home.component';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from 'src/app/components/pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     DashboardHomeRoutingModule,
     MatGridListModule,
+    PipesModule,
     MatButtonModule,
     MatCardModule,
+    TranslateModule,
+    MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatMenuModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatTooltipModule,
     MatSidenavModule,
     FlexLayoutModule,

@@ -14,12 +14,12 @@ import { map } from 'rxjs/operators';
 })
 export class FeaturedProductsComponent implements OnInit {
 
-  @Input() widget :Entry<any>;
+  @Input() widget: Entry<any>;
 
   loadedProducts$: Observable<Entry<any>[]>;
   loadedProducts: any[];
   relatedProductCards: Card[] = [];
-  productVariants: Map<string,[any]> = new Map();
+  productVariants: Map<string, [any]> = new Map();
   cards: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
 
   constructor(store: Store<{ products: ProductsState }>) {
@@ -27,7 +27,7 @@ export class FeaturedProductsComponent implements OnInit {
       this.relatedProductCards = cards;
     });
 
-    this.loadedProducts$ = store.pipe(select('products' , 'loadedProducts'));
+    this.loadedProducts$ = store.pipe(select('products', 'loadedProducts'));
   }
 
   ngOnInit() {
@@ -38,22 +38,23 @@ export class FeaturedProductsComponent implements OnInit {
   }
 
   createCardsForCarousel(): void {
-    this.loadedProducts.forEach((v , index) => {
-      this.sortVariantsForCarousel(v);
+    this.loadedProducts.forEach((v, index) => {
+      if (v.fields) {
+        this.sortVariantsForCarousel(v);
         this.addCard(
           new Card(
             {
               name: {
                 key: Card.metadata.NAME,
-                value:  v.fields.title,
+                value: v.fields.title,
               },
               index: {
                 key: Card.metadata.INDEX,
-                value:  index,
+                value: index,
               },
               object: {
                 key: Card.metadata.OBJECT,
-                value:  v,
+                value: v,
               },
               style: {
                 key: Card.metadata.STYLE,
@@ -62,21 +63,22 @@ export class FeaturedProductsComponent implements OnInit {
             }, ProductCardComponent,
           ),
         );
-      },
+      }
+    },
     );
   }
 
   sortVariantsForCarousel(product) {
     product.fields.variants.forEach(variant => {
-      let variantObject = {name:variant.fields.name,code:variant.fields.code};
-      if(this.productVariants.get(variant.fields.option)) {
+      let variantObject = { name: variant.fields.name, code: variant.fields.code };
+      if (this.productVariants.get(variant.fields.option)) {
         if (!this.productVariants.get(variant.fields.option).
-            some(item => item.name == variantObject.name && item.code == variantObject.code)) {
+          some(item => item.name == variantObject.name && item.code == variantObject.code)) {
           this.productVariants.get(variant.fields.option).push(variantObject);
         }
       } else {
-        this.productVariants.set(variant.fields.option , 
-                               [variantObject]);
+        this.productVariants.set(variant.fields.option,
+          [variantObject]);
       }
     });
   }
@@ -86,10 +88,10 @@ export class FeaturedProductsComponent implements OnInit {
   }
 
   resetCards(): void {
-    this.cards.getValue().splice(0,this.cards.getValue().length);
+    this.cards.getValue().splice(0, this.cards.getValue().length);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.resetCards();
   }
 

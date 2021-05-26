@@ -51,27 +51,20 @@ export class DashboardCustomersOverviewComponent implements OnInit {
     private router: Router,
     private _actions$: Actions,
     private dialog: MatDialog,
-    private utilService: UtilitiesService) {
+    public utilService: UtilitiesService) {
 
     this.admin$ = store.pipe(select('admin','customers'));
     this.settings$ = store.pipe(select('settings'));
   }
 
   ngOnInit() {
-    this.navSerivce.startLoading();
-    this.AdminSubscription = this.admin$
-      .pipe(
-        map(x => {
-          if (x) {
-            this.customers = x;
-            const customers = Array.from(x, customer => this.createCustomer(customer));
-            this.dataSource = new MatTableDataSource(customers);
-            this.dataSource.paginator = this.paginator;
-            this.navSerivce.finishLoading();
-          }
-        })
-      )
-      .subscribe();
+      this.AdminSubscription = this._actions$.pipe(ofType(AdminActions.SuccessLoadCustomersAction)).subscribe((result) => {
+        this.customers = result.payload;
+        const customers = Array.from(result.payload, customer => this.createCustomer(customer));
+        this.dataSource = new MatTableDataSource(customers);
+        this.dataSource.paginator = this.paginator;
+        this.navSerivce.finishLoading();
+      })
 
       this.SettingsSubscription = this.settings$
       .pipe(
@@ -81,9 +74,9 @@ export class DashboardCustomersOverviewComponent implements OnInit {
       )
       .subscribe();
 
-      this.DeleteCustomerSubscription = this._actions$.pipe(ofType(AdminActions.SuccessDeleteCustomersAction)).subscribe((result) => {
+      /**this.DeleteCustomerSubscription = this._actions$.pipe(ofType(AdminActions.SuccessDeleteCustomersAction)).subscribe((result) => {
         this.store.dispatch(AdminActions.BeginLoadCustomersAction());
-      });
+      }); **/
   }
 
   createCustomer(customer, filter?): CustomerData {
@@ -95,7 +88,7 @@ export class DashboardCustomersOverviewComponent implements OnInit {
         orders: customer.orders,
         total: customer.ordersTotal
       };
-    } else if (filter == 'registered' && customer.personalInfo) {
+    } else if (filter == 'registered' && customer.isRegistered) {
       return {
         id: customer.id,
         name: customer.personalInfo ? customer.personalInfo.firstName + ' ' + customer.personalInfo.lastName : 'Guest User',
@@ -103,7 +96,7 @@ export class DashboardCustomersOverviewComponent implements OnInit {
         orders: customer.orders,
         total: customer.ordersTotal
       };
-    } else if (filter == 'guest' && !customer.personalInfo) {
+    } else if (filter == 'guest' && !customer.isRegistered) {
       return {
         id: customer.id,
         name: customer.personalInfo ? customer.personalInfo.firstName + ' ' + customer.personalInfo.lastName : 'Guest User',
@@ -193,7 +186,7 @@ export class DashboardCustomersOverviewComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.navSerivce.startLoading();
-        this.store.dispatch(AdminActions.BeginDeleteCustomersAction({payload : JSON.stringify(this.selection.selected)}));
+        //this.store.dispatch(AdminActions.BeginDeleteCustomersAction({payload : JSON.stringify(this.selection.selected)}));
         console.log('The dialog was closed' , result);
       }
     });
@@ -202,7 +195,7 @@ export class DashboardCustomersOverviewComponent implements OnInit {
   ngOnDestroy(): void {
     this.AdminSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
-    this.DeleteCustomerSubscription.unsubscribe();
+    //this.DeleteCustomerSubscription.unsubscribe();
   }
 
 }

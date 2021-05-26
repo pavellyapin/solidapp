@@ -1,6 +1,7 @@
 @import '~@angular/material/theming';
 @import "./variables";
 @import "./contentful";
+@import "./material";
 
 // TODO move all fonts to CDN
 // https://dev.to/kelli/how-to-self-host-google-fonts-on-your-own-server-d4i
@@ -78,6 +79,10 @@ input {
 
 .doo-no-margin {
   margin : 0px;
+}
+
+.doo-no-wrap {
+  white-space: nowrap;
 }
 
 .full-width {
@@ -164,6 +169,21 @@ input {
     stroke: $accent;
   }
 }
+
+.doo-top-border-radius{
+  border-top-left-radius: 15px !important;
+  border-top-right-radius:15px !important;
+}
+
+.doo-bottom-border-radius{
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius:15px !important;
+}
+
+.pad-20 {
+  padding: 20px;
+}
+
 
 
 

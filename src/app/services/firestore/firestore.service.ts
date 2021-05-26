@@ -36,12 +36,6 @@ export class FirestoreService {
                         .snapshotChanges();
     }
 
-    getUserSiteInfo() {
-        return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
-                        .doc("site")
-                        .snapshotChanges();
-    }
-
     getUserAddressInfo() {
         return this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
                         .doc("address")

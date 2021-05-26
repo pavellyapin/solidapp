@@ -16,15 +16,6 @@ const reducer = createReducer(
       }
     }),
 
-  on(UserActions.SuccessGetSiteInfoAction,
-    (state: UserState, { payload }) => {
-      return {
-        ...state,
-        site: payload,
-        UserError: null
-      }
-    }),
-
   on(UserActions.SuccessGetUserPermissionsAction,
     (state: UserState, { payload }) => {
       return {
@@ -82,13 +73,13 @@ const reducer = createReducer(
     (state: UserState, { }) => {
       return {
         ...state,
-        uid: '',
-        isGuestFlow : false,
+        uid: null,
         personalInfo: null,
         site: null,
         addressInfo: null,
         orders: [],
         favorites: [],
+        permissions : null,
         UserError: null
       }
     }),

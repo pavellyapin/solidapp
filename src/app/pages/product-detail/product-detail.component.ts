@@ -261,7 +261,8 @@ export class ProductDeatilComponent implements OnInit {
       this.cartItems.forEach(function (item) {
         reqCart.push(
           {
-            product_id: item.productId,
+            productId: item.productId,
+            variants : item.variants,
             qty: item.qty
           }
         )
@@ -269,13 +270,14 @@ export class ProductDeatilComponent implements OnInit {
 
       reqCart.push(
         {
-          product_id: this.item.productId,
+          productId: this.item.productId,
+          variants : this.item.variants,
           qty: this.item.qty
         }
       );
 
       this.store.dispatch(CartActions.
-        BeginBackGroundInitializeOrderAction({
+        BeginBackGroundInitializeCartAction({
           payload: {
             cartId: this.cartId,
             cart: { cart: reqCart }

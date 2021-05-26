@@ -1,19 +1,28 @@
-<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-    <button color="accent" mat-stroked-button>
-        <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
-    </button>
-    <div fxLayout="column">
-        <span class="mat-headline doo-no-margin">{{orderId}}</span>
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start start" class = "pad-20">
+    <div fxLayout="row" fxLayoutGap="10px">
+        <button (click)="navigateToOrderOverview()" class="doo-back-btn" color="accent" mat-stroked-button>
+            <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
+        </button>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="column" fxLayoutGap="10px">
+                <span class="mat-headline doo-no-margin">{{orderId}}</span>
+                <mat-chip-list>
+                    <mat-chip *ngIf="order.order.status=='paid'" color="primary" selected [removable]="false">Paid
+                    </mat-chip>
+                    <mat-chip *ngIf="!order.fullfilment" color="accent" selected [removable]="false">New
+                    </mat-chip>
+                    <mat-chip *ngIf="order.fullfilment && order.fullfilment.status" color="primary" selected
+                        [removable]="false">
+                        Complete
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" class="mat-subheading-1 doo-opacity doo-letter-space">
+                <span> {{order.order.cart.date | date:'medium'}}</span>
+            </div>
+        </div>
     </div>
-    <mat-chip-list>
-        <mat-chip *ngIf="order.order.status=='paid'" color="primary" selected [removable]="false">Paid
-        </mat-chip>
-        <mat-chip *ngIf="!order.fullfilment" color="accent" selected [removable]="false">New
-        </mat-chip>
-        <mat-chip *ngIf="order.fullfilment && order.fullfilment.status" color="primary" selected [removable]="false">Complete
-        </mat-chip>
-    </mat-chip-list>
-    <div fxLayout="row" fxLayoutAlign = "end" fxFlex>
+    <div fxShow fxHide.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
         <button mat-button [matMenuTriggerFor]="menu">
             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
                 <span>More actions</span>
@@ -23,11 +32,15 @@
     </div>
     <mat-menu #menu="matMenu">
         <button *ngIf="!order.fullfilment" (click)="fullfill.emit()" mat-menu-item>Mark as complete</button>
-        <button *ngIf="order.fullfilment && order.fullfilment.status" (click)="unfullfill.emit()" mat-menu-item>Mark as uncomplete</button>
+        <button *ngIf="order.fullfilment && order.fullfilment.status" (click)="unfullfill.emit()" mat-menu-item>Mark as
+            not
+            complete</button>
     </mat-menu>
 </div>
-<div fxLayout="row" fxLayoutGap="70px" fxLayoutAlign="start center"
-    class="mat-subheading-1 doo-opacity doo-letter-space">
-    <span></span>
-    <span> {{order.order.cart.date | date:'medium'}}</span>
+<div fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
+    <button mat-button [matMenuTriggerFor]="menu">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+        </div>
+    </button>
 </div>

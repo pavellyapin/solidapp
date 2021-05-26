@@ -30,7 +30,7 @@
         </div>
         <div fxLayout="row"
                 [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.width? block.fields.width + '%': '100%')"
-                fxLayout.lt-md="column">
+                fxLayout.lt-sm="column">
                 <div fxFlex="50" fxFlex.lt-md *ngFor="let block of block?.fields.blocks">
                         <doo-block-layouts [block]="block">
                         </doo-block-layouts>

@@ -33,6 +33,7 @@ import { AdminEffects } from './services/store/admin/admin.effects';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { JQ_TOKEN } from './services/util/jQuery.service';
 import { jQuery } from './components/cards/cards.module';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['user', 'cart'], rehydrate: true })(reducer);
@@ -66,10 +67,11 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       SettingsEffects,
       ProductsEffects,
       CartEffects]),
-    /* !environment.production ? StoreDevtoolsModule.instrument({
+    !environment.production ? StoreDevtoolsModule.instrument({
        maxAge: 25, // Retains last 25 states
-       logOnly: environment.production, // Restrict extension to log-only mode
-     }) : [], */
+       logOnly: true, // Restrict extension to log-only mode
+       stateSanitizer: (x) => ({ hidden: "Inclusion crashes devtools" })
+     }) : [], 
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

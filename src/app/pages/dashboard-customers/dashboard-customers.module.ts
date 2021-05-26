@@ -24,6 +24,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmDeleteCustomerModalComponent } from './modals/confirm-delete/confirm-delete.component';
+import { DashboardCustomerActionsComponent } from './customer-actions/customer-actions.component';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { ConfirmDeleteCustomerModalComponent } from './modals/confirm-delete/con
   declarations: [DashboardCustomersComponent,
                  DashboardCustomersOverviewComponent,
                  DashboardCustomerDetailsComponent,
-                 ConfirmDeleteCustomerModalComponent],
+                 ConfirmDeleteCustomerModalComponent,
+                 DashboardCustomerActionsComponent],
   providers: [],
   entryComponents: [ConfirmDeleteCustomerModalComponent],
 })

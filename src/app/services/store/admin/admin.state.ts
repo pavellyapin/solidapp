@@ -5,6 +5,7 @@ export default class AdminState {
   carts?: Array<any>;
   orders?: Array<any>;
   newOrders?: Array<any>;
+  stats?:any;
   AdminError: Error;
 }
 

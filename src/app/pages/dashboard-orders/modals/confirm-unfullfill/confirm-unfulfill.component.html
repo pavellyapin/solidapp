@@ -7,9 +7,9 @@
             Unfulfill {{data.order.order.cart.itemCount}} items
         </span>
         <div fxLayout="row" fxLayoutAlign="center">
-            <doo-cart-items fxFlex = "50" [cartItems]="data.order.order.cart.cart"></doo-cart-items>
+            <doo-cart-items fxFlex = "80" [cartItems]="data.order.order.cart.cart"></doo-cart-items>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end">
+        <div fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-md="center">
             <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" fxLayoutGap.lt-md="15px" fxFlex="80"
                 fxLayoutAlign="end">
                 <button color="accent" mat-stroked-button class="doo-cta-btn" (click)="onNoClick()">

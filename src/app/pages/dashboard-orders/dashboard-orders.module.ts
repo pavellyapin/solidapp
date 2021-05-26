@@ -28,10 +28,12 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmFullfillOrderModalComponent } from './modals/confirm-fullfill/confirm-fulfill.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmUnFullfillOrderModalComponent } from './modals/confirm-unfullfill/confirm-unfulfill.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     TranslateModule,
     PipesModule,
     DashboardOrdersRoutingModule,

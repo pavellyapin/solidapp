@@ -8,8 +8,11 @@ export const SuccessLoadCustomersAction = createAction('[admin] - Success LOAD c
 export const BeginLoadCartsAction = createAction('[admin] - Begin LOAD carts');
 export const SuccessLoadCartsAction = createAction('[admin] - Success LOAD carts',props<{ payload: any }>());
 
-export const BeginDeleteCustomersAction = createAction('[admin] - Begin DELETE customers',props<{ payload: any }>());
-export const SuccessDeleteCustomersAction = createAction('[admin] - Success DELETE customers');
+export const BeginDeleteCartsAction = createAction('[admin] - Begin DELETE carts',props<{ payload: any }>());
+export const SuccessDeleteCartsAction = createAction('[admin] - Success DELETE carts');
+
+export const BeginCleanupUsersAction = createAction('[admin] - Begin clean users');
+export const SuccessCleanupUsersAction = createAction('[admin] - Success clean users');
 
 export const BeginLoadCustomerDetailsAction = createAction('[admin] - Begin LOAD customer details',props<{ payload: any }>());
 export const SuccessLoadCustomerDetailsAction = createAction('[admin] - Success LOAD customer details',props<{ payload: any }>());
@@ -23,6 +26,13 @@ export const SuccessLoadOrdersAction = createAction('[admin] - Success LOAD orde
 export const BeginLoadNewOrdersAction = createAction('[admin] - Begin LOAD new orders');
 export const SuccessLoadNewOrdersAction = createAction('[admin] - Success LOAD new orders',props<{ payload: any }>());
 
+export const BeginStatsPerPeriodAction = createAction('[admin] - Begin stats per period',props<{ payload: any }>());
+export const SuccessStatsPerPeriodAction = createAction('[admin] - Success stats per period',props<{ payload: any }>());
+
+export const SuccessResetDashboardHomeAction = createAction('[admin] - Success reset dashboard home');
+
+
+
 
 
 export const BeginLoadOrderDetailsAction = createAction('[admin] - Begin LOAD order details',props<{ payload: any }>());
@@ -33,5 +43,15 @@ export const SuccessFulfillOrderAction = createAction('[admin] - Success fulfill
 
 export const BeginUnfulfillOrderAction = createAction('[admin] - Begin unfulfill order',props<{ payload: any }>());
 export const SuccessUnfulfillOrderAction = createAction('[admin] - Success unfulfill order',props<{ payload: any }>());
+
+
+export const BeginLoadCartDetailsAction = createAction('[admin] - Begin LOAD cart details',props<{ payload: any }>());
+export const SuccessLoadCartDetailsAction = createAction('[admin] - Success LOAD cart details',props<{ payload: any }>());
+
+export const BeginReviewCartAction = createAction('[admin] - Begin review cart',props<{ payload: any }>());
+export const SuccessReviewCartAction = createAction('[admin] - Success review cart',props<{ payload: any }>());
+
+export const BeginUnReviewCartAction = createAction('[admin] - Begin unreview cart',props<{ payload: any }>());
+export const SuccessUnReviewCartAction = createAction('[admin] - Success unreview cart',props<{ payload: any }>());
 
 export const ErrorAdminAction = createAction('[admin] - Error', props<Error>());

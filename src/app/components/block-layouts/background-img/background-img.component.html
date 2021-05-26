@@ -14,6 +14,12 @@
                     [class.accent-color]="block.fields.textColor == 'Accent'"
                     [class.white-color]="block.fields.textColor == 'White'"
                     [class.black-color]="block.fields.textColor == 'Black'"
+
+                    [class.primary-shadow]="block.fields.contentShadow == 'Primary'"
+                    [class.accent-shadow]="block.fields.contentShadow == 'Accent'"
+                    [class.white-shadow]="block.fields.contentShadow == 'White'"
+                    [class.black-shadow]="block.fields.contentShadow == 'Black'"
+
                     [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                     [innerHTML]="block.fields.content | richTextPipe">
                 </div>
@@ -22,6 +28,11 @@
                     [class.accent-color]="block.fields.otherTextColor == 'Accent'"
                     [class.white-color]="block.fields.otherTextColor == 'White'"
                     [class.black-color]="block.fields.otherTextColor == 'Black'"
+                    
+                    [class.primary-shadow]="block.fields.otherContentShadow == 'Primary'"
+                    [class.accent-shadow]="block.fields.otherContentShadow == 'Accent'"
+                    [class.white-shadow]="block.fields.otherContentShadow == 'White'"
+                    [class.black-shadow]="block.fields.otherContentShadow == 'Black'"
                     [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                     [innerHTML]="block.fields.otherContent | richTextPipe">
                 </div>

@@ -96,7 +96,7 @@
     </mat-accordion>
   </mat-drawer>
   <mat-drawer-content>
-    <div #productsGrid fxLayout="column" fxFlex="100">
+    <div #productsGrid fxLayout="column" fxFlex="90" fxFlex.lt-md = "100">
 
       <mat-grid-list [cols]="cols | async">
         <mat-grid-tile *ngFor="let card of productCards" [colspan]="card.input.cols.value | async"

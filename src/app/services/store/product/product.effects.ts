@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType} from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, first } from 'rxjs/operators';
 import * as ProductsActions from './product.action';
 import { ContentfulService } from '../../contentful/contentful.service';
 import { FirestoreService } from '../../firestore/firestore.service';
@@ -66,7 +66,7 @@ GetProductReview$: Observable<Action> = createEffect(() =>
 this.action$.pipe(
   ofType(ProductsActions.BeginLoadProductReviewsAction),
   mergeMap(action =>
-    this.firestoreService.getProductReviews(action.payload).pipe(
+    this.firestoreService.getProductReviews(action.payload).pipe(first(),
       map((data: any) => {
         let reviews = Array<any>();
         data.forEach(element => {

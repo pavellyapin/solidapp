@@ -15,7 +15,7 @@ export class DashboardCustomersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(AdminActions.BeginLoadCustomersAction());
+    
   }
  
   ngOnDestroy(): void {

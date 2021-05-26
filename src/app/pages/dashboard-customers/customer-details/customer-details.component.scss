@@ -1,7 +1,8 @@
 @import 'src/css/_variables.scss';
+@import 'src/css/_dashboard.scss';
   
-  .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  .doo-avatar {
+    background-image: url('/assets/placeholders/avatar.png');
     background-size: cover;
   }
 
@@ -20,52 +21,20 @@
   }
 
   .doo-arrow-btn{
+    &.left {
+      border-bottom-left-radius: 25px !important;
+      border-top-left-radius: 25px !important;
+    }
+    &.right {
+      border-bottom-right-radius: 25px !important;
+      border-top-right-radius: 25px !important;
+    }
     &.disabled{
       background: $lighter-grey;
       mat-icon {
         opacity: 0.4;
       }
     }
+    padding: 5px;
     border: solid 1px $light-grey;
   }
-
-  /* The actual timeline (the vertical ruler) */
-.timeline {
-  position: relative;
-  margin: 0 50px;
-}
-
-/* The actual timeline (the vertical ruler) */
-.timeline::after {
-  content: '';
-  position: absolute;
-  width: 3px;
-  background-color: $light-grey;
-  top: 0;
-  bottom: 0;
-  left: 30px;
-  margin-left: -50px;
-}
-
-.container {
-  position: relative;
-}
-
-/* The circles on the timeline */
-.container::after {
-  content: '';
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  right: -17px;
-  background-color: $light-grey;
-  border: 2px solid $lighter-grey;
-  top: 0px;
-  border-radius: 50%;
-  z-index: 1;
-}
-
-/* Fix the circle for containers on the right side */
-.right::after {
-  left: -28px;
-}

@@ -15,6 +15,7 @@
 }
 
 .doo-dashboard-overview {
+  min-height: 350px;
   .mat-cell {
     font-size: 16px !important;
   }
@@ -33,7 +34,7 @@
 
 .doo-dashboard-actions{
   background: white;
-  padding : 10px 24px;
+  padding : 10px 14px;
   .doo-actions-btn{
     //border : solid 1px $light-grey;
     font-size: 16px;
@@ -95,3 +96,114 @@
       //margin : 0px !important;
     }
   }
+
+  .doo-table-cont{
+    padding:20px;
+  }
+
+  @media only screen and (max-width: 850px) {
+    .doo-table-cont{
+      padding:20px 0px;
+    }
+  }
+
+  .doo-dashboard-no-items{
+    background: white;
+    padding: 50px 0px;
+    mat-icon {
+      height: 50px;
+      width: 50px;
+      opacity: 0.7;
+      ::ng-deep .cls-1 {
+        stroke: $primary;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $primary;
+      }
+    }
+  }
+
+  .doo-sticky-col-table{
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    mat-table {
+      width: 800px;
+    }
+  }
+
+  .doo-sticky-lg-col-table{
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    mat-table {
+      width: 820px;
+    }
+  }
+
+    /* The actual timeline (the vertical ruler) */
+    .timeline {
+      position: relative;
+      margin: 0 50px;
+    }
+
+    @media only screen and (max-width: 850px) {
+      .timeline {
+        position: relative;
+        margin: 0 0 0 50px;
+      }
+    }
+    
+    /* The actual timeline (the vertical ruler) */
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      background-color: $light-grey;
+      top: 0;
+      bottom: 0;
+      left: 30px;
+      margin-left: -50px;
+    }
+    
+    .container {
+      position: relative;
+    }
+    
+    /* The circles on the timeline */
+    .container::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      right: -17px;
+      background-color: $light-grey;
+      border: 2px solid $lighter-grey;
+      top: 0px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    
+    /* Fix the circle for containers on the right side */
+    .right::after {
+      left: -28px;
+    }
+
+    ::ng-deep .currency-label {
+      font-size: 16px;
+      opacity: 0.5;
+      padding-right: 5px;
+    }
+
+    .shipping-box-link {
+      ::ng-deep .add-field-placeholder{
+        color: $accent;
+        opacity: 1;
+        text-decoration: underline;
+      }
+    }
+
+    .doo-back-btn {
+      max-height: 50px;
+      border-radius: 10px !important;
+    }

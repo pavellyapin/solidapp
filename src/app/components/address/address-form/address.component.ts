@@ -8,6 +8,7 @@ import { MatSelect } from '@angular/material/select';
 import { NameFormComponent } from '../../login/name-form/name-form.component';
 import { map } from 'rxjs/operators';
 import { ScriptService } from 'src/app/services/util/script.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'doo-address-form',
@@ -19,13 +20,13 @@ import { ScriptService } from 'src/app/services/util/script.service';
     @Input() userAddressInfo:UserAddressInfo;
     @Input() userInfo: UserPerosnalInfo;
     @Input() isWithName : boolean;
-    @Input() addressRequired : boolean = true;
     @Output() addressFormEmitter = new EventEmitter<any>();
     @Output() personalFormEmitter = new EventEmitter<any>();
 
     scriptLoaded : boolean = false;
     timerId : any;
     address$: Observable<UserAddressInfo>;
+    addressRequired:boolean = environment.addressRequired;
     addMode:boolean = true;
     addManually:boolean = false;
     addAddressLine2:boolean = false;
@@ -57,7 +58,6 @@ import { ScriptService } from 'src/app/services/util/script.service';
         this.scriptService.loadScript('google').then((data)=>{
            this.scriptLoaded = true;
         });
-
         if (this.userAddressInfo) {
             this.addManually = true;
             this.addressForm.controls["addressLine1"].setValue(this.userAddressInfo.addressLine1);

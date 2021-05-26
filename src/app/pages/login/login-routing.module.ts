@@ -8,10 +8,13 @@ import { ResetPasswordComponent } from 'src/app/components/login/reset-password/
 import { RegisterFormComponent } from 'src/app/components/login/register-form/register-form.component';
 import { GuestFormComponent } from 'src/app/components/login/guest-form/guest-form.component';
 import { LoginErrorComponent } from 'src/app/components/login/error/error.component';
+import { LoginGuard } from './login.guard';
 
 export const loginRoutes: NavRoute[] = [
   {data: {title: 'Login' , isChild: false},
    path: '', 
+   canActivate : [LoginGuard],
+   canDeactivate: [LoginGuard],
    children : [
       {data: {title: 'Login Page' , isChild: true},
       path: '', 

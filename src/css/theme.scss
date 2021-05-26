@@ -115,6 +115,22 @@ $easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
   .black-color {
     color: black;
   }
+
+  .black-shadow {
+    text-shadow: 1px 1px 5px #000000;
+  }
+
+  .white-shadow {
+    text-shadow: 1px 1px 5px white;
+  }
+
+  .primary-shadow {
+    text-shadow: 1px 1px 5px $primary;
+  }
+
+  .accent-shadow {
+    text-shadow: 1px 1px 5px $accent;
+  }
   
  .doo-cta-btn{
     padding: 15px 35px !important;

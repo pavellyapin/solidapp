@@ -169,7 +169,7 @@ export class CartComponent implements OnInit {
     });
 
     this.UserInfoSubscription = this._actions$.pipe(ofType(
-      UserActions.SuccessGetUserInfoAction,
+      //UserActions.SuccessGetUserInfoAction,
       CartActions.SuccessSetOrderShippingAction)).subscribe(() => {
         this.initializeOrder(this.cartId);
       });
@@ -274,7 +274,7 @@ export class CartComponent implements OnInit {
     this.ShippingMethodSubscription = this.shippingMethod$
       .pipe(
         map(x => {
-          if (x && x.price) {
+          if (x) {
             this.shippingCost = x.price;
             this.grandTotal = this.cartTotal + this.shippingCost + this.primaryTax + this.secondaryTax;
             this.cd.detectChanges();
@@ -319,7 +319,9 @@ export class CartComponent implements OnInit {
         } else {
           this.summaryOpen = true
         }
-        if (navigate) { this.router.navigateByUrl('cart/checkout/' + this.cartId + '/payment') }
+        if (navigate) { 
+          this.router.navigateByUrl('cart/checkout/' + this.cartId + '/payment') 
+        }
         break;
       case 'Checkout Success':
         this.summaryOpen = false;
@@ -333,7 +335,7 @@ export class CartComponent implements OnInit {
     this.cartItems.forEach(function (item) {
       reqCart.push(
         {
-          product_id: item.productId,
+          productId: item.productId,
           thumbnail: this.imagePipe.transform(item.product.fields.media[0].fields.file.url),
           name: item.product.fields.title,
           variants: item.variants,

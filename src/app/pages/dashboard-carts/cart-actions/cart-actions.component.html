@@ -1,0 +1,44 @@
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start start" class="pad-20">
+    <div fxLayout="row" fxLayoutGap="10px">
+        <button (click)="navigateToCartOverview()" class="doo-back-btn" color="accent" mat-stroked-button>
+            <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
+        </button>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="column" fxLayoutGap="10px">
+                <span class="mat-headline doo-no-margin">{{orderId}}</span>
+                <mat-chip-list>
+                    <mat-chip color="primary" selected [removable]="false">Unpaid
+                    </mat-chip>
+                    <mat-chip *ngIf="!order.review" color="accent" selected [removable]="false">New
+                    </mat-chip>
+                    <mat-chip *ngIf="order.review && order.review.status" color="primary" selected [removable]="false">
+                        Reviewed
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" class="mat-subheading-1 doo-opacity doo-letter-space">
+                <span> {{order.order.cart.date | date:'medium'}}</span>
+            </div>
+        </div>
+    </div>
+    <div fxShow fxHide.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
+        <button mat-button [matMenuTriggerFor]="menu">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <span>More actions</span>
+                <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+            </div>
+        </button>
+    </div>
+    <mat-menu #menu="matMenu">
+        <button *ngIf="!order.review" (click)="review.emit()" mat-menu-item>Mark as reviewed</button>
+        <button *ngIf="order.review && order.review.status" (click)="unreview.emit()" mat-menu-item>Mark as not
+            reviewed</button>
+    </mat-menu>
+</div>
+<div fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
+    <button mat-button [matMenuTriggerFor]="menu">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+        </div>
+    </button>
+</div>

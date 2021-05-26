@@ -9,6 +9,8 @@ export class UtilitiesService {
 
     bigScreens = new Array('lg', 'xl', 'md');
 
+    bigScreensAndSmall = new Array('lg', 'xl', 'md', 'sm');
+
     constructor(public deviceService: DeviceDetectorService) {
     }
 

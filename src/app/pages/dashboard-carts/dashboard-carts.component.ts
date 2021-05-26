@@ -15,7 +15,7 @@ export class DashboardCartsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(AdminActions.BeginLoadCartsAction());
+    
   }
  
   ngOnDestroy(): void {

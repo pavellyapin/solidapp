@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { createClient, Entry } from 'contentful';
+import { createClient, Entry, EntryCollection } from 'contentful';
 import { environment } from '../../../environments/environment';
-import { from, Observable } from 'rxjs';
+import { from, Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -27,13 +28,31 @@ export class ContentfulService {
       .then(res => res.items));
   }
 
-  getCategoryProducts(query?: object): Observable<Entry<any>[]> {
-    return from(this.client.getEntries(Object.assign({
-      content_type: 'product',
-      links_to_entry : query,
-      //limit : '50'
-    }))
-      .then(res => res.items));
+  getCategoryProducts(query?: [string]): Observable<any> {
+
+    const requestArray = [];
+    for (let cat of query) {
+      requestArray.push(
+        this.client.getEntries(Object.assign({
+          content_type: 'product',
+          links_to_entry : cat
+        }))
+      );
+    }
+    return forkJoin(requestArray).pipe(
+      map((results: EntryCollection<unknown>[]) => {
+        let products:Entry<any>[] = [];
+        let productIds = [];
+        for (let response of results) {
+          for (let product of response.items) {
+            if (productIds.indexOf(product.sys.id) == -1) {
+              productIds.push(product.sys.id);
+              products.push(product);
+            }
+          }
+        }
+        return products;
+      }));
   }
 
   searchProducts(query?: object): Observable<Entry<any>[]> {

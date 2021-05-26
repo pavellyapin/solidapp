@@ -60,8 +60,8 @@ export class CartCard {
     ['xl', 24],
   ]);
   static rowsMapBig = new Map([
-    ['xs', 18],
-    ['sm', 14],
+    ['xs', 26],
+    ['sm', 12],
     ['md', 10],
     ['lg', 9],
     ['xl', 9],

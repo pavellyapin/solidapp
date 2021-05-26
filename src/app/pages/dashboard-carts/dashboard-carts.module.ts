@@ -23,6 +23,12 @@ import { DashboardCartsOverviewComponent } from './overview/overview.component';
 import { ConfirmDeleteCartModalComponent } from './modals/confirm-delete/confirm-delete.component';
 import { DashboardCartsRoutingModule } from './dashboard-carts-routing.module';
 import { DashboardCartsComponent } from './dashboard-carts.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { DashboardCartActionsComponent } from './cart-actions/cart-actions.component';
+import { DashboardCartDetailsComponent } from './cart-details/cart-details.component';
+import { ConfirmReviewCartModalComponent } from './modals/confirm-review/confirm-review.component';
+import { ConfirmUnReviewCartModalComponent } from './modals/confirm-unreview/confirm-unreview.component';
+import { CartCardsModule } from 'src/app/components/cart-card/cards.module';
 
 @NgModule({
   imports: [
@@ -39,6 +45,7 @@ import { DashboardCartsComponent } from './dashboard-carts.component';
     MatTableModule,
     MatInputModule,
     MatMenuModule,
+    MatChipsModule,
     MatDividerModule,
     MatCheckboxModule,
     MatPaginatorModule,
@@ -46,11 +53,17 @@ import { DashboardCartsComponent } from './dashboard-carts.component';
     MatSidenavModule,
     FlexLayoutModule,
     BlockLayoutsModule,
-    WidgetsModule
+    WidgetsModule,
+    CartCardsModule
   ],
   declarations: [DashboardCartsComponent,
                  DashboardCartsOverviewComponent,
-                 ConfirmDeleteCartModalComponent],
+                 ConfirmDeleteCartModalComponent,
+                 DashboardCartActionsComponent,
+                 DashboardCartDetailsComponent,
+                 ConfirmReviewCartModalComponent,
+                 ConfirmUnReviewCartModalComponent
+                ],
   providers: [],
   entryComponents: [ConfirmDeleteCartModalComponent],
 })

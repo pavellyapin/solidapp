@@ -1,34 +1,50 @@
 <div class="dashboard-container">
         <app-dashboard-toolbar fxLayout="column" [searchControl]="searchControl" [mainMenuOpen]="true"
-                [siteSettings]="siteSettings" [resolution]="resolution">
+                [siteSettings]="siteSettings" [resolution]="resolution" (toggleMobileSideMenu)="isAppsOpen=!isAppsOpen">
         </app-dashboard-toolbar>
-        <mat-drawer [opened]="isAppsOpen" autoFocus="false" mode="side" class="doo-dashboard-apps" position="start">
-                <div fxLayout="column" fxLayoutGap = "10px" fxLayoutAlign="space-between">
-                        <button (click)="navigateApp('home')" mat-button fxLayoutAlign="start">
+        <mat-drawer [opened]="isAppsOpen" 
+                     autoFocus="false" 
+                     [mode]="utilService.bigScreens.includes(this.resolution) ? 'side' : 'over'" 
+                     [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-dashboard-apps' : 'doo-dashboard-mobile-apps'" 
+                     position="start">
+                <div fxLayout="column"  fxLayoutGap="10px" fxLayoutGap.lt-sm="20px" fxLayoutAlign="space-between">
+                        <button (click)="navigateApp(constants.homeDashboard)" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-home">
                                 </mat-icon> <span class="dash-app-link">Home</span>
                         </button>
-                        <button (click)="navigateApp('orders')" mat-button fxLayoutAlign="start">
-                                <mat-icon svgIcon="doo-download">
-                                </mat-icon> <span class="dash-app-link" [matBadge]="orderCount"
-                                        [matBadgeHidden]="!orderCount" matBadgeOverlap="false">Orders</span>
+                        <button class="dash-orders-btn" (click)="navigateApp(constants.ordersDashboard)" mat-button
+                                fxLayoutAlign="start">
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                                <mat-icon svgIcon="doo-download">
+                                                </mat-icon> <span class="dash-app-link">Orders</span>
+                                        </div>
+                                        <div *ngIf="orderCount || circleLoading">
+                                                <mat-spinner *ngIf="circleLoading" fxLayout="row"
+                                                        fxLayoutAlign="center center" [diameter]="20"></mat-spinner>
+                                                <span *ngIf="!circleLoading"
+                                                        class="orders-count-circle">{{orderCount}}</span>
+                                        </div>
+                                </div>
+
                         </button>
-                        <button (click)="navigateApp('customers')" mat-button fxLayoutAlign="start">
+                        <button (click)="navigateApp(constants.customersDashboard)" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-profile">
                                 </mat-icon> <span class="dash-app-link">Customers</span>
                         </button>
-                        <button (click)="navigateApp('carts')" mat-button fxLayoutAlign="start">
+                        <button (click)="navigateApp(constants.cartsDashboard)" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-cart">
                                 </mat-icon> <span class="dash-app-link">Carts</span>
                         </button>
                         <div fxLayout="row" fxLayoutAlign="center">
-                                <mat-slide-toggle (change)="envChange($event)" [checked] = "env=='prod'">{{env=='prod' ? 'Viewing live data' : 'Viewing test data' }}</mat-slide-toggle>
+                                <mat-slide-toggle (change)="envChange($event)" [checked]="env=='prod'">
+                                        {{env=='prod' ? 'Viewing live data' : 'Viewing test data' }}</mat-slide-toggle>
                         </div>
                 </div>
         </mat-drawer>
         <mat-drawer-container>
-                <mat-drawer-content style="min-height:100vh;padding-left: 20%;padding-right: 15px;">
-                        <div fxLayout="column" style="position: relative" fxLayoutGap="20px">
+                <mat-drawer-content [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-dashboard-content' : 'doo-dashboard-mobile-content'">
+                        <div fxLayout="column" style="position: relative">
                                 <div *ngIf="loading" fxLayout="row"
                                         style="flex: 1 1 100%;min-height:100vh;position: absolute;"
                                         fxLayoutAlign="center start" class="doo-loading-overlay">

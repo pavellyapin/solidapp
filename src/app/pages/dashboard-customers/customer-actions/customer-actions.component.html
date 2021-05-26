@@ -1,0 +1,30 @@
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start start" class="pad-20">
+        <div fxLayout="row" fxLayoutGap="10px" class="full-width">
+            <button (click)="navigateToCustomerOverview()" class="doo-back-btn" color="accent" mat-stroked-button>
+                <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
+            </button>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <div fxLayout="column" fxLayoutGap="10px">
+                    <span class="mat-headline doo-no-margin">{{customer.personalInfo? customer.personalInfo.firstName + ' ' + customer.personalInfo.lastName : 'Guest User'}}</span>
+                </div>
+            </div>
+        </div>
+        <div fxShow fxHide.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
+            <button mat-button [matMenuTriggerFor]="menu">
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <span>More actions</span>
+                    <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+                </div>
+            </button>
+        </div>
+        <mat-menu #menu="matMenu">
+
+        </mat-menu>
+    </div>
+    <div fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
+        <button mat-button [matMenuTriggerFor]="menu">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+            </div>
+        </button>
+    </div>

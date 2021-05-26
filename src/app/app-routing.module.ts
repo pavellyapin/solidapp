@@ -14,6 +14,8 @@ const routes: Routes = [
     component: NavComponent,
     children: navRoutes,
     canActivateChild: [NavGuard],
+    canActivate: [NavGuard],
+    canDeactivate: [NavGuard],
   },
   { 
     path: dashboardNavPath,
@@ -25,6 +27,8 @@ const routes: Routes = [
     data: {title: 'Cart' , isChild: true},
     path: 'cart',
     canActivateChild: [NavGuard],
+    canActivate: [NavGuard],
+    canDeactivate: [NavGuard],
     loadChildren: () =>
       import('./pages/cart/cart.module').then(
         m => m.CartModule,
@@ -34,6 +38,8 @@ const routes: Routes = [
     data: {title: 'Login', isChild: true},
     path: 'login',
     canActivateChild: [NavGuard],
+    canActivate: [NavGuard],
+    canDeactivate: [NavGuard],
     loadChildren: () =>
       import('./pages/login/login.module').then(
         m => m.LoginModule,

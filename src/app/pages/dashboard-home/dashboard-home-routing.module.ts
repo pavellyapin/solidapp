@@ -1,12 +1,15 @@
 
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { DashboardHomeComponent } from './dashboard-home.component';
+import { DashboardHomeGuard } from './dashboard-home.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    data: {shouldReuse: true, key: 'dashboard home'},
+    path: 'overview',
+    canActivate: [DashboardHomeGuard],
+    canDeactivate: [DashboardHomeGuard],
+    data: { shouldReuse: false, key: 'dashboard home' },
     component: DashboardHomeComponent,
   },
 ];

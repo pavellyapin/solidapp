@@ -8,7 +8,7 @@
                                 {{'cart.addressPopupHeader' | translate}}
                         </span>
                         <doo-address-form #addressForm [isWithName]="true" [userAddressInfo]="data.userAddressInfo"
-                                [userInfo]="data.userInfo" [addressRequired]="true"
+                                [userInfo]="data.userInfo"
                                 (personalFormEmitter)="personalInfoUpdate($event)"
                                 (addressFormEmitter)="addressUpdate($event)">
                         </doo-address-form>

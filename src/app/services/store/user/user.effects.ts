@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, first } from 'rxjs/operators';
 import * as UserActions from './user.action';
 import * as CartActions from '../cart/cart.action';
 import { AuthService } from '../../auth/auth.service';
@@ -19,25 +19,9 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginGetUserInfoAction),
       switchMap(action =>
-        this.firestoreService.getUserPersonalInfo().pipe(
+        this.firestoreService.getUserPersonalInfo().pipe(first(),
           map((data: any) => {
             return UserActions.SuccessGetUserInfoAction({ payload: data.payload.data() });
-          }),
-          catchError((error: Error) => {
-            return of(UserActions.ErrorUserAction(error));
-          })
-        )
-      )
-    )
-  );
-
-  GetSiteInfo$: Observable<Action> = createEffect(() =>
-    this.action$.pipe(
-      ofType(UserActions.BeginGetSiteInfoAction),
-      switchMap(action =>
-        this.firestoreService.getUserSiteInfo().pipe(
-          map((data: any) => {
-            return UserActions.SuccessGetSiteInfoAction({ payload: data.payload.data() });
           }),
           catchError((error: Error) => {
             return of(UserActions.ErrorUserAction(error));
@@ -51,7 +35,7 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginGetUserPermissionsAction),
       switchMap(action =>
-        this.firestoreService.getUserPermissions().pipe(
+        this.firestoreService.getUserPermissions().pipe(first(),
           map((data: any) => {
             return UserActions.SuccessGetUserPermissionsAction({ payload: data.payload.data() });
           }),
@@ -67,7 +51,7 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginGetUserAddressInfoAction),
       switchMap(action =>
-        this.firestoreService.getUserAddressInfo().pipe(
+        this.firestoreService.getUserAddressInfo().pipe(first(),
           map((data: any) => {
             return UserActions.SuccessGetUserAddressInfoAction({ payload: data.payload.data() });
           }),
@@ -98,21 +82,10 @@ export class UserEffects {
   this.action$.pipe(
     ofType(UserActions.BeginPostLoginAction),
     switchMap(() =>
-      this.authService.afAuth.authState.pipe(
+      this.authService.postLogin().pipe(
         switchMap((x) => [
-        CartActions.BeginResetCartIdAction(),
         CartActions.SuccessSetGuestFlowAction({ payload: false }),
-        UserActions.BeginGetUserInfoAction(),
-        UserActions.BeginGetUserPermissionsAction(),
-        UserActions.BeginSetUserIDAction({ payload: x.uid }),
-        UserActions.BeginGetUserAddressInfoAction(),
-        CartActions.
-        BeginInitializeOrderAction({
-          payload: {
-            cartId: null,
-            cart: { cart: null }
-          }
-        })]
+        ]
         ),
         catchError((error: Error) => {
           return of(UserActions.ErrorUserAction(error));
@@ -128,22 +101,6 @@ export class UserEffects {
       switchMap(action =>
         this.authService.signInWithRedirect(action.payload).pipe(
           switchMap((x) => [UserActions.SuccessLoginWithRedirectAction()]
-          ),
-          catchError((error: Error) => {
-            return of(UserActions.ErrorUserAction(error));
-          })
-        )
-      )
-    )
-  );
-
-  GetRedirectResult$: Observable<Action> = createEffect(() =>
-    this.action$.pipe(
-      ofType(UserActions.BeginGetRedirectResultAction),
-      switchMap(action =>
-        this.authService.getRedirectResult().pipe(
-          switchMap(() =>
-            [UserActions.BeginPostLoginAction()]
           ),
           catchError((error: Error) => {
             return of(UserActions.ErrorUserAction(error));
@@ -361,23 +318,23 @@ export class UserEffects {
     )
   );
 
+  
 
   UserLogout$: Observable<Action> = createEffect(() =>
-    this.action$.pipe(
-      ofType(UserActions.BeginUserLogoutAction),
-      switchMap(action =>
-        this.authService.doLogout().pipe(
-          map(() => {
-            return UserActions.SuccessUserLogoutAction();
-          }),
-          catchError((error: Error) => {
-            return of(UserActions.ErrorUserAction(error));
-          })
-        )
+  this.action$.pipe(
+    ofType(UserActions.BeginUserLogoutAction),
+    switchMap(() =>
+    this.authService.doLogout().pipe(
+        switchMap((x) => [
+        UserActions.SuccessUserLogoutAction()]
+        ),
+        catchError((error: Error) => {
+          return of(UserActions.ErrorUserAction(error));
+        })
       )
     )
-  );
-
+  )
+);
   //Favorites----------------------------------------------------
 
   AddProductToFavorites: Observable<Action> = createEffect(() =>
@@ -418,7 +375,7 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginGetFavoritesAction),
       switchMap(action =>
-        this.firestoreService.getFavorites().pipe(
+        this.firestoreService.getFavorites().pipe(first(),
           map((data: any) => {
             let favorites = Array<any>();
             data.forEach(element => {

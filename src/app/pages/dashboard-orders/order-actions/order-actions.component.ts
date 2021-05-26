@@ -4,7 +4,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import SettingsState from 'src/app/services/store/settings/settings.state';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as AdminActions from 'src/app/services/store/admin/admin.action';
 import { ofType, Actions } from '@ngrx/effects';
 import { Entry } from 'contentful';
@@ -33,14 +33,13 @@ export class DashboardOrderActionsComponent implements OnInit {
     constructor(private store: Store<{ settings: SettingsState }>,
         private navSerivce: NavigationService,
         private _actions$: Actions,
-        public route: ActivatedRoute) {
+        public route: ActivatedRoute,
+        private router: Router) {
 
         this.settings$ = store.pipe(select('settings', 'siteConfig'));
     }
 
     ngOnInit() {
-        console.log('%%%--',this.order);
-
         this.SettingsSubscription = this.settings$
             .pipe(
                 map(x => {
@@ -48,6 +47,11 @@ export class DashboardOrderActionsComponent implements OnInit {
                 })
             )
             .subscribe();
+    }
+
+    navigateToOrderOverview() {
+        this.navSerivce.startLoading();
+        this.router.navigateByUrl('/store/orders');
     }
 
     ngOnDestroy(): void {

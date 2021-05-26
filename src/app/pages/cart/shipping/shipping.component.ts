@@ -16,6 +16,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { ofType, Actions } from '@ngrx/effects';
 
 @Component({
   selector: 'doo-checkout-shipping',
@@ -25,6 +26,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 export class CheckoutShippingComponent {
 
   //Subscription
+  subscription: Subscription;
   CartSubscription: Subscription;
   UserSubscription: Subscription;
   cartTotalSubscription: Subscription;
@@ -59,7 +61,8 @@ export class CheckoutShippingComponent {
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private utilService: UtilitiesService,
-    private cd: ChangeDetectorRef) {
+    private cd: ChangeDetectorRef,
+    private _actions$: Actions) {
     this.cartTotal$ = store.pipe(select('cart', 'total'));
     this.user$ = store.pipe(select('user'));
     this.settings$ = store.pipe(select('settings'));
@@ -108,6 +111,10 @@ export class CheckoutShippingComponent {
         })
       )
       .subscribe();
+
+      this.subscription = this._actions$.pipe(ofType(UserActions.SuccessGetUserAddressInfoAction)).subscribe(() => {
+        this.continueCheckout();
+      });
   }
 
   ngAfterViewInit() {
@@ -189,6 +196,7 @@ export class CheckoutShippingComponent {
     this.CartSubscription.unsubscribe();
     this.UserSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();
+    this.subscription.unsubscribe();
 
   }
 }

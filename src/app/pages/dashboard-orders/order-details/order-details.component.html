@@ -1,136 +1,148 @@
-<div *ngIf="order" fxLayout="column" fxLayoutGap="30px" class="doo-order-success full-width max-width"
-    style="padding: 2% 5%;">
-    <app-dashboard-order-actions 
-    [order]="order" 
-    [orderId]="route.snapshot.params['orderId']"
-    (fullfill)="confirmFulfillOrder()"
-    (unfullfill)="confirmUnfulfillOrder()">
+    <div *ngIf="order" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" class="full-width">
+    <app-dashboard-order-actions class="max-width full-width" [order]="order"
+        [orderId]="route.snapshot.params['orderId']" (fullfill)="confirmFulfillOrder()"
+        (unfullfill)="confirmUnfulfillOrder()">
     </app-dashboard-order-actions>
-    <div fxLayout="row" fxLayoutGap="30px">
-        <div fxFlex="70" fxLayout="column" fxLayoutGap="30px" fxLayoutAlign="center">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>
-                        <mat-chip *ngIf="!order.fullfilment" color="accent" selected [removable]="false">New
-                        </mat-chip>
-                    </mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <doo-cart-items class="doo-bottom-border" [cartItems]="order.order.cart.cart"></doo-cart-items>
-                </mat-card-content>
-                <mat-card-actions>
-                    <div fxLayout="row" fxLayoutAlign="end">
-                        <button *ngIf="!order.fullfilment" (click)="confirmFulfillOrder()" color="accent" class="doo-checkout-btn" mat-flat-button>
-                            <span class="dash-app-link">Mark as complete</span>
-                        </button>
-                    </div>
-                </mat-card-actions>
-            </mat-card>
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>
-                        <span class="mat-subheading-2">{{'cart.paymentMethod' | translate}}</span>
-                    </mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <div fxLayout="column" fxLayoutGap="30px">
-                        <div fxLayout="column">
-                            <div *ngIf="order.order.method == 'card'" fxLayout="row" class="accepted-cards"
-                                fxLayoutGap="10px">
-                                <mat-icon svgIcon="doo-visa"></mat-icon>
-                                <mat-icon svgIcon="doo-mastercard"></mat-icon>
-                                <mat-icon svgIcon="doo-amex"></mat-icon>
-                                <mat-icon svgIcon="doo-discover"></mat-icon>
-                                <div class="mat-subheading-1 doo-letter-space">
-                                    {{'cart.hashedLast4' | translate : {'last4':order.order.last4} }}</div>
+    <div fxLayout="column" class="max-width full-width">
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px" style="padding:20px;">
+            <div fxFlex="70" fxLayout="column" fxLayoutGap="30px" fxLayoutAlign="center">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>
+                            <mat-chip-list>
+                                <mat-chip color="primary" selected [removable]="false">Paid
+                                </mat-chip>
+                                <mat-chip *ngIf="!order.fullfilment" color="accent" selected [removable]="false">New
+                                </mat-chip>
+                                <mat-chip *ngIf="order.fullfilment && order.fullfilment.status" color="primary" selected
+                                    [removable]="false">
+                                    Complete
+                                </mat-chip>
+                            </mat-chip-list>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <doo-cart-items class="doo-bottom-border" [cartItems]="order.order.cart.cart"></doo-cart-items>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayoutAlign="end">
+                            <button *ngIf="!order.fullfilment" (click)="confirmFulfillOrder()" color="accent"
+                                class="doo-checkout-btn" mat-flat-button>
+                                <span class="dash-app-link">Mark as complete</span>
+                            </button>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+                <mat-card>
+                    <mat-card-content>
+                        <div fxLayout="column" fxLayoutGap="30px">
+                            <div fxLayout="column" class="doo-bottom-border">
+                                <div fxLayout="column">
+                                    <div *ngIf="order.order.method == 'card'" fxLayout="row" class="accepted-cards"
+                                        fxLayoutGap="10px">
+                                        <mat-icon svgIcon="doo-visa"></mat-icon>
+                                        <mat-icon svgIcon="doo-mastercard"></mat-icon>
+                                        <mat-icon svgIcon="doo-amex"></mat-icon>
+                                        <mat-icon svgIcon="doo-discover"></mat-icon>
+                                        <div class="mat-subheading-1 doo-letter-space">
+                                            {{'cart.hashedLast4' | translate : {'last4':order.order.last4} }}</div>
+                                    </div>
+                                    <div *ngIf="order.order.method == 'paypal'" fxLayout="row">
+                                        <mat-icon fxFlex="25" svgIcon="paypal" inline="true"></mat-icon>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" class="mat-subheading-1" fxLayoutAlign="space-between">
+                                    <span class="doo-letter-space">{{'cart.subtotal' | translate}}</span>
+                                    <span [innerHTML]="order.order.cart.total | pricePipe">
+                                    </span>
+                                </div>
+                                <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
+                                    <span class="doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
+                                    <span
+                                        [innerHTML]="order.order.cart.shippingCost ? (order.order.cart.shippingCost | pricePipe) : 'FREE'">
+                                    </span>
+                                </div>
+                                <div fxLayout="row" *ngIf="order.order.cart.primaryTax" class="mat-caption"
+                                    fxLayoutAlign="space-between">
+                                    <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
+                                    <span
+                                        [innerHTML]="order.order.cart.primaryTax ? (order.order.cart.primaryTax | pricePipe) : 'FREE'">
+                                    </span>
+                                </div>
+                                <div fxLayout="row" *ngIf="order.order.cart.secondaryTax" class="mat-caption"
+                                    fxLayoutAlign="space-between">
+                                    <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
+                                    <span
+                                        [innerHTML]="order.order.cart.secondaryTax ? (order.order.cart.secondaryTax | pricePipe) : 'FREE'">
+                                    </span>
+                                </div>
                             </div>
-                            <div *ngIf="order.order.method == 'paypal'" fxLayout="row">
-                                <mat-icon fxFlex="25" svgIcon="paypal" inline="true"></mat-icon>
+                            <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 15px 0px;">
+                                <span
+                                    class="mat-subheading-1 doo-letter-space doo-uppercase">{{'cart.total' | translate}}</span>
+                                <span class="mat-title" [innerHTML]="order.order.cart.grandTotal | pricePipe">
+                                </span>
                             </div>
                         </div>
-                        <div fxLayout="column" class="doo-bottom-border">
-                            <div fxLayout="row" class="mat-subheading-1" fxLayoutAlign="space-between">
-                                <span class="doo-letter-space">{{'cart.subtotal' | translate}}</span>
-                                <span [innerHTML]="order.order.cart.total | pricePipe">
-                                </span>
-                            </div>
-                            <div fxLayout="row" class="mat-caption" fxLayoutAlign="space-between">
-                                <span class="doo-letter-space">{{'cart.shippingTitle' | translate}}</span>
-                                <span
-                                    [innerHTML]="order.order.cart.shippingCost ? (order.order.cart.shippingCost | pricePipe) : 'FREE'">
-                                </span>
-                            </div>
-                            <div fxLayout="row" *ngIf="order.order.cart.primaryTax" class="mat-caption"
-                                fxLayoutAlign="space-between">
-                                <span class="doo-letter-space">{{siteSettings.fields.primaryTax}}</span>
-                                <span
-                                    [innerHTML]="order.order.cart.primaryTax ? (order.order.cart.primaryTax | pricePipe) : 'FREE'">
-                                </span>
-                            </div>
-                            <div fxLayout="row" *ngIf="order.order.cart.secondaryTax" class="mat-caption"
-                                fxLayoutAlign="space-between">
-                                <span class="doo-letter-space">{{siteSettings.fields.secondaryTax}}</span>
-                                <span
-                                    [innerHTML]="order.order.cart.secondaryTax ? (order.order.cart.secondaryTax | pricePipe) : 'FREE'">
-                                </span>
-                            </div>
-                        </div>
-                        <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 15px 0px;">
-                            <span
-                                class="mat-subheading-1 doo-letter-space doo-uppercase">{{'cart.total' | translate}}</span>
-                            <span class="mat-title" [innerHTML]="order.order.cart.grandTotal | pricePipe">
-                            </span>
-                        </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div fxFlex="30" fxLayout="column" fxLayoutGap="10px">
+                <mat-card *ngIf="order.order.personalInfo">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <span class="mat-subheading-2">Customer</span>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="shipping-box-link doo-pointer" (click)="goToCustomer()">
+                        <doo-shipping-box [simple]="true" [personalInfo]="order.order.personalInfo">
+                        </doo-shipping-box>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="order.order.address">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <span class="mat-subheading-2">Shipping Address</span>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <doo-shipping-box [simple]="true" [address]="order.order.address">
+                        </doo-shipping-box>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="order.order.shipping">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <span class="mat-subheading-2">Shipping Method</span>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <doo-shipping-box [simple]="true" [shipping]="order.order.shipping">
+                        </doo-shipping-box>
+                    </mat-card-content>
+                </mat-card>
+            </div>
         </div>
-        <div fxFlex="30" fxLayout="column" fxLayoutGap="10px">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>
-                        <span class="mat-subheading-2">Customer</span>
-                    </mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <doo-shipping-box [simple]="true" [personalInfo]="order.order.personalInfo">
-                    </doo-shipping-box>
-                </mat-card-content>
-            </mat-card>
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>
-                        <span class="mat-subheading-2">Shipping Address</span>
-                    </mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <doo-shipping-box [simple]="true" [address]="order.order.address">
-                    </doo-shipping-box>
-                </mat-card-content>
-            </mat-card>
 
 
-            <doo-shipping-box [shipping]="order.order.shipping">
-            </doo-shipping-box>
+
+        <div fxLayout="column" class="timeline" fxLayoutGap="25px">
+            <div fxLayout="row" class="mat-title doo-bottom-border">Timeline</div>
+            <div *ngFor="let date of activeDates | keyvalue: keyDescOrder" class="doo-bottom-border" fxLayout="column"
+                fxLayoutGap="35px">
+                <span class="mat-subheading-1 primary-color"
+                    style="text-transform: uppercase">{{date.value[0].date | date : 'longDate'}}</span>
+                <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let orderItem of date.value" fxLayoutAlign="space-between"
+                    class="container right mat-subheading-1">
+                    <span>{{('dashboard.order.status.' + order.order.method + '.' + orderItem.action) | translate }}
+                            <button mat-button class="accent-color" style="line-height: 20px;">
+                                #{{orderItem.action}}
+                            </button>
+                        </span>
+                    <span class="primary-color">{{orderItem.date | date : 'shortTime'}}</span>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div fxLayout="row" class="mat-title doo-bottom-border">Timeline</div>
-
-    <div fxLayout="column" class="timeline" fxLayoutGap="25px">
-        <div *ngFor="let date of activeDates | keyvalue: keyDescOrder" class="doo-bottom-border" fxLayout="column"
-          fxLayoutGap="35px">
-          <span class="mat-subheading-1 primary-color"
-            style="text-transform: uppercase">{{date.value[0].date | date : 'longDate'}}</span>
-          <div fxLayout="row" *ngFor="let order of date.value" fxLayoutAlign="space-between" class="container right">
-            <span>The customer placed order
-              <button mat-button class="accent-color" style="line-height: 20px;">
-                #{{order.action}}
-              </button>
-            </span>
-            <span class="primary-color">{{order.date | date : 'shortTime'}}</span>
-          </div>
-        </div>
-      </div>
 
 </div>

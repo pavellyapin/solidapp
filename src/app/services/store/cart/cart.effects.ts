@@ -23,7 +23,7 @@ export class CartEffects {
             switchMap((result) => [
               CartActions.SuccessSetOrderTotalAction({ payload: action.payload.cart.grandTotal }),
               CartActions.SuccessInitializeOrderAction({ payload: result.id }),
-              CartActions.BeginGetCartAction({ payload: result.id })
+              //CartActions.BeginGetCartAction({ payload: result.id })
             ])
             ,
             catchError((error: Error) => {

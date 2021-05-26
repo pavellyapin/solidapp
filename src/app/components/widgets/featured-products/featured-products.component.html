@@ -1,10 +1,9 @@
 <div fxLayoutAlign = "center" [innerHTML] = "widget.fields.content | richTextPipe" class = "doo-contentful full-width">
 </div>
-<div fxLayout = "column" [fxLayoutGap] = "widget.fields.bottomGap + 'px'" [fxLayoutGap.xs] = "widget.fields.bottomGap/2 + 'px'">
+<div fxLayout = "column" [style.padding-bottom] = "widget.fields.bottomPadding">
         <doo-product-carousel *ngIf = "relatedProductCards && relatedProductCards.length > 0" 
                 [productCards] = "relatedProductCards"
                 [width] = "widget.fields.width"
                 [id] = "widget.fields.id">
         </doo-product-carousel>
-        <div></div>
 </div>

@@ -16,20 +16,16 @@ const reducer = createReducer(
       }
     }),
 
-  on(AdminActions.SuccessLoadCustomersAction, (state: AdminState, { payload }) => {
-    return { ...state, customers: payload, AdminError: null };
-  }),
-
-  on(AdminActions.SuccessLoadCartsAction, (state: AdminState, { payload }) => {
-    return { ...state, carts: payload, AdminError: null };
-  }),
-
-  on(AdminActions.SuccessLoadOrdersAction, (state: AdminState, { payload }) => {
-    return { ...state, orders: payload, AdminError: null };
-  }),
-
   on(AdminActions.SuccessLoadNewOrdersAction, (state: AdminState, { payload }) => {
     return { ...state, newOrders: payload, AdminError: null };
+  }),
+
+  on(AdminActions.SuccessStatsPerPeriodAction, (state: AdminState, { payload }) => {
+    return { ...state, stats: payload, AdminError: null };
+  }),
+
+  on(AdminActions.SuccessResetDashboardHomeAction, (state: AdminState, {}) => {
+    return { ...state, stats: null, newOrders: null, AdminError: null };
   }),
 
   on(AdminActions.ErrorAdminAction, (state: AdminState, error: Error) => {

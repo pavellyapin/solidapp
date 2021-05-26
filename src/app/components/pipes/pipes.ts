@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
   name: 'imagePipe'
 })
 export class ImagePipe {
-  constructor(public sanitizer: DomSanitizer) { }
+  constructor() { }
   transform(url: string): any {
     var fullUrl = 'https:' + url;
     return fullUrl;
@@ -126,7 +126,7 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
   constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone) { }
   transform(value: string) {
     this.removeTimer();
-    let d = new Date(value);
+    let d = new Date(parseInt(value));
     let now = new Date();
     let seconds = Math.round(Math.abs((now.getTime() - d.getTime()) / 1000));
     let timeToUpdate = (Number.isNaN(seconds)) ? 1000 : this.getSecondsUntilUpdate(seconds) * 1000;

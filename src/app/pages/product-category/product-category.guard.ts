@@ -17,7 +17,7 @@ export class ProductCategoryGuard implements CanActivate {
   categories$: Observable<Entry<any>[]>;
   categories: Entry<any>[];
 
-  constructor(private router: Router,private store: Store<{ settings: SettingsState }>, private navService: NavigationService) {
+  constructor(private router: Router, private store: Store<{ settings: SettingsState }>, private navService: NavigationService) {
     this.categories$ = store.select('settings', 'categories');
     this.categories$.pipe(
       map(x => {
@@ -32,14 +32,33 @@ export class ProductCategoryGuard implements CanActivate {
     return from(new Promise<any>((resolve, reject) => {
       let catExists = false;
       if (this.categories) {
-        this.categories.forEach(function (category) {
-          if (category.fields.name == route.params['category']) {
-            this.store.dispatch(ProductsActions.BeginSetActiveCategoryAction({ payload: category }));
-            this.store.dispatch(ProductsActions.BeginLoadProductsAction({ payload: category.sys.id }));
-            catExists = true;
-            resolve(catExists);
+        let catsArray = [];
+        const activeCategory = this.categories.filter(item => item.fields.name == route.params['category']).pop();
+        if (activeCategory && !activeCategory.fields.redirect) {
+          catsArray.push(activeCategory.sys.id);
+          const subCategories = this.categories.filter(item => {
+            if (item.fields.parent && item.fields.parent.fields) {
+              return item.fields.parent.fields.name == route.params['category']
+            }
           }
-        }.bind(this));
+          );
+          subCategories.forEach(function (subCategory) {
+            catsArray.push(subCategory.sys.id);
+            this.categories.forEach(item => {
+              if (item.fields.parent && item.fields.parent.fields && item.fields.parent.fields.name == subCategory.fields.name) {
+                catsArray.push(item.sys.id);
+              }
+            });
+          }.bind(this));
+
+          this.store.dispatch(ProductsActions.BeginSetActiveCategoryAction({ payload: activeCategory }));
+
+          this.store.dispatch(ProductsActions.BeginLoadProductsAction({ payload: catsArray }));
+          catExists = true;
+          resolve(catExists);
+        } else if (activeCategory && activeCategory.fields.redirect) {
+          this.navService.ctaClick(activeCategory.fields.redirect);
+        }
       }
       if (!catExists) {
         this.router.navigate(['/'])

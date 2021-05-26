@@ -21,7 +21,8 @@ export const environment = {
   enableGoogleLogin : true,
   enableFacebookLogin : false,
   countryCode : "CA",
-  shippingEnabled : true
+  shippingEnabled : true,
+  addressRequired : true
 };
 
 /*

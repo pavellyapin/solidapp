@@ -4,6 +4,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { from } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Store } from '@ngrx/store';
+import * as UserActions from '../store/user/user.action';
+import * as CartActions from '../store/cart/cart.action';
 
 
 @Injectable({
@@ -13,58 +16,87 @@ export class AuthService {
 
   uid: any;
   idToken: any;
+  isRedirect: boolean = false;
   isAnonymous: any;
-  authReady$ = new BehaviorSubject<boolean>(false);
+  authReady$ = new BehaviorSubject<any>({});
 
   constructor(public afAuth: AngularFireAuth,
-    private firestore: AngularFirestore) {
+    private firestore: AngularFirestore,
+    private store: Store<{}>) {
     firebase.default.auth().setPersistence(firebase.default.auth.Auth.Persistence.LOCAL);
+    firebase.default.auth().getRedirectResult()
+    .then(res => {
+      if(res.user) {
+        this.uid = res.user.uid;
+        this.isRedirect = true;
+        this.isAnonymous = res.user.isAnonymous;
+        if (res.additionalUserInfo.isNewUser) {
+          this.firestore
+          .collection("customers")
+          .doc("customers")
+          .collection(res.user.uid)
+          .doc("personalInfo")
+          .set({
+            email: res.additionalUserInfo.profile["email"],
+            firstName: res.additionalUserInfo.providerId == 'facebook.com' ? 
+            (res.additionalUserInfo.profile["first_name"] ? res.additionalUserInfo.profile["first_name"] : '') : 
+            (res.additionalUserInfo.profile["given_name"] ? res.additionalUserInfo.profile["given_name"] : '') ,
+            lastName: res.additionalUserInfo.providerId == 'facebook.com' ? 
+            (res.additionalUserInfo.profile["first_name"] ? res.additionalUserInfo.profile["first_name"] : '') : 
+            (res.additionalUserInfo.profile["given_name"] ? res.additionalUserInfo.profile["given_name"] : '') ,
+            phone: '',
+            provider: res.additionalUserInfo.providerId
+          }).then((x)=>{
+            this.store.dispatch(UserActions.BeginPostLoginAction());
+          });
+        } else {
+          this.store.dispatch(UserActions.BeginPostLoginAction());
+        }
+      }
+    });
     this.afAuth.authState.subscribe(
       (auth) => {
-        this.authReady$.next(true);
         if (auth != null) {
           this.uid = auth.uid;
+          this.authReady$.next(auth.uid);
           this.idToken = auth.getIdToken();
           this.isAnonymous = auth.isAnonymous;
+
         } else {
           this.uid = null;
         }
       });
   }
 
-  doLogin(email, password): Observable<any> {
+  postLogin() {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.default.auth().signInWithEmailAndPassword(email, password)
-        .then(res => {
-          resolve(res);
+      this.afAuth.currentUser
+        .then(auth => {
+          if(!auth.isAnonymous) {
+            this.uid = auth.uid;
+            this.store.dispatch(CartActions.BeginResetCartIdAction());
+            this.store.dispatch(CartActions.SuccessSetGuestFlowAction({ payload: false }));
+            this.store.dispatch(UserActions.BeginGetUserInfoAction());
+            this.store.dispatch(UserActions.BeginGetUserPermissionsAction());
+            this.store.dispatch(UserActions.BeginSetUserIDAction({ payload: auth.uid }));
+            this.store.dispatch(UserActions.BeginGetUserAddressInfoAction());
+            this.store.dispatch(CartActions.
+            BeginBackGroundInitializeCartAction({
+              payload: {
+                cartId: null,
+                cart: null
+              }
+            }));
+          }
+          resolve(auth);
         }, err => reject(err));
     }));
   }
 
-  getRedirectResult() {
+  doLogin(email, password): Observable<any> {
     return from(new Promise<any>((resolve, reject) => {
-      firebase.default.auth().getRedirectResult()
+      firebase.default.auth().signInWithEmailAndPassword(email, password)
         .then(res => {
-          console.log('res',res);
-          if (res.user && res.additionalUserInfo.isNewUser) {
-            this.firestore
-              .collection("customers")
-              .doc("customers")
-              .collection(res.user.uid)
-              .doc("personalInfo")
-              .set({
-                email: res.additionalUserInfo.profile["email"],
-                firstName: res.additionalUserInfo.providerId == 'facebook.com' ? 
-                (res.additionalUserInfo.profile["first_name"] ? res.additionalUserInfo.profile["first_name"] : '') : 
-                (res.additionalUserInfo.profile["given_name"] ? res.additionalUserInfo.profile["given_name"] : '') ,
-                lastName: res.additionalUserInfo.providerId == 'facebook.com' ? 
-                (res.additionalUserInfo.profile["first_name"] ? res.additionalUserInfo.profile["first_name"] : '') : 
-                (res.additionalUserInfo.profile["given_name"] ? res.additionalUserInfo.profile["given_name"] : '') ,
-                phone: '',
-                provider: res.additionalUserInfo.providerId
-              })
-
-          }
           resolve(res);
         }, err => reject(err));
     }));
@@ -78,29 +110,6 @@ export class AuthService {
 
   doLoginWithGoogle() {
     return from(new Promise<any>((resolve, reject) => {
-      if (this.uid) {
-        firebase.default.auth().signOut().then(() => {
-          firebase.default.auth().signInWithPopup(new firebase.default.auth.GoogleAuthProvider())
-            .then(res => {
-              if (res.additionalUserInfo.isNewUser) {
-                this.firestore
-                  .collection("customers")
-                  .doc("customers")
-                  .collection(res.user.uid)
-                  .doc("personalInfo")
-                  .set({
-                    email: res.additionalUserInfo.profile["email"],
-                    firstName: res.additionalUserInfo.profile["given_name"] ? res.additionalUserInfo.profile["given_name"] : '',
-                    lastName: res.additionalUserInfo.profile["family_name"] ? res.additionalUserInfo.profile["family_name"] : '',
-                    phone: '',
-                    provider: 'google'
-                  })
-
-              }
-              resolve(res);
-            }, err => reject(err));
-        });
-      } else {
         firebase.default.auth().signInWithPopup(new firebase.default.auth.GoogleAuthProvider())
           .then(res => {
             if (res.additionalUserInfo.isNewUser) {
@@ -120,7 +129,7 @@ export class AuthService {
             }
             resolve(res);
           }, err => reject(err));
-      }
+      
     }));
   }
 

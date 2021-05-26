@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from '../pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,6 +30,7 @@ import { DashboardToolbarComponent } from './dashboard-toolbar/dashboard-toolbar
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    MatProgressSpinnerModule,
     TranslateModule,
     MatSidenavModule,
     FlexLayoutModule,

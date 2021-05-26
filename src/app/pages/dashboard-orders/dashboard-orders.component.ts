@@ -15,7 +15,7 @@ export class DashboardOrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(AdminActions.BeginLoadOrdersAction());
+    
   }
 
   ngOnDestroy(): void {

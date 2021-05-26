@@ -1,0 +1,52 @@
+@import 'src/css/_variables.scss';
+
+.doo-home-summary{
+    width: 30%;
+    background: white;
+}
+
+.doo-home-mobile-summary{
+    width: 75%;
+}
+
+::ng-deep.mat-menu-panel {
+    max-width: none !important;
+  }
+
+     .dash-home-date-dropdown{
+        padding: 10px;
+         mat-icon {
+             padding-left: 15px;
+             width: 15px;
+             height: 15px;
+         }
+     }
+
+     .dash-home-summary-row{
+        padding: 10px; 
+     }
+
+     .doo-filters-btn{
+        padding-right: 5%;
+        button {
+            background: $accent;
+            border-bottom-right-radius: 15px !important;
+            border-bottom-left-radius: 15px !important;
+            padding: 0 15px !important;
+            //min-width: 45px;
+            span {
+              padding-right: 5px;
+            }
+            mat-icon {
+                height: 25px;
+                width: 25px;
+                
+                ::ng-deep .cls-1 {
+                  stroke: white;
+                }
+                ::ng-deep .cls-2 {
+                  stroke: white;
+                }
+              }
+        }
+      }
