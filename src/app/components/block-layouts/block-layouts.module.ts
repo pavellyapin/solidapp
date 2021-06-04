@@ -18,6 +18,7 @@ import { ExpandBlockComponent } from './expand/expand.component';
 import { ShippingBoxComponent } from './shipping-box/shipping-box.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FAQPostComponent } from './faq/faq.component';
+import { DirectivesModule } from 'src/app/services/util/directives';
 
 @NgModule({
     declarations: [BackgroundImageBlockComponent,
@@ -34,6 +35,7 @@ import { FAQPostComponent } from './faq/faq.component';
     imports: [
         CommonModule,
         PipesModule,
+        DirectivesModule,
         TranslateModule,
         LazyLoadImageModule,
         FlexLayoutModule,
