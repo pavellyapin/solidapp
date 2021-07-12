@@ -5,14 +5,14 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, first } from 'rxjs/operators';
 import * as ProductsActions from './product.action';
 import { ContentfulService } from '../../contentful/contentful.service';
-import { FirestoreService } from '../../firestore/firestore.service';
+import { FirestoreProductsService } from '../../firestore/sub-services/firestore-products.service';
 
 @Injectable()
 export class ProductsEffects {
   constructor(
         private action$: Actions, 
         private contentfulService: ContentfulService,
-        private firestoreService: FirestoreService) {}
+        private firestoreService: FirestoreProductsService) {}
 
   GetProducts$: Observable<Action> = createEffect(() =>
     this.action$.pipe(

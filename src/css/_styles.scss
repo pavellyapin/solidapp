@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 @import "./variables";
 @import "./contentful";
 @import "./material";
@@ -8,24 +8,23 @@
 
 /* noto-sans-regular - latin */
 @font-face {
-  font-family: 'Noto Sans';
+  font-family: "Noto Sans";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local('Noto Sans'), local('NotoSans'),
-  url('../assets/fonts/noto-sans-v9-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-  url('../assets/fonts/noto-sans-v9-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: local("Noto Sans"), local("NotoSans"), url("../assets/fonts/noto-sans-v9-latin-regular.woff2") format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */ url("../assets/fonts/noto-sans-v9-latin-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* noto-sans-italic - latin */
 @font-face {
-  font-family: 'Noto Sans';
+  font-family: "Noto Sans";
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: local('Noto Sans Italic'), local('NotoSans-Italic'),
-  url('../assets/fonts/noto-sans-v9-latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-  url('../assets/fonts/noto-sans-v9-latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: local("Noto Sans Italic"), local("NotoSans-Italic"),
+    url("../assets/fonts/noto-sans-v9-latin-italic.woff2") format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */ url("../assets/fonts/noto-sans-v9-latin-italic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 //  https://material.angular.io/guide/typography
@@ -36,23 +35,21 @@
 //  $letter-spacing
 
 $doo-typography: mat-typography-config(
-  $font-family: 'Barlow Semi Condensed',
+  $font-family: "Barlow Semi Condensed",
   $display-4: mat-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
   $display-3: mat-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
-  $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em,),
+  $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
   $display-1: mat-typography-level(34px, 40px, 400),
-  $title: mat-typography-level(28px, 32px, 500 , $letter-spacing: 2px),
-  $headline:  mat-typography-level(24px, 32px, 600),
+  $title: mat-typography-level(28px, 32px, 500, $letter-spacing: 2px),
+  $headline: mat-typography-level(24px, 32px, 600),
   $subheading-2: mat-typography-level(18px, 22px, 700),
   $subheading-1: mat-typography-level(18px, 24px, 300),
   $body-2: mat-typography-level(15px, 24px, 500),
   $body-1: mat-typography-level(14px, 20px, 400),
   $caption: mat-typography-level(14px, 20px, 400),
-  $button: mat-typography-level(18px, 18px, 500,$letter-spacing: 2px),
-    // Line-height must be unit-less fraction of the font-size.
-  $input: mat-typography-level(inherit, 1.125, 400)
+  $button: mat-typography-level(18px, 18px, 500, $letter-spacing: 2px),
+  // Line-height must be unit-less fraction of the font-size. $input: mat-typography-level(inherit, 1.125, 400)
 );
-
 
 @include mat-core($doo-typography);
 
@@ -66,19 +63,20 @@ button {
   border-radius: 0px !important;
 }
 
-.mat-form-field-outline-start, .mat-form-field-outline-end {
+.mat-form-field-outline-start,
+.mat-form-field-outline-end {
   border-radius: 0 !important;
 }
 
 input {
   height: 100%;
-  font-size: 16px;
+  font-size: 18px !important;
   letter-spacing: 2px;
   opacity: 0.7;
 }
 
 .doo-no-margin {
-  margin : 0px;
+  margin: 0px;
 }
 
 .doo-no-wrap {
@@ -97,7 +95,7 @@ input {
   cursor: pointer;
 }
 
-.doo-pointer-zoom{
+.doo-pointer-zoom {
   cursor: zoom-in;
 }
 
@@ -114,7 +112,7 @@ input {
 
 .doo-checkout-btn {
   font-size: 12px;
-  padding : 5px 15px !important;
+  padding: 5px 15px !important;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -148,11 +146,11 @@ input {
   padding-right: 10px;
   height: 25px;
   width: 25px;
-  
-   .cls-1 {
+
+  .cls-1 {
     stroke: $primary;
   }
-   .cls-2 {
+  .cls-2 {
     stroke: $primary;
   }
 }
@@ -161,29 +159,42 @@ input {
   padding-right: 10px;
   height: 25px;
   width: 25px;
-  
-   .cls-1 {
+
+  .cls-1 {
     stroke: $accent;
   }
-   .cls-2 {
+  .cls-2 {
     stroke: $accent;
   }
 }
 
-.doo-top-border-radius{
+.doo-top-border-radius {
   border-top-left-radius: 15px !important;
-  border-top-right-radius:15px !important;
+  border-top-right-radius: 15px !important;
 }
 
-.doo-bottom-border-radius{
+.doo-bottom-border-radius {
   border-bottom-left-radius: 15px !important;
-  border-bottom-right-radius:15px !important;
+  border-bottom-right-radius: 15px !important;
 }
 
 .pad-20 {
   padding: 20px;
 }
 
+.crop {
+  width: 100%;
+  //max-height: 700px;
+  //height: 100%;
+  overflow: hidden;
+}
 
+.crop img {
+  margin: 0 0 0 0;
+}
 
-
+.crop video {
+  width: 200%;
+  height: auto;
+  margin: 0 0 0 0;
+}

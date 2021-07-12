@@ -2,21 +2,16 @@
     <div fxLayout="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100" fxFlex.lt-sm
         [fxLayoutGap]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px'">
         <div fxLayout="row" [fxLayoutAlign]="block.fields.contentPosition? block.fields.contentPosition : 'center'"
-            [class.primary-background]="block.fields.textBackground == 'Primary'"
-            [class.accent-background]="block.fields.textBackground == 'Accent'"
-            [class.white-background]="block.fields.textBackground == 'White'"
-            [class.black-background]="block.fields.textBackground == 'Black'">
-            <div fxLayout="column" class = "doo-bottom-border" fxLayoutGap = "20px" [fxFlex]="block.fields.textBoxWidth" fxFlex.lt-md="100" style="padding:20px">
+            [dooBackground]="block.fields.textBackground">
+            <div fxLayout="column" class="doo-bottom-border" fxLayoutGap="20px" [fxFlex]="block.fields.textBoxWidth"
+                fxFlex.lt-md="100" style="padding:20px">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon svgIcon="doo-faq-q" class="doo-faq"></mat-icon>
                     <div class="doo-cta-content doo-contentful"
                         [class.wrap-left]="['start' , 'center'].includes(block.fields.contentPosition)"
                         [class.wrap-right]="['end'].includes(block.fields.contentPosition)"
-                        [class.primary-color]="block.fields.textColor == 'Primary'"
-                        [class.accent-color]="block.fields.textColor == 'Accent'"
-                        [class.white-color]="block.fields.textColor == 'White'"
-                        [class.black-color]="block.fields.textColor == 'Black'"
-                        [style.text-align]="block.fields.textAlign" [innerHTML]="block.fields.content | richTextPipe">
+                        [dooFontColor]="block.fields.textColor" [style.text-align]="block.fields.textAlign"
+                        [innerHTML]="block.fields.content | richTextPipe">
                     </div>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -24,10 +19,7 @@
                     <div class="doo-cta-content doo-contentful"
                         [class.wrap-left]="['start' , 'center'].includes(block.fields.contentPosition)"
                         [class.wrap-right]="['end'].includes(block.fields.contentPosition)"
-                        [class.primary-color]="block.fields.otherTextColor == 'Primary'"
-                        [class.accent-color]="block.fields.otherTextColor == 'Accent'"
-                        [class.white-color]="block.fields.otherTextColor == 'White'"
-                        [class.black-color]="block.fields.otherTextColor == 'Black'"
+                        [dooFontColor]="block.fields.otherTextColor"
                         [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                         [innerHTML]="block.fields.otherContent | richTextPipe">
                     </div>

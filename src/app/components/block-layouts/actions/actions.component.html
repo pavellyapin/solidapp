@@ -18,12 +18,9 @@
                         (click)="navigate(cta)" mat-raised-button class="doo-cta-btn">
                         {{cta.fields.name}}
                 </button>
-                <div *ngSwitchCase="'text'" (click)="navigate(cta)"
+                <div *ngSwitchCase="'text'" (click)="navigate(cta)" mat-button
                         class = "crumb-item doo-letter-space"
-                        [class.primary-color]="cta.fields.color == 'primary'"
-                        [class.accent-color]="cta.fields.color == 'accent'"
-                        [class.white-color]="cta.fields.color == 'white'"
-                        [class.black-color]="cta.fields.color == 'black'">
+                        [dooFontColor]="cta.fields.color">
                         {{cta.fields.name}}
                 </div>
         </div>

@@ -40,7 +40,10 @@ export class FeaturedProductsComponent implements OnInit {
   createCardsForCarousel(): void {
     this.loadedProducts.forEach((v, index) => {
       if (v.fields) {
-        this.sortVariantsForCarousel(v);
+        if (v.fields.variants) {
+          this.sortVariantsForCarousel(v);
+        }
+        
         this.addCard(
           new Card(
             {

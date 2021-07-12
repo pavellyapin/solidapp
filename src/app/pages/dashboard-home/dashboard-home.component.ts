@@ -75,10 +75,6 @@ export class DashboardHomeComponent implements OnInit {
       .subscribe();
   }
 
-  cleanupUsers() {
-    this.store.dispatch(AdminActions.BeginCleanupUsersAction());
-  }
-
   getStatsQuickLook(quickLook: any) {
     this.currentLookup = quickLook;
     this.isQuickLook = true;

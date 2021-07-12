@@ -10,9 +10,9 @@ import { Observable, Subscription } from 'rxjs';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import { map } from 'rxjs/operators';
 import { UtilitiesService } from 'src/app/services/util/util.service';
-import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Entry } from 'contentful';
+import { FirestoreProductsService } from 'src/app/services/firestore/sub-services/firestore-products.service';
 
 @Component({
   selector: 'doo-product-card',
@@ -40,7 +40,7 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   constructor(public injector: Injector, 
               private navService: NavigationService,
               private router: Router,
-              private firebase: FirestoreService,
+              private firebase: FirestoreProductsService,
               private store: Store<{ user:UserState , settings: SettingsState }>,
               private utilService: UtilitiesService) {
     super(injector.get(Card.metadata.NAME),

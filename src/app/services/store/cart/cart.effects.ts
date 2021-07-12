@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import * as CartActions from './cart.action';
-import { FirestoreService } from '../../firestore/firestore.service';
+import { FirestoreOrderService } from '../../firestore/sub-services/firestore-order.service';
 
 
 
@@ -12,7 +12,7 @@ import { FirestoreService } from '../../firestore/firestore.service';
 export class CartEffects {
   constructor(
     private action$: Actions,
-    private firestoreService: FirestoreService) { }
+    private firestoreService: FirestoreOrderService) { }
 
   InitializeOrder$: Observable<Action> = createEffect(() =>
     this.action$.pipe(

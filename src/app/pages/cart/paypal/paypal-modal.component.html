@@ -3,7 +3,8 @@
                 class="doo-loading-overlay">
                 <div fxLayout="column" fxLayoutGap="20px" class="doo-loading-screen">
                         <div fxLayout="row" fxLayoutAlign="center center">
-                                <img src="assets/icons/logo.png">
+                                <img [lazyLoad]="'assets/custom/logo.png'"
+                                [defaultImage]="'assets/icons/logo.png'">
                         </div>
 
                         <span class = "mat-subheading-1 doo-letter-space">Secure Transaction in Progress</span>

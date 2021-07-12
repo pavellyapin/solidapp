@@ -1,5 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export class CartCard {
   static metadata: any = {
@@ -45,26 +46,11 @@ export class CartCard {
   }
 
 
-  static colsMap = new Map([
-    ['xs', 24],
-    ['sm', 24],
-    ['md', 24],
-    ['lg', 24],
-    ['xl', 24],
-  ]);
-  static colsMapBig = new Map([
-    ['xs', 24],
-    ['sm', 24],
-    ['md', 24],
-    ['lg', 24],
-    ['xl', 24],
-  ]);
-  static rowsMapBig = new Map([
-    ['xs', 26],
-    ['sm', 12],
-    ['md', 10],
-    ['lg', 9],
-    ['xl', 9],
-  ]);
+  /* Grid column map */
+  static colsMap = environment.cartCard.colsMap;
+  /* Big card column span map */
+  static colsMapBig = environment.cartCard.colsMapBig;
+  /* Small card column span map */
+  static rowsMapBig = environment.cartCard.rowsMapBig;
 
 }

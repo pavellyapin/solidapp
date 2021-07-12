@@ -26,18 +26,9 @@ export class CardPostComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    //console.log(this.block);
   }
-
-  navigate() {
-    if(this.block.fields.imageAction) {
-      if (this.block.fields.imageAction.fields.action) {
-        this.navService.ctaClick(this.block.fields.imageAction.fields.action)
-      } else {
-        this.navService.navigateExternalURL(this.block.fields.imageAction.fields.externalUrl);
-      }
-    }
-  }
+  
   myCallbackFunction(event: StateChange) {
     switch (event.reason) {
       case 'setup':

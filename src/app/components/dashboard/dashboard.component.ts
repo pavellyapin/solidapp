@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateApp(app) {
-    if(!this.utilService.bigScreens.includes(this.resolution)) {
+    if (!this.utilService.bigScreens.includes(this.resolution)) {
       this.isAppsOpen = false;
     }
     if (this.currentApp != app) {
@@ -120,6 +120,9 @@ export class DashboardComponent implements OnInit {
       case this.constants.ordersDashboard:
         this.router.navigateByUrl(this.constants.ordersDashboard);
         break;
+      case this.constants.subscriptionsDashboard:
+        this.router.navigateByUrl(this.constants.subscriptionsDashboard);
+        break;
       case this.constants.homeDashboard:
         this.router.navigateByUrl(this.constants.homeDashboard);
         break;
@@ -127,7 +130,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  toggleMobileSideMenu($event){
+  toggleMobileSideMenu($event) {
     console.log($event);
   }
 

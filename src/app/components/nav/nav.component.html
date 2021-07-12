@@ -1,54 +1,38 @@
 <div class="nav-container">
 
-<app-nav-toolbar fxLayout = "column"
-                 (logout)="logout()"
-                 (expandMainMenu)="expandMainMenu($event)"
-                 (expandCartNav) = "expandCartNav()"
-                 (toggleMobileSideMenu) = "toggleMobileSideMenu()"
-                 (startSearchProducts) = "startSearchProducts($event)"
-                 [filteredOptions] = "filteredOptions"
-                 [searchControl] = "searchControl"
-                 [mainMenuOpen] = "mainMenuOpen"
-                 [siteSettings] = "siteSettings"
-                 [cartItemCount] = "cartSideNavComponent?.cartItemCount"
-                 [rootCategories] = "rootCategories"
-                 [categories] = "categories"
-                 [resolution] = "resolution"
-                 [activePage]="getActivePage()"
-                 [previousUrl]="getPreviousUrl()">
-</app-nav-toolbar>
-<mat-drawer-container [ngClass] = "utilService.bigScreens.includes(this.resolution) ? 'main-nav-container' : 'main-nav-container-mobile'">
-    <mat-drawer  [opened]="isMobileMenuOpen" 
-                 (closedStart)="isMobileMenuOpen = false"
-                 autoFocus = "false"
-                 mode="over" 
-                 style = "width: 100%"
-                 position = "start">
-                  <doo-mobile-side-nav
-                  [rootCategories] = "rootCategories"
-                  [categories] = "categories"
-                  (goToURL) = "goToFromMobileNav($event)">
-                  </doo-mobile-side-nav>
+  <app-nav-toolbar fxLayout="column" (logout)="logout()" (expandMainMenu)="expandMainMenu($event)"
+    (expandCartNav)="expandCartNav()" (toggleMobileSideMenu)="toggleMobileSideMenu()"
+    (startSearchProducts)="startSearchProducts($event)" [filteredOptions]="filteredOptions"
+    [searchControl]="searchControl" [mainMenuOpen]="mainMenuOpen" [siteSettings]="siteSettings"
+    [cartItemCount]="cartSideNavComponent?.cartItemCount" [rootCategories]="rootCategories" [categories]="categories"
+    [resolution]="resolution" [activePage]="getActivePage()" [previousUrl]="getPreviousUrl()">
+  </app-nav-toolbar>
+  <mat-drawer-container
+    [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'main-nav-container' : 'main-nav-container-mobile'">
+    <mat-drawer [opened]="isMobileMenuOpen" (closedStart)="isMobileMenuOpen = false" autoFocus="false" mode="over"
+      style="width: 100%" position="start">
+      <doo-mobile-side-nav [rootCategories]="rootCategories" [categories]="categories"
+        (goToURL)="goToFromMobileNav($event)">
+      </doo-mobile-side-nav>
     </mat-drawer>
-    <mat-drawer [opened]="isCartOpen" 
-                 (closedStart)="isCartOpen = false"
-                 mode="over"
-                 autoFocus = "false"
-                 [ngClass] = "utilService.bigScreens.includes(this.resolution) ? 'doo-cart-side-nav' : 'doo-mobile-cart-side-nav'" 
-                 position = "end">
-                 <doo-cart-side-nav #cartSideNav [resolution] = "resolution" (expandCartNav) = "expandCartNav()"></doo-cart-side-nav>
-  </mat-drawer>
-  <mat-drawer-content>
-      <div *ngIf = "mainMenuOpen" fxLayout = "row" fxLayoutAlign="center start" (click) = "hideMainMenu()" class = "doo-overlay">
-          
+    <mat-drawer [opened]="isCartOpen" (closedStart)="isCartOpen = false" mode="over" autoFocus="false"
+      [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-cart-side-nav' : 'doo-mobile-cart-side-nav'"
+      position="end">
+      <doo-cart-side-nav #cartSideNav [resolution]="resolution" (expandCartNav)="expandCartNav()"></doo-cart-side-nav>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div *ngIf="mainMenuOpen" fxLayout="row" fxLayoutAlign="center start" (click)="hideMainMenu()"
+        class="doo-overlay">
+
       </div>
-      <div *ngIf = "loading && !['Home','Profile'].includes(this.navService.getActivePage().title)" fxLayout = "row" fxLayoutAlign="center start" class = "doo-loading-overlay">
-        <div class="doo-loading-screen" fxLayout = "row" fxLayoutAlign="center start">
-          <img src = "assets/icons/logo.png">
+      <div *ngIf="loading && !['Home','Profile'].includes(this.navService.getActivePage().title)" fxLayout="row"
+        fxLayoutAlign="center start" class="doo-loading-overlay">
+        <div class="doo-loading-screen" fxLayout="row" fxLayoutAlign="center start">
+          <img [lazyLoad]="'assets/custom/logo.png'" [defaultImage]="'assets/icons/logo.png'">
         </div>
       </div>
-    <router-outlet style = "padding-top: 250px;"></router-outlet>
-  </mat-drawer-content>
-</mat-drawer-container>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>
-<doo-footer [showAll] = "true"></doo-footer>
+<doo-footer [showAll]="true"></doo-footer>

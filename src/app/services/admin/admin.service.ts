@@ -25,24 +25,15 @@ export class AdminService {
             
     }
 
+    statsForPeriod(quickLook?:string,startDate?:any,endDate?:any) {
+        var statsForPeriod = this.firebaseFunctions.httpsCallable('admin/statsForPeriod');
+        return statsForPeriod({"quickLook" : quickLook ,"startDate":startDate, "env" : this.env});
+
+    }
+
     getCustomers() : Observable<any>{
         var getCustomers = this.firebaseFunctions.httpsCallable('admin/getCustomers');
         return getCustomers({"env" : this.env});
-    }
-
-    getCarts() : Observable<any>{
-        var getCarts = this.firebaseFunctions.httpsCallable('admin/getCarts');
-        return getCarts({"env" : this.env});
-    }
-
-    deleteCarts(carts : [any]) {
-        var deleteCarts = this.firebaseFunctions.httpsCallable('admin/deleteCarts');
-        return deleteCarts({"carts" : carts , "env" : this.env});
-    }
-
-    cleanupUsers() {
-        var cleanupUsers = this.firebaseFunctions.httpsCallable('admin/cleanupUsers');
-        return cleanupUsers({"env" : this.env});
     }
 
     getCustomerDetails(uid) {
@@ -80,6 +71,16 @@ export class AdminService {
         return unfullFillOrder({"uid" : uid , "orderId" : orderId, "env" : this.env});
     }
 
+    getCarts() : Observable<any>{
+        var getCarts = this.firebaseFunctions.httpsCallable('admin/getCarts');
+        return getCarts({"env" : this.env});
+    }
+
+    deleteCarts(carts : [any]) {
+        var deleteCarts = this.firebaseFunctions.httpsCallable('admin/deleteCarts');
+        return deleteCarts({"carts" : carts , "env" : this.env});
+    }
+
     getCartDetails(uid, cartId) {
         var getCart = this.firebaseFunctions.httpsCallable('admin/getOrder');
         return getCart({"uid" : uid , "orderId" : cartId , "env" : this.env});
@@ -96,9 +97,37 @@ export class AdminService {
 
     }
 
-    statsForPeriod(quickLook?:string,startDate?:any,endDate?:any) {
-        var statsForPeriod = this.firebaseFunctions.httpsCallable('admin/statsForPeriod');
-        return statsForPeriod({"quickLook" : quickLook ,"startDate":startDate, "env" : this.env});
+    getSubscriptions() : Observable<any>{
+        var getSubscriptions = this.firebaseFunctions.httpsCallable('admin/getSubscriptions');
+        return getSubscriptions({"env" : this.env});
+    }
+
+    deleteSubscriptions(subscriptions : [any]) {
+        var deleteSubscriptions = this.firebaseFunctions.httpsCallable('admin/deleteSubscriptions');
+        return deleteSubscriptions({"subscriptions" : subscriptions , "env" : this.env});
+    }
+
+    getSubscriptionDetails(uid, subscriptionId) {
+        var getSubscription = this.firebaseFunctions.httpsCallable('admin/getSubscription');
+        return getSubscription({"uid" : uid , "subscriptionId" : subscriptionId , "env" : this.env});
+    }
+
+    reviewSubscription(uid, subscriptionId) {
+        var reviewSubscription = this.firebaseFunctions.httpsCallable('admin/reviewSubscription');
+        return reviewSubscription({"uid" : uid , "subscriptionId" : subscriptionId, "env" : this.env});
+    }
+
+    unreviewSubscription(uid, subscriptionId) {
+        var unreviewSubscription = this.firebaseFunctions.httpsCallable('admin/unReviewSubscription');
+        return unreviewSubscription({"uid" : uid , "subscriptionId" : subscriptionId, "env" : this.env});
 
     }
+
+    sendEmail(uid, subscriptionId, email) {
+        var sendEmail = this.firebaseFunctions.httpsCallable('admin/sendEmail');
+        return sendEmail({"uid" : uid , "subscriptionId" : subscriptionId, "email": email, "env" : this.env});
+
+    }
+
+
 }

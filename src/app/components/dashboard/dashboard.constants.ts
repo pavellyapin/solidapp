@@ -8,6 +8,9 @@ export class DashboardConstants {
     customersApp = 'customers'
     customersDashboard = '/store/customers';
 
+    subscriptionsApp = 'subscriptions'
+    subscriptionsDashboard = '/store/subscriptions';
+
     cartsApp = 'carts'
     cartsDashboard = '/store/carts';
 

@@ -45,10 +45,14 @@ mat-checkbox {
   }
 
   ::ng-deep .mat-form-field-subscript-wrapper {
-    margin-top: 1.666667em;
+    //margin-top: 1.666667em;
   }
 
   //
   mat-select {
     font-size: 16px;
+  }
+
+  ::ng-deep .mat-radio-label-content {
+    padding-left: 20px !important;
   }

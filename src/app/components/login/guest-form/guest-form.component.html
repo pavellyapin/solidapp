@@ -7,14 +7,14 @@
       <h1>{{'login.loginHeader' | translate}}</h1>
       <h6 class="doo-letter-space accent-color">{{'login.loginSubHeader' | translate}}</h6>
       <div fxLayout="column" class="full-width">
-        <mat-form-field appearance="outline" class="login-field">
+        <mat-form-field appearance="outline">
           <span matPrefix class="doo-prefix-icon">
             <mat-icon class="doo-primary-icon" svgIcon="doo-email"></mat-icon>
           </span>
           <input formControlName="email" autocomplete="email" matInput name="email" placeholder="{{'profile.account.email' | translate}}" type="text" />
           <mat-error *ngIf="loginForm.controls['email'].invalid">{{'errors.required' | translate}}</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="login-field">
+        <mat-form-field appearance="outline">
           <span matPrefix class="doo-prefix-icon">
             <mat-icon class="doo-primary-icon" svgIcon="doo-lock"></mat-icon>
           </span>

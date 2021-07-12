@@ -51,6 +51,14 @@ export const dashboardRoutes: NavRoute[] = [
       import('../../pages/dashboard-carts/dashboard-carts.module').then(
         m => m.DashboardCartsModule,
       )
+  },
+  {
+    data: {title: 'Dashboard Subscriptions'},
+    path: 'subscriptions',
+    loadChildren: () =>
+      import('../../pages/dashboard-subscriptions/dashboard-subscriptions.module').then(
+        m => m.DashboardSubscriptionsModule,
+      )
   }
 ]
 

@@ -2,12 +2,11 @@
         <app-dashboard-toolbar fxLayout="column" [searchControl]="searchControl" [mainMenuOpen]="true"
                 [siteSettings]="siteSettings" [resolution]="resolution" (toggleMobileSideMenu)="isAppsOpen=!isAppsOpen">
         </app-dashboard-toolbar>
-        <mat-drawer [opened]="isAppsOpen" 
-                     autoFocus="false" 
-                     [mode]="utilService.bigScreens.includes(this.resolution) ? 'side' : 'over'" 
-                     [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-dashboard-apps' : 'doo-dashboard-mobile-apps'" 
-                     position="start">
-                <div fxLayout="column"  fxLayoutGap="10px" fxLayoutGap.lt-sm="20px" fxLayoutAlign="space-between">
+        <mat-drawer [opened]="isAppsOpen" autoFocus="false"
+                [mode]="utilService.bigScreens.includes(this.resolution) ? 'side' : 'over'"
+                [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-dashboard-apps' : 'doo-dashboard-mobile-apps'"
+                position="start">
+                <div fxLayout="column" fxLayoutGap="10px" fxLayoutGap.lt-sm="20px" fxLayoutAlign="space-between">
                         <button (click)="navigateApp(constants.homeDashboard)" mat-button fxLayoutAlign="start">
                                 <mat-icon svgIcon="doo-home">
                                 </mat-icon> <span class="dash-app-link">Home</span>
@@ -36,6 +35,10 @@
                                 <mat-icon svgIcon="doo-cart">
                                 </mat-icon> <span class="dash-app-link">Carts</span>
                         </button>
+                        <button (click)="navigateApp(constants.subscriptionsDashboard)" mat-button fxLayoutAlign="start">
+                                <mat-icon svgIcon="doo-email">
+                                </mat-icon> <span class="dash-app-link">Subscriptions</span>
+                        </button>
                         <div fxLayout="row" fxLayoutAlign="center">
                                 <mat-slide-toggle (change)="envChange($event)" [checked]="env=='prod'">
                                         {{env=='prod' ? 'Viewing live data' : 'Viewing test data' }}</mat-slide-toggle>
@@ -43,13 +46,15 @@
                 </div>
         </mat-drawer>
         <mat-drawer-container>
-                <mat-drawer-content [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-dashboard-content' : 'doo-dashboard-mobile-content'">
+                <mat-drawer-content
+                        [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-dashboard-content' : 'doo-dashboard-mobile-content'">
                         <div fxLayout="column" style="position: relative">
                                 <div *ngIf="loading" fxLayout="row"
                                         style="flex: 1 1 100%;min-height:100vh;position: absolute;"
                                         fxLayoutAlign="center start" class="doo-loading-overlay">
                                         <div class="doo-loading-screen" fxLayout="row" fxLayoutAlign="center start">
-                                                <img src="assets/icons/logo.png">
+                                                <img [lazyLoad]="'assets/custom/logo.png'"
+                                                [defaultImage]="'assets/icons/logo.png'">
                                         </div>
                                 </div>
                                 <router-outlet></router-outlet>

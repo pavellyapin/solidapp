@@ -6,14 +6,16 @@ import { catchError, map, switchMap, first } from 'rxjs/operators';
 import * as UserActions from './user.action';
 import * as CartActions from '../cart/cart.action';
 import { AuthService } from '../../auth/auth.service';
-import { FirestoreService } from '../../firestore/firestore.service';
+import { FirestoreUserService } from '../../firestore/sub-services/firestore-user.service';
+import { FirestoreProductsService } from '../../firestore/sub-services/firestore-products.service';
 
 @Injectable()
 export class UserEffects {
   constructor(
     private action$: Actions,
     private authService: AuthService,
-    private firestoreService: FirestoreService) { }
+    private firestoreService: FirestoreUserService,
+    private firestoreProductsService: FirestoreProductsService) { }
 
   GetUserInfo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
@@ -263,7 +265,7 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginSubscribeEmailAction),
       switchMap(action =>
-        this.firestoreService.subscribe(action.payload.get("email").value).pipe(
+        this.firestoreService.emailSubscribe(action.payload).pipe(
           map((data: any) => {
             if (data.code == 400) {
               return UserActions.SuccessSubscribeEmailAction();
@@ -341,7 +343,7 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginAddToFavoritesAction),
       switchMap(action =>
-        this.firestoreService.
+        this.firestoreProductsService.
           addToFavorites(action.payload).pipe(
             map(() => {
               return UserActions.BeginGetFavoritesAction();
@@ -358,7 +360,7 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginRemoveFromFavoritesAction),
       switchMap(action =>
-        this.firestoreService.
+        this.firestoreProductsService.
           removeFromFavorites(action.payload).pipe(
             map(() => {
               return UserActions.SuccessRemoveFromFavoritesAction();
@@ -375,7 +377,7 @@ export class UserEffects {
     this.action$.pipe(
       ofType(UserActions.BeginGetFavoritesAction),
       switchMap(action =>
-        this.firestoreService.getFavorites().pipe(first(),
+        this.firestoreProductsService.getFavorites().pipe(first(),
           map((data: any) => {
             let favorites = Array<any>();
             data.forEach(element => {

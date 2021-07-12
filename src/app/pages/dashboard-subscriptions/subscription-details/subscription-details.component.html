@@ -1,0 +1,34 @@
+<div *ngIf="subscription" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" class="full-width">
+    <app-dashboard-subscription-actions class="max-width full-width" [permissions]="permissions"
+        [subscription]="subscription" [subscriptionId]="subscription.subscription.email"
+        (review)="confirmReviewSubscription()" (unreview)="confirmUnreviewSubscription()"
+        (sendEmail)="confirmSendEmail()">
+    </app-dashboard-subscription-actions>
+    <div fxLayout="column" class="max-width full-width">
+
+
+
+
+        <div fxLayout="column" class="timeline" fxLayoutGap="25px">
+            <div fxLayout="row" class="mat-title doo-bottom-border">Timeline</div>
+            <div *ngFor="let date of activeDates | keyvalue: keyDescOrder" class="doo-bottom-border" fxLayout="column"
+                fxLayoutGap="35px">
+                <span class="mat-subheading-1 primary-color"
+                    style="text-transform: uppercase">{{date.value[0].date | date : 'longDate'}}</span>
+                <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let subscription of date.value"
+                    fxLayoutAlign="space-between" class="mat-subheading-1 container right">
+                    <span>
+                        <span
+                            [innerHTML]="('dashboard.subscription.status.' + subscription.action) | translate : { name: subscription.name }">
+                        </span>
+                        <button mat-button class="accent-color" style="line-height: 20px;">
+                            #{{subscription.action}}
+                        </button>
+                    </span>
+                    <span class="primary-color">{{subscription.date | date : 'shortTime'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

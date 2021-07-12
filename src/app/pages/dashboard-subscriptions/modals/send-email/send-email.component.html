@@ -1,0 +1,35 @@
+<div fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="column" fxLayoutGap="10px" class="doo-contentful max-width" fxFlex>
+        <div class="full-width" fxLayoutAlign="end">
+            <mat-icon class="doo-pointer" svgIcon="doo-close" (click)="dialogRef.close()"></mat-icon>
+        </div>
+        <span class="mat-headline doo-letter-space doo-bottom-border">
+            {{'dashboard.subscription.sendEmailModal.header' | translate}}
+        </span>
+        <mat-radio-group [(ngModel)]="templateId" fxLayout="column" fxLayoutGap="50px">
+            <mat-radio-button *ngFor="let template of data.permissions.emailTemplates" [value]="template">
+                <div fxLayout="column" fxLayoutGap="10px">
+                    <span  class="mat-subheading-1">
+                            {{template.name}}
+                    </span>
+                    <span  class="mat-caption doo-opacity">
+                            {{template.id}}
+                    </span>
+                </div>
+                
+            </mat-radio-button>
+        </mat-radio-group>
+        <div fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-md="center">
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" fxLayoutGap.lt-md="15px" fxFlex="80"
+                fxLayoutAlign="end">
+                <button color="accent" mat-stroked-button class="doo-cta-btn" (click)="onNoClick()">
+                        {{'dashboard.common.cancel' | translate}}
+                </button>
+                <button color="primary" mat-flat-button class="doo-cta-btn" [mat-dialog-close]="templateId"
+                    cdkFocusInitial>
+                        {{'dashboard.common.send' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

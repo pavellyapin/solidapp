@@ -5,26 +5,14 @@
           <div fxLayout="row" fxLayout.lt-sm="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100"
                fxFlex.lt-sm
                [fxLayoutAlign]="'center' + ' ' +  (block.fields.verticalContentPosition ? block.fields.verticalContentPosition : 'start')">
-               <div [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 1 : 2"
-                    fxLayout="column" [fxFlex.gt-xs]="block.fields.textBoxWidth ? block.fields.textBoxWidth : 50"
-                    style="padding:20px;"
-                    [class.primary-background]="block.fields.textBackground == 'Primary'"
-                    [class.accent-background]="block.fields.textBackground == 'Accent'"
-                    [class.white-background]="block.fields.textBackground == 'White'"
-                    [class.black-background]="block.fields.textBackground == 'Black'">
-                    <div class="doo-cta-content doo-contentful"
-                         [class.primary-color]="block.fields.textColor == 'Primary'"
-                         [class.accent-color]="block.fields.textColor == 'Accent'"
-                         [class.white-color]="block.fields.textColor == 'White'"
-                         [class.black-color]="block.fields.textColor == 'Black'"
+               <div class="pad-20" [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 1 : 2"
+                    fxLayout="column" [fxFlex.gt-xs]="block.fields.textBoxWidth ? block.fields.textBoxWidth : 50" [dooBackground]="block.fields.textBackground">
+                    <div *ngIf="block.fields.content" class="doo-cta-content doo-contentful" [dooFontColor]="block.fields.textColor"
                          [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                          [innerHTML]="block.fields.content | richTextPipe">
                     </div>
                     <div *ngIf="block.fields.otherContent" class="doo-cta-content doo-contentful"
-                         [class.primary-color]="block.fields.otherTextColor == 'Primary'"
-                         [class.accent-color]="block.fields.otherTextColor == 'Accent'"
-                         [class.white-color]="block.fields.otherTextColor == 'White'"
-                         [class.black-color]="block.fields.otherTextColor == 'Black'"
+                         [dooFontColor]="block.fields.otherTextColor"
                          [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                          [innerHTML]="block.fields.otherContent | richTextPipe">
                     </div>
@@ -33,26 +21,18 @@
                          fxLayoutGap="20px" fxLayout="row" [actions]="block.fields.actions"></doo-actions>
 
                </div>
-               <div fxLayout="column" [ngClass]="utils.bigScreens.includes(this.resolution) ? '' : 'crop'"
+               <div fxLayout="row" [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
                     [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.textBoxWidth ? 100-block.fields.textBoxWidth + '%' : '50%')"
-                    [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
                     fxLayoutAlign="center center">
-                    <img #postImg *ngIf="block.fields.media[0].fields.file.details.image"
-                         [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
-                         class="full-width post-placeholder" [lazyLoad]="block.fields.media[0].fields.file.url"
-                         [alt]="block.fields.media[0].fields.description"
-                         [defaultImage]="'assets/placeholders/placeholder-1.svg'"
-                         (onStateChange)="myCallbackFunction($event)">
-                    <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
-                         [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
-                         [style.padding-left]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaLeftPadding ? block.fields.mobileMediaLeftPadding : '0px')"
-                         [style.padding-right]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaRightPadding ? block.fields.mobileMediaRightPadding : '0px')"
-                         [src]="block.fields.media[0].fields.file.url" autoplay muted="muted" loop playsinline
-                         style="width: 100%;display: block;">
+                    <img #postImg class="full-width post-placeholder"
+                         [dooImgStyle]="{block : block, resolution : this.resolution}"
+                         [lazyLoad]="block.fields.media[0].fields.file.url"
+                         [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
+                         (onStateChange)="myCallbackFunction($event)" />
+                    <video #mainVid class="full-width" [dooImgStyle]="{block : block, resolution : this.resolution}"
+                         autoplay muted loop playsinline>
                     </video>
                </div>
-
           </div>
      </div>
-     <div></div>
 </div>

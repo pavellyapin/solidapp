@@ -34,6 +34,8 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
 import { JQ_TOKEN } from './services/util/jQuery.service';
 import { jQuery } from './components/cards/cards.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { PixelModule } from 'ngx-pixel';
+import { IconsService } from './services/util/icons.service';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['user', 'cart'], rehydrate: true })(reducer);
@@ -56,6 +58,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AngularFireFunctionsModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
+    PixelModule.forRoot({ enabled: environment.production, pixelId: environment.pixel }),
     StoreModule.forRoot({
       user: UserReducer,
       admin: AdminReducer,
@@ -85,7 +88,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       provide: APP_INITIALIZER,
       useFactory: (config: ConfigService) => () => config.init(),
       deps: [
-        ConfigService, TranslateService,
+        ConfigService, TranslateService,IconsService
       ],
       multi: true,
     },

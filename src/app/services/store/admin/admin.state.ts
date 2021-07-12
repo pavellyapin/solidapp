@@ -6,6 +6,7 @@ export default class AdminState {
   orders?: Array<any>;
   newOrders?: Array<any>;
   stats?:any;
+  subscriptions?: Array<any>;
   AdminError: Error;
 }
 

@@ -14,9 +14,6 @@ export class UtilitiesService {
     constructor(public deviceService: DeviceDetectorService) {
     }
 
-    init() {
-    }
-
     loadScript(src?: any, text?: any): Observable<any> {
 
         /**var scripts = document.getElementsByTagName('script');
@@ -45,8 +42,6 @@ export class UtilitiesService {
         document.getElementsByTagName('head')[0].appendChild(textNode);
         
         return from(new Promise((resolve, reject) => {
-            console.log('poop');
-
             node.onload = resolve;
         }));
     }

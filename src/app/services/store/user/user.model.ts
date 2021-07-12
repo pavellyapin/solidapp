@@ -8,6 +8,7 @@ export default class User {
 
 export class UserPermissions {
   enableStore : boolean;
+  emailTemplates : [any];
 }
 
 export class UserPerosnalInfo { 

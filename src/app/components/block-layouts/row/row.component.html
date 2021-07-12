@@ -1,0 +1,27 @@
+<div class="doo-contentful" fxLayout="column" fxLayoutAlign="center center" [dooBackground]="block.fields.textBackground"
+    [style.padding-bottom]="block.fields.bottomPadding ? block.fields.bottomPadding : '0px' ">
+    <div *ngIf="block.fields.content || block.fields.otherContent" class="pad-20" fxLayout="column"
+        [fxFlex]="block.fields.textBoxWidth ? block.fields.textBoxWidth : 100" fxFlex.lt-md>
+        <div *ngIf="block.fields.content" [dooFontColor]="block.fields.textColor"
+            [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
+            [innerHTML]="block.fields.content | richTextPipe">
+        </div>
+        <div *ngIf="block.fields.otherContent" class="doo-cta-content doo-contentful"
+            [dooFontColor]="block.fields.otherTextColor"
+            [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
+            [innerHTML]="block.fields.otherContent | richTextPipe">
+        </div>
+        <doo-actions *ngIf="block.fields.actions"
+            [fxLayoutAlign]="block.fields.actionsPosition ? block.fields.actionsPosition : 'start'"
+            [actions]="block.fields.actions" [resolution]="resolution" [stacked]="block.fields.mobileStackActions">
+        </doo-actions>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center"
+        [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.width? block.fields.width + '%': '100%')"
+        fxLayout.lt-md="column">
+        <div fxFlex *ngFor="let block of block?.fields.blocks">
+            <doo-block-layouts [block]="block">
+            </doo-block-layouts>
+        </div>
+    </div>
+</div>

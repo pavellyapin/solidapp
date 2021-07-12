@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivateChild, RouterStateSnapshot, UrlTree, Router, CanActivate,} from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateChild, RouterStateSnapshot, UrlTree, Router, CanActivate, } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UtilitiesService } from 'src/app/services/util/util.service';
@@ -19,21 +19,21 @@ export class DashboardGuard implements CanActivate {
   user$: Observable<UserPermissions>;
   UserSubscription: Subscription;
   permissions: UserPermissions;
-  
+
   constructor(public afAuth: AngularFireAuth,
-              private utils : UtilitiesService,
-              private store: Store<{user: UserState }>,
-              private router: Router,
-              public navService: NavigationService) {
-                
-                this.user$ = store.pipe(select('user', 'permissions'));
-                this.UserSubscription = this.user$
-                .pipe(
-                  map(x => {
-                    this.permissions = x;
-                  })
-                )
-                .subscribe();
+    private utils: UtilitiesService,
+    private store: Store<{ user: UserState }>,
+    private router: Router,
+    public navService: NavigationService) {
+
+    this.user$ = store.pipe(select('user', 'permissions'));
+    this.UserSubscription = this.user$
+      .pipe(
+        map(x => {
+          this.permissions = x;
+        })
+      )
+      .subscribe();
   }
 
   canActivate(
@@ -44,17 +44,18 @@ export class DashboardGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-      return this.afAuth.authState.pipe(map((auth)=> {
-        if (this.permissions && this.permissions.enableStore) {
-          this.navService.startLoading();
-          this.utils.scrollTop();
-          this.store.dispatch(AdminActions.SuccessSetAdminEnvAction({payload : environment.production? 'prod' : 'test'}));
+    return this.afAuth.authState.pipe(map((auth) => {
+      if (this.permissions && this.permissions.enableStore) {
+        this.navService.startLoading();
+        this.utils.scrollTop();
+        this.store.dispatch(AdminActions.SuccessSetAdminEnvAction({ payload: environment.production ? 'prod' : 'test' }));
+        if (!state.url.endsWith('/store/overview')) {
           this.store.dispatch(AdminActions.BeginLoadNewOrdersAction());
-          this.store.dispatch(AdminActions.BeginStatsPerPeriodAction({payload : {quickLook:"today"}}));
-          return true;
-        } else {
-          this.router.navigate(['/']);
         }
-      }));
+        return true;
+      } else {
+        this.router.navigate(['/']);
+      }
+    }));
   }
 }

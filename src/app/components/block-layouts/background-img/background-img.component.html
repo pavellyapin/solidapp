@@ -7,12 +7,12 @@
             <div></div>
             <div fxFlexLayout="column" [fxFlex]="block.fields.textBoxWidth ? block.fields.textBoxWidth : 100"
                 fxFlex.lt-md [dooBackground]="block.fields.textBackground" style="padding:20px">
-                <div [dooFontColor] = "block.fields.textColor" [dooFontShadow]="block.fields.contentShadow"
+                <div [dooFontColor]="block.fields.textColor" [dooFontShadow]="block.fields.contentShadow"
                     [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                     [innerHTML]="block.fields.content | richTextPipe">
                 </div>
-                <div class="doo-cta-content doo-contentful"
-                    [dooFontColor] = "block.fields.otherTextColor" [dooFontShadow]="block.fields.otherContentShadow"
+                <div class="doo-cta-content doo-contentful" [dooFontColor]="block.fields.otherTextColor"
+                    [dooFontShadow]="block.fields.otherContentShadow"
                     [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                     [innerHTML]="block.fields.otherContent | richTextPipe">
                 </div>
@@ -24,21 +24,15 @@
             <div></div>
         </div>
         <div fxLayout="column" [fxFlex]="block.fields.width ? block.fields.width : 100" fxFlex.lt-sm
-            fxLayoutAlign="center center" [ngClass]="utils.bigScreens.includes(this.resolution) ? '' : 'crop'">
-            <img #postImg *ngIf="block.fields.media[0].fields.file.details.image" class="full-width post-placeholder"
-                [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
-                [style.padding-left]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaLeftPadding ? block.fields.mobileMediaLeftPadding : '0px')"
-                [style.padding-right]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaRightPadding ? block.fields.mobileMediaRightPadding : '0px')"
-                [lazyLoad]="block.fields.media[0].fields.file.url" [alt]="block.fields.media[0].fields.description"
+            fxLayoutAlign="center center">
+            <img #postImg class="full-width post-placeholder"
+                [dooImgStyle]="{block : block, resolution : this.resolution}"
+                [lazyLoad]="block.fields.media ? block.fields.media[0].fields.file.url : ''"
                 [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
                 (onStateChange)="myCallbackFunction($event)">
-            <video #mainVid *ngIf="!block.fields.media[0].fields.file.details.image"
-                [style.width]="utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.mobileMediaWidth ? block.fields.mobileMediaWidth : '100%')"
-                [style.padding-left]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaLeftPadding ? block.fields.mobileMediaLeftPadding : '0px')"
-                [style.padding-right]="utils.bigScreens.includes(this.resolution) ? '0px' : (block.fields.mobileMediaRightPadding ? block.fields.mobileMediaRightPadding : '0px')"
-                [src]="block.fields.media[0].fields.file.url" autoplay muted loop playsinline class="full-width">
+            <video #mainVid class="full-width" [dooImgStyle]="{block : block, resolution : this.resolution}" autoplay
+                muted loop playsinline>
             </video>
         </div>
     </div>
-    <div></div>
 </div>

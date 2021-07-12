@@ -1,29 +1,44 @@
-<div fxLayout = "row" fxLayout.xs = "column" fxLayoutAlign = "center" class = "doo-subscribe-form">
-        <div fxLayout = "column" fxFlex = "60">
-                <div fxLayout = "row" >
-                        <div class = "doo-contentful" [innerHTML] = "widget.fields.content | richTextPipe">
-                        
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center">
+        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="50" class="doo-subscribe-form">
+                <div fxLayout="column" fxLayoutGap="15px">
+                        <div fxLayout="row">
+                                <div class="doo-contentful" [innerHTML]="widget.fields.content | richTextPipe">
+
+                                </div>
+                        </div>
+                        <div *ngIf="!isSubscribed" fxLayout="column" fxLayoutGap="5px" class="promo-form">
+                                <div [formGroup]="subscribeForm" fxLayout.gt-xs="row" fxLayout.xs="row"
+                                        fxLayoutAlign="center">
+                                        <mat-form-field fxFlex.gt-xs="60" color="primary" appearance="outline"
+                                                class="full-width login-field">
+                                                <input formControlName="email" type="email" [email]="true"
+                                                        autocomplete="email" matInput name="email"
+                                                        placeholder="{{'widget.subscribe.textboxPlaceholder' | translate}}"
+                                                        type="text" />
+                                        </mat-form-field>
+                                        <div fxLayout="column" fxFlex.gt-xs="40">
+                                                <button (click)="subscribeEmail()" fxFlex class="full-width"
+                                                        color="primary" mat-flat-button>
+                                                        {{widget.fields.action? widget.fields.action.fields.name : ('widget.subscribe.btnText' | translate) }}</button>
+                                        </div>
+                                </div>
+                                <mat-error *ngIf="subscribeForm.touched && subscribeForm.controls['email'].invalid">
+                                        {{'widget.subscribe.emailRequired' | translate}}</mat-error>
+                        </div>
+                        <div *ngIf="isSubscribed" class="mat-title primary-color">
+                                {{'widget.subscribe.isSubscribed' | translate}}
+                        </div>
+                        <div fxLayout="row">
+                                <div class="doo-contentful" [innerHTML]="widget.fields.otherContent | richTextPipe">
+
+                                </div>
                         </div>
                 </div>
         </div>
-        <div fxLayout = "column" fxFlex = "30">
-            <div [formGroup]="subscribeForm" 
-                fxLayout = "row" 
-                (keyup.enter)="subscribeEmail()">
-                <mat-form-field fxFlex = "70" appearance="outline" class="full-width">
-                    <input  formControlName="email" 
-                            autocomplete="email" 
-                            matInput 
-                            name="email" 
-                            placeholder="ENTER EMAIL"
-                            type="text"/>
-                </mat-form-field>
-                <div fxLayout="column">
-                        <button (click)="subscribeEmail()"  class = "doo-checkout-btn full-width"
-                        color="primary" mat-flat-button type="submit">
-                        Subscribe
-                        </button>
+        <div fxLayout="column" fxFlex="50">
+                <div *ngFor="let block of widget?.fields.blocks">
+                        <doo-block-layouts [block]="block">
+                        </doo-block-layouts>
                 </div>
-            </div>
         </div>
-    </div>
+</div>

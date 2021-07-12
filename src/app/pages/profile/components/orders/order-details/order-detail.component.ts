@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { SEOService } from 'src/app/services/seo/seo.service';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Entry } from 'contentful';
 import { Store, select } from '@ngrx/store';
+import { FirestoreOrderService } from 'src/app/services/firestore/sub-services/firestore-order.service';
 
 @Component({
   selector: 'doo-order-detail',
@@ -23,7 +23,7 @@ export class OrderDeatilComponent implements OnInit {
   
   cart: any;
 
-  constructor(private firestore: FirestoreService,
+  constructor(private firestore: FirestoreOrderService,
     store: Store<{ settings : SettingsState}>,
     private navService: NavigationService,
     public route: ActivatedRoute,

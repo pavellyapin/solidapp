@@ -5,13 +5,13 @@ import { Observable, Subscription } from 'rxjs';
 import * as CartActions from '../../../services/store/cart/cart.action';
 import { map } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import UserState from 'src/app/services/store/user/user.state';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserAddressInfo, UserPerosnalInfo } from 'src/app/services/store/user/user.model';
 import { Router } from '@angular/router';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { FirestoreOrderService } from 'src/app/services/firestore/sub-services/firestore-order.service';
 
 
 @Component({
@@ -237,7 +237,7 @@ export class PayPalModalComponent {
     store: Store<{ cart: CartState }>,
     public dialogRef: MatDialogRef<PayPalModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CartData,
-    private firebaseFunctions: FirestoreService) {
+    private firebaseFunctions: FirestoreOrderService) {
     this.cartId$ = store.pipe(select('cart', 'cartId'));
   }
 

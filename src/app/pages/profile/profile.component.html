@@ -56,7 +56,8 @@
     <div fxLayout="column">
       <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center start">
         <div class="doo-loading-screen">
-          <img src="assets/icons/logo.png">
+          <img [lazyLoad]="'assets/custom/logo.png'"
+          [defaultImage]="'assets/icons/logo.png'">
         </div>
       </div>
       <div fxLayout="column">

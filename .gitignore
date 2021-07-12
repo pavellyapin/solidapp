@@ -3,4 +3,6 @@ node_modules/
 /dist
 /tmp
 /out-tsc
-/src/environments/
+src/environments/
+src/assets/custom/
+src/favicon.ico

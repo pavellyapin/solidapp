@@ -2,11 +2,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 
 @Component({
-  selector: 'doo-row-of-two',
-  templateUrl: './row-of-two.component.html',
-  styleUrls: ['./row-of-two.component.scss']
+  selector: 'doo-row',
+  templateUrl: './row.component.html',
+  styleUrls: ['./row.component.scss']
 })
-export class RowOfTwoPostComponent implements OnInit {
+export class RowPostComponent implements OnInit {
 
   @Input() block;
   @Input() resolution;
@@ -17,6 +17,10 @@ export class RowOfTwoPostComponent implements OnInit {
 
   ngOnInit() {
     //console.log('split',this.post);
+  }
+
+  ngOnChanges() {
+    
   }
 
 }

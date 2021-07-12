@@ -1,13 +1,13 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { Store, select } from '@ngrx/store';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Entry } from 'contentful';
 import { SEOService } from 'src/app/services/seo/seo.service';
+import { FirestoreOrderService } from 'src/app/services/firestore/sub-services/firestore-order.service';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class CheckoutSuccessComponent {
   cart: any;
   cartItems: Array<any>;
 
-  constructor(private firestore: FirestoreService,
+  constructor(private firestore: FirestoreOrderService,
     private changeDetectorRef: ChangeDetectorRef,
     store: Store<{ settings : SettingsState}>,
     private navService: NavigationService,

@@ -1,7 +1,0 @@
-{
-    "/my-doo-7c70c/us-central1/": {
-        "target": "https://doodemo.com",
-        "secure": false,
-        "logLevel": "debug"
-    }
-}

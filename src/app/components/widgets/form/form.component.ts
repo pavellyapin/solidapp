@@ -1,14 +1,12 @@
-import { Component, OnInit, Input, ViewChildren, QueryList, ElementRef } from "@angular/core";
+import { Component, OnInit, Input, ElementRef } from "@angular/core";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import * as UserActions from 'src/app/services/store/user/user.action';
 import { Entry } from 'contentful';
-import { MatInput, MatTextareaAutosize } from '@angular/material/input';
 import { MyErrorStateMatcher } from '../../pipes/pipes';
-import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import { map } from 'rxjs/operators';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { FirestoreUserService } from 'src/app/services/firestore/sub-services/firestore-user.service';
 
 @Component({
     selector: 'doo-form-widget',
@@ -25,7 +23,7 @@ export class FormWidgetComponent implements OnInit {
                 private el: ElementRef,
                 private navService: NavigationService,
                 private utils : UtilitiesService,
-                private firestore : FirestoreService) {
+                private firestore : FirestoreUserService) {
         this.formWidget = new FormGroup({
             firstName: new FormControl('', Validators.required),
             lastName: new FormControl(''),

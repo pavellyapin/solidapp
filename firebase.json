@@ -16,19 +16,19 @@
     ],
     "rewrites": [
       {
-        "source": "/janvier-couture/us-central1/feed",
+        "source": "/solidap-50e1a/us-central1/feed",
         "function": "feed"
       },
       {
-        "source": "/janvier-couture/us-central1/updateEmail",
+        "source": "/solidap-50e1a/us-central1/updateEmail",
         "function": "updateEmail"
       },
       {
-        "source": "/janvier-couture/us-central1/paypal/**",
+        "source": "/solidap-50e1a/us-central1/paypal/**",
         "function": "paypal"
       },
       {
-        "source": "/janvier-couture/us-central1/admin/**",
+        "source": "/solidap-50e1a/us-central1/admin/**",
         "function": "admin"
       },
       {
