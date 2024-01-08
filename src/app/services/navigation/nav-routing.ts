@@ -99,8 +99,8 @@ export const navRoutes: NavRoute[] = [
     data: {title: 'Search' , isChild: true},
     path: 'search',
     loadChildren: () =>
-      import('../../pages/search/search.module').then(
-        m => m.SearchModule,
+      import('../../pages/product-category/product-category.module').then(
+        m => m.ProductCategoryModule,
       )
   },
   {

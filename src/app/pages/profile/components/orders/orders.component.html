@@ -1,31 +1,82 @@
-<mat-table [dataSource]="dataSource" class="mat-elevation-z0">
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element"> 
-        
-      </mat-cell>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.cart.date | datePipe}} </mat-cell>
-    </ng-container>
-  
-    <!-- Weight Column -->
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef> Payment </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
-    </ng-container>
-  
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="total">
-      <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
-      <mat-cell *matCellDef="let element" [innerHTML] = "element.cart.total | pricePipe"></mat-cell>
-    </ng-container>
-  
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row class = "doo-pointer" [routerLink] = "row.id" *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <div fxLayout="column" class="doo-table-cont" fxLayoutGap="20px">
+      <span class="mat-display-1 pad-20">Orders</span>
+      <div fxLayout="column" class="mat-elevation-z2 doo-top-border-radius doo-bottom-border-radius">
+        <div class="doo-search-box">
+          <mat-form-field appearance="outline" class="full-width">
+            <span matPrefix>
+              <mat-icon svgIcon="doo-search"></mat-icon>
+            </span>
+            <input type="text" [(ngModel)] = "searchKey" placeholder="Filter orders" aria-label="Number" (keyup)="applyFilter($event)" matInput>
+          </mat-form-field>
+        </div>
+        <div *ngIf="dataSource && dataSource.filteredData.length == 0" class="doo-dashboard-no-items" fxLayout="column"
+          fxLayoutAlign="center center" fxLayoutGap="10px">
+          <span>
+            <mat-icon svgIcon="doo-search"></mat-icon>
+          </span>
+          <span class="mat-title">
+            No items found
+          </span>
+          <div class="mat-caption doo-opacity">
+            Try changing the filters or search term
+          </div>
+        </div>
+        <div [class.doo-sticky-lg-col-table]="!utilService.bigScreens.includes(this.resolution)">
+          <mat-table *ngIf="dataSource && dataSource.filteredData.length > 0" [dataSource]="dataSource"
+            class="doo-dashboard-overview mat-elevation-z0">
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="start start">
+                  <span>
+                    {{element.id}}
+                  </span>
+                  <mat-chip-list>
+                    <mat-chip color="primary" selected [removable]="false">Paid
+                    </mat-chip>
+                    <mat-chip *ngIf="element.workflow=='delivered'" color="accent" selected [removable]="false">Shipped
+                    </mat-chip>
+                    <mat-chip *ngIf="element.workflow=='complete'" color="primary" selected [removable]="false">
+                      Complete
+                    </mat-chip>
+                  </mat-chip-list>
+                </div>
+              </mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="date">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell  *matCellDef="let element">{{element.date | date : 'longDate'}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div fxLayout="column">
+                  <span>{{element.name}}</span>
+                  <span>{{element.email}}</span>
+                </div>
+              </mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="total">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span [innerHTML]="element.total | pricePipe"></span></mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="itemCount">
+              <mat-header-cell  *matHeaderCellDef></mat-header-cell>
+              <mat-cell  *matCellDef="let element">{{element.itemCount}} item</mat-cell>
+            </ng-container>
+    
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row (click)="goToOrder(row.id,row.uid)" class="doo-pointer" [class.doo-opacity]="row.status!='new'"
+              *matRowDef="let row; columns: displayedColumns;">
+            </mat-row>
+          </mat-table>
+        </div>
+        <mat-paginator class="doo-bottom-border-radius" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>

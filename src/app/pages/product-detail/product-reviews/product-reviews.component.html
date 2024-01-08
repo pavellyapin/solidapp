@@ -1,20 +1,20 @@
 <div *ngIf="_productReviews && _productReviews.length == 0 " fxLayout="column" fxLayoutGap="40px"
-    class="doo-product-reviews">
-    <div fxLayoutAlign="center" class="mat-subheading-1 doo-letter-space">There are no reviews for this product yet</div>
-    <div fxLayoutAlign="center" class="mat-title doo-letter-space primary-color">Be the first to write a review!</div>
+    class="doo-product-reviews pad-20">
+    <div fxLayoutAlign="center" class="mat-subheading-1 doo-letter-space">{{'product.noReviews' | translate}}</div>
+    <div fxLayoutAlign="center" class="mat-title doo-letter-space primary-color">{{'product.firstReview' | translate}}</div>
     <div fxLayout="row" fxLayoutAlign="center">
         <button (click)="writeReviewPopUp()" class="doo-checkout-btn" color="primary" mat-stroked-button type="submit">
-            WRITE REVIEW
+            {{'product.writeReview' | translate}}
         </button>
     </div>
 </div>
 
 <div *ngIf="_productReviews && _productReviews.length > 0 " fxLayout="column" fxLayoutGap="20px"
-    class="doo-product-reviews">
+    class="doo-product-reviews pad-20">
     <div></div>
     <div fxLayout="row" fxLayoutAlign="center">
         <button (click)="writeReviewPopUp()" class="doo-checkout-btn" color="primary" mat-stroked-button type="submit">
-            WRITE REVIEW
+            {{'product.writeReview' | translate}}
         </button>
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.xs="30px" fxLayoutAlign="space-between">
@@ -23,7 +23,7 @@
                 <span class="mat-display-3">{{getOverallRate() | ratePipe}}</span>
                 <div fxLayout="column" class="doo-rate-uneditable mat-caption">
                     <doo-review-stars [rate]="getOverallRate()" [editable]="false"></doo-review-stars>
-                    {{_productReviews?.length}} Reviews
+                    {{_productReviews?.length}} {{'product.reviews' | translate}}
                 </div>
             </div>
             <div fxLayout="row" fxLayoutGap="10px">
@@ -35,8 +35,8 @@
                     <span style="position: absolute;font-size: 24px;padding-left:25px;padding-top: 40px;">{{getRecommendPresent()}}%</span>
                 </div>
                 <div fxLayout="column" style="padding-left:100px;padding-top: 40px;">
-                    <span style="font-size: 16px;font-weight: bold;">Would Recommend</span>
-                    <span class="mat-caption">{{getRecommendCount()}} Recommendations</span>
+                    <span style="font-size: 16px;font-weight: bold;"> {{'product.wouldRecommend' | translate}}</span>
+                    <span class="mat-caption">{{getRecommendCount()}} {{'product.recommendations' | translate}}</span>
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div fxLayout="row">
-        <mat-chip-list fxShow fxHide.xs>
+        <mat-chip-list>
             <mat-chip *ngFor="let filter of filters" color="primary" class="rate-filter" selected [removable]="true"
                 (removed)="removeFilterChip(filter)">
                 <span>{{filter}}</span>
@@ -74,7 +74,7 @@
     </div>
     <div fxLayout="row" *ngIf = "filteredReviews.length != _productReviews.length" fxLayoutAlign="center">
         <button (click)="loadMoreReviews()" class="doo-checkout-btn" color="primary" mat-stroked-button>
-            LOAD MORE REVIEWS
+            {{'product.loadReviews' | translate}}
         </button>
     </div>
 </div>

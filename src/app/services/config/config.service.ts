@@ -33,5 +33,9 @@ export class ConfigService {
       firebase.default.analytics();
       this.pixel.track('PageView');
     }
+
+    if (environment.storeEnabled) {
+      window["stripeKey"] = environment.stripeKey;
+    }
   }
 }

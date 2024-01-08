@@ -13,6 +13,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 import SettingsState from 'src/app/services/store/settings/settings.state';
 import { Entry } from 'contentful';
 import { FirestoreProductsService } from 'src/app/services/firestore/sub-services/firestore-products.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'doo-product-card',
@@ -26,16 +27,14 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
   UserSubscription: Subscription;
   FavoritesSubscription: Subscription;
   resolution$: Observable<string>;
-  siteConfig$: Observable<Entry<any>>;
   resolution : any;
-  siteConfig: any;
-  SettingsSubscription : Subscription;
   ResolutionSubscription : Subscription;
   isFavorite:FavoriteItem;
   cardStyle : any;
   productVariants: Map<string,[any]> = new Map();
   variantPrice : any;
   variantDiscount : any;
+  environment = environment;
 
   constructor(public injector: Injector, 
               private navService: NavigationService,
@@ -50,7 +49,6 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       this.cardStyle = this.injector.get(Card.metadata.STYLE);
       this.favorites$ = store.pipe(select('user','favorites'));
       this.resolution$ = store.pipe(select('settings' , 'resolution'));
-      this.siteConfig$ = store.pipe(select('settings', 'siteConfig'));
   }
 
   ngOnInit() {
@@ -88,14 +86,6 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
     .pipe(
       map(x => {
         this.resolution = x;
-      })
-    )
-    .subscribe();
-
-    this.SettingsSubscription = this.siteConfig$
-    .pipe(
-      map(x => {
-        this.siteConfig = x;
       })
     )
     .subscribe();
@@ -153,7 +143,6 @@ export class ProductCardComponent extends AbstractCardComponent implements OnIni
       this.FavoritesSubscription.unsubscribe();
     }
     this.ResolutionSubscription.unsubscribe();
-    this.SettingsSubscription.unsubscribe();
   }
 
 }

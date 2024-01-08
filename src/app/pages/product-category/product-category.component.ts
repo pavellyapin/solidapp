@@ -13,6 +13,7 @@ import { UtilitiesService } from 'src/app/services/util/util.service';
 import { SEOService } from 'src/app/services/seo/seo.service';
 import { Actions, ofType } from '@ngrx/effects';
 import * as ProductActions from 'src/app/services/store/product/product.action';
+import { RouterStateSnapshot, Route, Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-category-page',
@@ -22,12 +23,13 @@ import * as ProductActions from 'src/app/services/store/product/product.action';
 export class ProductCategoryComponent implements OnInit, OnDestroy {
 
   product$: Observable<ProductsState>;
-  settings$: Observable<string>;
+  settings$: Observable<SettingsState>;
   ProductSubscription: Subscription;
   ProductsLoadedSubscription: Subscription;
   SettingsSubscription: Subscription;
   productsLoaded: Entry<any>[];
   productsDisplayed: Entry<any>[];
+  relatedCategories: Entry<any>[];
   activeCategory: Entry<any>;
   productCards: Card[] = [];
   previousUrl: string = '';
@@ -36,6 +38,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
   rowsBig: Observable<number>;
   resolution: any;
   navMode: any;
+  isSearch: boolean = false;
   showFilters: boolean = true;
   bigScreens = new Array('lg', 'xl', 'md')
   productVariants: Map<string, [any]> = new Map();
@@ -53,15 +56,18 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
   constructor(store: Store<{ products: ProductsState, settings: SettingsState }>,
     private mediaObserver: MediaObserver,
     private _actions$: Actions,
-    private navService: NavigationService,
+    public navService: NavigationService,
     private utilService: UtilitiesService,
-    private seoService: SEOService) {
+    private seoService: SEOService,
+    router: Router,
+    public route: ActivatedRoute) {
+    this.isSearch = router.url.startsWith('/search/');
     window.addEventListener('scroll', this.loadMore.bind(this), { passive: true });
     this.cards.subscribe(cards => {
       this.productCards = cards;
     });
     this.product$ = store.pipe(select('products'));
-    this.settings$ = store.pipe(select('settings', 'resolution'));
+    this.settings$ = store.pipe(select('settings'));
 
   }
 
@@ -69,20 +75,34 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
     this.ProductSubscription = this.product$
       .pipe(
         map(x => {
-          this.activeCategory = x.activeCategory;
-          this.seoService.updateTitle(this.activeCategory.fields.title);
-          this.seoService.updateDescription(this.activeCategory.fields.description);
           this.seoService.updateOgUrl(window.location.href);
           this.resetCards();
           this.productVariants = new Map();
           this.productsLoaded = [];
           this.productsDisplayed = [];
-          if (x.loadedProducts && x.loadedProducts.length > 0) {
-            this.productsLoaded = x.loadedProducts;
-            this.productsDisplayed = this.utilService.
-              shuffleArray(this.productsLoaded.map(products => { return products }));
-            this.createCards();
+
+          if (!this.isSearch) {
+            this.activeCategory = x.activeCategory;
+            this.seoService.updateTitle(this.activeCategory.fields.title);
+            this.seoService.updateDescription(this.activeCategory.fields.description);
+
+            if (x.loadedProducts && x.loadedProducts.length > 0) {
+              this.productsLoaded = x.loadedProducts;
+              this.productsDisplayed = this.utilService.
+                shuffleArray(this.productsLoaded.map(products => { return products }));
+              this.createCards();
+            }
+          } else {
+            if (x.searchResults && x.searchResults.length > 0) {
+              this.productsLoaded = x.searchResults;
+              this.productsDisplayed = this.utilService.
+                shuffleArray(this.productsLoaded.map(products => { return products }));
+              this.createCards();
+            } 
           }
+
+
+
         })
       )
       .subscribe();
@@ -90,7 +110,23 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
     this.SettingsSubscription = this.settings$
       .pipe(
         map(x => {
-          this.resolution = x;
+          if (this.isSearch) {
+            x.pages.forEach(page => {
+              if (page.fields.type == 'search') {
+                this.seoService.updateTitle(page.fields.title);
+                this.seoService.updateDescription(page.fields.description);
+                this.seoService.updateOgUrl(window.location.href);
+              }
+            });
+
+            this.relatedCategories = x.categories.filter(category => {
+              if (category.fields.title.toLowerCase().includes(this.route.snapshot.params['category'].toLowerCase())) {
+                return category;
+              }
+            })
+          }
+          
+          this.resolution = x.resolution;
           if (this.bigScreens.includes(this.resolution)) {
             this.navMode = 'side';
             this.filtersOpen = true;
@@ -103,11 +139,11 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.ProductsLoadedSubscription = this._actions$.pipe(ofType(
-      ProductActions.SuccessLoadProductsAction
+      ProductActions.SuccessLoadProductsAction , ProductActions.SuccessSearchProductsAction
     )).subscribe(() => {
-          this.navService.finishLoading(); 
+      this.navService.finishLoading();
     });
-    
+
     let startCols: number;
     let startColsBig: number;
     let startRowsBig: number;

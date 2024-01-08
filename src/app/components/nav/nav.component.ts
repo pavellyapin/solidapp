@@ -15,6 +15,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import * as CartActions from '../../services/store/cart/cart.action';
 import { CartSideNavComponent } from './cart-side-nav/cart-side-nav.component';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -31,6 +32,7 @@ export class NavComponent implements OnInit {
   settings$: Observable<SettingsState>;
   SettingsSubscription: Subscription;
   siteSettings: Entry<any>;
+  environment = environment;
   categories$: Observable<Entry<any>[]>;
   CategoriesSubscription: Subscription;
   categories: Entry<any>[];

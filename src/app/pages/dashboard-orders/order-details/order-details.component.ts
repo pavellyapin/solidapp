@@ -7,12 +7,13 @@ import SettingsState from 'src/app/services/store/settings/settings.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as AdminActions from 'src/app/services/store/admin/admin.action';
 import { ofType, Actions } from '@ngrx/effects';
-import { Entry } from 'contentful';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmFullfillOrderModalComponent } from '../modals/confirm-fullfill/confirm-fulfill.component';
 import { UtilitiesService } from 'src/app/services/util/util.service';
 import { KeyValue } from '@angular/common';
 import { ConfirmUnFullfillOrderModalComponent } from '../modals/confirm-unfullfill/confirm-unfulfill.component';
+import { ConfirmDeliverOrderModalComponent } from '../modals/confirm-deliver/confirm-deliver.component';
+import { ConfirmUndeliverOrderModalComponent } from '../modals/confirm-undeliver/confirm-undeliver.component';
 
 @Component({
   selector: 'app-dashboard-order-details',
@@ -33,7 +34,7 @@ export class DashboardOrderDetailsComponent implements OnInit {
   activeDates: any;
 
   constructor(private store: Store<{ settings: SettingsState }>,
-    private navSerivce: NavigationService,
+    private navService: NavigationService,
     private _actions$: Actions,
     private dialog: MatDialog,
     private utilService: UtilitiesService,
@@ -60,34 +61,106 @@ export class DashboardOrderDetailsComponent implements OnInit {
       this.order = result.payload;
       const dates = new Map<String, Array<any>>();
       const orderDate = new Date(parseInt(this.order.order.cart.date, 10));
-      const dateString = orderDate.getMonth() + " " + orderDate.getDate() + "," + orderDate.getFullYear();
-      
-      
-      dates.set(dateString, [{action : 'created' , date : this.order.order.cart.date}]);
-      dates.get(dateString).push({action : 'paid' , date : this.order.order.cart.date});
+      const dateString = orderDate.getMonth() + orderDate.getDate().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + orderDate.getFullYear();
 
-      if(this.order.fullfilment && this.order.fullfilment.status) {
+
+      dates.set(dateString, [{ action: 'created', date: this.order.order.cart.date }]);
+      dates.get(dateString).push({ action: 'paid', date: this.order.order.cart.date });
+
+      if (this.order.fullfilment && this.order.fullfilment.status) {
         const fullfilDate = new Date(parseInt(this.order.fullfilment.updateDate, 10));
-        const fillfilDateString = fullfilDate.getMonth() + " " + fullfilDate.getDate() + "," + fullfilDate.getFullYear();
+        const fillfilDateString = fullfilDate.getMonth() + fullfilDate.getDate().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + fullfilDate.getFullYear();
         if (dates.get(fillfilDateString)) {
-          dates.get(fillfilDateString).push({action : 'fullfilled' , date : this.order.fullfilment.updateDate})
+          dates.get(fillfilDateString).push({ action: 'fullfilled', date: this.order.fullfilment.updateDate })
         } else {
-          dates.set(fillfilDateString, [{action : 'fullfilled' , date : this.order.fullfilment.updateDate}]);
+          dates.set(fillfilDateString, [{ action: 'fullfilled', date: this.order.fullfilment.updateDate }]);
         }
       }
-      dates.set(dateString,dates.get(dateString).reverse());   
+
+      if (this.order.delivery && this.order.delivery.status) {
+        const deliveryDate = new Date(parseInt(this.order.delivery.updateDate, 10));
+        const deliveryDateString = deliveryDate.getMonth() + deliveryDate.getDate().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + deliveryDate.getFullYear();
+        if (dates.get(deliveryDateString)) {
+          dates.get(deliveryDateString).push({ action: 'delivered', date: this.order.delivery.updateDate })
+        } else {
+          dates.set(deliveryDateString, [{ action: 'delivered', date: this.order.delivery.updateDate }]);
+        }
+      }
+
+      dates.set(dateString, dates.get(dateString).reverse());
       this.activeDates = new Map([...dates.entries()]);
-      this.navSerivce.finishLoading();
+      this.navService.finishLoading();
     });
-    this.FulfillSubscription = this._actions$.pipe(ofType(AdminActions.SuccessFulfillOrderAction,AdminActions.SuccessUnfulfillOrderAction)).subscribe((result) => {
-      this.store.dispatch(AdminActions.
-        BeginLoadOrderDetailsAction({ payload: { "uid": this.route.snapshot.params["uid"], "orderId": this.route.snapshot.params["orderId"] } }));
-        this.store.dispatch(AdminActions.BeginLoadNewOrdersAction());
+    this.FulfillSubscription = this._actions$.
+      pipe(ofType(AdminActions.SuccessFulfillOrderAction,
+        AdminActions.SuccessUnfulfillOrderAction,
+        AdminActions.SuccessDeliverOrderAction,
+        AdminActions.SuccessUndeliverOrderAction)).subscribe((result) => {
+          this.store.dispatch(AdminActions.
+            BeginLoadOrderDetailsAction({ payload: { "uid": this.route.snapshot.params["uid"], "orderId": this.route.snapshot.params["orderId"] } }));
+          this.store.dispatch(AdminActions.BeginLoadNewOrdersAction());
+        });
+  }
+
+  keyDescOrder(a: KeyValue<string, [any]>, b: KeyValue<string, [any]>): number {
+    return parseInt(a.key) < parseInt(b.key) ? 1 :
+      (parseInt(b.key) < parseInt(a.key) ? -1 : 0);
+  }
+
+  confirmDeliverOrder() {
+    let config;
+
+    config = {
+      position: {
+        top: '0px',
+        right: '0px'
+      },
+      height: '100%',
+      width: '100vw',
+      panelClass: 'full-screen-modal',
+      data: { order: this.order }
+    };
+    const dialogRef = this.dialog.open(ConfirmDeliverOrderModalComponent, config);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.navService.startLoading();
+        this.deliverOrder();
+      }
     });
   }
 
-  keyDescOrder (a: KeyValue<number,string>, b: KeyValue<number,string>): number {
-    return a.key < b.key ? 1 : (b.key < a.key ? -1 : 0);
+  deliverOrder() {
+    this.store.dispatch(AdminActions.
+      BeginDeliverOrderAction({ payload: { "uid": this.route.snapshot.params["uid"], "orderId": this.route.snapshot.params["orderId"] } }));
+  }
+
+  confirmUndeliverOrder() {
+    let config;
+
+    config = {
+      position: {
+        top: '0px',
+        right: '0px'
+      },
+      height: '100%',
+      width: '100vw',
+      panelClass: 'full-screen-modal',
+      data: { order: this.order }
+    };
+    const dialogRef = this.dialog.open(ConfirmUndeliverOrderModalComponent, config);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.navService.startLoading();
+        this.undeliverOrder();
+      }
+    });
+  }
+
+  undeliverOrder() {
+    this.store.dispatch(AdminActions.
+      BeginUndeliverOrderAction({ payload: { "uid": this.route.snapshot.params["uid"], "orderId": this.route.snapshot.params["orderId"] } }));
   }
 
   confirmFulfillOrder() {
@@ -107,7 +180,7 @@ export class DashboardOrderDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.navSerivce.startLoading();
+        this.navService.startLoading();
         this.fulfillOrder();
       }
     });
@@ -135,7 +208,7 @@ export class DashboardOrderDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.navSerivce.startLoading();
+        this.navService.startLoading();
         this.unfulfillOrder();
       }
     });
@@ -147,10 +220,10 @@ export class DashboardOrderDetailsComponent implements OnInit {
   }
 
   goToCustomer() {
-    this.navSerivce.startLoading();
+    this.navService.startLoading();
     this.router.navigateByUrl('/store/customers/' + this.route.snapshot.params["uid"]);
   }
-  
+
   ngOnDestroy(): void {
     this.OrderSubscription.unsubscribe();
     this.SettingsSubscription.unsubscribe();

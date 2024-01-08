@@ -1,7 +1,7 @@
-    <div *ngIf="order" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" class="full-width">
+<div *ngIf="order" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" class="full-width">
     <app-dashboard-order-actions class="max-width full-width" [order]="order"
         [orderId]="route.snapshot.params['orderId']" (fullfill)="confirmFulfillOrder()"
-        (unfullfill)="confirmUnfulfillOrder()">
+        (unfullfill)="confirmUnfulfillOrder()" (deliver)="confirmDeliverOrder()" (undeliver)="confirmUndeliverOrder()">
     </app-dashboard-order-actions>
     <div fxLayout="column" class="max-width full-width">
         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px" style="padding:20px;">
@@ -9,16 +9,7 @@
                 <mat-card>
                     <mat-card-header>
                         <mat-card-title>
-                            <mat-chip-list>
-                                <mat-chip color="primary" selected [removable]="false">Paid
-                                </mat-chip>
-                                <mat-chip *ngIf="!order.fullfilment" color="accent" selected [removable]="false">New
-                                </mat-chip>
-                                <mat-chip *ngIf="order.fullfilment && order.fullfilment.status" color="primary" selected
-                                    [removable]="false">
-                                    Complete
-                                </mat-chip>
-                            </mat-chip-list>
+                            <app-dashboard-order-status [order]="order"></app-dashboard-order-status>
                         </mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
@@ -26,9 +17,13 @@
                     </mat-card-content>
                     <mat-card-actions>
                         <div fxLayout="row" fxLayoutAlign="end">
-                            <button *ngIf="!order.fullfilment" (click)="confirmFulfillOrder()" color="accent"
+                            <button *ngIf="!order.fullfilment && !order.delivery " (click)="confirmDeliverOrder()" color="accent"
                                 class="doo-checkout-btn" mat-flat-button>
-                                <span class="dash-app-link">Mark as complete</span>
+                                <span class="dash-app-link">{{'dashboard.order.markDelivered' | translate}}</span>
+                            </button>
+                            <button *ngIf="!order.fullfilment && order.delivery" (click)="confirmFulfillOrder()" color="primary"
+                                class="doo-checkout-btn" mat-flat-button>
+                                <span class="dash-app-link">{{'dashboard.order.markComplete' | translate}}</span>
                             </button>
                         </div>
                     </mat-card-actions>
@@ -91,7 +86,7 @@
                 <mat-card *ngIf="order.order.personalInfo">
                     <mat-card-header>
                         <mat-card-title>
-                            <span class="mat-subheading-2">Customer</span>
+                            <span class="mat-subheading-2">{{'dashboard.common.customer' | translate}}</span>
                         </mat-card-title>
                     </mat-card-header>
                     <mat-card-content class="shipping-box-link doo-pointer" (click)="goToCustomer()">
@@ -102,7 +97,7 @@
                 <mat-card *ngIf="order.order.address">
                     <mat-card-header>
                         <mat-card-title>
-                            <span class="mat-subheading-2">Shipping Address</span>
+                            <span class="mat-subheading-2">{{'dashboard.common.shippingAddress' | translate}}</span>
                         </mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
@@ -113,7 +108,7 @@
                 <mat-card *ngIf="order.order.shipping">
                     <mat-card-header>
                         <mat-card-title>
-                            <span class="mat-subheading-2">Shipping Method</span>
+                            <span class="mat-subheading-2">{{'dashboard.common.shippingMethod' | translate}}</span>
                         </mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
@@ -127,18 +122,18 @@
 
 
         <div fxLayout="column" class="timeline" fxLayoutGap="25px">
-            <div fxLayout="row" class="mat-title doo-bottom-border">Timeline</div>
+            <div fxLayout="row" class="mat-title doo-bottom-border">{{'dashboard.common.timeline' | translate}}</div>
             <div *ngFor="let date of activeDates | keyvalue: keyDescOrder" class="doo-bottom-border" fxLayout="column"
                 fxLayoutGap="35px">
                 <span class="mat-subheading-1 primary-color"
                     style="text-transform: uppercase">{{date.value[0].date | date : 'longDate'}}</span>
-                <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let orderItem of date.value" fxLayoutAlign="space-between"
-                    class="container right mat-subheading-1">
+                <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let orderItem of date.value"
+                    fxLayoutAlign="space-between" class="container right mat-subheading-1">
                     <span>{{('dashboard.order.status.' + order.order.method + '.' + orderItem.action) | translate }}
-                            <button mat-button class="accent-color" style="line-height: 20px;">
-                                #{{orderItem.action}}
-                            </button>
-                        </span>
+                        <button mat-button class="accent-color" style="line-height: 20px;">
+                            #{{orderItem.action}}
+                        </button>
+                    </span>
                     <span class="primary-color">{{orderItem.date | date : 'shortTime'}}</span>
                 </div>
             </div>

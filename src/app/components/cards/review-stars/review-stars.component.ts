@@ -41,14 +41,16 @@ rateSubmitted : boolean = false;
     let i = 1;
     this.rateStars.forEach(star=> {
         //remove if any exist aleady
-        this.renderer.setStyle(star._elementRef.nativeElement , 'fill' , 'white')
+        this.renderer.removeClass(star._elementRef.nativeElement , 'primary-fill');
+        this.renderer.removeClass(star._elementRef.nativeElement , 'white-fill');
+        this.renderer.setStyle(star._elementRef.nativeElement,'fill','white');
 
         if ( this._rate >= i) {
-            this.renderer.setStyle(star._elementRef.nativeElement,'fill','url(' + window.location.href + '#full)');
+            this.renderer.addClass(star._elementRef.nativeElement,'primary-fill');
         } else if (i % this._rate < 1 && i % this._rate != 0) {
-            this.renderer.setStyle(star._elementRef.nativeElement,'fill','url(' + window.location.href + '#half)');
+            this.renderer.setStyle(star._elementRef.nativeElement,'fill','url(#half)');
         } else {
-            this.renderer.setStyle(star._elementRef.nativeElement,'fill','url(' + window.location.href + '#empty)');
+            this.renderer.addClass(star._elementRef.nativeElement,'white-fill');
         }
         i++;
     })

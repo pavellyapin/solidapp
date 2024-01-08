@@ -1,44 +1,53 @@
-
-          <mat-accordion>
-                <mat-expansion-panel *ngFor = "let category of menuTree"
-                                     [hideToggle] = "false"
-                                     [disabled] = "category.fields.redirect"
-                                     (click) = "navigateTo(category,true)"
-                                     class="mat-elevation-z0 doo-root-item">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                            {{category.fields.title}}
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                    <mat-accordion>
-                            <mat-expansion-panel *ngFor = "let subCategory of category.subCategories"
-                                                 [hideToggle] = "false"
-                                                 [expanded] = "false" 
-                                                 class="mat-elevation-z0 doo-sub-item">
-                                     <mat-expansion-panel-header>
+<mat-accordion>
+        <mat-expansion-panel *ngFor="let category of menuTree" [hideToggle]="false"
+                [disabled]="category.fields.redirect" (click)="navigateTo(category,true)"
+                class="mat-elevation-z0 doo-root-item">
+                <mat-expansion-panel-header>
+                        <mat-panel-title>
+                                {{category.fields.title}}
+                        </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-accordion>
+                        <mat-expansion-panel *ngFor="let subCategory of category.subCategories" [hideToggle]="false"
+                                [expanded]="false" class="mat-elevation-z0 doo-sub-item">
+                                <mat-expansion-panel-header>
                                         <mat-panel-title>
                                                 {{subCategory.fields.title}}
                                         </mat-panel-title>
-                                      </mat-expansion-panel-header>
-                                       <div *ngFor = "let link of subCategory.links"
-                                            (click) = "navigateTo(link,false)"
-                                            class = "doo-pointer mat-headline doo-menu-link">
-                                            {{link.fields.title}}
-                                        </div>
-
-
-                            </mat-expansion-panel>
-
-                    </mat-accordion>
-                </mat-expansion-panel>
-         </mat-accordion>
-         <div style = "padding-top: 20px;">
+                                </mat-expansion-panel-header>
+                                <div *ngFor="let link of subCategory.links" (click)="navigateTo(link,false)"
+                                        class="doo-pointer mat-headline doo-menu-link">
+                                        {{link.fields.title}}
+                                </div>
+                        </mat-expansion-panel>
+                </mat-accordion>
+        </mat-expansion-panel>
+</mat-accordion>
+<div fxLayout="column" class="pad-20" fxLayoutGap = "20px">
+        <form *ngIf="environment.globalSearchEnabled" fxLayoutAlign="center center" fxFlex="50" class="mat-caption doo-search-box">
+                <mat-form-field appearance="outline" class="full-width">
+                        <span matPrefix>
+                                <mat-icon svgIcon="doo-search"></mat-icon>
+                        </span>
+                        <input #searchInput type="text" placeholder="{{'common.globalSearchPlaceholder' | translate}}" aria-label="Number"
+                                (keydown.enter)="searchProducts($event)" matInput [formControl]="searchControl"
+                                [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async"
+                                        (click)="navService.ctaClick(option)" [value]="option.fields.title">
+                                        {{option.fields.title}}
+                                </mat-option>
+                        </mat-autocomplete>
+                </mat-form-field>
+        </form>
+        <div>
                 <button mat-button (click)="navigateTo('account/overview' , false)">
-                        <mat-icon svgIcon = "doo-profile"></mat-icon><span style = "padding-left: 10px;">My Account</span>
+                        <mat-icon svgIcon="doo-profile"></mat-icon><span style="padding-left: 10px;">{{'nav.myAccount' | translate}}</span>
                 </button>
-         </div>
-         <div style = "padding-top: 20px;">
+        </div>
+        <div>
                 <button mat-button (click)="navigateTo('account/favorites' , false)">
-                        <mat-icon svgIcon = "doo-favorite"></mat-icon><span style = "padding-left: 10px;">Favorites</span>
+                        <mat-icon svgIcon="doo-favorite"></mat-icon><span style="padding-left: 10px;">{{'nav.favorites' | translate}}</span>
                 </button>
-         </div>
+        </div>
+</div>

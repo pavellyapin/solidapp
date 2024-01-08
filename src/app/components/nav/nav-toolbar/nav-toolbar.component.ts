@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { navbarTransition } from '../../pipes/animations';
 import { UtilitiesService } from 'src/app/services/util/util.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav-toolbar',
@@ -31,6 +32,7 @@ export class NavToolbarComponent implements OnInit {
   @Input() resolution: any;
   @Input() rootCategories: Entry<any>[];
   @Input() cartItemCount:number;
+  environment = environment;
   activeCategory: Entry<any>;
   subCategories: Entry<any>[];
   bigScreens = new Array('lg' , 'xl' , 'md')

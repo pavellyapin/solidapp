@@ -8,6 +8,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CartItem } from 'src/app/services/store/cart/cart.model';
 import * as CartActions from '../../services/store/cart/cart.action';
 import * as UserActions from '../../services/store/user/user.action';
+import * as ProductActions from '../../services/store/product/product.action';
 import UserState from 'src/app/services/store/user/user.state';
 import { FavoriteItem } from 'src/app/services/store/user/user.model';
 import SettingsState from 'src/app/services/store/settings/settings.state';
@@ -17,6 +18,7 @@ import CartState from 'src/app/services/store/cart/cart.state';
 import { SEOService } from 'src/app/services/seo/seo.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Router, NavigationEnd } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'doo-product-detail',
@@ -28,14 +30,16 @@ export class ProductDeatilComponent implements OnInit {
   //Subscription
   ProductSubscription: Subscription;
   ProductReviewsSubscription: Subscription;
+  ReviewsSubscription: Subscription;
   PagesSubscription: Subscription;
   UserSubscription: Subscription;
   ResolutionSubscription: Subscription;
-  SettingsSubscription: Subscription;
   CartIdSubscription: Subscription;
   CartItemsSubscription: Subscription;
-  RouterSubscription : Subscription;
+  RouterSubscription: Subscription;
   ///////////////
+
+  theme : any = environment.theme;
 
   cart$: Observable<CartState>;
   cartId: string;
@@ -50,7 +54,6 @@ export class ProductDeatilComponent implements OnInit {
   pages$: Observable<Entry<any>[]>;
   productReviews$: Observable<any[]>;
   resolution$: Observable<string>;
-  siteConfig$: Observable<Entry<any>>;
   productDetails: Entry<any>;
   productReviews: any[];
   pageLayout: Entry<any>;
@@ -62,7 +65,6 @@ export class ProductDeatilComponent implements OnInit {
   variantDiscount: any;
   displayedMediaIndex: number = 0;
   resolution: any;
-  siteConfig: any;
   sitePages: Entry<any>[];
 
 
@@ -71,7 +73,7 @@ export class ProductDeatilComponent implements OnInit {
     private seoService: SEOService,
     private _actions$: Actions,
     private router: Router,
-    private cd : ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
     private store: Store<{
       products: ProductsState,
       user: UserState,
@@ -88,8 +90,6 @@ export class ProductDeatilComponent implements OnInit {
     this.cart$ = store.pipe(select('cart'));
 
     this.resolution$ = store.pipe(select('settings', 'resolution'));
-
-    this.siteConfig$ = store.pipe(select('settings', 'siteConfig'));
   }
 
   ngOnInit() {
@@ -103,6 +103,12 @@ export class ProductDeatilComponent implements OnInit {
     this.CartItemsSubscription = this._actions$.pipe(ofType(
       CartActions.SuccessBackGroundInitializeOrderAction)).subscribe((result) => {
         this.store.dispatch(CartActions.BeginAddProductToCartAction({ payload: this.item }));
+      });
+
+    this.ReviewsSubscription = this._actions$.pipe(ofType(
+      ProductActions.SuccessWriteProductReviewAction)).subscribe((result) => {
+        this.store.dispatch(ProductActions.BeginLoadProductReviewsAction({payload : this.productDetails.sys.id}));
+        this.getProductDetail();
       });
 
 
@@ -166,14 +172,6 @@ export class ProductDeatilComponent implements OnInit {
       .pipe(
         map(x => {
           this.resolution = x;
-        })
-      )
-      .subscribe();
-
-    this.SettingsSubscription = this.siteConfig$
-      .pipe(
-        map(x => {
-          this.siteConfig = x;
         })
       )
       .subscribe();
@@ -262,7 +260,7 @@ export class ProductDeatilComponent implements OnInit {
         reqCart.push(
           {
             productId: item.productId,
-            variants : item.variants,
+            variants: item.variants,
             qty: item.qty
           }
         )
@@ -271,7 +269,7 @@ export class ProductDeatilComponent implements OnInit {
       reqCart.push(
         {
           productId: this.item.productId,
-          variants : this.item.variants,
+          variants: this.item.variants,
           qty: this.item.qty
         }
       );
@@ -345,9 +343,9 @@ export class ProductDeatilComponent implements OnInit {
     this.UserSubscription.unsubscribe();
     this.PagesSubscription.unsubscribe();
     this.ResolutionSubscription.unsubscribe();
-    this.SettingsSubscription.unsubscribe();
     this.CartItemsSubscription.unsubscribe();
     this.RouterSubscription.unsubscribe();
+    this.ReviewsSubscription.unsubscribe();
   }
 
 }

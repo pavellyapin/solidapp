@@ -38,5 +38,6 @@ export class OrderItem {
   cart? : any;
   date ? : number;
   status? : string;
+  workflow? : string;
   payment? : any;
 }

@@ -1,4 +1,12 @@
-<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start start" class = "pad-20">
+<div fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
+    <button mat-button [matMenuTriggerFor]="menu">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <span>{{'dashboard.common.moreActions' | translate}}</span>
+            <mat-icon svgIcon="doo-arrow-down"></mat-icon>
+        </div>
+    </button>
+</div>
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start start" class="pad-20">
     <div fxLayout="row" fxLayoutGap="10px">
         <button (click)="navigateToOrderOverview()" class="doo-back-btn" color="accent" mat-stroked-button>
             <mat-icon class="doo-accent-icon" svgIcon="doo-arrow-left"></mat-icon>
@@ -6,16 +14,7 @@
         <div fxLayout="column" fxLayoutGap="10px">
             <div fxLayout="column" fxLayoutGap="10px">
                 <span class="mat-headline doo-no-margin">{{orderId}}</span>
-                <mat-chip-list>
-                    <mat-chip *ngIf="order.order.status=='paid'" color="primary" selected [removable]="false">Paid
-                    </mat-chip>
-                    <mat-chip *ngIf="!order.fullfilment" color="accent" selected [removable]="false">New
-                    </mat-chip>
-                    <mat-chip *ngIf="order.fullfilment && order.fullfilment.status" color="primary" selected
-                        [removable]="false">
-                        Complete
-                    </mat-chip>
-                </mat-chip-list>
+                <app-dashboard-order-status [order]="order"></app-dashboard-order-status>
             </div>
             <div fxLayout="row" fxLayoutAlign="start start" class="mat-subheading-1 doo-opacity doo-letter-space">
                 <span> {{order.order.cart.date | date:'medium'}}</span>
@@ -25,22 +24,19 @@
     <div fxShow fxHide.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
         <button mat-button [matMenuTriggerFor]="menu">
             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-                <span>More actions</span>
+                <span>{{'dashboard.common.moreActions' | translate}}</span>
                 <mat-icon svgIcon="doo-arrow-down"></mat-icon>
             </div>
         </button>
     </div>
     <mat-menu #menu="matMenu">
-        <button *ngIf="!order.fullfilment" (click)="fullfill.emit()" mat-menu-item>Mark as complete</button>
-        <button *ngIf="order.fullfilment && order.fullfilment.status" (click)="unfullfill.emit()" mat-menu-item>Mark as
-            not
-            complete</button>
+        <button *ngIf="!order.delivery" (click)="deliver.emit()" class="doo-uppercase"
+            mat-menu-item>{{'dashboard.order.markDelivered' | translate}}</button>
+        <button *ngIf="order.delivery && order.delivery.status && !order.fullfilment" class="doo-uppercase"
+            (click)="undeliver.emit()" mat-menu-item>{{'dashboard.order.reverseDelivered' | translate}}</button>
+        <button *ngIf="!order.fullfilment && order.delivery" class="doo-uppercase" (click)="fullfill.emit()"
+            mat-menu-item>{{'dashboard.order.markComplete' | translate}}</button>
+        <button *ngIf="order.fullfilment && order.fullfilment.status" class="doo-uppercase" (click)="unfullfill.emit()"
+            mat-menu-item>{{'dashboard.order.reverseComplete' | translate}}</button>
     </mat-menu>
-</div>
-<div fxHide fxShow.lt-md fxLayout="row" fxLayoutAlign="end" class="full-width">
-    <button mat-button [matMenuTriggerFor]="menu">
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-            <mat-icon svgIcon="doo-arrow-down"></mat-icon>
-        </div>
-    </button>
 </div>

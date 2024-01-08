@@ -71,7 +71,7 @@ export class ProductDeatilFashionLayoutComponent implements OnInit {
   }
 
   mediaZoom(zoom) {
-    this.zoomed = zoom;
+    //this.zoomed = zoom;
   }
 
   checkScroll() {

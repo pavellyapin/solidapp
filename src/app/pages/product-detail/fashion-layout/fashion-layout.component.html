@@ -1,7 +1,7 @@
 <div *ngIf="zoomed" class="full-screen">
   <div fxLayout="row" class="sticky-exit-zoom">
     <div fxLayout="row" fxLayoutGap="20px" class="mat-headline">
-      <mat-icon svgIcon="doo-arrow-left" (click)="mediaZoom(false)" class="doo-pointer" color="accent">navigate_before
+      <mat-icon svgIcon="doo-arrow-left" (click)="mediaZoom(false)" class="doo-pointer" color="accent">
       </mat-icon>
       <span class="doo-pointer doo-letter-space" (click)="mediaZoom(false)">
         Back to Product
@@ -10,10 +10,8 @@
   </div>
 
   <div *ngFor="let image of productDetails.fields.media; let i = index">
-    <img class="full-width" 
-    [lazyLoad]="image?.fields.file.url"
-    [alt] = "image?.fields.description"
-    [defaultImage]="'assets/placeholders/placeholder-1.svg'">
+    <img class="full-width" [lazyLoad]="image?.fields.file.url" [alt]="image?.fields.description"
+      [defaultImage]="'assets/placeholders/placeholder-1.svg'">
   </div>
 
 </div>
@@ -25,9 +23,8 @@
     <div #mediaEnd fxLayout="column" fxFlex="60">
       <div *ngFor="let image of productDetails.fields.media; let i = index">
         <img class="full-width doo-pointer-zoom" style="display: block" (click)="mediaZoom(true)"
-        [lazyLoad]="image?.fields.file.url"
-        [alt] = "image?.fields.description"
-        [defaultImage]="'assets/placeholders/placeholder-1.svg'">
+          [lazyLoad]="image?.fields.file.url" [alt]="image?.fields.description"
+          [defaultImage]="'assets/placeholders/placeholder-1.svg'">
       </div>
     </div>
     <div fxLayout="column" fxFlex="35">
@@ -37,14 +34,15 @@
           fxLayoutAlign.xs="end center"
           [ngClass]="bigScreens.includes(this.resolution) ? 'sticky-product-detail' : 'sticky-product-detail-mobile'">
           <div #stickyInnerCont fxLayout="column" class="sticky-inner-cont">
-            <form [formGroup]="cartItemForm" fxLayout="column" class="full-width" style = "padding : 0px 20px;" fxLayoutAlign="start start">
+            <form [formGroup]="cartItemForm" fxLayout="column" class="full-width" style="padding : 0px 20px;"
+              fxLayoutAlign="start start">
               <div fxLayout="row" class="mat-title">
                 {{productDetails.fields.title}}
               </div>
               <div fxLayout="row" fxLayoutGap="5px" *ngIf="productReviews" class="doo-rate-uneditable">
                 <doo-review-stars [rate]="reviewsComponent.getOverallRate()" [editable]="false"></doo-review-stars>
                 <span class="mat-caption">{{productReviews.length}}</span>
-                <span class="mat-caption">Reviews</span>
+                <span class="mat-caption">{{'product.reviews' | translate}}</span>
               </div>
               <div fxLayout="row" fxLayoutAlign="center" class="mat-headline">
                 <span [innerHTML]="productDetails.fields.price | pricePipe"
@@ -97,8 +95,8 @@
               </div>
 
               <div fxLayout="row" fxLayoutGap="10px" class="full-width">
-                <button #addProductBtn (click)="addProductToCart()" class="full-width doo-add-btn" color="primary" mat-flat-button
-                  type="submit">
+                <button #addProductBtn (click)="addProductToCart()" class="full-width doo-add-btn" color="primary"
+                  mat-flat-button type="submit">
                   {{ 'cart.addToCart' | translate }}
                 </button>
                 <div fxLayout="column" class="fav-icon doo-pointer" fxLayoutAlign="center center">
@@ -119,11 +117,10 @@
     </doo-block-layouts>
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
-    <div fxLayout="column" class="doo-reviews-cont" fxFlex.gt-xs="90" fxLayoutGap="50px" fxFlex.xs fxLayoutAlign="center">
+    <div fxLayout="column" class="doo-reviews-cont pad-20" fxFlex.gt-xs="90" fxLayoutGap="50px" fxFlex.xs
+      fxLayoutAlign="center">
       <div fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-        <mat-icon svgIcon="doo-chat">
-        </mat-icon>
-        <span style="font-weight: 700" class="mat-display-1 doo-letter-space">Product Reviews</span>
+        <span class="mat-display-1 doo-letter-space pad-20">{{'product.productReviews' | translate}}</span>
       </div>
       <doo-product-reviews #reviewsComponent [productReviews]="productReviews" [productDetails]="productDetails">
       </doo-product-reviews>

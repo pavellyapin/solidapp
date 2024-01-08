@@ -97,3 +97,12 @@
             //padding : 0px 0px !important;
         }
 }
+.doo-search-summary {
+    background: $lighter-grey;
+    padding: 20px 50px;
+    ::ng-deep .mat-standard-chip{
+        font-size: 12px;
+        color: white !important;
+        cursor: pointer !important;
+    }
+}

@@ -16,8 +16,8 @@ export class ImagePipe {
   constructor(public sanitizer:DomSanitizer ) { }
   transform(url: string): any {
     var fullUrl = 'https:' + url;
-    //return fullUrl;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
+    return fullUrl;
+    //return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
 }
 

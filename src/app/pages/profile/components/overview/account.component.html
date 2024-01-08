@@ -3,14 +3,14 @@
                 <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/orders'"
                         mat-stroked-button>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                                <mat-icon svgIcon="doo-basket"></mat-icon><span>ORDERS</span>
+                                <mat-icon svgIcon="doo-basket"></mat-icon><span class = "doo-uppercase">{{'profile.orders.orders' | translate }}</span>
                         </div>
 
                 </button>
                 <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/favorites'"
                         mat-stroked-button>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                                <mat-icon svgIcon="doo-favorite"></mat-icon><span>WISH LIST</span>
+                                <mat-icon svgIcon="doo-favorite"></mat-icon><span class = "doo-uppercase">{{'profile.favorites.favorites' | translate }}</span>
                         </div>
                 </button>
         </div>
@@ -18,14 +18,14 @@
                 <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/profile'"
                         mat-stroked-button>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                                <mat-icon svgIcon="doo-profile"></mat-icon><span>PROFILE</span>
+                                <mat-icon svgIcon="doo-profile"></mat-icon><span class = "doo-uppercase">{{'profile.profile' | translate }}</span>
                         </div>
 
                 </button>
                 <button class="overview-btn" fxFlex="50" color="accent" [routerLink]="'/account/addressinfo'"
                         mat-stroked-button>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                                <mat-icon svgIcon="doo-location"></mat-icon><span>ADDRESS</span>
+                                <mat-icon svgIcon="doo-location"></mat-icon><span class = "doo-uppercase">{{'profile.addresses' | translate }}</span>
                         </div>
                 </button>
         </div>

@@ -3,13 +3,13 @@
                 <mat-icon class="doo-pointer" svgIcon="doo-close" (click)="dialogRef.close()"></mat-icon>
         </div>
         <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px" class="doo-bottom-border">
-                <div fxFlex="10">
+                <div fxFlex="10" fxFlex.lt-md = "20">
                         <img class="full-width" style="display: block"
                                 [src]="data.productDetails.fields.media[0].fields.file.url">
                 </div>
                 <div fxFlex="70" fxLayout="column">
                         <span class="mat-subheading-1">
-                                Write a review
+                                {{'product.reviewModalHeader' | translate}}
                         </span>
                         <span class="mat-title">
                                 {{data.productDetails.fields.title}}
@@ -17,27 +17,27 @@
                 </div>
 
         </div>
-        <span class="mat-subheading-2">Overall Rating</span>
-        <span class="mat-body">Click below to rate this product</span>
+        <span class="mat-subheading-2">{{'product.overallRating' | translate}}</span>
+        <span class="mat-body">{{'product.clickToRate' | translate}}</span>
         <div fxLayout="column" class="doo-bottom-border">
                 <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
                         <doo-review-stars (starClickEvent)="starClickEvent($event)" [editable]="true">
                         </doo-review-stars>
                 </div>
-                <mat-error *ngIf="reviewForm.controls['rate'].invalid && formSubmitted">Click on a star to rate!
+                <mat-error *ngIf="reviewForm.controls['rate'].invalid && formSubmitted">{{'product.rateError' | translate}}
                 </mat-error>
 
         </div>
 
-        <span class="mat-subheading-2">Your Review</span>
+        <span class="mat-subheading-2">{{'product.yourReview' | translate}}</span>
         <form [formGroup]="reviewForm" fxLayout="column">
-                <span class="mat-body">Would you recommend this product?</span>
+                <span class="mat-body">{{'product.wouldRecommendQ' | translate}}</span>
                 <mat-radio-group formControlName="recommend" class="recommend-radio-group">
-                        <mat-radio-button value=true [checked]="true">Yes</mat-radio-button>
-                        <mat-radio-button value=false>No</mat-radio-button>
+                        <mat-radio-button value=true [checked]="true">{{'common.yes' | translate}}</mat-radio-button>
+                        <mat-radio-button value=false>{{'common.no' | translate}}</mat-radio-button>
                 </mat-radio-group>
                 <mat-form-field fxFlex appearance="outline" class="full-width">
-                        <mat-label>Add a headline</mat-label>
+                        <mat-label>{{'product.addHeadline' | translate}}</mat-label>
                         <input formControlName="headline" autocomplete="headline" [errorStateMatcher]="matcher" matInput
                                 #headline name="headline" placeholder="" type="text" />
                         <mat-hint align="end">{{headline.value?.length || 0}}/50</mat-hint>
@@ -45,16 +45,16 @@
                                 {{'errors.required' | translate}}</mat-error>
                 </mat-form-field>
                 <mat-form-field fxFlex appearance="outline" class="full-width">
-                        <mat-label>Write your review about this product..</mat-label>
+                        <mat-label>{{'product.writeYourReview' | translate}}</mat-label>
                         <textarea formControlName="review" autocomplete="review" [errorStateMatcher]="matcher" matInput
                                 #review name="review" placeholder=""></textarea>
                         <mat-hint align="end">{{review.value?.length || 0}}/255</mat-hint>
                         <mat-error *ngIf="reviewForm.controls['review'].invalid && formSubmitted">
                                 {{'errors.required' | translate}}</mat-error>
                 </mat-form-field>
-                <span class="mat-subheading-2">Your display name</span>
+                <span class="mat-subheading-2">{{'product.yourDisplayName' | translate}}</span>
                 <mat-form-field fxFlex appearance="outline" class="full-width">
-                        <mat-label>Display Name</mat-label>
+                        <mat-label>{{'product.displayName' | translate}}</mat-label>
                         <input formControlName="name" autocomplete="name" [errorStateMatcher]="matcher" matInput
                                 name="name" placeholder="" type="text" />
                         <mat-error *ngIf="reviewForm.controls['name'].invalid && formSubmitted">
@@ -63,7 +63,7 @@
                 <div fxLayout="row" fxLayoutAlign="center">
                         <button color="primary" mat-flat-button class="doo-checkout-btn" (click)="submitReview()"
                                 type="submit">
-                                SUBMIT REVIEW
+                                {{'product.submitReview' | translate}}
                         </button>
                 </div>
         </form>

@@ -29,6 +29,12 @@ export const SuccessResetDashboardHomeAction = createAction('[admin] - Success r
 export const BeginLoadOrderDetailsAction = createAction('[admin] - Begin LOAD order details',props<{ payload: any }>());
 export const SuccessLoadOrderDetailsAction = createAction('[admin] - Success LOAD order details',props<{ payload: any }>());
 
+export const BeginDeliverOrderAction = createAction('[admin] - Begin deliver order',props<{ payload: any }>());
+export const SuccessDeliverOrderAction = createAction('[admin] - Success deliver order',props<{ payload: any }>());
+
+export const BeginUndeliverOrderAction = createAction('[admin] - Begin undeliver order',props<{ payload: any }>());
+export const SuccessUndeliverOrderAction = createAction('[admin] - Success undeliver order',props<{ payload: any }>());
+
 export const BeginFulfillOrderAction = createAction('[admin] - Begin fulfill order',props<{ payload: any }>());
 export const SuccessFulfillOrderAction = createAction('[admin] - Success fulfill order',props<{ payload: any }>());
 

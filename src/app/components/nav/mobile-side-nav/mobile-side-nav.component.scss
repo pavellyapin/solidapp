@@ -39,3 +39,46 @@
         text-transform: uppercase;
     }
 }
+
+.doo-search-box {
+
+    mat-icon {
+      padding-right: 10px;
+      height: 20px;
+      width: 20px;
+      
+      ::ng-deep .cls-1 {
+        stroke: $primary;
+      }
+      ::ng-deep .cls-2 {
+        stroke: $primary;
+      }
+    }
+    ::ng-deep .mat-form-field-outline-start {
+      border-top-left-radius: 35px !important;
+      border-bottom-left-radius: 35px !important;
+      min-width: 25px !important;
+      background: $lighter-grey;
+    }
+  
+    ::ng-deep .mat-form-field-outline-end {
+      border-top-right-radius: 35px !important;
+      border-bottom-right-radius: 35px !important;
+      background: $lighter-grey;
+    }
+  
+    ::ng-deep .mat-form-field-flex {
+      padding-left: 25px !important;
+    }
+  
+    ::ng-deep .mat-form-field-infix {
+      padding-top: 5px !important;
+      padding-bottom: 10px !important;
+      padding-left: 10px !important;
+    }
+  
+    ::ng-deep .mat-form-field-wrapper {
+      padding-bottom : 0px !important;
+      //margin : 0px !important;
+    }
+  }

@@ -2,8 +2,7 @@
      fxLayoutAlign="start center">
      <div fxLayout="row" fxLayoutAlign="center"
           [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.width? block.fields.width + '%': '100%')">
-          <div fxLayout="row" fxLayout.lt-sm="column" [fxFlex.gt-xs]="block.fields.width ? block.fields.width : 100"
-               fxFlex.lt-sm
+          <div fxLayout="row" fxLayout.lt-sm="column" 
                [fxLayoutAlign]="'center' + ' ' +  (block.fields.verticalContentPosition ? block.fields.verticalContentPosition : 'start')">
                <div class="pad-20" [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 1 : 2"
                     fxLayout="column" [fxFlex.gt-xs]="block.fields.textBoxWidth ? block.fields.textBoxWidth : 50" [dooBackground]="block.fields.textBackground">
@@ -16,20 +15,19 @@
                          [style.text-align]="block.fields.textAlign ? block.fields.textAlign : 'start'"
                          [innerHTML]="block.fields.otherContent | richTextPipe">
                     </div>
-                    <doo-actions *ngIf="block.fields.actions"
+                    <doo-actions *ngIf="block.fields.actions" [stacked]="block.fields.mobileStackActions" [resolution]="resolution"
                          [fxLayoutAlign]="block.fields.actionsPosition ? block.fields.actionsPosition : 'start'"
                          fxLayoutGap="20px" fxLayout="row" [actions]="block.fields.actions"></doo-actions>
 
                </div>
                <div fxLayout="row" [fxFlexOrder]="['start' , 'center'].includes(block.fields.contentPosition)  ? 2 : 1"
-                    [style.width]="!utils.bigScreens.includes(this.resolution) ? '100%' : (block.fields.textBoxWidth ? 100-block.fields.textBoxWidth + '%' : '50%')"
-                    fxLayoutAlign="center center">
+                    fxLayoutAlign="center center" fxFlex.gt-xs>
                     <img #postImg class="full-width post-placeholder"
-                         [dooImgStyle]="{block : block, resolution : this.resolution}"
+                         [dooImgStyle]="{block : block, resolution : this.resolution , skipWidth : true}"
                          [lazyLoad]="block.fields.media[0].fields.file.url"
                          [defaultImage]="'assets/placeholders/placeholder-full-width-post.svg'"
                          (onStateChange)="myCallbackFunction($event)" />
-                    <video #mainVid class="full-width" [dooImgStyle]="{block : block, resolution : this.resolution}"
+                    <video #mainVid class="full-width" [dooImgStyle]="{block : block, resolution : this.resolution , skipWidth : true}"
                          autoplay muted loop playsinline>
                     </video>
                </div>

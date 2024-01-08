@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentData, QuerySnapshot } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { AuthService } from '../../auth/auth.service';
@@ -75,7 +75,7 @@ export class FirestoreUserService {
             }));
     }
 
-    getOrders(): Observable<any> {
+    getOrders(): Observable<QuerySnapshot<DocumentData>> {
         return from(this.firestore.collection("customers").doc("customers").collection(this.authservice.uid)
             .doc(this.ordersCollection).collection("orders").ref.where("status", "==", "paid").get());
     }

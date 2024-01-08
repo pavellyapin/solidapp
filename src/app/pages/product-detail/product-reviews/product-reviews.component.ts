@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher, sortReviews } from 'src/app/components/pipes/pipes';
 import { Store } from '@ngrx/store';
 import * as ProductsActions from '../../../services/store/product/product.action';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
 
 @Component({
   selector: 'doo-product-reviews',
@@ -29,7 +30,7 @@ export class ProductReviewsComponent implements OnInit {
   @ViewChildren("starCount") starCount!: QueryList<any>
   filters = new Array<any>();
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog , private navService: NavigationService) {
 
   }
 
@@ -124,7 +125,7 @@ export class ProductReviewsComponent implements OnInit {
   getRecommendPresent() {
     if (this._productReviews) {
       let count = this.getRecommendCount();
-      return (count/this._productReviews.length * 100).toFixed(0);
+      return (count / this._productReviews.length * 100).toFixed(0);
     }
     return 0;
   }
@@ -142,8 +143,13 @@ export class ProductReviewsComponent implements OnInit {
       panelClass: 'full-screen-modal',
       data: { productDetails: this.productDetails }
     };
-    this.dialog.open(WriteReviewModalComponent,config);
+    const dialogRef = this.dialog.open(WriteReviewModalComponent, config);
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.navService.startLoading();
+      }
+    });
   }
 
 
@@ -190,6 +196,7 @@ export class WriteReviewModalComponent {
       this.reviewForm.controls["recommend"].
         setValue(this.reviewForm.controls["recommend"].value != 'false' || this.reviewForm.controls["recommend"].value == 'true');
       this.store.dispatch(ProductsActions.BeginWriteProductReviewAction({ payload: { productId: this.data.productDetails.sys.id, review: this.reviewForm.value } }));
+      this.dialogRef.close('created');
     }
   }
 

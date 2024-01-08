@@ -1,13 +1,35 @@
+<div *ngIf="isSearch" fxLayout="column" fxLayoutAlign="center center" class="doo-search-summary">
+  <div fxLayout="row" class="mat-subheading-2 doo-letter-space" fxLayoutAlign="center">
+    {{'product.search.resultLength' | translate : {length: productsLoaded?.length} }}
+  </div>
+  <div fxLayout="row" class="mat-display-1 doo-letter-space" fxLayoutAlign="center">
+    "{{route.snapshot.params['category']}}"
+  </div>
+  <div fxLayout="row" class="mat-subheading-1 doo-letter-space" fxLayoutAlign="center">
+    {{'product.search.relatedCategories' | translate }}
+  </div>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mat-chip-list fxShow>
+        <mat-chip *ngFor="let category of relatedCategories" color="accent" (click)="navService.ctaClick(category)"
+          selected [removable]="false">{{category.fields.title}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+
+</div>
+
 <div fxLayout="column" class="doo-page-header">
-  <doo-bread-crumbs fxLayout="row"></doo-bread-crumbs>
-  <div fxLayout="row" class="mat-title">
+  <doo-bread-crumbs *ngIf="!isSearch" fxLayout="row"></doo-bread-crumbs>
+  <div *ngIf="!isSearch" fxLayout="row" class="mat-title">
     {{activeCategory.fields.title}}
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
     <div fxLayout="row" fxLayoutGap="10px">
-      <button *ngIf = "showFilters" mat-button (click)="filtersOpen = !filtersOpen" class="doo-filters-btn">
+      <button *ngIf="showFilters" mat-button (click)="filtersOpen = !filtersOpen" class="doo-filters-btn">
         <div fxLayout="column" fxLayoutAlign="center center">
-          <span>FILTERS</span>
+          <span>{{'product.category.filters' | translate }}</span>
           <mat-icon svgIcon="doo-filters"></mat-icon>
         </div>
       </button>
@@ -20,41 +42,50 @@
     </div>
 
     <mat-form-field appearance="outline" color="primary" class="doo-sort-select">
-      <mat-label>SORT BY</mat-label>
+      <mat-label>{{'product.category.sortBy' | translate }}</mat-label>
       <mat-select #sortSelect (selectionChange)="sortBy($event)">
         <mat-option [value]="'price-low-high'">
-          Price low to high
+          {{'product.category.priceLowToHigh' | translate }}  
         </mat-option>
         <mat-option [value]="'price-high-low'">
-          Price high to low
+          {{'product.category.priceHighToLow' | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div fxLayoutAlign="end center" class="doo-letter-space mat-caption">
-    Showing 1-{{cards.value.length}} of {{productsDisplayed?.length}} items
+    {{'product.category.showingItems' | translate : {cardsLength: cards.value.length , displayedLength: productsDisplayed?.length} }}
   </div>
 </div>
 <div *ngIf="productsLoaded.length==0" class="doo-empty-cart" fxLayoutGap="20px" fxLayout="column"
   fxLayoutAlign="center center">
   <span class="mat-title">
-    Explore our store
+      {{'cart.exploreStore' | translate }}
   </span>
   <span class="mat-subheahing-1">
-    We didn't find any products for this category
+      {{'product.category.noProductsFound' | translate }}
   </span>
   <div fxLayout="row" class="full-width" fxLayoutAlign="center center">
     <button color="primary" class="doo-checkout-btn" mat-flat-button fxFlex="40" [routerLink]="'/'">
-      SHOP
+      {{'cart.shopBtn' | translate }}
     </button>
   </div>
+</div>
+<div fxHide fxShow.lt-md class="pad-20">
+  <mat-chip-list>
+    <mat-chip *ngFor="let filter of filters" color="primary" selected [removable]="true"
+      (removed)="removeFilterChip(filter)">{{filter.name}}
+      <mat-icon svgIcon="doo-close" matChipRemove></mat-icon>
+    </mat-chip>
+  </mat-chip-list>
 </div>
 <mat-drawer-container *ngIf="productsLoaded.length > 0" class="doo-category-products">
   <mat-drawer [opened]="showFilters && filtersOpen" [mode]="navMode" position="start"
     [ngClass]="this.bigScreens.includes(this.resolution) ? 'doo-nav-filters' : 'doo-nav-filters mobile'">
     <mat-accordion [multi]="true">
-      <mat-expansion-panel *ngIf = "productVariants.get('color')" [hideToggle]="true" (opened)="colorPanelOpenState = true"
-        (closed)="colorPanelOpenState = false" [expanded]="true" class="mat-elevation-z0">
+      <mat-expansion-panel *ngIf="productVariants.get('color')" [hideToggle]="true"
+        (opened)="colorPanelOpenState = true" (closed)="colorPanelOpenState = false" [expanded]="true"
+        class="mat-elevation-z0">
         <mat-expansion-panel-header>
           <mat-panel-title>
             {{'product.color' | translate}}
@@ -73,7 +104,7 @@
           </div>
         </div>
       </mat-expansion-panel>
-      <mat-expansion-panel *ngIf = "productVariants.get('size')" [hideToggle]="true" (opened)="sizePanelOpenState = true"
+      <mat-expansion-panel *ngIf="productVariants.get('size')" [hideToggle]="true" (opened)="sizePanelOpenState = true"
         (closed)="sizePanelOpenState = false" [expanded]="true" class="mat-elevation-z0">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -96,7 +127,7 @@
     </mat-accordion>
   </mat-drawer>
   <mat-drawer-content>
-    <div #productsGrid fxLayout="column" fxFlex="90" fxFlex.lt-md = "100">
+    <div #productsGrid fxLayout="column" fxFlex="90" fxFlex.lt-md="100">
 
       <mat-grid-list [cols]="cols | async">
         <mat-grid-tile *ngFor="let card of productCards" [colspan]="card.input.cols.value | async"

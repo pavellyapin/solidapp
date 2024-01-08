@@ -1,0 +1,15 @@
+<mat-chip-list>
+    <mat-chip color="primary" selected [removable]="false">{{'dashboard.common.paid' | translate}}
+    </mat-chip>
+    <mat-chip *ngIf="order.status=='paid' || order.status=='new' || (!order.fullfilment && !order.delivery && !order.status)" color="accent"
+        selected [removable]="false">
+        {{'dashboard.common.new' | translate}}
+    </mat-chip>
+    <mat-chip *ngIf="order.status=='delivered' || (order.delivery && order.delivery.status && !order.fullfilment)"
+        color="accent" selected [removable]="false">{{'dashboard.common.delivered' | translate}}
+    </mat-chip>
+    <mat-chip *ngIf="order.status=='complete' || (order.fullfilment && order.fullfilment.status)" color="primary"
+        selected [removable]="false">
+        {{'dashboard.common.complete' | translate}}
+    </mat-chip>
+</mat-chip-list>

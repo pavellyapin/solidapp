@@ -27,6 +27,8 @@ import { ProfileAddressComponent } from './components/address/address.component'
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { BlockLayoutsModule } from 'src/app/components/block-layouts/block-layouts.module';
 import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [ProfileComponent,
@@ -51,6 +53,7 @@ import { WidgetsModule } from 'src/app/components/widgets/widgets.module';
     MatPaginatorModule,
     FlexLayoutModule,
     MatGridListModule,
+    MatChipsModule,
     FormsModule,
     ReactiveFormsModule,
     AddressComponentsModule,

@@ -29,6 +29,9 @@ import { ConfirmFullfillOrderModalComponent } from './modals/confirm-fullfill/co
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmUnFullfillOrderModalComponent } from './modals/confirm-unfullfill/confirm-unfulfill.component';
 import { FormsModule } from '@angular/forms';
+import { ConfirmDeliverOrderModalComponent } from './modals/confirm-deliver/confirm-deliver.component';
+import { ConfirmUndeliverOrderModalComponent } from './modals/confirm-undeliver/confirm-undeliver.component';
+import { DashboardOrderStatusComponent } from './order-status/order-status.component';
 
 @NgModule({
   imports: [
@@ -55,11 +58,14 @@ import { FormsModule } from '@angular/forms';
     BlockLayoutsModule
   ],
   declarations: [DashboardOrdersComponent,
-                 DashboardOrdersOverviewComponent,
-                 DashboardOrderDetailsComponent,
-                 DashboardOrderActionsComponent,
-                 ConfirmFullfillOrderModalComponent,
-                 ConfirmUnFullfillOrderModalComponent],
+    DashboardOrdersOverviewComponent,
+    DashboardOrderDetailsComponent,
+    DashboardOrderActionsComponent,
+    ConfirmFullfillOrderModalComponent,
+    ConfirmUnFullfillOrderModalComponent,
+    ConfirmDeliverOrderModalComponent,
+    ConfirmUndeliverOrderModalComponent,
+    DashboardOrderStatusComponent],
   providers: [],
   entryComponents: [],
 })

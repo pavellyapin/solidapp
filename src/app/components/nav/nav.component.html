@@ -1,5 +1,4 @@
 <div class="nav-container">
-
   <app-nav-toolbar fxLayout="column" (logout)="logout()" (expandMainMenu)="expandMainMenu($event)"
     (expandCartNav)="expandCartNav()" (toggleMobileSideMenu)="toggleMobileSideMenu()"
     (startSearchProducts)="startSearchProducts($event)" [filteredOptions]="filteredOptions"
@@ -11,11 +10,12 @@
     [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'main-nav-container' : 'main-nav-container-mobile'">
     <mat-drawer [opened]="isMobileMenuOpen" (closedStart)="isMobileMenuOpen = false" autoFocus="false" mode="over"
       style="width: 100%" position="start">
-      <doo-mobile-side-nav [rootCategories]="rootCategories" [categories]="categories"
+      <doo-mobile-side-nav [rootCategories]="rootCategories" [categories]="categories" [searchControl]="searchControl"
+        [filteredOptions]="filteredOptions" (startSearchProducts)="startSearchProducts($event)"
         (goToURL)="goToFromMobileNav($event)">
       </doo-mobile-side-nav>
     </mat-drawer>
-    <mat-drawer [opened]="isCartOpen" (closedStart)="isCartOpen = false" mode="over" autoFocus="false"
+    <mat-drawer *ngIf="environment.storeEnabled" [opened]="isCartOpen" (closedStart)="isCartOpen = false" mode="over" autoFocus="false"
       [ngClass]="utilService.bigScreens.includes(this.resolution) ? 'doo-cart-side-nav' : 'doo-mobile-cart-side-nav'"
       position="end">
       <doo-cart-side-nav #cartSideNav [resolution]="resolution" (expandCartNav)="expandCartNav()"></doo-cart-side-nav>
@@ -23,7 +23,6 @@
     <mat-drawer-content>
       <div *ngIf="mainMenuOpen" fxLayout="row" fxLayoutAlign="center start" (click)="hideMainMenu()"
         class="doo-overlay">
-
       </div>
       <div *ngIf="loading && !['Home','Profile'].includes(this.navService.getActivePage().title)" fxLayout="row"
         fxLayoutAlign="center start" class="doo-loading-overlay">

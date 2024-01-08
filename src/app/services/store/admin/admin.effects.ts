@@ -124,6 +124,38 @@ export class AdminEffects {
     )
   );
 
+  DeliverOrder$: Observable<Action> = createEffect(() =>
+    this.action$.pipe(
+      ofType(AdminActions.BeginDeliverOrderAction),
+      mergeMap(action =>
+        this.adminService.deliverOrder(action.payload.uid, action.payload.orderId).pipe(
+          map((data: any) => {
+            return AdminActions.SuccessDeliverOrderAction({ payload: data });
+          }),
+          catchError((error: Error) => {
+            return of(AdminActions.ErrorAdminAction(error));
+          })
+        )
+      )
+    )
+  );
+
+  UndeliverOrder$: Observable<Action> = createEffect(() =>
+    this.action$.pipe(
+      ofType(AdminActions.BeginUndeliverOrderAction),
+      mergeMap(action =>
+        this.adminService.undeliverOrder(action.payload.uid, action.payload.orderId).pipe(
+          map((data: any) => {
+            return AdminActions.SuccessUndeliverOrderAction({ payload: data });
+          }),
+          catchError((error: Error) => {
+            return of(AdminActions.ErrorAdminAction(error));
+          })
+        )
+      )
+    )
+  );
+
   FulfillOrder$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
       ofType(AdminActions.BeginFulfillOrderAction),
@@ -318,19 +350,19 @@ export class AdminEffects {
   );
 
   SendEmail$: Observable<Action> = createEffect(() =>
-  this.action$.pipe(
-    ofType(AdminActions.BeginSendEmailAction),
-    mergeMap(action =>
-      this.adminService.sendEmail(action.payload.uid, action.payload.subscriptionId, action.payload.email ).pipe(
-        map((data: any) => {
-          return AdminActions.SuccessSendEmailAction({ payload: data });
-        }),
-        catchError((error: Error) => {
-          return of(AdminActions.ErrorAdminAction(error));
-        })
+    this.action$.pipe(
+      ofType(AdminActions.BeginSendEmailAction),
+      mergeMap(action =>
+        this.adminService.sendEmail(action.payload.uid, action.payload.subscriptionId, action.payload.email).pipe(
+          map((data: any) => {
+            return AdminActions.SuccessSendEmailAction({ payload: data });
+          }),
+          catchError((error: Error) => {
+            return of(AdminActions.ErrorAdminAction(error));
+          })
+        )
       )
     )
-  )
-);
+  );
 
 }

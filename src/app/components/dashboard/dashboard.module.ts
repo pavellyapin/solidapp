@@ -20,6 +20,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import {DashboardComponent} from './dashboard.component'
 import { DashboardToolbarComponent } from './dashboard-toolbar/dashboard-toolbar.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   declarations: [DashboardComponent,
@@ -44,7 +45,8 @@ import { DashboardToolbarComponent } from './dashboard-toolbar/dashboard-toolbar
     MatExpansionModule,
     MatMenuModule,
     MatBadgeModule,
-    PipesModule
+    PipesModule,
+    LazyLoadImageModule
   ],
   providers : [],
   exports:[],

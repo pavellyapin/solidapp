@@ -61,6 +61,16 @@ export class AdminService {
         return getOrder({"uid" : uid , "orderId" : orderId , "env" : this.env});
     }
 
+    deliverOrder(uid, orderId) {
+        var deliverOrder = this.firebaseFunctions.httpsCallable('admin/deliverOrder');
+        return deliverOrder({"uid" : uid , "orderId" : orderId, "env" : this.env});
+    }
+
+    undeliverOrder(uid, orderId) {
+        var undeliverOrder = this.firebaseFunctions.httpsCallable('admin/undeliverOrder');
+        return undeliverOrder({"uid" : uid , "orderId" : orderId, "env" : this.env});
+    }
+
     fullFillOrder(uid, orderId) {
         var fullFillOrder = this.firebaseFunctions.httpsCallable('admin/fulfillOrder');
         return fullFillOrder({"uid" : uid , "orderId" : orderId, "env" : this.env});

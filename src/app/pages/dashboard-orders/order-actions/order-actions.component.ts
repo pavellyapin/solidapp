@@ -25,6 +25,9 @@ export class DashboardOrderActionsComponent implements OnInit {
     @Output() fullfill = new EventEmitter();
     @Output() unfullfill = new EventEmitter();
 
+    @Output() deliver = new EventEmitter();
+    @Output() undeliver = new EventEmitter();
+
     SettingsSubscription: Subscription;
     settings$: Observable<Entry<any>>;
 

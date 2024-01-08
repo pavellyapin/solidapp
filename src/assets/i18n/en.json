@@ -1,16 +1,31 @@
 {
-  "widget" : {
-    "subscribe" : {
-      "btnText" : "SUBSCRIBE",
-      "textboxPlaceholder" : "ENTER EMAIL",
-      "emailRequired" : "Please provide an email",
-      "isSubscribed" : "Thank You For Subscribing"
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "globalSearchPlaceholder": "I'm looking for.."
+  },
+  "widget": {
+    "subscribe": {
+      "btnText": "SUBSCRIBE",
+      "textboxPlaceholder": "ENTER EMAIL",
+      "emailRequired": "Please provide an email",
+      "isSubscribed": "Thank You For Subscribing"
     }
   },
   "dashboard": {
     "common": {
       "cancel": "CANCEL",
-      "send": "SEND"
+      "send": "SEND",
+      "moreActions" : "More Actions",
+      "customer" : "Customer",
+      "shippingAddress" : "Shipping Address",
+      "shippingMethod" : "Shipping Method",
+      "timeline" : "Timeline",
+      "paid" : "Paid",
+      "new" : "New",
+      "delivered" : "Delivered",
+      "complete" : "Complete"
+
     },
     "cart": {
       "status": {
@@ -33,14 +48,20 @@
         "card": {
           "created": "Customer placed this order",
           "paid": "Order was processed on Stripe",
-          "fullfilled": "You fullfilled this order"
+          "fullfilled": "You fullfilled this order",
+          "delivered" : "Order schdeuled for delivery"
         },
         "paypal": {
           "created": "Customer placed this order",
           "paid": "Order was processed on PayPal",
-          "fullfilled": "You fullfilled this order"
+          "fullfilled": "You fullfilled this order",
+          "delivered" : "Order schdeuled for delivery"
         }
-      }
+      },
+      "markDelivered": "Send for delivery",
+      "reverseDelivered" : "Reschedule delivery",
+      "markComplete" : "Complete order",
+      "reverseComplete" : "Not complete yet"
     },
     "today": "Today",
     "yesterday": "Yesterday",
@@ -48,6 +69,12 @@
     "month": "This month"
   },
   "profile": {
+    "accountMenu": "Account Menu",
+    "overview": "Overview",
+    "profile": "Profile",
+    "addresses": "Addresses",
+    "store": "Store",
+    "logout": "Logout",
     "buttons": {
       "add": "Add",
       "edit": "Edit",
@@ -86,9 +113,11 @@
       "enterShippingAddress": "Enter Shipping Address"
     },
     "favorites": {
+      "favorites": "Favorites",
       "empty": "You don't have any favorites"
     },
     "orders": {
+      "orders": "Orders",
       "paid": "Paid"
     }
   },
@@ -102,12 +131,50 @@
     "validations": {
       "size_required": "Please select a size",
       "qty_required": "Select quantity"
-    }
+    },
+    "search": {
+      "resultLength": "{{length}} SEARCH RESULTS FOR",
+      "relatedCategories": "We also found the following related categories:"
+    },
+    "category": {
+      "filters": "FILTERS",
+      "sortBy": "SORT PRODUCTS",
+      "priceLowToHigh": "Price low to high",
+      "priceHighToLow": "Price high to low",
+      "showingItems": "Showing 1-{{cardsLength}} of {{displayedLength}} items",
+      "noProductsFound": "We didn't find any products for this category"
+    },
+    "productReviews": "Product Reviews",
+    "reviews": "Reviews",
+    "noReviews": "There are no reviews for this product yet",
+    "firstReview": "Be the first to write a review!",
+    "writeReview": "WRITE REVIEW",
+    "wouldRecommend": "Would Recommend",
+    "recommendations": "Recommendations",
+    "loadReviews": "LOAD MORE REVIEWS",
+    "reviewModalHeader": "Write a review",
+    "overallRating": "Overall Rating",
+    "clickToRate": "Click below to rate this product",
+    "rateError": "Click on a star to rate!",
+    "yourReview": "Your Review",
+    "wouldRecommendQ": "Would you recommend this product?",
+    "addHeadline": "Add a headline",
+    "writeYourReview": "Write your review about this product..",
+    "yourDisplayName": "Your display name",
+    "displayName": "Display Name",
+    "submitReview": "SUBMIT REVIEW"
   },
   "nav": {
-    "home": "Home"
+    "home": "Home",
+    "myAccount": "My Account",
+    "favorites": "Favorites"
   },
   "cart": {
+    "exploreStore": "Explore our store",
+    "noCartItems": "You don't have any items in your cart",
+    "shopBtn": "SHOP",
+    "yourCart": "Your Cart",
+    "itemsCount": "({{itemCount}}) Items in your cart",
     "flowStartHeader": "Guest/Login",
     "flowSecondHeader": "Shipping",
     "flowThirdHeader": "Payment",

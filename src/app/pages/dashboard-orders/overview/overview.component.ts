@@ -162,6 +162,7 @@ export class DashboardOrdersOverviewComponent implements OnInit {
   }
   ngOnDestroy(): void {
     this.AdminSubscription.unsubscribe();
+    this.SettingsSubscription.unsubscribe();
   }
 
 }

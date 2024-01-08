@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -27,8 +27,14 @@ export class ProductCategoryGuard implements CanActivate {
   }
 
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot,state: RouterStateSnapshot): Observable<boolean> {
     this.navService.startLoading();
+    if (state.url.startsWith('/search/')) {
+      return from( new Promise<any>((resolve, reject) => {
+        this.store.dispatch(ProductsActions.BeginSearchProductsAction({payload : route.params['category']}));
+        resolve(true);
+      }));
+    }
     return from(new Promise<any>((resolve, reject) => {
       let catExists = false;
       if (this.categories) {

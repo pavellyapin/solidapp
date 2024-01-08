@@ -47,9 +47,9 @@ export class ImgStyleDirective {
     }
 
     setStyle(element) {
-        if (this.utils.bigScreens.includes(this.params.resolution)) {
+        if (this.utils.bigScreens.includes(this.params.resolution) && !this.params.skipWidth) {
             this.renderer.setStyle(element, "width",
-                (this.params.block.fields.textBoxWidth ? this.params.block.fields.textBoxWidth + '%' : '100%'));
+                (this.params.block.fields.width ? this.params.block.fields.width + '%' : '100%'));
             this.renderer.setStyle(element, "padding-left", '0px');
             this.renderer.setStyle(element, "padding-right", '0px');
 

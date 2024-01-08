@@ -1,8 +1,8 @@
 @import '~@angular/material/theming';
 
 //Theme
-$primary: #4A4A4B;
-$accent: #EFA937;
+$primary: mat-color($mat-brown, 100);
+$accent: mat-color($mat-pink ,200);
 
 $my-primary: (
   50: $primary,
